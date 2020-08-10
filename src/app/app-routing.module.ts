@@ -5,6 +5,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'anime-details',
+    loadChildren: () => import('./anime-details/anime-details.module').then( m => m.AnimeDetailsPageModule)
+  },
+  {
+    path: 'videoplayer',
+    loadChildren: () => import('./modals/videoplayer/videoplayer.module').then( m => m.VideoplayerPageModule)
   }
 ];
 @NgModule({

@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,30 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+.tabs-inner {
+  position: unset !important;
+  flex: 1;
+  contain: layout size style;
+}
+ion-content {
+  --background: var(--ion-color-medium);
+}
+
+ion-tab-button {
+  transition: 0.2s ease-in;
+}
+
+ion-tab-bar {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.tab-selected {
+  border-bottom: 4px #1f4068 solid;
+  // transition: 0.2s ease-in;
+  font-size: 0;
+  ion-icon {
+    transform: scale(1.3);
+    transition: 0.2s ease-in;
+  }
+}

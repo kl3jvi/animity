@@ -1,5 +1,7 @@
 {
   "name": "animity",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

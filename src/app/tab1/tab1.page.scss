@@ -1,0 +1,51 @@
+.chips {
+  margin-top: 0px;
+}
+.sl {
+  width: 100%;
+}
+
+.popularCard {
+  margin: 10px;
+}
+img {
+  height: 100%;
+  width: 100%;
+}
+ion-thumbnail {
+  overflow: scroll;
+  white-space: initial;
+}
+.searchCard {
+  margin-top: 0px;
+  border-radius: 0px;
+}
+.card {
+  height: 150px;
+  width: 100%;
+  padding: 0px !important;
+  margin-right: 0px !important;
+}
+.c {
+  --background: var(
+    --ion-color-medium
+  ); // Replace this with color of your choice
+}
+
+ion-chip {
+  height: 25px;
+}
+
+ion-searchbar {
+  transition: 0.2s ease-in;
+  --icon-color: var (--ion-color-primary);
+  --box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  ::ng-deep {
+    .searchbar-input-container {
+      .searchbar-input {
+        border-radius: 20px;
+        //any style that you want to implement on your searchbar
+      }
+    }
+  }
+}

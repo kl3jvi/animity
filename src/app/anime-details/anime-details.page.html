@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{titulli}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item color="primary" lines="none">
+    <ion-card class="image">
+      <img [src]="img" />
+    </ion-card>
+    <ion-label>
+      <h2 class="k">{{pershkrimi}}</h2>
+    </ion-label>
+  </ion-item>
+
+  <div class="container">
+    <ion-chip
+      *ngFor="let item of episodesa; let i = index"
+      color="light"
+      (click)="onClick(item.id)"
+      >Episode {{i+1}}
+    </ion-chip>
+  </div>
+</ion-content>
