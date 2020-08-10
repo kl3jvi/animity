@@ -25,7 +25,7 @@
 
 ## Description
 
-Anime X Stream parses website data and filter required info, thus It removes the ads for seamless experience. The app doesn't require account creation to use it.
+Animity parses website data and filter required info, thus It removes the ads for seamless experience. The app doesn't require account creation to use it.
 
 ### Features
 
