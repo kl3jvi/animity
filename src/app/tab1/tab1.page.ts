@@ -17,6 +17,11 @@ export class Tab1Page {
   episodes;
   toggled = true;
   genres;
+  onGoing;
+  movies;
+  genresofMovies;
+
+  page_number = 1;
   constructor(private http: HttpClient, private router: Router) {}
   slideOpts = {
     slidesPerView: 3,
@@ -32,14 +37,46 @@ export class Tab1Page {
   }
 
   ngOnInit() {
-    var nu = Math.floor(Math.random() * 10);
+    this.getPopular();
+    this.getOngoingSeries();
+    this.getMovies(false, "");
+  }
+  getMovies(isLoaded, event) {
+    return this.http
+      .get(
+        "https://salty-anchorage-64305.herokuapp.com/api/v1/NewSeasons/" +
+          this.page_number
+      )
+      .subscribe((data) => {
+        this.movies = data["anime"];
+        for (let i = 0; i < this.movies.length; i++) {
+          this.genresofMovies = this.movies[i]["genres"];
+        }
+        if (isLoaded) event.target.complete();
+        this.page_number++;
+        console.log(this.page_number);
+      });
+  }
+  doInfinite(event) {
+    this.getMovies(true, event);
+  }
+
+  getPopular() {
+    var nu = Math.floor(Math.random() * 20);
     console.log(nu.toString());
     var ju = nu.toString();
-
     return this.http
       .get("https://salty-anchorage-64305.herokuapp.com/api/v1/Popular/" + ju)
       .subscribe((data) => {
         this.popularAnimes = data["popular"];
+      });
+  }
+
+  getOngoingSeries() {
+    return this.http
+      .get("https://salty-anchorage-64305.herokuapp.com/api/v1/OngoingSeries")
+      .subscribe((data) => {
+        this.onGoing = data["anime"];
       });
   }
 

@@ -1,3 +1,37 @@
 <ion-content [fullscreen]="true">
-  <ion-searchbar color="dark" mode="ios"></ion-searchbar>
+  <iframe
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    width="100%"
+    height="230px"
+    allowfullscreen
+    [src]="vidLink"
+  ></iframe>
+  <ion-item color="primary" lines="full">
+    <ion-label>
+      <h1>Movies</h1>
+    </ion-label>
+    <ion-button fill="clear" (click)="getRecentSeries()" slot="end">
+      <ion-icon color="light" name="reload"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item
+    (click)="onClick(movie.episodes)"
+    color="primary"
+    lines="full"
+    *ngFor="let movie of movies"
+  >
+    <ion-thumbnail>
+      <img src="{{movie.img}}" />
+    </ion-thumbnail>
+    <ion-label>
+      <h2 class="k">
+        {{movie.otherName}}
+      </h2>
+      <div class="synopsis">
+        <p>{{movie.synopsis}}</p>
+      </div>
+    </ion-label>
+  </ion-item>
 </ion-content>

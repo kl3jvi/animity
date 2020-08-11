@@ -16,15 +16,19 @@ ion-thumbnail {
   overflow: scroll;
   white-space: initial;
 }
+
+ion-list {
+  padding: 0px;
+}
 .searchCard {
   margin-top: 0px;
   border-radius: 0px;
 }
 .card {
-  height: 150px;
+  height: 130px;
   width: 100%;
   padding: 0px !important;
-  margin-right: 0px !important;
+  margin: 6px !important;
 }
 .c {
   --background: var(
@@ -48,4 +52,19 @@ ion-searchbar {
       }
     }
   }
+}
+
+.k {
+  overflow: visible;
+  white-space: initial;
+}
+
+.synopsis {
+  line-height: 1.5;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
