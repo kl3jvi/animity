@@ -1,17 +1,24 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
+  <ion-toolbar color="dark">
+    <ion-title mode="ios">
+      Bookmarks
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-item
+    class="deleted"
+    color="primary"
+    *ngFor="let item of bookmarked; let i = index"
+  >
+    <ion-avatar slot="start">
+      <img src="{{item.img}}" />
+    </ion-avatar>
+    <ion-label>{{item.titulli}}</ion-label>
+    <ion-button color="dark" slot="end">Watch</ion-button>
+    <ion-button (click)="removeItem(i)" slot="end" fill="clear">
+      <ion-icon name="remove-circle" color="danger"></ion-icon>
+    </ion-button>
+  </ion-item>
 </ion-content>

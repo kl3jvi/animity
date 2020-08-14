@@ -24,6 +24,18 @@ ion-list {
   margin-top: 0px;
   border-radius: 0px;
 }
+.loadSpinner {
+  height: 100vh;
+
+  text-align: center;
+  flex-direction: column;
+}
+ion-spinner {
+  color: #fff;
+  width: 70px;
+  height: 70px;
+  margin-top: 50%;
+}
 .card {
   height: 130px;
   width: 100%;

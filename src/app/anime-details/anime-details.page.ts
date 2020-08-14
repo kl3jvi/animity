@@ -13,7 +13,7 @@ export class AnimeDetailsPage implements OnInit {
   img;
   pershkrimi;
   episodesa;
-  streamUrl = `https://salty-anchorage-64305.herokuapp.com/api/v1/AnimeEpisodeHandler/`;
+  streamUrl = `https://rhinestone-bow-ketchup.glitch.me/api/v1/AnimeEpisodeHandler/`;
   constructor(
     private modalController: ModalController,
     private http: HttpClient

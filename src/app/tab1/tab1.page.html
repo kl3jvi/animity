@@ -17,20 +17,29 @@
 
 <ion-content class="c" color="primary" *ngIf="searched" [fullscreen]="true">
   <ion-card class="searchCard">
-    <ion-item
-      (click)="onClick(searchedItem.title,searchedItem.synopsis,searchedItem.img,searchedItem.episodes)"
-      *ngFor="let searchedItem of searchset"
-    >
+    <ion-item *ngFor="let searchedItem of searchset">
       <ion-thumbnail slot="start">
         <img src="{{searchedItem.img}}" />
       </ion-thumbnail>
       <ion-label
+        (click)="onClick(searchedItem.title,searchedItem.synopsis,searchedItem.img,searchedItem.episodes)"
         ><h2>{{searchedItem.title}}</h2>
 
         <ion-chip *ngFor="let searchedIt of genres">
           <ion-label>{{searchedIt}}</ion-label>
         </ion-chip>
       </ion-label>
+      <ion-button
+        (click)="like(searchedItem.title,searchedItem.synopsis,searchedItem.img)"
+        slot="end"
+        fill="clear"
+      >
+        <ion-icon
+          id="{{searchedItem.title}}"
+          color="danger"
+          name="heart-outline"
+        ></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-card>
 </ion-content>
@@ -38,122 +47,128 @@
 <!-- homepage normal -->
 
 <ion-content class="c" *ngIf="!searched">
-  <ion-card mode="ios" class="popularCard">
-    <ion-item class="ion-no-margin" lines="none">
-      <ion-label slot="start">
-        <h2>Popular Anime</h2>
-      </ion-label>
-    </ion-item>
+  <div *ngIf="loading">
+    <ion-card mode="ios" class="popularCard">
+      <ion-item class="ion-no-margin" lines="none">
+        <ion-label slot="start">
+          <h2>Popular Anime</h2>
+        </ion-label>
+      </ion-item>
 
-    <ion-item lines="none">
-      <ion-chip>
-        <ion-label>TV</ion-label>
-      </ion-chip>
-      <ion-chip>
-        <ion-label>Upcoming</ion-label>
-      </ion-chip>
-      <ion-chip>
-        <ion-label>Airing</ion-label>
-      </ion-chip>
-      <ion-chip>
-        <ion-label>Anime</ion-label>
-      </ion-chip>
-    </ion-item>
+      <ion-item lines="none">
+        <ion-chip>
+          <ion-label>TV</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label>Upcoming</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label>Airing</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label>Anime</ion-label>
+        </ion-chip>
+      </ion-item>
 
-    <ion-slides [options]="slideOpts">
-      <ion-slide class="sl" *ngFor="let popularAnime of popularAnimes">
-        <ion-card
-          (click)="onClick(popularAnime.title,popularAnime.synopsis,popularAnime.img,popularAnime.episodes)"
-          no-margin
-          class="card"
-          mode="md"
-        >
-          <img src="{{popularAnime.img}}" />
-        </ion-card>
-        <ion-item lines="none"> </ion-item>
-      </ion-slide>
-    </ion-slides>
-  </ion-card>
-
-  <!-- ongoing Series card -->
-
-  <ion-card mode="ios" class="popularCard">
-    <ion-item class="ion-no-margin" lines="none">
-      <ion-label slot="start">
-        <h2>Ongoing Anime</h2>
-      </ion-label>
-    </ion-item>
-
-    <ion-item lines="none">
-      <ion-chip>
-        <ion-label>TV</ion-label>
-      </ion-chip>
-      <ion-chip>
-        <ion-label>Upcoming</ion-label>
-      </ion-chip>
-      <ion-chip>
-        <ion-label>Airing</ion-label>
-      </ion-chip>
-      <ion-chip>
-        <ion-label>Anime</ion-label>
-      </ion-chip>
-    </ion-item>
-
-    <ion-slides [options]="slideOpts">
-      <ion-slide class="sl" *ngFor="let onGoingAnime of onGoing">
-        <ion-card
-          (click)="onClick(onGoingAnime.title,onGoingAnime.synopsis,onGoingAnime.img,onGoingAnime.episodes)"
-          no-margin
-          class="card"
-          mode="md"
-        >
-          <img src="{{onGoingAnime.img}}" />
-          <ion-card-header>
-            <ion-card-subtitle>{{onGoingAnime.otherName}}</ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
-        <ion-item lines="none"> </ion-item>
-      </ion-slide>
-    </ion-slides>
-  </ion-card>
-
-  <ion-item lines="full" color="primary">
-    <h1>New Seasons</h1>
-  </ion-item>
-
-  <ion-list color="primary">
-    <ion-item
-      (click)="onClick(movie.title,movie.synopsis,movie.img,movie.episodes)"
-      color="dark"
-      *ngFor="let movie of movies"
-      lines="full"
-      color="primary"
-    >
-      <ion-avatar slot="start">
-        <img src="{{movie.img}}" />
-      </ion-avatar>
-      <ion-label>
-        <h2 class="k">
-          {{movie.otherName}}
-        </h2>
-        <div class="synopsis">
-          <p>{{movie.synopsis}}</p>
-        </div>
-        <div class="k">
-          <ion-chip color="light">Year: {{movie.released}}</ion-chip> |
-          <ion-chip *ngFor="let mov of genresofMovies" color="light"
-            >{{mov}}</ion-chip
+      <ion-slides [options]="slideOpts">
+        <ion-slide class="sl" *ngFor="let popularAnime of popularAnimes">
+          <ion-card
+            (click)="onClick(popularAnime.title,popularAnime.synopsis,popularAnime.img,popularAnime.episodes)"
+            no-margin
+            class="card"
+            mode="md"
           >
-        </div>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+            <img src="{{popularAnime.img}}" />
+          </ion-card>
+          <ion-item lines="none"> </ion-item>
+        </ion-slide>
+      </ion-slides>
+    </ion-card>
 
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data..."
-    >
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    <!-- ongoing Series card -->
+
+    <ion-card mode="ios" class="popularCard">
+      <ion-item class="ion-no-margin" lines="none">
+        <ion-label slot="start">
+          <h2>Ongoing Anime</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-chip>
+          <ion-label>TV</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label>Upcoming</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label>Airing</ion-label>
+        </ion-chip>
+        <ion-chip>
+          <ion-label>Anime</ion-label>
+        </ion-chip>
+      </ion-item>
+
+      <ion-slides [options]="slideOpts">
+        <ion-slide class="sl" *ngFor="let onGoingAnime of onGoing">
+          <ion-card
+            (click)="onClick(onGoingAnime.title,onGoingAnime.synopsis,onGoingAnime.img,onGoingAnime.episodes)"
+            no-margin
+            class="card"
+            mode="md"
+          >
+            <img src="{{onGoingAnime.img}}" />
+            <ion-card-header>
+              <ion-card-subtitle>{{onGoingAnime.otherName}}</ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+          <ion-item lines="none"> </ion-item>
+        </ion-slide>
+      </ion-slides>
+    </ion-card>
+
+    <ion-item lines="full" color="primary">
+      <h1>New Seasons</h1>
+    </ion-item>
+
+    <ion-list color="primary">
+      <ion-item
+        (click)="onClick(movie.title,movie.synopsis,movie.img,movie.episodes)"
+        color="dark"
+        *ngFor="let movie of movies"
+        lines="full"
+        color="primary"
+      >
+        <ion-avatar slot="start">
+          <img src="{{movie.img}}" />
+        </ion-avatar>
+        <ion-label>
+          <h2 class="k">
+            {{movie.otherName}}
+          </h2>
+          <div class="synopsis">
+            <p>{{movie.synopsis}}</p>
+          </div>
+          <div class="k">
+            <ion-chip color="light">Year: {{movie.released}}</ion-chip> |
+            <ion-chip *ngFor="let mov of genresofMovies" color="light"
+              >{{mov}}</ion-chip
+            >
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+  <ion-content class="loadSpinner" *ngIf="!loading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </ion-content>
 </ion-content>

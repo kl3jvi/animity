@@ -2,13 +2,15 @@ import { Component } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { AnimeShared } from "../shared/anime-details";
+import { Storage } from "@ionic/storage";
+
 @Component({
   selector: "app-tab1",
   templateUrl: "tab1.page.html",
   styleUrls: ["tab1.page.scss"],
 })
 export class Tab1Page {
-  animeUrl = "https://salty-anchorage-64305.herokuapp.com/api/v1/Search/";
+  animeUrl = "https://rhinestone-bow-ketchup.glitch.me/api/v1/Search/";
   searchUrl = this.animeUrl + "/Search/";
   data;
   searchset;
@@ -20,9 +22,18 @@ export class Tab1Page {
   onGoing;
   movies;
   genresofMovies;
-
+  iconState;
   page_number = 1;
-  constructor(private http: HttpClient, private router: Router) {}
+  storageArray = [];
+  temp = [];
+  title;
+  loading = false;
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private storage: Storage
+  ) {}
   slideOpts = {
     slidesPerView: 3,
   };
@@ -33,8 +44,31 @@ export class Tab1Page {
     AnimeShared.description = pershkrimi;
     AnimeShared.img = imazhi;
     AnimeShared.episodes = episodet;
-    console.log(episodet);
   }
+
+  like(titulli, pershkrimi, imazhi) {
+    this.title = titulli;
+    var buton = document.getElementById(titulli);
+    buton.setAttribute("name", "heart");
+    this.iconState = buton.getAttribute("name");
+    const storage = {
+      titulli: titulli,
+      pershkrimi: pershkrimi,
+      img: imazhi,
+      icoState: this.iconState + "-outline",
+    };
+    this.storage.get("bookmarks").then((data) => {
+      this.temp = data;
+
+      console.log(data.indexOf(storage));
+
+      this.temp.push(storage);
+
+      this.storage.set("bookmarks", this.temp);
+    });
+  }
+
+  checkIfLiked(a) {}
 
   ngOnInit() {
     this.getPopular();
@@ -44,17 +78,17 @@ export class Tab1Page {
   getMovies(isLoaded, event) {
     return this.http
       .get(
-        "https://salty-anchorage-64305.herokuapp.com/api/v1/NewSeasons/" +
+        "https://rhinestone-bow-ketchup.glitch.me/api/v1/NewSeasons/" +
           this.page_number
       )
       .subscribe((data) => {
         this.movies = data["anime"];
+        this.loading = true;
         for (let i = 0; i < this.movies.length; i++) {
           this.genresofMovies = this.movies[i]["genres"];
         }
         if (isLoaded) event.target.complete();
         this.page_number++;
-        console.log(this.page_number);
       });
   }
   doInfinite(event) {
@@ -62,19 +96,21 @@ export class Tab1Page {
   }
 
   getPopular() {
-    var nu = Math.floor(Math.random() * 20);
-    console.log(nu.toString());
-    var ju = nu.toString();
+    var randomNumber = Math.floor(Math.random() * 20).toString();
     return this.http
-      .get("https://salty-anchorage-64305.herokuapp.com/api/v1/Popular/" + ju)
+      .get(
+        "https://rhinestone-bow-ketchup.glitch.me/api/v1/Popular/" +
+          randomNumber
+      )
       .subscribe((data) => {
         this.popularAnimes = data["popular"];
+        console.log(this.popularAnimes);
       });
   }
 
   getOngoingSeries() {
     return this.http
-      .get("https://salty-anchorage-64305.herokuapp.com/api/v1/OngoingSeries")
+      .get("https://rhinestone-bow-ketchup.glitch.me/api/v1/OngoingSeries")
       .subscribe((data) => {
         this.onGoing = data["anime"];
       });
@@ -82,7 +118,6 @@ export class Tab1Page {
 
   filterAnime(evt) {
     var q = evt.target.value;
-    console.log(q);
     if (q.trim() == "") {
       this.searched = false;
     } else {
@@ -90,6 +125,7 @@ export class Tab1Page {
       this.http.get(this.animeUrl + q.trim()).subscribe((data) => {
         this.searchset = data["search"];
         for (let i = 0; i < this.searchset.length; i++) {
+          this.checkIfLiked(this.searchset[i]["title"]);
           this.genres = this.searchset[i]["genres"];
         }
       });
