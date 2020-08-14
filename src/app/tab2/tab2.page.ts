@@ -22,7 +22,7 @@ export class Tab2Page {
     var page_number = Math.floor(Math.random() * 69);
     return this.http
       .get(
-        "https://rhinestone-bow-ketchup.glitch.me/api/v1/Movies/" +
+        "https://salty-anchorage-64305.herokuapp.com/api/v1/Movies/" +
           page_number.toString()
       )
       .subscribe((data) => {
@@ -44,7 +44,7 @@ export class Tab2Page {
     var iframeSrc;
     return this.http
       .get(
-        "https://rhinestone-bow-ketchup.glitch.me/api/v1/AnimeEpisodeHandler/" +
+        "https://salty-anchorage-64305.herokuapp.com/api/v1/AnimeEpisodeHandler/" +
           episodeId
       )
       .subscribe((data) => {

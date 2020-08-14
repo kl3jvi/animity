@@ -47,7 +47,7 @@
 <!-- homepage normal -->
 
 <ion-content class="c" *ngIf="!searched">
-  <div *ngIf="loading">
+  <div>
     <ion-card mode="ios" class="popularCard">
       <ion-item class="ion-no-margin" lines="none">
         <ion-label slot="start">
@@ -131,44 +131,30 @@
       <h1>New Seasons</h1>
     </ion-item>
 
-    <ion-list color="primary">
-      <ion-item
-        (click)="onClick(movie.title,movie.synopsis,movie.img,movie.episodes)"
-        color="dark"
-        *ngFor="let movie of movies"
-        lines="full"
-        color="primary"
-      >
-        <ion-avatar slot="start">
-          <img src="{{movie.img}}" />
-        </ion-avatar>
-        <ion-label>
-          <h2 class="k">
-            {{movie.otherName}}
-          </h2>
-          <div class="synopsis">
-            <p>{{movie.synopsis}}</p>
-          </div>
-          <div class="k">
-            <ion-chip color="light">Year: {{movie.released}}</ion-chip> |
-            <ion-chip *ngFor="let mov of genresofMovies" color="light"
-              >{{mov}}</ion-chip
-            >
-          </div>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading more data..."
-      >
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+    <ion-item
+      (click)="onClick(movie.title,movie.synopsis,movie.img,movie.episodes)"
+      color="dark"
+      *ngFor="let movie of movies"
+      lines="full"
+      color="primary"
+    >
+      <ion-avatar slot="start">
+        <img src="{{movie.img}}" />
+      </ion-avatar>
+      <ion-label>
+        <h2 class="k">
+          {{movie.otherName}}
+        </h2>
+        <div class="synopsis">
+          <p>{{movie.synopsis}}</p>
+        </div>
+        <div class="k">
+          <ion-chip color="light">Year: {{movie.released}}</ion-chip> |
+          <ion-chip *ngFor="let mov of genresofMovies" color="light"
+            >{{mov}}</ion-chip
+          >
+        </div>
+      </ion-label>
+    </ion-item>
   </div>
-
-  <ion-content class="loadSpinner" *ngIf="!loading">
-    <ion-spinner name="crescent"></ion-spinner>
-  </ion-content>
 </ion-content>

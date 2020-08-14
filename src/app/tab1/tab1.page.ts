@@ -10,7 +10,7 @@ import { Storage } from "@ionic/storage";
   styleUrls: ["tab1.page.scss"],
 })
 export class Tab1Page {
-  animeUrl = "https://rhinestone-bow-ketchup.glitch.me/api/v1/Search/";
+  animeUrl = "https://salty-anchorage-64305.herokuapp.com/api/v1/Search/";
   searchUrl = this.animeUrl + "/Search/";
   data;
   searchset;
@@ -27,7 +27,6 @@ export class Tab1Page {
   storageArray = [];
   temp = [];
   title;
-  loading = false;
 
   constructor(
     private http: HttpClient,
@@ -68,38 +67,31 @@ export class Tab1Page {
     });
   }
 
-  checkIfLiked(a) {}
-
   ngOnInit() {
     this.getPopular();
     this.getOngoingSeries();
-    this.getMovies(false, "");
+    this.getMovies();
   }
-  getMovies(isLoaded, event) {
+  getMovies() {
     return this.http
       .get(
-        "https://rhinestone-bow-ketchup.glitch.me/api/v1/NewSeasons/" +
+        "https://salty-anchorage-64305.herokuapp.com/api/v1/NewSeasons/" +
           this.page_number
       )
       .subscribe((data) => {
         this.movies = data["anime"];
-        this.loading = true;
+        console.log(data);
         for (let i = 0; i < this.movies.length; i++) {
           this.genresofMovies = this.movies[i]["genres"];
         }
-        if (isLoaded) event.target.complete();
-        this.page_number++;
       });
-  }
-  doInfinite(event) {
-    this.getMovies(true, event);
   }
 
   getPopular() {
     var randomNumber = Math.floor(Math.random() * 20).toString();
     return this.http
       .get(
-        "https://rhinestone-bow-ketchup.glitch.me/api/v1/Popular/" +
+        "https://salty-anchorage-64305.herokuapp.com/api/v1/Popular/" +
           randomNumber
       )
       .subscribe((data) => {
@@ -110,7 +102,7 @@ export class Tab1Page {
 
   getOngoingSeries() {
     return this.http
-      .get("https://rhinestone-bow-ketchup.glitch.me/api/v1/OngoingSeries")
+      .get("https://salty-anchorage-64305.herokuapp.com/api/v1/OngoingSeries")
       .subscribe((data) => {
         this.onGoing = data["anime"];
       });
@@ -125,7 +117,6 @@ export class Tab1Page {
       this.http.get(this.animeUrl + q.trim()).subscribe((data) => {
         this.searchset = data["search"];
         for (let i = 0; i < this.searchset.length; i++) {
-          this.checkIfLiked(this.searchset[i]["title"]);
           this.genres = this.searchset[i]["genres"];
         }
       });
