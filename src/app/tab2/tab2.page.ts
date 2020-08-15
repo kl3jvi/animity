@@ -9,6 +9,10 @@ import { DomSanitizer } from "@angular/platform-browser";
 export class Tab2Page {
   movies;
   vidLink;
+  searchset;
+  animeUrl = "https://salty-anchorage-64305.herokuapp.com/api/v1/Search/";
+  genres;
+  searched = false;
   temp;
   constructor(private http: HttpClient, public sanitizer: DomSanitizer) {}
   ngOnInit() {
@@ -56,5 +60,20 @@ export class Tab2Page {
           );
         }
       });
+  }
+
+  filterAnime(evt) {
+    var q = evt.target.value;
+    if (q.trim() == "") {
+      this.searched = false;
+    } else {
+      this.searched = true;
+      this.http.get(this.animeUrl + q.trim()).subscribe((data) => {
+        this.searchset = data["search"];
+        for (let i = 0; i < this.searchset.length; i++) {
+          this.genres = this.searchset[i]["genres"];
+        }
+      });
+    }
   }
 }

@@ -1,3 +1,27 @@
 iframe {
   border-bottom: 2px solid #3171e0;
 }
+
+.logoapp {
+  margin: 7px;
+  width: 40px;
+}
+
+ion-searchbar {
+  transition: 0.2s ease-in;
+  --icon-color: var (--ion-color-primary);
+  --box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  ::ng-deep {
+    .searchbar-input-container {
+      .searchbar-input {
+        border-radius: 20px;
+
+        //any style that you want to implement on your searchbar
+      }
+    }
+  }
+}
+.searchCard {
+  margin-top: 0px;
+  border-radius: 0px;
+}
