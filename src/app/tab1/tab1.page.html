@@ -1,12 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title slot="start">
-      Browse
-    </ion-title>
+    <img slot="start" class="logoapp" src="/assets/images/animate.svg" />
+
     <ion-searchbar
-      slot="primary"
       animated
-      placeholder="Search"
+      placeholder="Search Animes"
       (ionInput)="filterAnime($event)"
     >
     </ion-searchbar>
@@ -48,84 +46,56 @@
 
 <ion-content class="c" *ngIf="!searched">
   <div>
-    <ion-card mode="ios" class="popularCard">
-      <ion-item class="ion-no-margin" lines="none">
-        <ion-label slot="start">
-          <h2>Popular Anime</h2>
-        </ion-label>
-      </ion-item>
+    <ion-item color="primary" class="ion-no-margin" lines="none">
+      <ion-label slot="start">
+        <h2 class="tith2">Popular Anime</h2>
+      </ion-label>
+    </ion-item>
 
-      <ion-item lines="none">
-        <ion-chip>
-          <ion-label>TV</ion-label>
-        </ion-chip>
-        <ion-chip>
-          <ion-label>Upcoming</ion-label>
-        </ion-chip>
-        <ion-chip>
-          <ion-label>Airing</ion-label>
-        </ion-chip>
-        <ion-chip>
-          <ion-label>Anime</ion-label>
-        </ion-chip>
-      </ion-item>
+    <ion-item color="primary" lines="none">
+      <ion-chip color="light">
+        <ion-label>TV</ion-label>
+      </ion-chip>
+      <ion-chip color="light">
+        <ion-label>Upcoming</ion-label>
+      </ion-chip>
+      <ion-chip color="light">
+        <ion-label>Airing</ion-label>
+      </ion-chip>
+      <ion-chip color="light">
+        <ion-label>Anime</ion-label>
+      </ion-chip>
+    </ion-item>
 
-      <ion-slides [options]="slideOpts">
-        <ion-slide class="sl" *ngFor="let popularAnime of popularAnimes">
-          <ion-card
-            (click)="onClick(popularAnime.title,popularAnime.synopsis,popularAnime.img,popularAnime.episodes)"
-            no-margin
-            class="card"
-            mode="md"
-          >
-            <img src="{{popularAnime.img}}" />
-          </ion-card>
-          <ion-item lines="none"> </ion-item>
-        </ion-slide>
-      </ion-slides>
-    </ion-card>
+    <ion-slides color="primary" [options]="slideOpts">
+      <ion-slide *ngFor="let popularAnime of popularAnimes">
+        <ion-card
+          (click)="onClick(popularAnime.title,popularAnime.synopsis,popularAnime.img,popularAnime.episodes)"
+          class="test1"
+        >
+          <img src="{{popularAnime.img}}" />
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
 
     <!-- ongoing Series card -->
 
-    <ion-card mode="ios" class="popularCard">
-      <ion-item class="ion-no-margin" lines="none">
-        <ion-label slot="start">
-          <h2>Ongoing Anime</h2>
-        </ion-label>
-      </ion-item>
+    <ion-item color="primary" class="ion-no-margin" lines="none">
+      <ion-label slot="start">
+        <h2 class="tith2">Ongoing Anime</h2>
+      </ion-label>
+    </ion-item>
 
-      <ion-item lines="none">
-        <ion-chip>
-          <ion-label>TV</ion-label>
-        </ion-chip>
-        <ion-chip>
-          <ion-label>Upcoming</ion-label>
-        </ion-chip>
-        <ion-chip>
-          <ion-label>Airing</ion-label>
-        </ion-chip>
-        <ion-chip>
-          <ion-label>Anime</ion-label>
-        </ion-chip>
-      </ion-item>
-
-      <ion-slides [options]="slideOpts">
-        <ion-slide class="sl" *ngFor="let onGoingAnime of onGoing">
-          <ion-card
-            (click)="onClick(onGoingAnime.title,onGoingAnime.synopsis,onGoingAnime.img,onGoingAnime.episodes)"
-            no-margin
-            class="card"
-            mode="md"
-          >
-            <img src="{{onGoingAnime.img}}" />
-            <ion-card-header>
-              <ion-card-subtitle>{{onGoingAnime.otherName}}</ion-card-subtitle>
-            </ion-card-header>
-          </ion-card>
-          <ion-item lines="none"> </ion-item>
-        </ion-slide>
-      </ion-slides>
-    </ion-card>
+    <ion-slides [options]="slideOpts">
+      <ion-slide *ngFor="let onGoingAnime of onGoing">
+        <ion-card
+          (click)="onClick(onGoingAnime.title,onGoingAnime.synopsis,onGoingAnime.img,onGoingAnime.episodes)"
+          class="test1"
+        >
+          <img src="{{onGoingAnime.img}}" />
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
 
     <ion-item lines="full" color="primary">
       <h1>New Seasons</h1>

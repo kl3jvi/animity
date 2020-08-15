@@ -39,17 +39,26 @@ ion-spinner {
 .card {
   height: 130px;
   width: 100%;
-  padding: 0px !important;
-  margin: 6px !important;
 }
 .c {
   --background: var(
     --ion-color-medium
   ); // Replace this with color of your choice
 }
+.tith2 {
+  font-size: 1.25em;
+}
+.logoapp {
+  margin: 7px;
+  width: 40px;
+}
+.test1 {
+  height: 150px;
+  width: 100%;
+}
 
 ion-chip {
-  height: 25px;
+  height: 30px;
 }
 
 ion-searchbar {
