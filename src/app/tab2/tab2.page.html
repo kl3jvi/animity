@@ -1,21 +1,3 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <img
-      (click)="homelogo()"
-      slot="start"
-      class="logoapp"
-      src="/assets/images/animate.svg"
-    />
-
-    <ion-searchbar
-      animated
-      placeholder="Search Animes"
-      (ionInput)="filterAnime($event)"
-    >
-    </ion-searchbar>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="c" color="primary" *ngIf="searched" [fullscreen]="true">
   <ion-card class="searchCard">
     <ion-item *ngFor="let searchedItem of searchset">
@@ -65,7 +47,7 @@
     </ion-button>
   </ion-item>
   <ion-item
-    (click)="onClick(movie.episodes)"
+    (click)="onClick1(movie.episodes)"
     color="primary"
     lines="full"
     *ngFor="let movie of movies"

@@ -1,6 +1,9 @@
 import { Component } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { DomSanitizer } from "@angular/platform-browser";
+import { AnimeShared } from "../shared/anime-details";
+import { Router } from "@angular/router";
+
 @Component({
   selector: "app-tab2",
   templateUrl: "tab2.page.html",
@@ -14,12 +17,20 @@ export class Tab2Page {
   genres;
   searched = false;
   temp;
-  constructor(private http: HttpClient, public sanitizer: DomSanitizer) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    public sanitizer: DomSanitizer
+  ) {}
   ngOnInit() {
     this.getRecentSeries();
     this.vidLink = this.sanitizer.bypassSecurityTrustResourceUrl(
       "https://cloud9.to/embed/ew-bvPn7rYXu"
     );
+  }
+
+  homelogo() {
+    this.searched = false;
   }
 
   getRecentSeries() {
@@ -35,7 +46,7 @@ export class Tab2Page {
       });
   }
 
-  onClick(episodes) {
+  onClick1(episodes) {
     var episodeId;
     for (let i = 0; i < episodes.length; i++) {
       episodeId = episodes[i].id;
@@ -60,20 +71,5 @@ export class Tab2Page {
           );
         }
       });
-  }
-
-  filterAnime(evt) {
-    var q = evt.target.value;
-    if (q.trim() == "") {
-      this.searched = false;
-    } else {
-      this.searched = true;
-      this.http.get(this.animeUrl + q.trim()).subscribe((data) => {
-        this.searchset = data["search"];
-        for (let i = 0; i < this.searchset.length; i++) {
-          this.genres = this.searchset[i]["genres"];
-        }
-      });
-    }
   }
 }

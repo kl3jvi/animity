@@ -63,10 +63,9 @@ export class Tab1Page {
     this.storage.get("bookmarks").then((data) => {
       this.temp = data;
 
-      console.log(data.indexOf(storage));
+      console.log(data);
 
       this.temp.push(storage);
-
       this.storage.set("bookmarks", this.temp);
     });
   }
