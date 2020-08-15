@@ -1,6 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
-    <img slot="start" class="logoapp" src="/assets/images/animate.svg" />
+    <img
+      (click)="homelogo()"
+      slot="start"
+      class="logoapp"
+      src="/assets/images/animate.svg"
+    />
 
     <ion-searchbar
       animated

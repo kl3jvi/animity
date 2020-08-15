@@ -45,6 +45,10 @@ export class Tab1Page {
     AnimeShared.episodes = episodet;
   }
 
+  homelogo() {
+    this.searched = false;
+  }
+
   like(titulli, pershkrimi, imazhi) {
     this.title = titulli;
     var buton = document.getElementById(titulli);

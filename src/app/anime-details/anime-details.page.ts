@@ -13,6 +13,7 @@ export class AnimeDetailsPage implements OnInit {
   img;
   pershkrimi;
   episodesa;
+  imageUrl;
   streamUrl = `https://salty-anchorage-64305.herokuapp.com/api/v1/AnimeEpisodeHandler/`;
   constructor(
     private modalController: ModalController,
@@ -22,6 +23,7 @@ export class AnimeDetailsPage implements OnInit {
   ngOnInit() {
     this.titulli = AnimeShared.title;
     this.img = AnimeShared.img;
+    this.imageUrl = AnimeShared.img;
     this.pershkrimi = AnimeShared.description;
     this.episodesa = AnimeShared.episodes;
   }
