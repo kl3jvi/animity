@@ -27,6 +27,8 @@ export class Tab1Page {
   storageArray = [];
   temp = [];
   title;
+  connectedCard1 = false;
+  connectedCard2 = false;
 
   constructor(
     private http: HttpClient,
@@ -99,6 +101,7 @@ export class Tab1Page {
       )
       .subscribe((data) => {
         this.popularAnimes = data["popular"];
+        this.connectedCard1 = true;
         console.log(this.popularAnimes);
       });
   }
@@ -108,6 +111,7 @@ export class Tab1Page {
       .get("https://salty-anchorage-64305.herokuapp.com/api/v1/OngoingSeries")
       .subscribe((data) => {
         this.onGoing = data["anime"];
+        this.connectedCard2 = true;
       });
   }
 

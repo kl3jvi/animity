@@ -1,33 +1,4 @@
-<ion-content class="c" color="primary" *ngIf="searched" [fullscreen]="true">
-  <ion-card class="searchCard">
-    <ion-item *ngFor="let searchedItem of searchset">
-      <ion-thumbnail slot="start">
-        <img src="{{searchedItem.img}}" />
-      </ion-thumbnail>
-      <ion-label
-        (click)="onClick(searchedItem.title,searchedItem.synopsis,searchedItem.img,searchedItem.episodes)"
-        ><h2>{{searchedItem.title}}</h2>
-
-        <ion-chip *ngFor="let searchedIt of genres">
-          <ion-label>{{searchedIt}}</ion-label>
-        </ion-chip>
-      </ion-label>
-      <ion-button
-        (click)="like(searchedItem.title,searchedItem.synopsis,searchedItem.img)"
-        slot="end"
-        fill="clear"
-      >
-        <ion-icon
-          id="{{searchedItem.title}}"
-          color="danger"
-          name="heart-outline"
-        ></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-card>
-</ion-content>
-
-<ion-content *ngIf="!searched" [fullscreen]="true">
+<ion-content [fullscreen]="true">
   <iframe
     sandbox="allow-same-origin allow-scripts"
     frameborder="0"

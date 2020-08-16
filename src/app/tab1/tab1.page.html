@@ -47,7 +47,7 @@
   </ion-card>
 </ion-content>
 
-<!-- homepage normal -->
+<!-- fillimi i slides se pare -->
 
 <ion-content class="c" *ngIf="!searched">
   <div>
@@ -72,7 +72,7 @@
       </ion-chip>
     </ion-item>
 
-    <ion-slides color="primary" [options]="slideOpts">
+    <ion-slides *ngIf="connectedCard1" color="primary" [options]="slideOpts">
       <ion-slide *ngFor="let popularAnime of popularAnimes">
         <ion-card
           (click)="onClick(popularAnime.title,popularAnime.synopsis,popularAnime.img,popularAnime.episodes)"
@@ -83,6 +83,33 @@
       </ion-slide>
     </ion-slides>
 
+    <!-- fundi i slidit te pare -->
+
+    <!-- skeleton text fillimi -->
+    <ion-slides *ngIf="!connectedCard1" color="primary" [options]="slideOpts">
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+    <!-- skeleton text mbarimi -->
+
     <!-- ongoing Series card -->
 
     <ion-item color="primary" class="ion-no-margin" lines="none">
@@ -91,7 +118,7 @@
       </ion-label>
     </ion-item>
 
-    <ion-slides [options]="slideOpts">
+    <ion-slides *ngIf="connectedCard2" [options]="slideOpts">
       <ion-slide *ngFor="let onGoingAnime of onGoing">
         <ion-card
           (click)="onClick(onGoingAnime.title,onGoingAnime.synopsis,onGoingAnime.img,onGoingAnime.episodes)"
@@ -101,6 +128,32 @@
         </ion-card>
       </ion-slide>
     </ion-slides>
+    <!-- ongoing card mbarimi -->
+
+    <!-- fillimi skeleton textit -->
+    <ion-slides *ngIf="!connectedCard2" color="primary" [options]="slideOpts">
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card class="test1">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+    <!-- mbarimi skeleton textit -->
 
     <ion-item lines="full" color="primary">
       <h1>New Seasons</h1>

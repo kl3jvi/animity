@@ -30,6 +30,10 @@ ion-list {
   text-align: center;
   flex-direction: column;
 }
+ion-skeleton-text {
+  margin: 0px;
+  line-height: 150px;
+}
 ion-spinner {
   color: #fff;
   width: 70px;
