@@ -3,6 +3,7 @@
 <h2 align="center"><b>Animity - Anime Streaming App</b></h2>
 <h4 align="center">An Android app to watch anime on your phone without ads.</h4>
 <p align="center"><a href="https://github.com/kl3jvi/animity/releases"><img src="https://image.flaticon.com/icons/svg/892/892634.svg" width="50"></a></p> 
+<p align="center"><a href="https://discord.gg/QFjDg2"><img src="https://image.flaticon.com/icons/svg/2111/2111370.svg" width="50"></a></p> 
 <p align="center">
 <a href="hhttps://github.com/kl3jvi/animity/issues" alt="GitHub release"><img src="https://img.shields.io/github/issues/kl3jvi/animity" ></a>
 <a href="https://github.com/kl3jvi/animity" alt="GitHub release"><img src="https://img.shields.io/github/stars/kl3jvi/animity" ></a>
