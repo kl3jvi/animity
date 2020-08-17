@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <iframe
     *ngFor="let items of animeDetail"
-    sandbox="allow-same-origin allow-scripts"
+    sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts"
     id="vid"
     frameborder="0"
     marginheight="0"
@@ -9,6 +9,8 @@
     width="100%"
     height="100%"
     [src]="finalUrl"
+    gesture="media"
+    allow="encrypted-media"
     allowfullscreen
   >
   </iframe>
