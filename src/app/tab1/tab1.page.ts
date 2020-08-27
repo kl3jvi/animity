@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { AnimeShared } from "../shared/anime-details";
 import { Storage } from "@ionic/storage";
+import { withCache } from "@ngneat/cashew";
 
 @Component({
   selector: "app-tab1",
@@ -77,11 +78,13 @@ export class Tab1Page {
     this.getOngoingSeries();
     this.getMovies();
   }
+
   getMovies() {
     return this.http
       .get(
         "https://salty-anchorage-64305.herokuapp.com/api/v1/NewSeasons/" +
-          this.page_number
+          this.page_number,
+        withCache()
       )
       .subscribe((data) => {
         this.movies = data["anime"];
@@ -97,7 +100,8 @@ export class Tab1Page {
     return this.http
       .get(
         "https://salty-anchorage-64305.herokuapp.com/api/v1/Popular/" +
-          randomNumber
+          randomNumber,
+        withCache()
       )
       .subscribe((data) => {
         this.popularAnimes = data["popular"];
@@ -108,7 +112,10 @@ export class Tab1Page {
 
   getOngoingSeries() {
     return this.http
-      .get("https://salty-anchorage-64305.herokuapp.com/api/v1/OngoingSeries")
+      .get(
+        "https://salty-anchorage-64305.herokuapp.com/api/v1/OngoingSeries",
+        withCache()
+      )
       .subscribe((data) => {
         this.onGoing = data["anime"];
         this.connectedCard2 = true;
@@ -121,7 +128,7 @@ export class Tab1Page {
       this.searched = false;
     } else {
       this.searched = true;
-      this.http.get(this.animeUrl + q.trim()).subscribe((data) => {
+      this.http.get(this.animeUrl + q.trim(), withCache()).subscribe((data) => {
         this.searchset = data["search"];
         for (let i = 0; i < this.searchset.length; i++) {
           this.genres = this.searchset[i]["genres"];

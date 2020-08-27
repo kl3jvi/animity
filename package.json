@@ -20,10 +20,12 @@
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
     "@ionic-native/core": "^5.0.7",
+    "@ionic-native/insomnia": "^5.28.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.3.0",
+    "@ngneat/cashew": "^1.3.1",
     "@types/jquery": "^3.5.1",
     "cordova": "^10.0.0",
     "cordova-android": "8.1.0",
@@ -43,6 +45,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-insomnia": "^4.3.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -70,7 +73,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-insomnia": {}
     },
     "platforms": [
       "android"

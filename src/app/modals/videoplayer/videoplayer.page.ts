@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { HttpClient } from "@angular/common/http";
+import { Insomnia } from "@ionic-native/insomnia/ngx";
+
 @Component({
   selector: "app-videoplayer",
   templateUrl: "./videoplayer.page.html",
@@ -11,7 +13,11 @@ export class VideoplayerPage implements OnInit {
   animeDetail;
   finalUrl;
 
-  constructor(public sanitizer: DomSanitizer, private http: HttpClient) {}
+  constructor(
+    private insomnia: Insomnia,
+    public sanitizer: DomSanitizer,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {
     return this.http.get(this.iframe).subscribe((data) => {
@@ -23,5 +29,8 @@ export class VideoplayerPage implements OnInit {
         );
       }
     });
+  }
+  ionViewDidEnter() {
+    this.insomnia.keepAwake();
   }
 }

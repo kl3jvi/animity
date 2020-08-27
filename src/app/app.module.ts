@@ -8,9 +8,13 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { Insomnia } from "@ionic-native/insomnia/ngx";
 
 import { HttpClientModule } from "@angular/common/http";
-
+import {
+  HttpCacheInterceptorModule,
+  useHttpCacheLocalStorage,
+} from "@ngneat/cashew";
 import { IonicStorageModule } from "@ionic/storage";
 @NgModule({
   declarations: [AppComponent],
@@ -21,9 +25,12 @@ import { IonicStorageModule } from "@ionic/storage";
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
+    HttpCacheInterceptorModule.forRoot(),
   ],
   providers: [
     StatusBar,
+    Insomnia,
+    useHttpCacheLocalStorage,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
