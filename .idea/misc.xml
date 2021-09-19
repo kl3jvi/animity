@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/item_card_anime.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3140625" />
       </map>
     </option>

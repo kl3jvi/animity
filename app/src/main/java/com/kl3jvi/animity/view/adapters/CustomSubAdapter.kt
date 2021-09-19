@@ -36,6 +36,7 @@ class CustomSubAdapter(private val fragment: Fragment) :
 
         holder.title.text = element.title
         holder.episodeNumber.text = element.episodeNumber
+        
     }
 
     override fun getItemCount() = list.size
