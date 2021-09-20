@@ -14,6 +14,7 @@ import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomSubAdapter
+import com.kl3jvi.animity.view.adapters.CustomTodaysSelectionAdapter
 
 class HomeFragment : Fragment() {
 
@@ -23,7 +24,8 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
-    private lateinit var adapter: CustomSubAdapter
+    private lateinit var subAdapter: CustomSubAdapter
+    private lateinit var todayAdapter: CustomTodaysSelectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,15 +45,29 @@ class HomeFragment : Fragment() {
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
-        adapter = CustomSubAdapter(this)
-        binding.recentSub.adapter = adapter
+        subAdapter = CustomSubAdapter(this)
+        binding.recentSub.adapter = subAdapter
+
+        binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
+        todayAdapter = CustomTodaysSelectionAdapter(this)
+        binding.todaySelection.adapter = todayAdapter
+
+
+
+        fetchRecentDub()
+        getPopularAnime()
+
+    }
+
+
+    private fun fetchRecentDub() {
         viewModel.fetchRecentSubOrDub().observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry ->
-                            adapter.getAnimes(entry)
+                            subAdapter.getAnimes(entry)
                         }
                         binding.recentSub.visibility = View.VISIBLE
                     }
@@ -67,7 +83,32 @@ class HomeFragment : Fragment() {
             }
 
         })
+    }
 
+
+    private fun getPopularAnime() {
+        viewModel.fetchPopularAnime().observe(viewLifecycleOwner, { res ->
+            res?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
+                        resource.data?.let { entry ->
+                            todayAdapter.getSelectedAnime(entry)
+                        }
+                        binding.recentSub.visibility = View.VISIBLE
+                    }
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.recentSub.visibility = View.GONE
+                    }
+                }
+            }
+
+        })
     }
 
 

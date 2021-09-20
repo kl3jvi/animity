@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.utils.parser
 
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.entities.GenreModel
 import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 
 object HtmlParser {
     fun parseRecentSubOrDub(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
@@ -19,6 +21,7 @@ object HtmlParser {
 
             animeMetaModelList.add(
                 AnimeMetaModel(
+                    ID = title.hashCode(),
                     title = title,
                     episodeNumber = episodeNumber,
                     episodeUrl = episodeUrl,
@@ -35,6 +38,71 @@ object HtmlParser {
     }
 
 
+    fun parsePopular(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
+        val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
+        val document = Jsoup.parse(response)
+        val lists = document?.getElementsByClass("added_series_body popular")?.first()?.select("ul")
+            ?.first()?.select("li")
+        var i = 0
+
+        lists?.forEach { anime ->
+
+            val animeInfoFirst = anime.select("a").first()
+            val imageDiv =
+                animeInfoFirst.getElementsByClass("thumbnail-popular").first().attr("style")
+                    .toString()
+            val imageUrl =
+                imageDiv.substring(imageDiv.indexOf('\'') + 1, imageDiv.lastIndexOf('\''))
+            val categoryUrl = animeInfoFirst.attr("href")
+            val animeTitle = animeInfoFirst.attr("title")
+            val animeInfoSecond = anime.select("p").last().select("a")
+            val episodeUrl = animeInfoSecond.attr("href")
+            val episodeNumber = animeInfoSecond.text()
+            val genreHtmlList = anime.getElementsByClass("genres").first().select("a")
+//                Timber.e(genreHtmlList.toString())
+            val genreList = ArrayList<GenreModel>()
+            genreList.addAll(getGenreList(genreHtmlList))
+
+
+
+            animeMetaModelList.add(
+                AnimeMetaModel(
+                    ID = "$animeTitle$typeValue".hashCode(),
+                    title = animeTitle,
+                    episodeNumber = episodeNumber,
+                    episodeUrl = episodeUrl,
+                    categoryUrl = categoryUrl,
+                    imageUrl = imageUrl,
+                    typeValue = typeValue,
+                    genreList = genreList,
+                    insertionOrder = i
+                )
+            )
+            i++
+        }
+        return animeMetaModelList
+    }
+
+
+    private fun getGenreList(genreHtmlList: Elements): ArrayList<GenreModel> {
+        val genreList = ArrayList<GenreModel>()
+        genreHtmlList.forEach {
+            val genreUrl = it.attr("href")
+            val genreName = it.text()
+
+            genreList.add(
+                GenreModel(
+                    genreUrl = genreUrl,
+                    genreName = filterGenreName(genreName)
+                )
+            )
+
+        }
+
+        return genreList
+    }
+
+
     private fun getCategoryUrl(url: String): String {
         return try {
             var categoryUrl = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
@@ -44,5 +112,13 @@ object HtmlParser {
             exception.message
         }.toString()
 
+    }
+
+    private fun filterGenreName(genreName: String): String {
+        return if (genreName.contains(',')) {
+            genreName.substring(genreName.indexOf(',') + 1)
+        } else {
+            genreName
+        }
     }
 }

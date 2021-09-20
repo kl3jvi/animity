@@ -21,7 +21,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         try {
             emit(
                 Resource.success(
-                    data = parseList(
+                    data = HtmlParser.parseRecentSubOrDub(
                         homeRepository.fetchRecentSubOrDub(
                             mapOf(
                                 "referer" to Constants.REFERER,
@@ -40,13 +40,28 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     }
 
 
-    private fun parseList(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
-        return when (typeValue) {
-            Constants.TYPE_RECENT_DUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
-            Constants.TYPE_RECENT_SUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
-            else -> ArrayList()
+    fun fetchPopularAnime() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(
+                Resource.success(
+                    data = HtmlParser.parsePopular(
+                        homeRepository.fetchPopularFromAjax(
+                            mapOf(
+                                "referer" to Constants.REFERER,
+                                "origin" to Constants.ORIGIN,
+                                "user-agent" to Constants.USER_AGENT
+                            ),
+                            1
+                        ).string(), Constants.TYPE_RECENT_DUB
+                    )
+                )
+            )
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
+
 
 }
 

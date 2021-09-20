@@ -10,4 +10,8 @@ class HomeRepository(private val apiHelper: ApiHelper) {
     suspend fun fetchRecentSubOrDub(header: Map<String, String>, page: Int, type: Int) =
         apiHelper.fetchRecentSubOrDub(header, page, type)
 
+    @WorkerThread
+    suspend fun fetchPopularFromAjax(header: Map<String, String>, page: Int) =
+        apiHelper.fetchPopularFromAjax(header, page)
+
 }
