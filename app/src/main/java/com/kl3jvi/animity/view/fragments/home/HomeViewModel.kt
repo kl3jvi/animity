@@ -45,7 +45,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
         try {
             emit(
                 Resource.success(
-                    data = HtmlParser.parsePopular(
+                    data = parseList(
                         homeRepository.fetchPopularFromAjax(
                             mapOf(
                                 "referer" to Constants.REFERER,
@@ -53,12 +53,46 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
                                 "user-agent" to Constants.USER_AGENT
                             ),
                             1
-                        ).string(), Constants.TYPE_RECENT_DUB
+                        ).string(), Constants.TYPE_POPULAR_ANIME
                     )
                 )
             )
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+    }
+
+    fun fetchNewSeason() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(
+                Resource.success(
+                    data = parseList(
+                        homeRepository.fetchNewSeason(
+                            mapOf(
+                                "referer" to Constants.REFERER,
+                                "origin" to Constants.ORIGIN,
+                                "user-agent" to Constants.USER_AGENT
+                            ),
+                            1
+                        ).string(), Constants.TYPE_NEW_SEASON
+                    )
+                )
+            )
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+    }
+
+
+    private fun parseList(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
+        return when (typeValue) {
+            Constants.TYPE_RECENT_DUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
+            Constants.TYPE_RECENT_SUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
+            Constants.TYPE_POPULAR_ANIME -> HtmlParser.parsePopular(response, typeValue)
+            Constants.TYPE_MOVIE -> HtmlParser.parseMovie(response, typeValue)
+            Constants.TYPE_NEW_SEASON -> HtmlParser.parseMovie(response, typeValue)
+            else -> ArrayList()
         }
     }
 

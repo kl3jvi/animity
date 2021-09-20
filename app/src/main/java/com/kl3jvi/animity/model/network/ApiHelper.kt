@@ -11,4 +11,8 @@ class ApiHelper(private val apiService: ApiService) {
     @WorkerThread
     suspend fun fetchPopularFromAjax(header: Map<String, String>, page: Int) =
         apiService.fetchPopularFromAjax(header, page)
+
+    @WorkerThread
+    suspend fun fetchNewSeason(header: Map<String, String>, page: Int) =
+        apiService.fetchNewestSeason(header, page)
 }

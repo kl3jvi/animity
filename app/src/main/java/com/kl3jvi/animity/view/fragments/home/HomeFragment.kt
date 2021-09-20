@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
         HomeViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
     private lateinit var subAdapter: CustomSubAdapter
+    private lateinit var newSeasonAdapter: CustomSubAdapter
     private lateinit var todayAdapter: CustomTodaysSelectionAdapter
 
     override fun onCreateView(
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
 
         return root
     }
@@ -52,8 +54,15 @@ class HomeFragment : Fragment() {
         todayAdapter = CustomTodaysSelectionAdapter(this)
         binding.todaySelection.adapter = todayAdapter
 
+        binding.newSeasonRv.layoutManager = LinearLayoutManager(
+            requireContext(),
+            RecyclerView.HORIZONTAL, false
+        )
+        newSeasonAdapter = CustomSubAdapter(this)
+        binding.newSeasonRv.adapter = newSeasonAdapter
 
 
+        getNewSeason()
         fetchRecentDub()
         getPopularAnime()
 
@@ -68,6 +77,39 @@ class HomeFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry ->
                             subAdapter.getAnimes(entry)
+                        }
+                        binding.recentSub.visibility = View.VISIBLE
+                        binding.textView.visibility = View.VISIBLE
+                        binding.textView2.visibility = View.VISIBLE
+
+                    }
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+
+                        binding.textView.visibility = View.GONE
+                        binding.textView2.visibility = View.GONE
+                        binding.recentSub.visibility = View.GONE
+
+                    }
+                }
+            }
+
+        })
+    }
+
+
+    private fun getPopularAnime() {
+        viewModel.fetchPopularAnime().observe(viewLifecycleOwner, { res ->
+            res?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
+                        resource.data?.let { entry ->
+                            todayAdapter.getSelectedAnime(entry)
                         }
                         binding.recentSub.visibility = View.VISIBLE
                     }
@@ -86,14 +128,14 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun getPopularAnime() {
-        viewModel.fetchPopularAnime().observe(viewLifecycleOwner, { res ->
+    private fun getNewSeason() {
+        viewModel.fetchNewSeason().observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry ->
-                            todayAdapter.getSelectedAnime(entry)
+                            newSeasonAdapter.getAnimes(entry)
                         }
                         binding.recentSub.visibility = View.VISIBLE
                     }

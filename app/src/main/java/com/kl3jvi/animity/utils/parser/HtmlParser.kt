@@ -83,6 +83,35 @@ object HtmlParser {
         return animeMetaModelList
     }
 
+    fun parseMovie(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
+        val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
+        val document = Jsoup.parse(response)
+        val lists = document?.getElementsByClass("items")?.first()?.select("li")
+        var i = 0
+        lists?.forEach {
+            val movieInfo = it.select("a").first()
+            val movieUrl = movieInfo.attr("href")
+            val movieName = movieInfo.attr("title")
+            val imageUrl = movieInfo.select("img").first().absUrl("src")
+            val releasedDate = it.getElementsByClass("released")?.first()?.text()
+            animeMetaModelList.add(
+                AnimeMetaModel(
+                    ID = "$movieName$typeValue".hashCode().hashCode(),
+                    title = movieName,
+                    imageUrl = imageUrl,
+                    categoryUrl = movieUrl,
+                    episodeUrl = null,
+                    episodeNumber = null,
+                    typeValue = typeValue,
+                    insertionOrder = i,
+                    releasedDate = releasedDate
+                )
+            )
+            i++
+        }
+        return animeMetaModelList
+    }
+
 
     private fun getGenreList(genreHtmlList: Elements): ArrayList<GenreModel> {
         val genreList = ArrayList<GenreModel>()

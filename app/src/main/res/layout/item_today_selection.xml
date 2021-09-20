@@ -8,6 +8,8 @@
     android:layout_marginBottom="20dp"
     android:background="?selectableItemBackground"
     android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 

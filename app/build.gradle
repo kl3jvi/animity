@@ -64,11 +64,17 @@ dependencies {
 
     //Html Parsing
     implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     //Room Library
     def room_version = '2.3.0'
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
+    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.0'
+
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'

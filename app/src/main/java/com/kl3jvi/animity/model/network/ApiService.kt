@@ -9,6 +9,7 @@ import retrofit2.http.Url
 
 interface ApiService {
 
+
     @GET("https://ajax.gogocdn.net/ajax/page-recent-release.html")
     suspend fun fetchRecentSubOrDub(
         @HeaderMap header: Map<String, String>,
@@ -77,4 +78,3 @@ interface ApiService {
         @Query("page") page: Int
     ): ResponseBody
 }
-

@@ -14,4 +14,8 @@ class HomeRepository(private val apiHelper: ApiHelper) {
     suspend fun fetchPopularFromAjax(header: Map<String, String>, page: Int) =
         apiHelper.fetchPopularFromAjax(header, page)
 
+    @WorkerThread
+    suspend fun fetchNewSeason(header: Map<String, String>, page: Int) =
+        apiHelper.fetchNewSeason(header, page)
+
 }
