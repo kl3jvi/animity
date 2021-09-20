@@ -85,6 +85,29 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     }
 
 
+    fun fetchMovies() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(
+                Resource.success(
+                    data = parseList(
+                        homeRepository.fetchMovies(
+                            mapOf(
+                                "referer" to Constants.REFERER,
+                                "origin" to Constants.ORIGIN,
+                                "user-agent" to Constants.USER_AGENT
+                            ),
+                            1
+                        ).string(), Constants.TYPE_MOVIE
+                    )
+                )
+            )
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+    }
+
+
     private fun parseList(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         return when (typeValue) {
             Constants.TYPE_RECENT_DUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)

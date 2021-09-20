@@ -15,4 +15,8 @@ class ApiHelper(private val apiService: ApiService) {
     @WorkerThread
     suspend fun fetchNewSeason(header: Map<String, String>, page: Int) =
         apiService.fetchNewestSeason(header, page)
+
+    @WorkerThread
+    suspend fun fetchMovies(header: Map<String, String>, page: Int) =
+        apiService.fetchMovies(header, page)
 }

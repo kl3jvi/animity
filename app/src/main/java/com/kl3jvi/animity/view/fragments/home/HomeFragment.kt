@@ -13,8 +13,8 @@ import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Status
-import com.kl3jvi.animity.view.adapters.CustomSubAdapter
-import com.kl3jvi.animity.view.adapters.CustomTodaysSelectionAdapter
+import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
+import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
 
 class HomeFragment : Fragment() {
 
@@ -24,10 +24,10 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
-    private lateinit var subAdapter: CustomSubAdapter
-    private lateinit var newSeasonAdapter: CustomSubAdapter
-    private lateinit var todayAdapter: CustomTodaysSelectionAdapter
-
+    private lateinit var subAdapter: CustomHorizontalAdapter
+    private lateinit var newSeasonAdapter: CustomHorizontalAdapter
+    private lateinit var todayAdapter: CustomVerticalAdapter
+    private lateinit var movieAdapter: CustomHorizontalAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,24 +47,33 @@ class HomeFragment : Fragment() {
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
-        subAdapter = CustomSubAdapter(this)
+        subAdapter = CustomHorizontalAdapter(this)
         binding.recentSub.adapter = subAdapter
 
         binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
-        todayAdapter = CustomTodaysSelectionAdapter(this)
+        todayAdapter = CustomVerticalAdapter(this)
         binding.todaySelection.adapter = todayAdapter
 
         binding.newSeasonRv.layoutManager = LinearLayoutManager(
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
-        newSeasonAdapter = CustomSubAdapter(this)
+        newSeasonAdapter = CustomHorizontalAdapter(this)
         binding.newSeasonRv.adapter = newSeasonAdapter
+
+        binding.moviesRv.layoutManager = LinearLayoutManager(
+            requireContext(),
+            RecyclerView.HORIZONTAL, false
+        )
+        movieAdapter = CustomHorizontalAdapter(this)
+        binding.moviesRv.adapter = movieAdapter
+
 
 
         getNewSeason()
         fetchRecentDub()
         getPopularAnime()
+        fetchMovies()
 
     }
 
@@ -137,7 +146,7 @@ class HomeFragment : Fragment() {
                         resource.data?.let { entry ->
                             newSeasonAdapter.getAnimes(entry)
                         }
-                        binding.recentSub.visibility = View.VISIBLE
+                        binding.newSeasonRv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         binding.progressBar.visibility = View.GONE
@@ -145,7 +154,32 @@ class HomeFragment : Fragment() {
                     }
                     Status.LOADING -> {
                         binding.progressBar.visibility = View.VISIBLE
-                        binding.recentSub.visibility = View.GONE
+                        binding.newSeasonRv.visibility = View.GONE
+                    }
+                }
+            }
+
+        })
+    }
+
+    fun fetchMovies() {
+        viewModel.fetchMovies().observe(viewLifecycleOwner, { res ->
+            res?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
+                        resource.data?.let { entry ->
+                            movieAdapter.getAnimes(entry)
+                        }
+                        binding.newSeasonRv.visibility = View.VISIBLE
+                    }
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.newSeasonRv.visibility = View.GONE
                     }
                 }
             }
