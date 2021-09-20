@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="com.kl3jvi.animity.view.fragments.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_detailsFragment"
             app:destination="@id/detailsFragment" />
@@ -29,6 +29,10 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.kl3jvi.animity.view.fragments.details.DetailsFragment"
-        android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        android:label="Anime Details"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="animeDetails"
+            app:argType="com.kl3jvi.animity.model.entities.AnimeMetaModel" />
+    </fragment>
 </navigation>

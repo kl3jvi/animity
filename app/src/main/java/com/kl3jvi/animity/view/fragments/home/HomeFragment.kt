@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Status
@@ -32,13 +34,12 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
 
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -162,7 +163,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    fun fetchMovies() {
+    private fun fetchMovies() {
         viewModel.fetchMovies().observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
                 when (resource.status) {
@@ -187,6 +188,14 @@ class HomeFragment : Fragment() {
         })
     }
 
+
+    fun animeDetails(animeDetails: AnimeMetaModel) {
+        findNavController().navigate(
+            HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
+                animeDetails
+            )
+        )
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

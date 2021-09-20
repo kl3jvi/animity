@@ -1,13 +1,16 @@
 package com.kl3jvi.animity.view.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomHorizontalAdapter(private val fragment: Fragment) :
     RecyclerView.Adapter<CustomHorizontalAdapter.ViewHolder>() {
@@ -18,6 +21,7 @@ class CustomHorizontalAdapter(private val fragment: Fragment) :
         val title = view.animeTitle
         val image = view.animeImage
         val episodeNumber = view.episodeNumber
+        val card = view.backgroundImage
 
     }
 
@@ -36,7 +40,13 @@ class CustomHorizontalAdapter(private val fragment: Fragment) :
 
         holder.title.text = element.title
         holder.episodeNumber.text = element.episodeNumber
-        
+
+        holder.card.setOnClickListener {
+            if (fragment is HomeFragment) {
+                fragment.animeDetails(element)
+            }
+        }
+
     }
 
     override fun getItemCount() = list.size
