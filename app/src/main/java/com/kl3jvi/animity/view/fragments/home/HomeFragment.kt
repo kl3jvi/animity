@@ -15,6 +15,7 @@ import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Status
+import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
 
@@ -195,10 +196,20 @@ class HomeFragment : Fragment() {
                 animeDetails
             )
         )
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.hideBottomNavBar()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.showBottomNavBar()
+        }
     }
 }

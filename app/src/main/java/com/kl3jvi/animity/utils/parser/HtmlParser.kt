@@ -5,6 +5,11 @@ import com.kl3jvi.animity.model.entities.GenreModel
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 
+
+/**
+ *  This File gets response in String format and parses it
+ */
+
 object HtmlParser {
     fun parseRecentSubOrDub(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
@@ -59,7 +64,6 @@ object HtmlParser {
             val episodeUrl = animeInfoSecond.attr("href")
             val episodeNumber = animeInfoSecond.text()
             val genreHtmlList = anime.getElementsByClass("genres").first().select("a")
-//                Timber.e(genreHtmlList.toString())
             val genreList = ArrayList<GenreModel>()
             genreList.addAll(getGenreList(genreHtmlList))
 

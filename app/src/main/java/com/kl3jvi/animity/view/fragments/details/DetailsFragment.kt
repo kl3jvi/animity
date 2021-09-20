@@ -29,10 +29,12 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
+
         args.let {
             Glide.with(this)
                 .load(it.animeDetails.imageUrl)
                 .into(binding.appBarImage)
+            binding.textView5.text = it.animeDetails.title
         }
     }
 

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:layout_marginBottom="20dp"
-    android:layout_margin="10dp"
     android:clipToPadding="false"
     android:orientation="vertical">
 
@@ -33,7 +33,8 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:src="#60000000" />
+            android:src="#60000000"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="30dp"

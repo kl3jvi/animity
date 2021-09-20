@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#4b97b9</color>
-    <color name="purple_500">#006989</color>
-    <color name="purple_700">#003e5c</color>
+    <color name="colorPrimaryLight">#5a709f</color>
+    <color name="colorPrimary">#2b4570</color>
+    <color name="colorPrimaryDark">#001e44</color>
+
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
@@ -10,5 +11,6 @@
 
     <color name="recycler_anime_title">#212121</color>
     <color name="recycler_anime_type">#808080</color>
+    <color name="background_color">#2c363f</color>
 
 </resources>
