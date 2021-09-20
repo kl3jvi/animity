@@ -1,6 +1,6 @@
 
 <p align="center"><a href="https://github.com/kl3jvi/animity"><img src="https://image.flaticon.com/icons/svg/541/541589.svg" width="150"></a></p> 
-<h2 align="center"><b>Animity - Anime Streaming App (Deprecated)</b></h2>
+<h2 align="center"><b>Animity - Anime Streaming App </b></h2>
 <h4 align="center">An Android app to watch anime on your phone without ads.</h4>
 <p align="center"><a href="https://github.com/kl3jvi/animity/releases"><img src="https://image.flaticon.com/icons/svg/892/892634.svg" width="50"></a>
 <a href="https://discord.gg/QFjDg2"><img src="https://image.flaticon.com/icons/svg/2111/2111370.svg" width="50"></a></p> 
@@ -12,7 +12,7 @@
 <a href="https://github.com/kl3jvi/animity" alt="Build Status"><img src="https://img.shields.io/github/forks/kl3jvi/animity"></a>
 </p>
 <hr>
-<b>WARNING: THIS IS A BETA VERSION of application, THEREFORE YOU MAY ENCOUNTER BUGS. You can OPEN the ISSUE on GITHUB REPOSITORY.</b>
+<b>WARNING: I AM REBUILDING THIS APP IN NATIVE ANDROID AND IS STILL UNDER DEVELOPMENT. YOU CAN SUGGEST FEATURES OR LAYOUT CHANGES MEANWHILE</b>
 
 <b><br>Do not PUT ANIMITY OR ANY FORK OF IT INTO GOOGLE PLAYSTORE or Any other Store. It may VIOLATE THEIR TERMS AND CONDITIONS or you may encounter legal obligations.</b>
 
