@@ -27,4 +27,18 @@ class ApiHelper(private val apiService: ApiService) {
     @WorkerThread
     suspend fun fetchAnimeInfo(header: Map<String, String>, episodeUrl: String) =
         apiService.fetchAnimeInfo(header, episodeUrl)
+
+    @WorkerThread
+    suspend fun fetchEpisodeList(
+        header: Map<String, String>,
+        id: String,
+        endEpisode: String,
+        alias: String
+    ) =
+        apiService.fetchEpisodeList(
+            header = header,
+            id = id,
+            endEpisode = endEpisode,
+            alias = alias
+        )
 }

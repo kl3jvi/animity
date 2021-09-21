@@ -2,6 +2,7 @@ package com.kl3jvi.animity.utils.parser
 
 import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.model.entities.GenreModel
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -174,6 +175,26 @@ object HtmlParser {
         }
 
         return genreList
+    }
+
+
+    fun fetchEpisodeList(response: String): ArrayList<EpisodeModel>{
+        val episodeList = ArrayList<EpisodeModel>()
+        val document = Jsoup.parse(response)
+        val lists = document?.select("li")
+        lists?.forEach {
+            val episodeUrl = it.select("a").first().attr("href").trim()
+            val episodeNumber = it.getElementsByClass("name").first().text()
+            val episodeType = it.getElementsByClass("cate").first().text()
+            episodeList.add(
+                EpisodeModel(
+                    episodeNumber = episodeNumber,
+                    episodeType = episodeType,
+                    episodeurl = episodeUrl
+                )
+            )
+        }
+        return episodeList
     }
 
 

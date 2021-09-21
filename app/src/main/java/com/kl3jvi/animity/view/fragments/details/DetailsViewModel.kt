@@ -27,6 +27,33 @@ class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewM
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
+
+
+    fun fetchEpisodeList(
+        id: String,
+        endEpisode: String,
+        alias: String
+    ) = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(
+                Resource.success(
+                    data = HtmlParser.fetchEpisodeList(
+                        detailsRepository.fetchEpisodeList(
+                            header = Constants.getHeader(),
+                            id = id,
+                            endEpisode = endEpisode,
+                            alias = alias
+                        ).string()
+                    )
+                )
+            )
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
+    }
+
+
 }
 
 class DetailsViewModelFactory(private val apiHelper: ApiHelper) : ViewModelProvider.Factory {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="15dp"
@@ -16,11 +16,15 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
             app:toolbarId="@+id/toolbar">
+
+
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -38,10 +42,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
+                    android:alpha="0.8"
                     android:backgroundTint="@color/background_color"
                     app:cardCornerRadius="5dp"
                     app:contentPadding="4dp"
@@ -55,7 +61,49 @@
                         android:textColor="@color/white" />
                 </androidx.cardview.widget.CardView>
 
+
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:alpha="0.8"
+                    android:backgroundTint="@color/green"
+                    app:cardCornerRadius="5dp"
+                    app:contentPadding="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/app_bar_image"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView">
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white" />
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:alpha="0.8"
+                    android:backgroundTint="@color/blue"
+                    app:cardCornerRadius="5dp"
+                    app:contentPadding="4dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView2"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView3"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
                     android:layout_marginStart="20dp"
@@ -74,16 +122,7 @@
                         app:srcCompat="@drawable/ic_launcher_foreground" />
                 </androidx.cardview.widget.CardView>
 
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/gradient"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="100dp"-->
-                <!--                    android:layout_gravity="bottom"-->
-                <!--                    android:scaleType="centerCrop"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:srcCompat="@drawable/bottom_gradient" />-->
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -104,7 +143,7 @@
             tools:context=".view.fragments.details.DetailsFragment">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/animeTitleDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -124,8 +163,8 @@
                 android:id="@+id/expand_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView6"
+
+                app:layout_constraintTop_toBottomOf="@id/animeTitleDetail"
                 expandableTextView:animDuration="200"
                 expandableTextView:maxCollapsedLines="4">
 
@@ -146,6 +185,13 @@
                     android:background="@android:color/transparent"
                     android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/episodeListRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/expand_text_view"
+                tools:layout_editor_absoluteX="-9dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

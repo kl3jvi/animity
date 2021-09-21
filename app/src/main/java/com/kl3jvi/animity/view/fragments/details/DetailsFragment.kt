@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
@@ -15,6 +16,7 @@ import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Status
+import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 
 
 class DetailsFragment : Fragment() {
@@ -24,6 +26,7 @@ class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by viewModels {
         DetailsViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
+    private lateinit var episodeAdapter: CustomEpisodeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +42,7 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
         val randomNum = (0..4).random()
+
         args.animeDetails.let { animeInfo ->
             Glide.with(this)
                 .load(Constants.DETAILS_BACKGROUND[randomNum])
@@ -50,33 +54,57 @@ class DetailsFragment : Fragment() {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.icon)
 
-            binding.textView6.text = animeInfo.title
+            binding.animeTitleDetail.text = animeInfo.title
 
             animeInfo.categoryUrl?.let { url ->
-                viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner, { res ->
-                    res?.let { resource ->
-                        when (resource.status) {
-                            Status.SUCCESS -> {
-                                resource.data?.let { info ->
-                                    binding.expandTextView.text = info.plotSummary
-                                    binding.releaseDate.text = info.releasedTime
-
-
-                                }
-                            }
-                            Status.ERROR -> {
-                                Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG)
-                                    .show()
-                            }
-                            Status.LOADING -> {
-
-                            }
-                        }
-                    }
-                })
+                fetchAnimeInfo(url)
             }
         }
+
+        binding.episodeListRv.layoutManager = GridLayoutManager(requireContext(), 2)
+        episodeAdapter = CustomEpisodeAdapter(this)
+        binding.episodeListRv.adapter = episodeAdapter
+
+
     }
 
+
+    private fun fetchEpisodeList(id: String, endEpisode: String, alias: String) {
+        viewModel.fetchEpisodeList(id, endEpisode, alias)
+            .observe(viewLifecycleOwner, {
+                it.data?.let {
+                    episodeAdapter.getEpisodeInfo(it)
+                }
+            })
+
+    }
+
+
+    private fun fetchAnimeInfo(url: String) {
+        viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner, { res ->
+            res?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        resource.data?.let { info ->
+                            binding.expandTextView.text = info.plotSummary
+                            binding.releaseDate.text = info.releasedTime
+                            binding.status.text = info.status
+                            binding.type.text = info.type
+
+                            // Call the other observer for fetching episodes list
+                            fetchEpisodeList(info.id, info.endEpisode, info.alias)
+
+                        }
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG)
+                            .show()
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            }
+        })
+    }
 
 }
