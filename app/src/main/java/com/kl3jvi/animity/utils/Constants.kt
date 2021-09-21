@@ -24,6 +24,13 @@ class Constants {
         const val TYPE_NEW_SEASON = 6
         const val TYPE_DEFAULT = -1
 
+
+
+        val DETAILS_BACKGROUND = arrayOf(
+            "https://wallpaperaccess.com//full/1961156.jpg",
+            "https://wallpaperaccess.com//full/4835514.jpg"
+        )
+
         // Retrofit Request TYPE
 
         const val RECENT_SUB = 1
@@ -61,5 +68,14 @@ class Constants {
         //Realm
         const val MAX_TIME_M3U8_URL = 2 * 60 * 60 * 1000
         const val MAX_TIME_FOR_ANIME = 2 * 24 * 60 * 60 * 1000
+
+        fun getHeader(): Map<String, String> {
+            return mapOf(
+                "referer" to Constants.REFERER,
+                "origin" to Constants.ORIGIN,
+                "user-agent" to Constants.USER_AGENT
+            )
+        }
     }
+
 }

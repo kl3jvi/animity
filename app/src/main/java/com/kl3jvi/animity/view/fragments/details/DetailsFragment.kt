@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import com.kl3jvi.animity.utils.Constants
+import kotlin.random.Random
 
 
 class DetailsFragment : Fragment() {
@@ -29,11 +31,16 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
-
+        val randomNum = (0..1).random()
         args.animeDetails.let { animeInfo ->
             Glide.with(this)
-                .load(animeInfo.imageUrl)
+                .load(Constants.DETAILS_BACKGROUND[randomNum])
                 .into(binding.appBarImage)
+
+            Glide.with(this)
+                .load(animeInfo.imageUrl)
+                .into(binding.icon)
+
             binding.textView6.text = animeInfo.title
 
             animeInfo.genreList?.let {

@@ -9,8 +9,7 @@
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_outline_explore_24"
-        android:title="@string/title_search" />
-
+        android:title="@string/title_explore" />
 
     <item
         android:id="@+id/navigation_dashboard"

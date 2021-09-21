@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/ic_play_button.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_play_tv.xml" value="0.334375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.2953125" />

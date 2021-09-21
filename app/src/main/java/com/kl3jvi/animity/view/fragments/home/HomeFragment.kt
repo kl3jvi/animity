@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.view.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,6 +77,7 @@ class HomeFragment : Fragment() {
         fetchRecentDub()
         getPopularAnime()
         fetchMovies()
+        testUrl()
 
     }
 
@@ -182,6 +184,16 @@ class HomeFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun testUrl() {
+        viewModel.fetchEpisodeMediaUrl().observe(viewLifecycleOwner, {
+            println("$it------------------------------------------------------")
+            it.data?.let {
+                println("$it------------------------------------------------------")
+            }
+        })
+
     }
 
 
