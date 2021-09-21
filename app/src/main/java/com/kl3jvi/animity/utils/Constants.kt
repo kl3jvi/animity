@@ -25,10 +25,12 @@ class Constants {
         const val TYPE_DEFAULT = -1
 
 
-
         val DETAILS_BACKGROUND = arrayOf(
-            "https://wallpaperaccess.com//full/1961156.jpg",
-            "https://wallpaperaccess.com//full/4835514.jpg"
+            "https://wallpaperaccess.com/full/1961156.jpg",
+            "https://wallpaperaccess.com/full/4835514.jpg",
+            "https://wallpaperaccess.com/full/9928.png",
+            "https://wallpaperaccess.com/full/9929.jpg",
+            "https://wallpaperaccess.com/full/9939.jpg"
         )
 
         // Retrofit Request TYPE

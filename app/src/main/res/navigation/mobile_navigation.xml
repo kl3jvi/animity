@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.kl3jvi.animity.view.fragments.search.SearchFragment"
-        android:label="@string/title_search"
+        android:label="@string/title_explore"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/detailsFragment"

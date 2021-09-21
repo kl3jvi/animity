@@ -1,16 +1,14 @@
 package com.kl3jvi.animity.view.fragments.home
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.network.ApiHelper
@@ -32,6 +30,13 @@ class HomeFragment : Fragment() {
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,12 +77,10 @@ class HomeFragment : Fragment() {
         binding.moviesRv.adapter = movieAdapter
 
 
-
         getNewSeason()
         fetchRecentDub()
         getPopularAnime()
         fetchMovies()
-        testUrl()
 
     }
 
@@ -186,16 +189,6 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun testUrl() {
-        viewModel.fetchEpisodeMediaUrl().observe(viewLifecycleOwner, {
-            println("$it------------------------------------------------------")
-            it.data?.let {
-                println("$it------------------------------------------------------")
-            }
-        })
-
-    }
-
 
     fun animeDetails(animeDetails: AnimeMetaModel) {
         findNavController().navigate(
@@ -211,6 +204,11 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onResume() {
