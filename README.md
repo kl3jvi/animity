@@ -20,12 +20,8 @@
 
 ## Screenshots
 
-[<img src="screenshots/1.jpg" width=160>](screenshots/1.jpg)
-[<img src="screenshots/2.png" width=160>](screenshots/2.png)
-[<img src="screenshots/3.png" width=160>](screenshots/3.png)
-[<img src="screenshots/5.png" width=160>](screenshots/5.png)
-[<img src="screenshots/6.png" width=160>](screenshots/6.png)
-[<img src="screenshots/4.jpg" width=405>](screenshots/4.jpg)
+[<img src="assets/image1.jpg" width=160>](screenshots/1.jpg)
+
 
 ## Description
 
