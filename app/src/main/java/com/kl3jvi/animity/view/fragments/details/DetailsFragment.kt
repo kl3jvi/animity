@@ -59,6 +59,9 @@ class DetailsFragment : Fragment() {
                             Status.SUCCESS -> {
                                 resource.data?.let { info ->
                                     binding.expandTextView.text = info.plotSummary
+                                    binding.releaseDate.text = info.releasedTime
+
+
                                 }
                             }
                             Status.ERROR -> {
