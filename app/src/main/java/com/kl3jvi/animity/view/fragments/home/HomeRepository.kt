@@ -22,8 +22,6 @@ class HomeRepository(private val apiHelper: ApiHelper) {
     suspend fun fetchMovies(header: Map<String, String>, page: Int) =
         apiHelper.fetchMovies(header, page)
 
-    @WorkerThread
-    suspend fun fetchEpisodeMediaUrl(header: Map<String, String>, url: String) =
-        apiHelper.fetchEpisodeMediaUrl(header, url)
+
 
 }
