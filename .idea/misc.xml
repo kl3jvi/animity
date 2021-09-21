@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/bottom_gradient.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_play_button.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_play_tv.xml" value="0.334375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />

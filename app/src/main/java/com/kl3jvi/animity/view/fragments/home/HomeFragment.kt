@@ -118,18 +118,15 @@ class HomeFragment : Fragment() {
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry ->
                             todayAdapter.getSelectedAnime(entry)
                         }
                         binding.recentSub.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
-                        binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-                        binding.progressBar.visibility = View.VISIBLE
                         binding.recentSub.visibility = View.GONE
                     }
                 }
@@ -144,19 +141,18 @@ class HomeFragment : Fragment() {
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry ->
                             newSeasonAdapter.getAnimes(entry)
                         }
                         binding.newSeasonRv.visibility = View.VISIBLE
+                        binding.newSeasonTv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
-                        binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-                        binding.progressBar.visibility = View.VISIBLE
                         binding.newSeasonRv.visibility = View.GONE
+                        binding.newSeasonTv.visibility = View.GONE
                     }
                 }
             }
@@ -169,19 +165,18 @@ class HomeFragment : Fragment() {
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry ->
                             movieAdapter.getAnimes(entry)
                         }
-                        binding.newSeasonRv.visibility = View.VISIBLE
+                        binding.moviesRv.visibility = View.VISIBLE
+                        binding.moviesTv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
-                        binding.progressBar.visibility = View.GONE
                         Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                        binding.newSeasonRv.visibility = View.GONE
+                        binding.moviesRv.visibility = View.GONE
+                        binding.moviesTv.visibility = View.GONE
                     }
                 }
             }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryLight">#5a709f</color>
-    <color name="colorPrimary">#2b4570</color>
-    <color name="colorPrimaryDark">#001e44</color>
+    <color name="colorPrimaryLight">#8b5ac9</color>
+    <color name="colorPrimary">#5a2e98</color>
+    <color name="colorPrimaryDark">#280069</color>
 
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
@@ -12,5 +12,8 @@
     <color name="recycler_anime_title">#212121</color>
     <color name="recycler_anime_type">#808080</color>
     <color name="background_color">#2c363f</color>
+
+
+    <color name="green">#28a745</color>
 
 </resources>

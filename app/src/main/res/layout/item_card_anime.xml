@@ -13,7 +13,7 @@
         android:id="@+id/animeCardView"
         android:layout_width="105dp"
         android:layout_height="180dp"
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,8 +39,12 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_play_button" />
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_play_tv" />
+
+
     </androidx.cardview.widget.CardView>
 
     <TextView

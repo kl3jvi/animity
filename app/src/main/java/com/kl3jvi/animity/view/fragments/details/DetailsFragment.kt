@@ -30,11 +30,17 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
 
-        args.let {
+        args.animeDetails.let { animeInfo ->
             Glide.with(this)
-                .load(it.animeDetails.imageUrl)
+                .load(animeInfo.imageUrl)
                 .into(binding.appBarImage)
-            binding.textView5.text = it.animeDetails.title
+            binding.textView6.text = animeInfo.title
+
+            animeInfo.genreList?.let {
+                it.forEach { genre ->
+                    println(genre)
+                }
+            }
         }
     }
 
