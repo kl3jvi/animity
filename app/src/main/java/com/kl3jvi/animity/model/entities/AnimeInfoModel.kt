@@ -1,5 +1,9 @@
 package com.kl3jvi.animity.model.entities
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class AnimeInfoModel(
     var id: String,
     var animeTitle: String,
@@ -11,4 +15,4 @@ data class AnimeInfoModel(
     var plotSummary: String,
     var alias: String,
     var endEpisode: String
-)
+) : Parcelable

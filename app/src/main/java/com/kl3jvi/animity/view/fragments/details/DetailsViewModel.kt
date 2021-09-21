@@ -9,7 +9,7 @@ import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.Dispatchers
 
-class DetailsViewModel(private val detailsRepository: DetailsRepository) {
+class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewModel() {
     fun fetchAnimeInfo(url: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {

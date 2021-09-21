@@ -4,20 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import com.kl3jvi.animity.model.network.ApiHelper
+import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Constants
-import kotlin.random.Random
+import com.kl3jvi.animity.utils.Status
 
 
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
-
     private val binding get() = _binding!!
+    private val viewModel: DetailsViewModel by viewModels {
+        DetailsViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,10 +52,25 @@ class DetailsFragment : Fragment() {
 
             binding.textView6.text = animeInfo.title
 
-            animeInfo.genreList?.let {
-                it.forEach { genre ->
-                    println(genre)
-                }
+            animeInfo.categoryUrl?.let { url ->
+                viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner, { res ->
+                    res?.let { resource ->
+                        when (resource.status) {
+                            Status.SUCCESS -> {
+                                resource.data?.let { info ->
+                                    binding.expandTextView.text = info.plotSummary
+                                }
+                            }
+                            Status.ERROR -> {
+                                Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                            Status.LOADING -> {
+
+                            }
+                        }
+                    }
+                })
             }
         }
     }

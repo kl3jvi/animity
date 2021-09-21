@@ -14,7 +14,7 @@
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
-        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/item_card_anime.xml" value="0.536" />
