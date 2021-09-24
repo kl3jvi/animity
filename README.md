@@ -42,11 +42,13 @@ Animity parses website data and filter required info, thus It removes the ads fo
 * … and many more
 
 ### Technologies used
-* Ionic 5
-* Angular
-* Retrofit & RxJava
-* Node Js
-*
+* Kotlin
+* MVVM
+* Retrofit & Coroutines
+* Epoxy
+* ExoPlayer
+* Android Architecture Components
+* Glide
 
 ## Contribution
 Your ideas, translations, design changes, code cleaning, or real heavy code changes or any help is always welcome. The more is contribution the better it gets
