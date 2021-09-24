@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.kl3jvi.animity">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,12 +14,18 @@
         android:theme="@style/Theme.Animity">
         <activity
             android:name=".view.activities.player.PlayerActivity"
-            android:exported="true" />
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensorLandscape"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/VideoPlayer"
+            tools:ignore="LockedOrientationActivity"
+            tools:targetApi="n" />
         <activity
             android:name=".view.activities.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize|adjustPan"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

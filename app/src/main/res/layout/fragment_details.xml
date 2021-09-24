@@ -24,16 +24,27 @@
             app:toolbarId="@+id/toolbar">
 
 
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/loadingDetails"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="200dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/app_bar_image"
                     android:layout_width="match_parent"
                     android:layout_height="195dp"
+                    android:alpha="0.8"
                     android:scaleType="centerCrop"
                     android:src="@android:drawable/sym_def_app_icon"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +134,6 @@
                 </androidx.cardview.widget.CardView>
 
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -181,7 +191,7 @@
                     android:id="@id/expand_collapse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|bottom"
+                    android:layout_gravity="end|bottom"
                     android:background="@android:color/transparent"
                     android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
@@ -191,7 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/expand_text_view"
-                tools:layout_editor_absoluteX="-9dp" />
+                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

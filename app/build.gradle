@@ -107,6 +107,11 @@ dependencies {
     //Expandable TextView
     implementation 'com.ms-square:expandableTextView:0.1.4'
 
+    //Bottom Sheet Library
+    implementation 'com.maxkeppeler.sheets:core:2.2.6'
+    implementation 'com.maxkeppeler.sheets:options:2.2.6'
+
+
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 

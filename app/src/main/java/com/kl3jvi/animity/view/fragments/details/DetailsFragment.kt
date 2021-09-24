@@ -17,6 +17,7 @@ import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
+import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 
 
 class DetailsFragment : Fragment() {
@@ -27,6 +28,7 @@ class DetailsFragment : Fragment() {
         DetailsViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
     private lateinit var episodeAdapter: CustomEpisodeAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,6 +96,11 @@ class DetailsFragment : Fragment() {
                             // Call the other observer for fetching episodes list
                             fetchEpisodeList(info.id, info.endEpisode, info.alias)
 
+                            binding.loadingDetails.visibility = View.GONE
+                            binding.expandTextView.visibility = View.VISIBLE
+                            binding.releaseDate.visibility = View.VISIBLE
+                            binding.status.visibility = View.VISIBLE
+                            binding.type.visibility = View.VISIBLE
                         }
                     }
                     Status.ERROR -> {
@@ -101,6 +108,13 @@ class DetailsFragment : Fragment() {
                             .show()
                     }
                     Status.LOADING -> {
+                        binding.loadingDetails.visibility = View.VISIBLE
+
+                        binding.expandTextView.visibility = View.GONE
+                        binding.releaseDate.visibility = View.GONE
+                        binding.status.visibility = View.GONE
+                        binding.type.visibility = View.GONE
+
                     }
                 }
             }

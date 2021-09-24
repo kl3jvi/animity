@@ -17,6 +17,8 @@ import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
+import com.maxkeppeler.sheets.options.Option
+import com.maxkeppeler.sheets.options.OptionsSheet
 
 class HomeFragment : Fragment() {
 
@@ -209,6 +211,21 @@ class HomeFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.more_menu -> {
+                OptionsSheet().show(requireContext()) {
+                    title("More Settings")
+                    with(
+                        Option(R.drawable.ic_baseline_tv_24, "Settings"),
+                    )
+
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {
