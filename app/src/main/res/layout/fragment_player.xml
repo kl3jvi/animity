@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.activities.player.PlayerFragment">
+    android:layout_height="wrap_content"
+    android:id="@+id/videoPlayerContainer"
+    android:background="@android:color/black"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardBackgroundColor="@android:color/black"
+        android:id="@+id/videoPlayerCardView"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
 
-</FrameLayout>
+        <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/exoPlayerFrameLayout"
+            android:layout_gravity="center"
+            app:resize_mode="fixed_height">
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/exoPlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:show_buffering="when_playing"
+                app:resize_mode="fit"
+                app:show_timeout="3000"
+                app:scrubber_dragged_size="25dp"
+                app:controller_layout_id="@layout/exo_player_custom_controls"
+                app:rewind_increment="10000"
+                app:fastforward_increment="10000"/>
+        </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
+
+
+        <include layout="@layout/fragment_video_player_placeholder"/>
+        <include layout="@layout/error_screen_video_player"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

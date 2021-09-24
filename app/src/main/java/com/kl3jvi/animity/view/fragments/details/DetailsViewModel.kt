@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 
 class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewModel() {
 
+    val data: MutableLiveData<AnimeInfoModel> = MutableLiveData()
 
 
     fun fetchAnimeInfo(url: String) = liveData(Dispatchers.IO) {
@@ -25,6 +27,14 @@ class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewM
                             url
                         ).string()
                     )
+                )
+            )
+            data.postValue(
+                HtmlParser.parseAnimeInfo(
+                    detailsRepository.fetchAnimeInfo(
+                        Constants.getHeader(),
+                        url
+                    ).string()
                 )
             )
         } catch (exception: Exception) {

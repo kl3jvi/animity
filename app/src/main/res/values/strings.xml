@@ -7,4 +7,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="settings">Settings</string>
+    <string name="retry">Retry</string>
+    <string name="next_episode">Next Episode</string>
+    <string name="quality_auto">Auto</string>
+    <string name="speed">1x</string>
+    <string name="previous_episode">Previous Episode</string>
 </resources>

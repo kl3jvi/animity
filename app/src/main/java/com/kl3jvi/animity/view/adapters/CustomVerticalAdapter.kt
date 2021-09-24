@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomVerticalAdapter(private val fragment: Fragment) :
     RecyclerView.Adapter<CustomVerticalAdapter.ViewHolder>() {
@@ -37,6 +38,11 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         holder.title.text = element.title
         holder.episodeNumber.text = element.episodeNumber
 
+        holder.itemView.setOnClickListener {
+            if (fragment is HomeFragment) {
+                fragment.animeDetails(element)
+            }
+        }
     }
 
     override fun getItemCount() = list.size

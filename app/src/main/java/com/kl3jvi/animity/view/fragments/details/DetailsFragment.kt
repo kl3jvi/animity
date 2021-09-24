@@ -17,7 +17,6 @@ import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
-import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 
 
 class DetailsFragment : Fragment() {
@@ -73,16 +72,16 @@ class DetailsFragment : Fragment() {
 
     private fun fetchEpisodeList(id: String, endEpisode: String, alias: String) {
         viewModel.fetchEpisodeList(id, endEpisode, alias)
-            .observe(viewLifecycleOwner, {
-                it.data?.let {
-                    episodeAdapter.getEpisodeInfo(it)
+            .observe(viewLifecycleOwner, { episodeListResponse ->
+                episodeListResponse.data?.let { episodeList ->
+                    episodeAdapter.getEpisodeInfo(episodeList)
                 }
             })
-
     }
 
 
     private fun fetchAnimeInfo(url: String) {
+        viewModel.fetchAnimeInfo(url)
         viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
                 when (resource.status) {
