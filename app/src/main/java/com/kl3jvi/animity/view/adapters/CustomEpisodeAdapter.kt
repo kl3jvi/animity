@@ -41,7 +41,6 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
                     Intent(fragment.requireActivity(), PlayerActivity::class.java)
                 intent.putExtra("episodeUrl", element.episodeurl)
                 intent.putExtra("episodeNumber", element.episodeNumber)
-                intent.putExtra("animeName", "Test")
                 fragment.requireContext().startActivity(intent)
             }
         }

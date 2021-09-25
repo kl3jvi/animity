@@ -14,6 +14,7 @@
         android:id="@+id/errorImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:src="@android:drawable/stat_notify_error"
         app:layout_constraintBottom_toTopOf="@id/errorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +35,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/errorImage"
-        tools:text="No Internet Connection" />
+        tools:text="@string/no_internet_connection" />
+
 
     <TextView
         android:id="@+id/errorButton"

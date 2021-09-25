@@ -94,9 +94,10 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
-    implementation 'com.google.android.exoplayer:extension-mediasession:2.15.0'
+
+    //Video Player
+    implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:2.0.7'
+
 
     //Bottom bar
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.8'

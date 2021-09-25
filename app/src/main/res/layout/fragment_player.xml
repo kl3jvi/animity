@@ -1,49 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/videoPlayerContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/videoPlayerContainer"
     android:background="@android:color/black"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+    <com.potyvideo.library.AndExoPlayerView
+        android:id="@+id/andExoPlayerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:andexo_show_controller="true"
+        app:andexo_resize_mode="Zoom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cardBackgroundColor="@android:color/black"
-        android:id="@+id/videoPlayerCardView"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp">
-
-        <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/exoPlayerFrameLayout"
-            android:layout_gravity="center"
-            app:resize_mode="fixed_height">
-
-            <com.google.android.exoplayer2.ui.PlayerView
-                android:id="@+id/exoPlayerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:show_buffering="when_playing"
-                app:resize_mode="fit"
-                app:show_timeout="3000"
-                app:scrubber_dragged_size="25dp"
-                app:controller_layout_id="@layout/exo_player_custom_controls"
-                app:rewind_increment="10000"
-                app:fastforward_increment="10000"/>
-        </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
-
-
-        <include layout="@layout/fragment_video_player_placeholder"/>
-        <include layout="@layout/error_screen_video_player"/>
-    </androidx.cardview.widget.CardView>
-
-
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

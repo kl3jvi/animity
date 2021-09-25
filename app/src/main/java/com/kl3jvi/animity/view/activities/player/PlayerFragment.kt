@@ -1,16 +1,13 @@
 package com.kl3jvi.animity.view.activities.player
 
-import android.media.AudioManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.exoplayer2.Player
 import com.kl3jvi.animity.databinding.FragmentPlayerBinding
 
-class PlayerFragment : Fragment(), View.OnClickListener, Player.EventListener,
-    AudioManager.OnAudioFocusChangeListener  {
+class PlayerFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
@@ -26,11 +23,26 @@ class PlayerFragment : Fragment(), View.OnClickListener, Player.EventListener,
         return binding.root
     }
 
-    override fun onClick(p0: View?) {
-        TODO("Not yet implemented")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.andExoPlayerView.apply {
+            setSource("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
+            seekBackward(10000)
+            seekForward(10000)
+        }
     }
 
-    override fun onAudioFocusChange(p0: Int) {
-        TODO("Not yet implemented")
+
+    override fun onClick(p0: View?) {
+
     }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.andExoPlayerView.stopPlayer()
+    }
+
 }

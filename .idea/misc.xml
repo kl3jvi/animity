@@ -5,6 +5,8 @@
       <map>
         <entry key="app/src/main/res/drawable/bottom_gradient.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.334375" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_forward_icon.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_media_pause.xml" value="0.334375" />

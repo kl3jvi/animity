@@ -1,8 +1,7 @@
 package com.kl3jvi.animity.view.activities.player
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
+import com.kl3jvi.animity.model.entities.Content
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
@@ -10,7 +9,10 @@ import kotlinx.coroutines.Dispatchers
 
 class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewModel() {
 
-    fun fetchEpisodeMediaUrl() = liveData(Dispatchers.IO) {
+    private var _content = MutableLiveData(Content())
+    var liveContent: LiveData<Content> = _content
+
+    fun fetchEpisodeMediaUrl(url: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             emit(
@@ -18,7 +20,7 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
                     data =
                     playerRepository.fetchEpisodeMediaUrl(
                         Constants.getHeader(),
-                        "/eureka-seven-ao-jungfrau-no-hanabana-tachi-episode-1"
+                        url
                     ).string()
 
                 )
@@ -26,6 +28,11 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
+    }
+
+    fun updateEpisodeContent(content: Content) {
+
+        _content.value = content
     }
 
 }
