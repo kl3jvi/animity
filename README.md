@@ -45,7 +45,6 @@ Animity parses website data and filter required info, thus It removes the ads fo
 * Kotlin
 * MVVM
 * Retrofit & Coroutines
-* Epoxy
 * ExoPlayer
 * Android Architecture Components
 * Glide
