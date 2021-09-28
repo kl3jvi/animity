@@ -21,7 +21,7 @@
 ## Screenshots
 
 [<img src="assets/image1.jpg" width=160>](screenshots/1.jpg)
-[<img src="assets/image2.jpg" width=160>](screenshots/2.jpg)
+[<img src="assets/Screenshot_2021-09-28-23-39-01-314_com.kl3jvi.animity.jpg" width=160>](screenshots/2.jpg)
 
 ## Description
 
