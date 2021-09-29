@@ -14,6 +14,5 @@ data class Content(
     var watchedDuration: Long = 0,
     var duration: Long = 0,
     var insertionTime: Long = 0
-
 ) : Parcelable
 

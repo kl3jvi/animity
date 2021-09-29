@@ -12,7 +12,7 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
     private var _content = MutableLiveData(Content())
     var liveContent: LiveData<Content> = _content
 
-    fun fetchEpisodeMediaUrl(url: String) = liveData(Dispatchers.IO) {
+    fun fetchEpisodeMediaUrl() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             emit(
@@ -20,7 +20,7 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
                     data =
                     playerRepository.fetchEpisodeMediaUrl(
                         Constants.getHeader(),
-                        url
+                        "url"
                     ).string()
 
                 )

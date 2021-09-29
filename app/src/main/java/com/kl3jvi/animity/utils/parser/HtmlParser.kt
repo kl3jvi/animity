@@ -197,6 +197,16 @@ object HtmlParser {
         return episodeList
     }
 
+    fun parseMediaUrl(response: String): String{
+        var mediaUrl: String?
+        val document = Jsoup.parse(response)
+        val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
+        mediaUrl = info?.attr("data-video").toString()
+       /* val nextEpisodeUrl = document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()?.attr("href")
+        val previousEpisodeUrl = document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()?.attr("href") */
+        return  mediaUrl
+
+    }
 
     private fun getCategoryUrl(url: String): String {
         return try {
