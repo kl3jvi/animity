@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Animity">
         <activity
             android:name=".view.activities.player.PlayerActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape"
             android:supportsPictureInPicture="true"

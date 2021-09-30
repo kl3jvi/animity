@@ -9,4 +9,8 @@ class PlayerRepository(private val apiHelper: ApiHelper) {
     suspend fun fetchEpisodeMediaUrl(header: Map<String, String>, url: String) =
         apiHelper.fetchEpisodeMediaUrl(header, url)
 
+    @WorkerThread
+    suspend fun fetchM3u8Url(header: Map<String, String>, url: String) =
+        apiHelper.fetchM3u8Url(header, url)
+
 }

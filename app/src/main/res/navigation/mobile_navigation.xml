@@ -35,4 +35,5 @@
             android:name="animeDetails"
             app:argType="com.kl3jvi.animity.model.entities.AnimeMetaModel" />
     </fragment>
+
 </navigation>

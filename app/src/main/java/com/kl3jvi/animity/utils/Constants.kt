@@ -3,13 +3,6 @@ package com.kl3jvi.animity.utils
 class Constants {
     companion object {
 
-        const val GIT_DOWNLOAD_URL = "https://github.com/mukul500/AnimeXStream/"
-
-        //Error Codes
-        const val RESPONSE_UNKNOWN: Int = 1000
-        const val ERROR_CODE_DEFAULT: Int = -1000
-        const val NO_INTERNET_CONNECTION = 1001
-
         //Base URLS
         var BASE_URL = "https://gogoanime.pe"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
@@ -39,8 +32,6 @@ class Constants {
         const val RECENT_DUB = 2
 
         const val MAX_LIMIT_FOR_SUB_DUB = 10
-
-
         const val NEWEST_SEASON_POSITION = 2
         const val RECENT_SUB_POSITION = 0
         const val RECENT_DUB_POSITION = 1
@@ -62,10 +53,9 @@ class Constants {
         const val TYPE_SEARCH_UPDATE = 2001
 
         //Network Requests Header
-        const val USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
-        const val ORIGIN = "https://www1.gogoanime.movie"
-        const val REFERER = "https://www1.gogoanime.movie/"
+        const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+        const val ORIGIN = "https://gogoanime.vc/"
+        const val REFERER = "https://gogoanime.vc/"
 
         //Realm
         const val MAX_TIME_M3U8_URL = 2 * 60 * 60 * 1000
@@ -73,9 +63,9 @@ class Constants {
 
         fun getHeader(): Map<String, String> {
             return mapOf(
-                "referer" to Constants.REFERER,
-                "origin" to Constants.ORIGIN,
-                "user-agent" to Constants.USER_AGENT
+                "referer" to REFERER,
+                "origin" to ORIGIN,
+                "user-agent" to USER_AGENT
             )
         }
     }

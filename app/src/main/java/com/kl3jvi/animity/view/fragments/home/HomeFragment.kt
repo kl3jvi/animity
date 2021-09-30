@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.view.fragments.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -17,11 +18,11 @@ import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
-import com.maxkeppeler.sheets.options.Option
-import com.maxkeppeler.sheets.options.OptionsSheet
+import com.maxkeppeler.sheets.input.InputSheet
+import com.maxkeppeler.sheets.input.type.InputEditText
+
 
 class HomeFragment : Fragment() {
-
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -216,12 +217,14 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.more_menu -> {
-                OptionsSheet().show(requireContext()) {
-                    title("More Settings")
-                    with(
-                        Option(R.drawable.ic_baseline_tv_24, "Settings"),
-                    )
-
+                InputSheet().show(requireContext()) {
+                    with(InputEditText {
+                        required()
+                        hint("Search Animes")
+                        drawable(R.drawable.ic_search)
+                        changeListener { value -> } // Input value changed
+                        resultListener { value -> } // Input value changed when form finished
+                    })
                 }
             }
         }

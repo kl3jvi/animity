@@ -25,6 +25,10 @@ class ApiHelper(private val apiService: ApiService) {
         apiService.fetchEpisodeMediaUrl(header, url)
 
     @WorkerThread
+    suspend fun fetchM3u8Url(header: Map<String, String>, url: String) =
+        apiService.FetchM3u8Url(header, url)
+
+    @WorkerThread
     suspend fun fetchAnimeInfo(header: Map<String, String>, episodeUrl: String) =
         apiService.fetchAnimeInfo(header, episodeUrl)
 

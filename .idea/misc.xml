@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.21382636655948553" />
         <entry key="app/src/main/res/drawable/bottom_gradient.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.18385416666666668" />
@@ -35,6 +36,12 @@
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.3140625" />
       </map>
     </option>
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Documents" />
+    <option name="OPTION_SCOPE" value="public" />
+    <option name="HEAP_SIZE" value="2048" />
+    <option name="LOCALE" value="en" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

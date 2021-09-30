@@ -4,8 +4,12 @@ import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.model.entities.GenreModel
+import com.kl3jvi.animity.utils.Constants
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
+import timber.log.Timber
+import java.lang.NullPointerException
+import java.util.regex.Pattern
 
 
 /**
@@ -36,7 +40,6 @@ object HtmlParser {
                     imageUrl = imageUrl,
                     typeValue = typeValue,
                     insertionOrder = i
-
                 )
             )
             i++
@@ -53,7 +56,6 @@ object HtmlParser {
         var i = 0
 
         lists?.forEach { anime ->
-
             val animeInfoFirst = anime.select("a").first()
             val imageDiv =
                 animeInfoFirst.getElementsByClass("thumbnail-popular").first().attr("style")
@@ -68,9 +70,6 @@ object HtmlParser {
             val genreHtmlList = anime.getElementsByClass("genres").first().select("a")
             val genreList = ArrayList<GenreModel>()
             genreList.addAll(getGenreList(genreHtmlList))
-
-
-
             animeMetaModelList.add(
                 AnimeMetaModel(
                     ID = "$animeTitle$typeValue".hashCode(),
@@ -205,6 +204,27 @@ object HtmlParser {
        /* val nextEpisodeUrl = document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()?.attr("href")
         val previousEpisodeUrl = document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()?.attr("href") */
         return  mediaUrl
+
+    }
+
+    fun parseM3U8Url(response: String): String?{
+        var m3u8Url: String?= ""
+        val document = Jsoup.parse(response)
+        val info = document?.getElementsByClass("videocontent")
+        val pattern = Pattern.compile(Constants.M3U8_REGEX_PATTERN)
+        val matcher = pattern.matcher(info.toString())
+        return try{
+            while (matcher.find()){
+                Timber.e(matcher.group((0)))
+                if( matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!.contains("googlevideo")){
+                    m3u8Url =  matcher.group(0)
+                    break
+                }
+            }
+            m3u8Url
+        } catch (npe: NullPointerException){
+            m3u8Url
+        }
 
     }
 
