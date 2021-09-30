@@ -96,7 +96,9 @@ dependencies {
 
 
     //Video Player
-    implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:2.0.7'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
 
 
     //Bottom bar
