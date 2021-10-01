@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
 
                     }
                     Status.ERROR -> {
-                        binding.progressBar.visibility = View.GONE
+                        binding.progressBar.visibility = View.VISIBLE
                         Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {

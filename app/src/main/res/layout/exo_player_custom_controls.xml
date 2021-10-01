@@ -5,36 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/media_player_controls_background">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/back"
-        android:padding="10dp"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="14dp"
-        />
-
     <TextView
         android:id="@+id/episodeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:maxWidth="450dp"
         android:maxLines="2"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-
-        android:layout_marginStart="4dp"
-        app:layout_constraintStart_toEndOf="@id/back"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="24dp"
         tools:text="Naruto Shippuden Episode 7" />
 
     <ImageButton
@@ -93,6 +76,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/exo_full_Screen"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="6dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:tint="@color/media_player_controls"
+        android:src="@drawable/exo_controls_fullscreen_enter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -115,7 +113,8 @@
         app:layout_constraintStart_toEndOf="@id/exo_position"
         android:layout_marginBottom="19dp"
         android:layout_marginStart="16dp"
-        android:backgroundTint="@color/blue"
+
+        android:tint="@color/progress_color"
         android:layout_marginEnd="16dp"
         android:layout_width="0dp"
         android:layout_height="26dp"/>
@@ -134,54 +133,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/exo_full_Screen"
-        android:paddingTop="10dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="6dp"
-        android:background="?selectableItemBackgroundBorderless"
-        app:tint="@color/media_player_controls"
-        android:src="@drawable/exo_controls_fullscreen_enter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/exo_speed_selection_view"
-        app:layout_constraintEnd_toStartOf="@id/exo_track_selection_view"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/media_player_controls"
-        android:text="@string/speed"
-        android:layout_marginEnd="10dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:textStyle="bold"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp"
-        android:paddingBottom="20dp"
-        android:paddingEnd="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/exo_track_selection_view"
-        app:layout_constraintEnd_toStartOf="@id/exo_full_Screen"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/media_player_controls"
-        android:text="@string/quality_auto"
-        android:layout_marginEnd="10dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:textStyle="bold"
-        android:paddingTop="20dp"
-        android:paddingStart="20dp"
-        android:paddingBottom="20dp"
-        android:paddingEnd="10dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

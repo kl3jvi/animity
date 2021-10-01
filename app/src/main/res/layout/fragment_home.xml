@@ -45,20 +45,18 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <ProgressBar
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
 
-
-                android:visibility="visible"
+                app:lottie_rawRes="@raw/loading"
+                app:lottie_loop="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true" />
             <TextView
                 android:id="@+id/newSeasonTv"
                 android:layout_width="wrap_content"
