@@ -5,15 +5,13 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingBottom="5dp"
-    android:paddingTop="5dp"
-    android:paddingRight="20dp">
+    android:paddingTop="5dp">
 
     <FrameLayout
         android:layout_width="match_parent"

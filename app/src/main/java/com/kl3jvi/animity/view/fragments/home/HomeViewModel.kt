@@ -10,20 +10,24 @@ import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.Dispatchers
 
-class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
+
+class HomeViewModel(
+    private val homeRepository: HomeRepository
+) : ViewModel() {
 
     fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
+            val response = HtmlParser.parseRecentSubOrDub(
+                homeRepository.fetchRecentSubOrDub(
+                    Constants.getHeader(),
+                    1,
+                    Constants.TYPE_RECENT_DUB
+                ).string(), Constants.TYPE_RECENT_DUB
+            )
             emit(
                 Resource.success(
-                    data = HtmlParser.parseRecentSubOrDub(
-                        homeRepository.fetchRecentSubOrDub(
-                            Constants.getHeader(),
-                            1,
-                            Constants.TYPE_RECENT_DUB
-                        ).string(), Constants.TYPE_RECENT_DUB
-                    )
+                    data = response
                 )
             )
         } catch (exception: Exception) {
@@ -102,7 +106,10 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
 
 }
 
-class HomeViewModelFactory(private val apiHelper: ApiHelper) : ViewModelProvider.Factory {
+class HomeViewModelFactory(
+
+    private val apiHelper: ApiHelper
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(HomeRepository(apiHelper)) as T

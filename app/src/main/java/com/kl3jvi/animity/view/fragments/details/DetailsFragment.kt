@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
+import coil.load
+import coil.request.CachePolicy
+
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
@@ -45,15 +46,15 @@ class DetailsFragment : Fragment() {
         val randomNum = (0..4).random()
 
         args.animeDetails.let { animeInfo ->
-            Glide.with(this)
-                .load(Constants.DETAILS_BACKGROUND[randomNum])
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.appBarImage)
+            binding.appBarImage.load(Constants.DETAILS_BACKGROUND[randomNum]){
+                crossfade(true)
+                diskCachePolicy(CachePolicy.ENABLED)
+            }
 
-            Glide.with(this)
-                .load(animeInfo.imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.icon)
+            binding.icon.load(animeInfo.imageUrl){
+                crossfade(true)
+                diskCachePolicy(CachePolicy.ENABLED)
+            }
 
             binding.animeTitleDetail.text = animeInfo.title
 

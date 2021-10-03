@@ -40,9 +40,29 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:padding="2dp"
             android:src="@drawable/ic_play_tv" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:alpha="0.8"
+            android:layout_marginStart="-10dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="8dp">
+
+            <TextView
+                android:id="@+id/episodeNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:layout_marginStart="10dp"
+                android:text="TextView"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
+        </androidx.cardview.widget.CardView>
 
 
     </androidx.cardview.widget.CardView>
@@ -65,22 +85,6 @@
         app:layout_constraintTop_toBottomOf="@id/animeCardView"
 
         tools:text="One Piece" />
-
-    <TextView
-        android:id="@+id/episodeNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:maxLines="2"
-        android:textColor="@color/recycler_anime_type"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animeTitle"
-        tools:text="Episode 7" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.model.network
 
+import com.kl3jvi.animity.model.network.AddLoggingInterceptor.setLogging
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,15 +14,11 @@ object RetrofitBuilder {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(AddLoggingInterceptor.setLogging())
+            .client(setLogging())
             .build()
     }
 
-
-
     val apiService: ApiService = getRetrofit().create(ApiService::class.java)
-
-
 }
 
 object AddLoggingInterceptor {

@@ -1,12 +1,12 @@
 package com.kl3jvi.animity.view.fragments.home
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.R
@@ -38,6 +38,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -48,9 +49,14 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        getNewSeason()
+        fetchRecentDub()
+        getPopularAnime()
+        fetchMovies()
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +67,7 @@ class HomeFragment : Fragment() {
         subAdapter = CustomHorizontalAdapter(this)
         binding.recentSub.adapter = subAdapter
 
-        binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
+        binding.todaySelection.layoutManager = GridLayoutManager(requireContext(), 2)
         todayAdapter = CustomVerticalAdapter(this)
         binding.todaySelection.adapter = todayAdapter
 
@@ -79,11 +85,6 @@ class HomeFragment : Fragment() {
         movieAdapter = CustomHorizontalAdapter(this)
         binding.moviesRv.adapter = movieAdapter
 
-
-        getNewSeason()
-        fetchRecentDub()
-        getPopularAnime()
-        fetchMovies()
 
     }
 
@@ -116,8 +117,8 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-
         })
+
     }
 
 
@@ -219,13 +220,18 @@ class HomeFragment : Fragment() {
             R.id.more_menu -> {
                 InputSheet().show(requireContext()) {
                     with(InputEditText {
-                        required()
                         hint("Search Animes")
                         drawable(R.drawable.ic_search)
-                        changeListener { value -> } // Input value changed
-                        resultListener { value -> } // Input value changed when form finished
+                        changeListener { value ->
+                            println(value)
+                        } // Input value changed
+                        resultListener { value ->
+                            println(value)
+                        } // Input value changed when form finished
+
                     })
                 }
+
             }
         }
         return super.onOptionsItemSelected(item)

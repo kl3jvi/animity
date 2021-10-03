@@ -13,9 +13,12 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.hls.HlsDataSourceFactory
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Log
+import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
@@ -77,16 +80,26 @@ class PlayerActivity : AppCompatActivity() {
 
 
     private fun initializePlayer() {
-        println("INIT playerrrrr")
+        val trackSelector = DefaultTrackSelector(this).apply {
+            setParameters(buildUponParameters().setMaxVideoSizeSd())
+        }
         player = SimpleExoPlayer.Builder(this)
+            .setTrackSelector(trackSelector)
             .build()
             .also { exoPlayer ->
                 viewBinding.videoView.player = exoPlayer
-                val mediaItem = MediaItem.fromUri(Uri.parse(episodeUrlGlobal))
+
+
+
+                val mediaItem = MediaItem.Builder()
+                    .setUri("https://iptv-org.github.io/iptv/countries/al.m3u")
+                    .setMimeType(MimeTypes.APPLICATION_M3U8)
+                    .build()
 
                 exoPlayer.setMediaItem(mediaItem)
                 exoPlayer.playWhenReady = playWhenReady
                 exoPlayer.seekTo(currentWindow, playbackPosition)
+                exoPlayer.prepare()
             }
     }
 
@@ -113,21 +126,6 @@ class PlayerActivity : AppCompatActivity() {
             })
         }
     }
-
-    private fun playbackStateListener() = object : Player.EventListener {
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            val stateString: String = when (playbackState) {
-                ExoPlayer.STATE_IDLE -> "ExoPlayer.STATE_IDLE      -"
-                ExoPlayer.STATE_BUFFERING -> "ExoPlayer.STATE_BUFFERING -"
-                ExoPlayer.STATE_READY -> "ExoPlayer.STATE_READY     -"
-                ExoPlayer.STATE_ENDED -> "ExoPlayer.STATE_ENDED     -"
-                else -> "UNKNOWN_STATE             -"
-            }
-            Log.d("TAG", "changed state to $stateString")
-        }
-    }
-
-
 }
 
 
