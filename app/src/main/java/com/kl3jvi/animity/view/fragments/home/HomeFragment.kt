@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.R
@@ -67,7 +66,7 @@ class HomeFragment : Fragment() {
         subAdapter = CustomHorizontalAdapter(this)
         binding.recentSub.adapter = subAdapter
 
-        binding.todaySelection.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
         todayAdapter = CustomVerticalAdapter(this)
         binding.todaySelection.adapter = todayAdapter
 

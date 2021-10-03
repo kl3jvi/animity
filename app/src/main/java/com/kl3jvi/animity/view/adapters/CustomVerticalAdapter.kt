@@ -1,11 +1,15 @@
 package com.kl3jvi.animity.view.adapters
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
+import com.google.android.material.chip.Chip
 
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
@@ -20,6 +24,7 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         val title = view.animeTitle
         val image = view.animeImage
         val episodeNumber = view.episodeNumber
+        val chipGroup = view.chipGroup
 
     }
 
@@ -31,13 +36,24 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = list[position]
-        holder.image.load(element.imageUrl){
+        holder.image.load(element.imageUrl) {
             crossfade(true)
             diskCachePolicy(CachePolicy.ENABLED)
         }
 
         holder.title.text = element.title
         holder.episodeNumber.text = element.episodeNumber
+        holder.chipGroup.removeAllViews()
+        val arrayOfGenres = element.genreList
+        arrayOfGenres?.let { genres->
+            genres.forEach {
+                val chip = Chip(fragment.requireContext())
+                chip.text = it.genreName
+                chip.setTextColor(Color.WHITE)
+                chip.chipBackgroundColor = getColor()
+                holder.chipGroup.addView(chip)
+            }
+        }
 
         holder.itemView.setOnClickListener {
             if (fragment is HomeFragment) {
@@ -45,6 +61,12 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
             }
         }
     }
+
+    private fun getColor():  ColorStateList {
+        val color: Int = Color.argb(255, 102, 16, 242)
+        return ColorStateList.valueOf(color)
+    }
+
 
     override fun getItemCount() = list.size
 

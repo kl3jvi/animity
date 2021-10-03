@@ -20,7 +20,9 @@
     <color name="media_player_controls">#ffffff</color>
     <color name="progress_color">#F44336</color>
     <color name="media_player_controls_background">#60000000</color>
-
     <color name="episode_bg">#4D1C1C1C</color>
+
+
+    <color name="dark_mode_bg">#1c1c1c</color>
 
 </resources>
