@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".view.fragments.home.HomeFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -47,16 +48,17 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/progressBar"
-                android:layout_width="220dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-
                 app:lottie_rawRes="@raw/loading"
+                android:layout_marginTop="200dp"
                 app:lottie_loop="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="true" />
+
             <TextView
                 android:id="@+id/newSeasonTv"
                 android:layout_width="wrap_content"

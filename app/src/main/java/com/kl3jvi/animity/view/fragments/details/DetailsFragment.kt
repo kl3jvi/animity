@@ -1,17 +1,21 @@
 package com.kl3jvi.animity.view.fragments.details
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import coil.request.CachePolicy
-
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
@@ -40,18 +44,19 @@ class DetailsFragment : Fragment() {
         return root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
         val randomNum = (0..4).random()
 
         args.animeDetails.let { animeInfo ->
-            binding.appBarImage.load(Constants.DETAILS_BACKGROUND[randomNum]){
+            binding.appBarImage.load(Constants.DETAILS_BACKGROUND[randomNum]) {
                 crossfade(true)
                 diskCachePolicy(CachePolicy.ENABLED)
             }
 
-            binding.icon.load(animeInfo.imageUrl){
+            binding.icon.load(animeInfo.imageUrl) {
                 crossfade(true)
                 diskCachePolicy(CachePolicy.ENABLED)
             }
@@ -82,7 +87,6 @@ class DetailsFragment : Fragment() {
 
 
     private fun fetchAnimeInfo(url: String) {
-        viewModel.fetchAnimeInfo(url)
         viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
                 when (resource.status) {

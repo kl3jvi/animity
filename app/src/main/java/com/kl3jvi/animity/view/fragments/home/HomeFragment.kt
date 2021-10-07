@@ -206,7 +206,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -227,7 +227,6 @@ class HomeFragment : Fragment() {
                         resultListener { value ->
                             println(value)
                         } // Input value changed when form finished
-
                     })
                 }
 

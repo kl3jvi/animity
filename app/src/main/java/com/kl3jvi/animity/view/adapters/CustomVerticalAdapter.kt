@@ -4,13 +4,11 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
-
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
@@ -45,10 +43,10 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         holder.episodeNumber.text = element.episodeNumber
         holder.chipGroup.removeAllViews()
         val arrayOfGenres = element.genreList
-        arrayOfGenres?.let { genres->
-            genres.forEach {
+        arrayOfGenres?.let { genres ->
+            genres.forEach { data ->
                 val chip = Chip(fragment.requireContext())
-                chip.text = it.genreName
+                chip.text = data.genreName
                 chip.setTextColor(Color.WHITE)
                 chip.chipBackgroundColor = getColor()
                 holder.chipGroup.addView(chip)
@@ -62,7 +60,7 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         }
     }
 
-    private fun getColor():  ColorStateList {
+    private fun getColor(): ColorStateList {
         val color: Int = Color.argb(255, 102, 16, 242)
         return ColorStateList.valueOf(color)
     }

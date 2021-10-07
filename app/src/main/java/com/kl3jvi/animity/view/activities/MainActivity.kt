@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -51,5 +51,9 @@ class MainActivity : AppCompatActivity() {
         binding.navView.visibility = View.VISIBLE
         binding.navView.clearAnimation()
         binding.navView.animate().translationY(0f).duration = 300
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return super.onSupportNavigateUp()
     }
 }
