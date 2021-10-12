@@ -38,7 +38,7 @@ class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewM
                 )
             )
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
         }
     }
 
@@ -63,7 +63,7 @@ class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewM
                 )
             )
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
         }
     }
 

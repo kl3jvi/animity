@@ -1,30 +1,34 @@
 package com.kl3jvi.animity.view.fragments.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
+import android.util.Log
+import androidx.lifecycle.*
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
+
+
+     fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            val response = HtmlParser.parseRecentSubOrDub(
-                homeRepository.fetchRecentSubOrDub(
-                    Constants.getHeader(),
-                    1,
-                    Constants.TYPE_RECENT_DUB
-                ).string(), Constants.TYPE_RECENT_DUB
-            )
+            val response =
+                parseList(
+                    homeRepository.fetchRecentSubOrDub(
+                        Constants.getHeader(),
+                        1,
+                        Constants.TYPE_RECENT_DUB
+                    ).string(), Constants.TYPE_RECENT_DUB
+                )
+
             emit(
                 Resource.success(
                     data = response

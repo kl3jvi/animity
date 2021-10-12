@@ -25,7 +25,7 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
                 )
             )
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
         }
     }
 
@@ -44,7 +44,7 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
                 )
             )
         } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
         }
     }
 

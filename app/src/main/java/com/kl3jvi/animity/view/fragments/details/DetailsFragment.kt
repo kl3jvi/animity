@@ -1,6 +1,8 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import coil.request.CachePolicy
+import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.model.network.ApiHelper
@@ -34,6 +37,10 @@ class DetailsFragment : Fragment() {
     private lateinit var episodeAdapter: CustomEpisodeAdapter
 
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +73,8 @@ class DetailsFragment : Fragment() {
             animeInfo.categoryUrl?.let { url ->
                 fetchAnimeInfo(url)
             }
+
+
         }
 
         binding.episodeListRv.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -78,24 +87,35 @@ class DetailsFragment : Fragment() {
 
     private fun fetchEpisodeList(id: String, endEpisode: String, alias: String) {
         viewModel.fetchEpisodeList(id, endEpisode, alias)
-            .observe(viewLifecycleOwner, { episodeListResponse ->
+            .observe(viewLifecycleOwner) { episodeListResponse ->
                 episodeListResponse.data?.let { episodeList ->
                     episodeAdapter.getEpisodeInfo(episodeList)
                 }
-            })
+            }
     }
 
 
     private fun fetchAnimeInfo(url: String) {
-        viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner, { res ->
+
+        viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner) { res ->
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
                         resource.data?.let { info ->
                             binding.expandTextView.text = info.plotSummary
                             binding.releaseDate.text = info.releasedTime
+                            binding.releaseDate1.text = info.releasedTime
                             binding.status.text = info.status
                             binding.type.text = info.type
+
+
+                            info.genre.forEach { data ->
+                                val chip = Chip(requireContext())
+                                chip.text = data.genreName
+                                chip.setTextColor(Color.WHITE)
+                                chip.chipBackgroundColor = getColor()
+                                binding.genreGroup.addView(chip)
+                            }
 
                             // Call the other observer for fetching episodes list
                             fetchEpisodeList(info.id, info.endEpisode, info.alias)
@@ -122,7 +142,13 @@ class DetailsFragment : Fragment() {
                     }
                 }
             }
-        })
+        }
     }
+
+    private fun getColor(): ColorStateList {
+        val color: Int = Color.argb(255, 160, 39, 132)
+        return ColorStateList.valueOf(color)
+    }
+
 
 }

@@ -10,8 +10,9 @@
     android:focusable="true"
     android:orientation="vertical"
     android:paddingStart="20dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp">
+    android:paddingTop="5dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="5dp">
 
     <FrameLayout
         android:layout_width="match_parent"

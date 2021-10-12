@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,29 +60,34 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // recent subb adapter
         binding.recentSub.layoutManager = LinearLayoutManager(
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
-        subAdapter = CustomHorizontalAdapter(this)
+        subAdapter = CustomHorizontalAdapter(this, arrayListOf())
         binding.recentSub.adapter = subAdapter
 
+        // today selection adapter
         binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
         todayAdapter = CustomVerticalAdapter(this)
         binding.todaySelection.adapter = todayAdapter
 
+        // new season adapter
         binding.newSeasonRv.layoutManager = LinearLayoutManager(
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
-        newSeasonAdapter = CustomHorizontalAdapter(this)
+        newSeasonAdapter = CustomHorizontalAdapter(this, arrayListOf())
         binding.newSeasonRv.adapter = newSeasonAdapter
 
+        // movies adapter
         binding.moviesRv.layoutManager = LinearLayoutManager(
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
-        movieAdapter = CustomHorizontalAdapter(this)
+        movieAdapter = CustomHorizontalAdapter(this, arrayListOf())
         binding.moviesRv.adapter = movieAdapter
 
 
@@ -91,35 +97,23 @@ class HomeFragment : Fragment() {
     private fun fetchRecentDub() {
         viewModel.fetchRecentSubOrDub().observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
+
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        binding.progressBar.visibility = View.GONE
-                        resource.data?.let { entry ->
-                            subAdapter.getAnimes(entry)
-                        }
                         binding.recentSub.visibility = View.VISIBLE
-                        binding.textView.visibility = View.VISIBLE
-                        binding.textView2.visibility = View.VISIBLE
-
+                        binding.progressBar.visibility = View.GONE
+                        resource.data?.let { entry -> retrieveAnimes(entry) }
                     }
                     Status.ERROR -> {
-                        binding.progressBar.visibility = View.VISIBLE
                         Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-                        binding.progressBar.visibility = View.VISIBLE
-
-                        binding.textView.visibility = View.GONE
-                        binding.textView2.visibility = View.GONE
                         binding.recentSub.visibility = View.GONE
-
                     }
                 }
             }
         })
-
     }
-
 
     private fun getPopularAnime() {
         viewModel.fetchPopularAnime().observe(viewLifecycleOwner, { res ->
@@ -150,7 +144,7 @@ class HomeFragment : Fragment() {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         resource.data?.let { entry ->
-                            newSeasonAdapter.getAnimes(entry)
+                            newSeasonAdapter.addAnimes(entry)
                         }
                         binding.newSeasonRv.visibility = View.VISIBLE
                         binding.newSeasonTv.visibility = View.VISIBLE
@@ -174,7 +168,7 @@ class HomeFragment : Fragment() {
                 when (resource.status) {
                     Status.SUCCESS -> {
                         resource.data?.let { entry ->
-                            movieAdapter.getAnimes(entry)
+                            movieAdapter.addAnimes(entry)
                         }
                         binding.moviesRv.visibility = View.VISIBLE
                         binding.moviesTv.visibility = View.VISIBLE
@@ -206,7 +200,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        _binding = null
+        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -239,6 +233,13 @@ class HomeFragment : Fragment() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
+        }
+    }
+
+    private fun retrieveAnimes(animes: List<AnimeMetaModel>) {
+        subAdapter.apply {
+            addAnimes(animes = animes)
+            notifyDataSetChanged()
         }
     }
 }

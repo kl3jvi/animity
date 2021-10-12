@@ -11,10 +11,10 @@ import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
-class CustomHorizontalAdapter(private val fragment: Fragment) :
-    RecyclerView.Adapter<CustomHorizontalAdapter.ViewHolder>() {
-
-    private var list = ArrayList<AnimeMetaModel>()
+class CustomHorizontalAdapter(
+    private val fragment: Fragment,
+    private val animes: ArrayList<AnimeMetaModel>
+) : RecyclerView.Adapter<CustomHorizontalAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: ItemCardAnimeBinding) : RecyclerView.ViewHolder(view.root) {
         val title = view.animeTitle
@@ -30,8 +30,8 @@ class CustomHorizontalAdapter(private val fragment: Fragment) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val element = list[position]
-        holder.image.load(element.imageUrl){
+        val element = animes[position]
+        holder.image.load(element.imageUrl) {
             crossfade(true)
             diskCachePolicy(CachePolicy.ENABLED)
         }
@@ -46,12 +46,17 @@ class CustomHorizontalAdapter(private val fragment: Fragment) :
         }
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = animes.size
 
 
-    fun getAnimes(entry: ArrayList<AnimeMetaModel>) {
-        list = entry
-        notifyDataSetChanged()
+
+
+
+    fun addAnimes(animes:List<AnimeMetaModel>) {
+        this.animes.apply {
+            clear()
+            addAll(animes)
+        }
     }
 
 
