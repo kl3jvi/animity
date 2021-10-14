@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.view.fragments.home
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.network.ApiHelper
@@ -17,7 +16,11 @@ class HomeViewModel(
 
 
 
-     fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
+
+
+
+
+    fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             val response =
@@ -40,7 +43,7 @@ class HomeViewModel(
     }
 
 
-    fun fetchPopularAnime() = liveData(Dispatchers.IO) {
+    fun fetchTodaySelectionAnime() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             emit(

@@ -18,4 +18,8 @@
     <string name="release_date">Release Date</string>
     <string name="genre">Genre</string>
     <string name="synopsis">Synopsis</string>
+    <string name="movies">Movies</string>
+    <string name="new_season">New Season</string>
+    <string name="recent_subbed_episodes">Recent Subbed Episodes</string>
+    <string name="today_s_selection">Today\'s Selection</string>
 </resources>

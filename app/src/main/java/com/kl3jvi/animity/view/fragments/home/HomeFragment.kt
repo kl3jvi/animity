@@ -5,10 +5,11 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
@@ -33,7 +34,9 @@ class HomeFragment : Fragment() {
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
-
+    private val snapHelperSub: SnapHelper = PagerSnapHelper()
+    private val snapHelperNewSeason: SnapHelper = PagerSnapHelper()
+    private val snapHelperMovies: SnapHelper = PagerSnapHelper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +54,7 @@ class HomeFragment : Fragment() {
 
         getNewSeason()
         fetchRecentDub()
-        getPopularAnime()
+        getTodaySelectionAnime()
         fetchMovies()
 
         return binding.root
@@ -61,18 +64,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // recent subb adapter
+
+        // recent sub adapter
         binding.recentSub.layoutManager = LinearLayoutManager(
             requireContext(),
             RecyclerView.HORIZONTAL, false
         )
         subAdapter = CustomHorizontalAdapter(this, arrayListOf())
+        binding.recentSub.setHasFixedSize(true)
+        snapHelperSub.attachToRecyclerView(binding.recentSub)
         binding.recentSub.adapter = subAdapter
-
-        // today selection adapter
-        binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
-        todayAdapter = CustomVerticalAdapter(this)
-        binding.todaySelection.adapter = todayAdapter
 
         // new season adapter
         binding.newSeasonRv.layoutManager = LinearLayoutManager(
@@ -80,6 +81,8 @@ class HomeFragment : Fragment() {
             RecyclerView.HORIZONTAL, false
         )
         newSeasonAdapter = CustomHorizontalAdapter(this, arrayListOf())
+        binding.newSeasonRv.setHasFixedSize(true)
+        snapHelperNewSeason.attachToRecyclerView(binding.newSeasonRv)
         binding.newSeasonRv.adapter = newSeasonAdapter
 
         // movies adapter
@@ -88,19 +91,30 @@ class HomeFragment : Fragment() {
             RecyclerView.HORIZONTAL, false
         )
         movieAdapter = CustomHorizontalAdapter(this, arrayListOf())
+        binding.moviesRv.setHasFixedSize(true)
+        snapHelperMovies.attachToRecyclerView(binding.moviesRv)
         binding.moviesRv.adapter = movieAdapter
+
+
+        // today selection adapter
+        binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
+        binding.todaySelection.setHasFixedSize(true)
+        todayAdapter = CustomVerticalAdapter(this)
+        binding.todaySelection.adapter = todayAdapter
 
 
     }
 
 
     private fun fetchRecentDub() {
+
         viewModel.fetchRecentSubOrDub().observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
 
                 when (resource.status) {
                     Status.SUCCESS -> {
                         binding.recentSub.visibility = View.VISIBLE
+                        binding.recentSubTv.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.GONE
                         resource.data?.let { entry -> retrieveAnimes(entry) }
                     }
@@ -109,27 +123,28 @@ class HomeFragment : Fragment() {
                     }
                     Status.LOADING -> {
                         binding.recentSub.visibility = View.GONE
+                        binding.recentSubTv.visibility = View.GONE
                     }
                 }
             }
         })
     }
 
-    private fun getPopularAnime() {
-        viewModel.fetchPopularAnime().observe(viewLifecycleOwner, { res ->
+    private fun getTodaySelectionAnime() { // today selection anime
+        viewModel.fetchTodaySelectionAnime().observe(viewLifecycleOwner, { res ->
             res?.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
-                        resource.data?.let { entry ->
-                            todayAdapter.getSelectedAnime(entry)
-                        }
-                        binding.recentSub.visibility = View.VISIBLE
+                        resource.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
+                        binding.todaySelection.visibility = View.VISIBLE
+                        binding.todSelectionTv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
                     }
                     Status.LOADING -> {
-                        binding.recentSub.visibility = View.GONE
+                        binding.todaySelection.visibility = View.GONE
+                        binding.todSelectionTv.visibility = View.GONE
                     }
                 }
             }

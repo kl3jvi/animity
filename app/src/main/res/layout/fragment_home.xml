@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="#f1f1f1"
     tools:context=".view.fragments.home.HomeFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -20,14 +20,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/recentSubTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                android:text="Recent Subbed Episodes"
+                android:text="@string/recent_subbed_episodes"
                 android:textColor="@color/recycler_anime_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -42,22 +41,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/recentSubTv">
 
             </androidx.recyclerview.widget.RecyclerView>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/progressBar"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:lottie_rawRes="@raw/loading"
-                android:layout_marginTop="200dp"
-                app:lottie_loop="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true" />
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading" />
 
             <TextView
                 android:id="@+id/newSeasonTv"
@@ -65,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:text="New Season"
+                android:text="@string/new_season"
                 android:textColor="@color/recycler_anime_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -89,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:text="Movies"
+                android:text="@string/movies"
                 android:textColor="@color/recycler_anime_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -106,12 +104,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/moviesTv" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tod_selection_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
-                android:text="Today's Selection"
+                android:text="@string/today_s_selection"
                 android:textColor="@color/recycler_anime_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -126,9 +124,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/tod_selection_tv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

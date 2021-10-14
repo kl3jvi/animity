@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryLight">#d55cb5</color>
-    <color name="colorPrimary">#a12885</color>
-    <color name="colorPrimaryDark">#6f0058</color>
+    <color name="colorPrimaryLight">#5b687c</color>
+    <color name="colorPrimary">#313e50</color>
+    <color name="colorPrimaryDark">#091828</color>
 
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
