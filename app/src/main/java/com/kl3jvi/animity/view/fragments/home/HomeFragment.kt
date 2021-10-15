@@ -2,7 +2,6 @@ package com.kl3jvi.animity.view.fragments.home
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
@@ -119,7 +119,7 @@ class HomeFragment : Fragment() {
                         resource.data?.let { entry -> retrieveAnimes(entry) }
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                        showSnack(res.message)
                     }
                     Status.LOADING -> {
                         binding.recentSub.visibility = View.GONE
@@ -140,7 +140,7 @@ class HomeFragment : Fragment() {
                         binding.todSelectionTv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                        showSnack(res.message)
                     }
                     Status.LOADING -> {
                         binding.todaySelection.visibility = View.GONE
@@ -165,7 +165,7 @@ class HomeFragment : Fragment() {
                         binding.newSeasonTv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                        showSnack(res.message)
                     }
                     Status.LOADING -> {
                         binding.newSeasonRv.visibility = View.GONE
@@ -189,7 +189,7 @@ class HomeFragment : Fragment() {
                         binding.moviesTv.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireActivity(), res.message, Toast.LENGTH_LONG).show()
+                        showSnack(res.message)
                     }
                     Status.LOADING -> {
                         binding.moviesRv.visibility = View.GONE
@@ -238,10 +238,17 @@ class HomeFragment : Fragment() {
                         } // Input value changed when form finished
                     })
                 }
-
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun showSnack(message: String?) {
+        val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
+        if (!snack.isShown) {
+            snack.show()
+        }
     }
 
     override fun onResume() {

@@ -146,9 +146,10 @@ class DetailsFragment : Fragment() {
     }
 
     private fun getColor(): ColorStateList {
-        val color: Int = Color.argb(255, 160, 39, 132)
+        val color: Int = Color.argb(255, 4, 138, 129)
         return ColorStateList.valueOf(color)
     }
+
 
 
 }

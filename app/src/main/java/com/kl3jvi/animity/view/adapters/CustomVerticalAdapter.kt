@@ -2,6 +2,7 @@ package com.kl3jvi.animity.view.adapters
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -45,12 +46,18 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         val arrayOfGenres = element.genreList
         arrayOfGenres?.let { genres ->
             genres.forEach { data ->
-                val chip = Chip(fragment.requireContext())
-                chip.text = data.genreName
-                chip.setTextColor(Color.WHITE)
-                chip.chipBackgroundColor = getColor()
-                holder.chipGroup.addView(chip)
+                if (data.genreName.isNotBlank()) {
+                    val chip = Chip(fragment.requireContext())
+                    chip.apply {
+                        text = data.genreName
+                        setTextColor(Color.WHITE)
+                        chipBackgroundColor = getColor()
+                    }
+                    holder.chipGroup.addView(chip)
+                } else
+                    holder.chipGroup.removeAllViews()
             }
+            Log.e(element.title, genres.toString())
         }
 
         holder.itemView.setOnClickListener {
@@ -61,7 +68,7 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
     }
 
     private fun getColor(): ColorStateList {
-        val color: Int = Color.argb(255, 102, 16, 242)
+        val color: Int = Color.argb(255, 4, 138, 129)
         return ColorStateList.valueOf(color)
     }
 

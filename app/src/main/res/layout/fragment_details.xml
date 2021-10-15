@@ -140,17 +140,22 @@
             android:layout_height="wrap_content"
             tools:context=".view.fragments.details.DetailsFragment">
 
-            <ProgressBar
+
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loadingDetails"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading" />
+
+
 
             <TextView
                 android:id="@+id/animeTitleDetail"
@@ -182,7 +187,9 @@
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:divider="?attr/dividerVertical"
                 android:orientation="horizontal"
+                android:showDividers="middle"
                 android:weightSum="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
