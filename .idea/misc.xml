@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/bottom_sheet_search.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/error_screen_video_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.3140625" />

@@ -124,6 +124,7 @@ class HomeFragment : Fragment() {
                     Status.LOADING -> {
                         binding.recentSub.visibility = View.GONE
                         binding.recentSubTv.visibility = View.GONE
+                        binding.progressBar.visibility = View.VISIBLE
                     }
                 }
             }
