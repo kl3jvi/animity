@@ -149,16 +149,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/result_play_movie"
+                style="@style/WhiteButton"
+
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/play_movie"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:icon="@drawable/ic_baseline_play_arrow_24"/>
+
+
             <TextView
                 android:id="@+id/result_episodes_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:visibility="gone"
                 android:textColor="@color/textColor"
                 android:textSize="17sp"
                 android:textStyle="normal"
-                android:text="8 Episodes" />
+                tools:text="@string/episode_num" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/episode_list_recycler"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="afterDescendants"
+                tools:listitem="@layout/item_episode_number" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

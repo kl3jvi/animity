@@ -13,7 +13,7 @@ import com.kl3jvi.animity.view.fragments.details.DetailsFragment
 class CustomEpisodeAdapter(private val fragment: Fragment) :
     RecyclerView.Adapter<CustomEpisodeAdapter.ViewHolder>() {
 
-    private var list = ArrayList<EpisodeModel>()
+    private var list = listOf<EpisodeModel>()
 
 
     inner class ViewHolder(view: ItemEpisodeNumberBinding) : RecyclerView.ViewHolder(view.root) {
@@ -30,7 +30,7 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = list[position]
 
-        holder.num.text = element.episodeNumber
+        holder.num.text = element.episodeNumber.replace("EP","Episode")
 //        holder.type.text = element.episodeType
 
 
@@ -49,7 +49,7 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
     override fun getItemCount() = list.size
 
     fun getEpisodeInfo(retrieveData: ArrayList<EpisodeModel>) {
-        list = retrieveData
+        list = retrieveData.reversed()
         notifyDataSetChanged()
     }
 }

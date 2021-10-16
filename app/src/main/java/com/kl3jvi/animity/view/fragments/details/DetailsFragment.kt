@@ -4,27 +4,21 @@ package com.kl3jvi.animity.view.fragments.details
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.RoundedCorner
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
-import coil.transform.RoundedCornersTransformation
 import com.google.android.material.chip.Chip
-import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 
@@ -46,7 +40,7 @@ class DetailsFragment : Fragment() {
         val root: View = binding.root
         return root
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
@@ -68,9 +62,9 @@ class DetailsFragment : Fragment() {
 
         }
 //
-//        binding.episodeListRv.layoutManager = GridLayoutManager(requireContext(), 1)
-//        episodeAdapter = CustomEpisodeAdapter(this)
-//        binding.episodeListRv.adapter = episodeAdapter
+        binding.episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
+        episodeAdapter = CustomEpisodeAdapter(this)
+        binding.episodeListRecycler.adapter = episodeAdapter
 
 
     }
@@ -81,14 +75,22 @@ class DetailsFragment : Fragment() {
             .observe(viewLifecycleOwner) { episodeListResponse ->
                 episodeListResponse.data?.let { episodeList ->
                     episodeAdapter.getEpisodeInfo(episodeList)
-                    binding.resultEpisodesText.text = "${episodeAdapter.itemCount} Episodes"
+                    if (episodeList.size == 1) {
+                        binding.resultEpisodesText.visibility = View.GONE
+                        binding.resultPlayMovie.visibility = View.VISIBLE
+                        binding.episodeListRecycler.visibility = View.GONE
+                    } else {
+                        binding.resultEpisodesText.visibility = View.VISIBLE
+                        binding.resultPlayMovie.visibility = View.GONE
+                        binding.resultEpisodesText.text = "${episodeList.size} Episodes"
+                        binding.episodeListRecycler.visibility = View.VISIBLE
+                    }
                 }
             }
     }
 
 
     private fun fetchAnimeInfo(url: String) {
-
         viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner) { res ->
             res?.let { resource ->
                 when (resource.status) {
@@ -106,15 +108,10 @@ class DetailsFragment : Fragment() {
                                 chip.chipBackgroundColor = getColor()
                                 binding.genreGroup.addView(chip)
                             }
-//
-//                            // Call the other observer for fetching episodes list
+//                          Call the other observer for fetching episodes list
                             fetchEpisodeList(info.id, info.endEpisode, info.alias)
-//
-//                            binding.loadingDetails.visibility = View.GONE
-//                            binding.expandTextView.visibility = View.VISIBLE
-//                            binding.releaseDate.visibility = View.VISIBLE
-//                            binding.status.visibility = View.VISIBLE
-//                            binding.type.visibility = View.VISIBLE
+
+                            Log.e("episode nums", episodeAdapter.itemCount.toString())
                         }
                     }
                     Status.ERROR -> {
@@ -139,7 +136,6 @@ class DetailsFragment : Fragment() {
         val color: Int = Color.argb(255, 4, 138, 129)
         return ColorStateList.valueOf(color)
     }
-
 
 
 }

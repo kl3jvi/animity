@@ -17,8 +17,9 @@
     <color name="grayTextColor">#9ba0a4</color> <!-- 5e5f62-->
     <color name="transparent">#00000000</color>
 
+    <color name="iconGrayBackground">#1C1C20</color>
 
-    <color name="primaryBlackBackground">#111111</color>
+    <color name="primaryBlackBackground">#2B2C30</color>
 
     <color name="green">#28a745</color>
     <color name="blue">#007bff</color>

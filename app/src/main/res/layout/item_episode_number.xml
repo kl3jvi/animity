@@ -3,14 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
-    android:nextFocusLeft="@id/result_episode_download"
-    android:nextFocusRight="@id/result_episode_download"
-
     android:id="@+id/episode_holder"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-
     app:cardCornerRadius="@dimen/roundedImageRadius"
     app:cardBackgroundColor="@color/transparent"
     app:cardElevation="0dp"
@@ -61,24 +56,4 @@
         </TextView>
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:nextFocusLeft="@id/episode_holder"
-            android:nextFocusRight="@id/episode_holder"
-            android:id="@+id/result_episode_download"
-            android:visibility="visible"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="2dp"
-            android:layout_width="30dp"
-            android:background="?selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_baseline_play_arrow_24"/>
-
-    </FrameLayout>
 </androidx.cardview.widget.CardView>

@@ -22,4 +22,6 @@
     <string name="new_season">New Season</string>
     <string name="recent_subbed_episodes">Recent Subbed Episodes</string>
     <string name="today_s_selection">Today\'s Selection</string>
+    <string name="episode_num">8 Episodes</string>
+    <string name="play_movie">Play movie</string>
 </resources>
