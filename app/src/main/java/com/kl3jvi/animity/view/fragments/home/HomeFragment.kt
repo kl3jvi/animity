@@ -226,19 +226,8 @@ class HomeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.more_menu -> {
-                InputSheet().show(requireContext()) {
-                    with(InputEditText {
-                        hint("Search Animes")
-                        drawable(R.drawable.ic_search)
-                        changeListener { value ->
-                            println(value)
-                        } // Input value changed
-                        resultListener { value ->
-                            println(value)
-                        } // Input value changed when form finished
-                    })
-                }
+            R.id.app_bar_search -> {
+
             }
         }
         return super.onOptionsItemSelected(item)

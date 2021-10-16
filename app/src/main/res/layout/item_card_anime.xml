@@ -11,7 +11,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/animeCardView"
-        android:layout_width="105dp"
+        android:layout_width="115dp"
         android:layout_height="180dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
@@ -37,20 +37,19 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/play_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:padding="2dp"
             android:src="@drawable/ic_play_tv" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="-10dp"
             android:alpha="0.8"
-            android:layout_marginStart="-10dp"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="8dp">
 
@@ -58,34 +57,46 @@
                 android:id="@+id/episodeNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:padding="3dp"
-                android:layout_marginStart="10dp"
                 android:text="TextView"
                 android:textColor="#FFFFFF"
                 android:textSize="10sp" />
+
+
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/title_shadow"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/animeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:paddingBottom="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_gravity="bottom"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            tools:text="One Piece" />
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/animeTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:maxLines="2"
-        android:minLines="2"
-        android:textColor="@color/recycler_anime_title"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/animeCardView"
-
-        tools:text="One Piece" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

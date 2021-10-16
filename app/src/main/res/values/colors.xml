@@ -13,6 +13,12 @@
     <color name="recycler_anime_type">#808080</color>
     <color name="background_color">#2c363f</color>
 
+    <color name="textColor">#e9eaee</color> <!--FFF-->
+    <color name="grayTextColor">#9ba0a4</color> <!-- 5e5f62-->
+    <color name="transparent">#00000000</color>
+
+
+    <color name="primaryBlackBackground">#111111</color>
 
     <color name="green">#28a745</color>
     <color name="blue">#007bff</color>

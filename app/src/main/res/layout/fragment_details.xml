@@ -5,128 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryBlackBackground"
     android:elevation="15dp"
-    android:fitsSystemWindows="false">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:background="#FFFFFF"
-        android:fitsSystemWindows="true">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
-            app:toolbarId="@+id/toolbar">
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/app_bar_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="195dp"
-                    android:alpha="0.8"
-                    android:scaleType="centerCrop"
-                    android:src="@android:drawable/sym_def_app_icon"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:alpha="0.8"
-                    android:backgroundTint="@color/background_color"
-                    app:cardCornerRadius="5dp"
-                    app:contentPadding="4dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/app_bar_image"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <TextView
-                        android:id="@+id/releaseDate1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white" />
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:alpha="0.8"
-                    android:backgroundTint="@color/green"
-                    app:cardCornerRadius="5dp"
-                    app:contentPadding="4dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/app_bar_image"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView">
-
-                    <TextView
-                        android:id="@+id/status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white" />
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:alpha="0.8"
-                    android:backgroundTint="@color/blue"
-                    app:cardCornerRadius="5dp"
-                    app:contentPadding="4dp"
-                    app:layout_constraintBottom_toTopOf="@+id/cardView2"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <TextView
-                        android:id="@+id/type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView3"
-                    android:layout_width="100dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <ImageView
-                        android:id="@+id/icon"
-                        android:layout_width="100dp"
-                        android:layout_height="150dp"
-                        android:scaleType="centerCrop"
-                        app:layout_wrapBehaviorInParent="horizontal_only"
-                        app:srcCompat="@drawable/ic_launcher_foreground" />
-                </androidx.cardview.widget.CardView>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    android:fitsSystemWindows="false"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nest"
@@ -135,150 +18,102 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:ignore="SpeakableTextPresentCheck">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".view.fragments.details.DetailsFragment">
-
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/loadingDetails"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/loading" />
-
-
-
-            <TextView
-                android:id="@+id/animeTitleDetail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:letterSpacing="0.02"
-                android:text="TextView"
-                android:textColor="@color/background_color"
-                android:textSize="25sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/animeTitleDetail" />
-
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:divider="?attr/dividerVertical"
-                android:orientation="horizontal"
-                android:showDividers="middle"
-                android:weightSum="2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider2">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/result_poster_holder"
+                    android:layout_width="100dp"
+                    android:layout_height="140dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="@dimen/roundedImageRadius">
+
+                    <ImageView
+                        android:id="@+id/details_poster"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="@drawable/outline_drawable"
+                        android:scaleType="centerCrop" />
+                </androidx.cardview.widget.CardView>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/result_title"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:text="@string/release_date"
-                        android:textColor="@color/background_color"
-                        android:textSize="20sp" />
+                        android:layout_marginEnd="50dp"
+                        android:textColor="@color/textColor"
+                        android:textSize="20sp"
+                        android:textStyle="normal"
+                        tools:text="The Perfect Run The Perfect Run The Perfect Run" />
 
                     <TextView
                         android:id="@+id/releaseDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/background_color"
+                        android:lineSpacingExtra="3sp"
+                        android:paddingTop="3sp"
+                        android:textColor="@color/textColor"
                         android:textSize="15sp"
-                        tools:text="@string/release_date" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                        android:textStyle="normal"
+                        tools:text="2021\nda" />
 
                     <TextView
+                        android:id="@+id/status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/genre"
-                        android:textColor="@color/background_color"
-                        android:textSize="20sp" />
+                        android:lineSpacingExtra="3sp"
+                        android:paddingTop="3sp"
+                        android:textColor="@color/textColor"
+                        android:textSize="15sp"
+                        android:textStyle="normal"
+                        tools:text="2021\nda" />
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/genreGroup"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp">
-
-                    </com.google.android.material.chip.ChipGroup>
+                        android:lineSpacingExtra="3sp"
+                        android:paddingTop="3sp"
+                        android:textColor="@color/textColor"
+                        android:textSize="15sp"
+                        android:textStyle="normal"
+                        tools:text="2021\nda" />
                 </LinearLayout>
-
             </LinearLayout>
 
 
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/container" />
-
             <TextView
-                android:id="@+id/synopsis"
-                android:layout_width="0dp"
+                android:id="@+id/result_plot_header"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/synopsis"
-                android:textColor="@color/background_color"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider3" />
-
+                android:textColor="@color/textColor"
+                android:textSize="17sp"
+                android:textStyle="normal" />
 
             <com.ms.square.android.expandabletextview.ExpandableTextView
-
                 android:id="@+id/expand_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/synopsis"
-
                 expandableTextView:animDuration="200"
                 expandableTextView:maxCollapsedLines="4">
 
@@ -286,44 +121,46 @@
                     android:id="@id/expandable_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textColor="#666666"
-                    android:textSize="16sp" />
+                    android:textColor="@color/grayTextColor"
+                    android:textSize="15sp" />
 
                 <ImageButton
                     android:id="@id/expand_collapse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
+                    android:layout_gravity="center"
                     android:background="@android:color/transparent"
-                    android:padding="5dp" />
+                    android:padding="3dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/result_tag_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/genre"
+                android:textColor="@color/textColor"
+                android:textSize="17sp"
+                android:textStyle="normal" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/genreGroup"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/expand_text_view">
+                android:layout_height="wrap_content" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/episodeListRv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/result_episodes_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/textColor"
+                android:textSize="17sp"
+                android:textStyle="normal"
+                android:text="8 Episodes" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 

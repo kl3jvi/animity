@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_forward_icon.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_media_pause.xml" value="0.334375" />
@@ -19,6 +20,9 @@
         <entry key="app/src/main/res/drawable/ic_play_tv.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/outline.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/drawable/outline_drawable.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/drawable/title_shadow.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/bottom_sheet_search.xml" value="0.24427083333333333" />

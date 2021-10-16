@@ -53,17 +53,13 @@ class DetailsFragment : Fragment() {
         val randomNum = (0..4).random()
 
         args.animeDetails.let { animeInfo ->
-            binding.appBarImage.load(Constants.DETAILS_BACKGROUND[randomNum]) {
+
+            binding.detailsPoster.load(animeInfo.imageUrl) {
                 crossfade(true)
                 diskCachePolicy(CachePolicy.ENABLED)
             }
 
-            binding.icon.load(animeInfo.imageUrl) {
-                crossfade(true)
-                diskCachePolicy(CachePolicy.ENABLED)
-            }
-
-            binding.animeTitleDetail.text = animeInfo.title
+            binding.resultTitle.text = animeInfo.title
 
             animeInfo.categoryUrl?.let { url ->
                 fetchAnimeInfo(url)
@@ -71,10 +67,10 @@ class DetailsFragment : Fragment() {
 
 
         }
-
-        binding.episodeListRv.layoutManager = GridLayoutManager(requireContext(), 2)
-        episodeAdapter = CustomEpisodeAdapter(this)
-        binding.episodeListRv.adapter = episodeAdapter
+//
+//        binding.episodeListRv.layoutManager = GridLayoutManager(requireContext(), 1)
+//        episodeAdapter = CustomEpisodeAdapter(this)
+//        binding.episodeListRv.adapter = episodeAdapter
 
 
     }
@@ -85,6 +81,7 @@ class DetailsFragment : Fragment() {
             .observe(viewLifecycleOwner) { episodeListResponse ->
                 episodeListResponse.data?.let { episodeList ->
                     episodeAdapter.getEpisodeInfo(episodeList)
+                    binding.resultEpisodesText.text = "${episodeAdapter.itemCount} Episodes"
                 }
             }
     }
@@ -99,10 +96,8 @@ class DetailsFragment : Fragment() {
                         resource.data?.let { info ->
                             binding.expandTextView.text = info.plotSummary
                             binding.releaseDate.text = info.releasedTime
-                            binding.releaseDate1.text = info.releasedTime
                             binding.status.text = info.status
                             binding.type.text = info.type
-
 
                             info.genre.forEach { data ->
                                 val chip = Chip(requireContext())
@@ -111,15 +106,15 @@ class DetailsFragment : Fragment() {
                                 chip.chipBackgroundColor = getColor()
                                 binding.genreGroup.addView(chip)
                             }
-
-                            // Call the other observer for fetching episodes list
+//
+//                            // Call the other observer for fetching episodes list
                             fetchEpisodeList(info.id, info.endEpisode, info.alias)
-
-                            binding.loadingDetails.visibility = View.GONE
-                            binding.expandTextView.visibility = View.VISIBLE
-                            binding.releaseDate.visibility = View.VISIBLE
-                            binding.status.visibility = View.VISIBLE
-                            binding.type.visibility = View.VISIBLE
+//
+//                            binding.loadingDetails.visibility = View.GONE
+//                            binding.expandTextView.visibility = View.VISIBLE
+//                            binding.releaseDate.visibility = View.VISIBLE
+//                            binding.status.visibility = View.VISIBLE
+//                            binding.type.visibility = View.VISIBLE
                         }
                     }
                     Status.ERROR -> {
@@ -127,12 +122,12 @@ class DetailsFragment : Fragment() {
                             .show()
                     }
                     Status.LOADING -> {
-                        binding.loadingDetails.visibility = View.VISIBLE
-
-                        binding.expandTextView.visibility = View.GONE
-                        binding.releaseDate.visibility = View.GONE
-                        binding.status.visibility = View.GONE
-                        binding.type.visibility = View.GONE
+//                        binding.loadingDetails.visibility = View.VISIBLE
+//
+//                        binding.expandTextView.visibility = View.GONE
+//                        binding.releaseDate.visibility = View.GONE
+//                        binding.status.visibility = View.GONE
+//                        binding.type.visibility = View.GONE
 
                     }
                 }

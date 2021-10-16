@@ -17,8 +17,8 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
 
 
     inner class ViewHolder(view: ItemEpisodeNumberBinding) : RecyclerView.ViewHolder(view.root) {
-        val num = view.episodeNum
-        val type = view.episodeType
+        val num = view.episodeText
+//        val type = view.episodeType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +31,7 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
         val element = list[position]
 
         holder.num.text = element.episodeNumber
-        holder.type.text = element.episodeType
+//        holder.type.text = element.episodeType
 
 
         holder.itemView.setOnClickListener {

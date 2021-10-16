@@ -15,7 +15,7 @@
         android:elevation="10dp"
         android:layout_marginEnd="0dp"
         app:indicatorRadius="8dp"
-        app:iconSize="20dp"
+        app:iconSize="23dp"
         android:fitsSystemWindows="true"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
