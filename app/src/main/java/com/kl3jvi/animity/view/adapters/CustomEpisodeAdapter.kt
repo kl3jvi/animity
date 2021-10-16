@@ -18,7 +18,7 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
 
     inner class ViewHolder(view: ItemEpisodeNumberBinding) : RecyclerView.ViewHolder(view.root) {
         val num = view.episodeText
-//        val type = view.episodeType
+        val progress = view.episodeProgress
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,13 +30,11 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = list[position]
 
-        holder.num.text = element.episodeNumber.replace("EP","Episode")
-//        holder.type.text = element.episodeType
-
+        holder.num.text = element.episodeNumber.replace("EP", "Episode")
+        holder.progress.progress = (0..100).random()
 
         holder.itemView.setOnClickListener {
             if (fragment is DetailsFragment) {
-
                 val intent =
                     Intent(fragment.requireActivity(), PlayerActivity::class.java)
                 intent.putExtra("episodeUrl", element.episodeurl)

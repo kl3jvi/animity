@@ -18,7 +18,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Naruto Shippuden Episode 7" />
+        android:text="Naruto Shippuden Episode 7" />
 
     <ImageButton
         android:id="@+id/exo_play"
@@ -87,7 +87,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginTop="6dp"
         android:background="?selectableItemBackgroundBorderless"
-        android:tint="@color/media_player_controls"
+        app:tint="@color/media_player_controls"
         android:src="@drawable/exo_controls_fullscreen_enter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -98,38 +98,49 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="16dp"
+
         android:layout_marginBottom="24dp"
         android:textColor="@color/media_player_controls"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/exo_progress_placeholder"
+        app:layout_constraintEnd_toStartOf="@id/exo_progress"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="22:04"
         android:id="@+id/exo_position"/>
 
-    <View android:id="@id/exo_progress_placeholder"
+
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@id/exo_progress"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="19dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        app:scrubber_enabled_size="24dp"
+        app:scrubber_dragged_size="26dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/exo_duration"
         app:layout_constraintStart_toEndOf="@id/exo_position"
-        android:layout_marginBottom="19dp"
-        android:layout_marginStart="16dp"
+        app:scrubber_color="?attr/colorPrimary"
+        app:bar_height="2dp"
+        app:played_color="?attr/colorPrimary"
+        app:unplayed_color="@color/videoProgress"/>
 
-        android:tint="@color/progress_color"
-        android:layout_marginEnd="16dp"
-        android:layout_width="0dp"
-        android:layout_height="26dp"/>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_marginStart="16dp"
+
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:id="@+id/exo_duration"
+        android:text="40:00"
         android:textColor="@color/media_player_controls"
-        app:layout_constraintStart_toEndOf="@id/exo_progress_placeholder"
+        app:layout_constraintStart_toEndOf="@id/exo_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />

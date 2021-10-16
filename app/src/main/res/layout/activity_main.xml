@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
+    android:background="@color/primaryBlackBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +13,9 @@
         android:layout_height="@dimen/bottom_bar_size"
         android:layout_marginStart="0dp"
         app:textSize="14sp"
-        android:elevation="10dp"
+        app:itemPadding="7dp"
+        app:sideMargins="15dp"
+        android:elevation="100dp"
         android:layout_marginEnd="0dp"
         app:indicatorRadius="8dp"
         app:iconSize="23dp"
@@ -21,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:backgroundColor="@color/colorPrimary"
+        app:backgroundColor="@color/darkBackground"
         app:menu="@menu/bottom_nav_menu"/>
 
 

@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/episode_holder"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    app:cardCornerRadius="@dimen/roundedImageRadius"
-    app:cardBackgroundColor="@color/transparent"
-    app:cardElevation="0dp"
-    android:foreground="@drawable/outline_drawable"
     android:layout_marginBottom="5dp"
-    >
+    android:foreground="@drawable/outline_drawable"
+    app:cardBackgroundColor="@color/transparent"
+    app:cardCornerRadius="@dimen/roundedImageRadius"
+    app:cardElevation="0dp">
+
     <androidx.core.widget.ContentLoadingProgressBar
-        android:layout_marginBottom="-1.5dp"
         android:id="@+id/episode_progress"
-        android:progressTint="?attr/colorPrimary"
-        android:progressBackgroundTint="?attr/colorPrimary"
         style="@android:style/Widget.Material.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        tools:progress="50"
+        android:layout_height="5dp"
         android:layout_gravity="bottom"
-        android:layout_height="5dp">
-    </androidx.core.widget.ContentLoadingProgressBar>
+        android:layout_marginBottom="-1.5dp"
+        android:progressBackgroundTint="@color/colorPrimary"
+        android:progressTint="@color/colorProgress"
+        tools:progress="50" />
+
     <LinearLayout
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless">
+
         <ImageView
+            android:id="@+id/episode_play"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/episode_play"
-            android:src="@drawable/ic_baseline_play_arrow_24"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            />
-        <!--marquee_forever-->
+            android:src="@drawable/ic_baseline_play_arrow_24" />
+
         <TextView
             android:id="@+id/episode_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="50dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical" tools:text="Episode 1"
-            android:textColor="@color/textColor"
-
-            android:scrollHorizontally="true"
             android:ellipsize="marquee"
-
+            android:gravity="center_vertical"
             android:marqueeRepeatLimit="0"
+            android:scrollHorizontally="true"
             android:singleLine="true"
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </TextView>
+            android:textColor="@color/textColor"
+            tools:text="Episode 1" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
