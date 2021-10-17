@@ -108,8 +108,8 @@
 
                 <ImageView
                     android:id="@+id/animeImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:contentDescription="img"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/ic_launcher_foreground" />

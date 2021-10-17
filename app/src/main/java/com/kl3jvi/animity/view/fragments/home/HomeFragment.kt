@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.view.fragments.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -20,8 +21,6 @@ import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.view.factory.ViewModelFactory
-import com.maxkeppeler.sheets.input.InputSheet
-import com.maxkeppeler.sheets.input.type.InputEditText
 
 
 class HomeFragment : Fragment() {
@@ -42,7 +41,6 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -52,20 +50,20 @@ class HomeFragment : Fragment() {
     ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        getNewSeason()
-        fetchRecentDub()
-        getTodaySelectionAnime()
-        fetchMovies()
-
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getNewSeason()
+        fetchRecentDub()
+        getTodaySelectionAnime()
+        fetchMovies()
+        initViews()
+    }
 
-
+    private fun initViews() {
         // recent sub adapter
         binding.recentSub.layoutManager = LinearLayoutManager(
             requireContext(),
@@ -102,16 +100,12 @@ class HomeFragment : Fragment() {
         binding.todaySelection.setHasFixedSize(true)
         todayAdapter = CustomVerticalAdapter(this)
         binding.todaySelection.adapter = todayAdapter
-
-
     }
 
 
     private fun fetchRecentDub() {
-
-        viewModel.fetchRecentSubOrDub().observe(viewLifecycleOwner, { res ->
+        viewModel.fetchRecentSubOrDub().observe(viewLifecycleOwner) { res ->
             res?.let { resource ->
-
                 when (resource.status) {
                     Status.SUCCESS -> {
                         binding.recentSub.visibility = View.VISIBLE
@@ -129,7 +123,7 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        })
+        }
     }
 
     private fun getTodaySelectionAnime() { // today selection anime
@@ -150,10 +144,8 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-
         })
     }
-
 
     private fun getNewSeason() {
         viewModel.fetchNewSeason().observe(viewLifecycleOwner, { res ->
@@ -203,7 +195,6 @@ class HomeFragment : Fragment() {
         })
     }
 
-
     fun animeDetails(animeDetails: AnimeMetaModel) {
         findNavController().navigate(
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
@@ -249,6 +240,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun retrieveAnimes(animes: List<AnimeMetaModel>) {
         subAdapter.apply {
             addAnimes(animes = animes)

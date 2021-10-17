@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.utils
 
-import com.google.android.material.snackbar.Snackbar
-import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import android.content.res.ColorStateList
+import android.graphics.Color
 
 class Constants {
     companion object {
@@ -56,7 +56,8 @@ class Constants {
         const val TYPE_SEARCH_UPDATE = 2001
 
         //Network Requests Header
-        const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
+        const val USER_AGENT =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
         const val ORIGIN = "https://gogoanime.vc/"
         const val REFERER = "https://gogoanime.vc/"
 
@@ -72,7 +73,20 @@ class Constants {
             )
         }
 
+        fun getColor(): ColorStateList {
+            val color: Int = Color.argb(255, 4, 138, 129)
+            return ColorStateList.valueOf(color)
+        }
 
+        fun getBackgroundColor(): ColorStateList {
+            val color: Int = Color.argb(255, 17, 17, 17)
+            return ColorStateList.valueOf(color)
+        }
+
+        fun getVerticalAdapterBackgroundColor(): ColorStateList {
+            val color: Int = Color.argb(255, 49, 62, 80)
+            return ColorStateList.valueOf(color)
+        }
     }
 
 }

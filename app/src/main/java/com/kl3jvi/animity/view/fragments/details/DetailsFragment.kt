@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +17,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
+import com.kl3jvi.animity.utils.Constants.Companion.getColor
+import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.view.factory.ViewModelFactory
@@ -79,6 +80,9 @@ class DetailsFragment : Fragment() {
                             resultPlayMovie.visibility = View.GONE
                             resultEpisodesText.text = "${episodeList.size} Episodes"
                             episodeListRecycler.visibility = View.VISIBLE
+                            imageButton.setOnClickListener {
+
+                            }
                         }
                     }
                 }
@@ -97,12 +101,19 @@ class DetailsFragment : Fragment() {
                             binding.status.text = info.status
                             binding.type.text = info.type
 
+                            binding.expandTextView.visibility = View.VISIBLE
+                            binding.releaseDate.visibility = View.VISIBLE
+                            binding.status.visibility = View.VISIBLE
+                            binding.type.visibility = View.VISIBLE
+
                             info.genre.forEach { data ->
                                 val chip = Chip(requireContext())
                                 chip.apply {
                                     text = data.genreName
                                     setTextColor(Color.WHITE)
-                                    chipBackgroundColor = getColor()
+                                    chipStrokeColor = getColor()
+                                    chipStrokeWidth = 3f
+                                    chipBackgroundColor = getBackgroundColor()
                                 }
                                 binding.genreGroup.addView(chip)
                             }
@@ -125,10 +136,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun getColor(): ColorStateList {
-        val color: Int = Color.argb(255, 4, 138, 129)
-        return ColorStateList.valueOf(color)
-    }
+
 
 
     private fun showSnack(message: String?) {

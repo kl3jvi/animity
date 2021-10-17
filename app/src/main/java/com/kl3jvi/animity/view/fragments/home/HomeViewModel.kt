@@ -2,20 +2,15 @@ package com.kl3jvi.animity.view.fragments.home
 
 import androidx.lifecycle.*
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
-
-
-
 
 
 
@@ -40,8 +35,7 @@ class HomeViewModel(
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
-    }
-
+    }.distinctUntilChanged()
 
     fun fetchTodaySelectionAnime() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
@@ -59,7 +53,7 @@ class HomeViewModel(
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
-    }
+    }.distinctUntilChanged()
 
     fun fetchNewSeason() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
@@ -77,8 +71,7 @@ class HomeViewModel(
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
-    }
-
+    }.distinctUntilChanged()
 
     fun fetchMovies() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
@@ -96,8 +89,7 @@ class HomeViewModel(
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
-    }
-
+    }.distinctUntilChanged()
 
     private fun parseList(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         return when (typeValue) {

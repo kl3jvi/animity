@@ -2,7 +2,6 @@ package com.kl3jvi.animity.view.adapters
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -12,6 +11,7 @@ import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomVerticalAdapter(private val fragment: Fragment) :
@@ -24,7 +24,6 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         val image = view.animeImage
         val episodeNumber = view.episodeNumber
         val chipGroup = view.chipGroup
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,7 +38,6 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
             crossfade(true)
             diskCachePolicy(CachePolicy.ENABLED)
         }
-
         holder.title.text = element.title
         holder.episodeNumber.text = element.episodeNumber
         holder.chipGroup.removeAllViews()
@@ -51,13 +49,14 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
                     chip.apply {
                         text = data.genreName
                         setTextColor(Color.WHITE)
-                        chipBackgroundColor = getColor()
+                        chipStrokeColor = getColor()
+                        chipStrokeWidth = 3f
+                        chipBackgroundColor = getVerticalAdapterBackgroundColor()
                     }
                     holder.chipGroup.addView(chip)
                 } else
                     holder.chipGroup.removeAllViews()
             }
-            Log.e(element.title, genres.toString())
         }
 
         holder.itemView.setOnClickListener {
@@ -72,9 +71,7 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
         return ColorStateList.valueOf(color)
     }
 
-
     override fun getItemCount() = list.size
-
 
     fun getSelectedAnime(entry: ArrayList<AnimeMetaModel>) {
         list = entry
