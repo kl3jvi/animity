@@ -19,6 +19,7 @@ import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
+import com.kl3jvi.animity.view.factory.ViewModelFactory
 import com.maxkeppeler.sheets.input.InputSheet
 import com.maxkeppeler.sheets.input.type.InputEditText
 
@@ -28,7 +29,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels {
-        HomeViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
     private lateinit var subAdapter: CustomHorizontalAdapter
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter

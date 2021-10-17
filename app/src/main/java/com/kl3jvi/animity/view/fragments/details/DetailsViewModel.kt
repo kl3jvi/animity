@@ -70,11 +70,3 @@ class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewM
 
 }
 
-class DetailsViewModelFactory(private val apiHelper: ApiHelper) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
-            return DetailsViewModel(DetailsRepository(apiHelper)) as T
-        }
-        throw IllegalArgumentException("Unknown class name")
-    }
-}

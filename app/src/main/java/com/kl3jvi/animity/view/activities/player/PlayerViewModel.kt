@@ -53,12 +53,3 @@ class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewMode
     }
 
 }
-
-class PlayerViewModelFactory(private val apiHelper: ApiHelper) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PlayerViewModel::class.java)) {
-            return PlayerViewModel(PlayerRepository(apiHelper)) as T
-        }
-        throw IllegalArgumentException("Unknown class name")
-    }
-}

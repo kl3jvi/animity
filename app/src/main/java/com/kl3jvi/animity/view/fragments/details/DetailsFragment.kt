@@ -20,6 +20,7 @@ import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
+import com.kl3jvi.animity.view.factory.ViewModelFactory
 
 
 class DetailsFragment : Fragment() {
@@ -27,17 +28,16 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
     private lateinit var episodeAdapter: CustomEpisodeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

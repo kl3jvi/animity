@@ -23,6 +23,7 @@ import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.view.factory.ViewModelFactory
 
 
 private lateinit var viewModel: PlayerViewModel
@@ -45,7 +46,7 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         viewModel = ViewModelProvider(
-            this, PlayerViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+            this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
         ).get(PlayerViewModel::class.java)
     }
 
