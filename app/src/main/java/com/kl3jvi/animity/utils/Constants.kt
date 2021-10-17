@@ -1,5 +1,8 @@
 package com.kl3jvi.animity.utils
 
+import com.google.android.material.snackbar.Snackbar
+import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+
 class Constants {
     companion object {
 
@@ -68,6 +71,8 @@ class Constants {
                 "user-agent" to USER_AGENT
             )
         }
+
+
     }
 
 }

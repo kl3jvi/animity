@@ -1,8 +1,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/media_player_controls_background">
 
     <TextView
@@ -14,136 +14,132 @@
         android:fontFamily="sans-serif"
         android:maxWidth="450dp"
         android:maxLines="2"
+        tools:text="Naruto Shippuden Episode 7"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="Naruto Shippuden Episode 7" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/exo_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_media_play"
         android:background="?selectableItemBackgroundBorderless"
-        android:padding="10dp"
         android:clickable="true"
         android:focusable="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_media_play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
+        android:id="@+id/exo_rew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/exo_rew"
-        android:src="@drawable/ic_media_seek_backward"
-        android:padding="16dp"
-        android:background="?selectableItemBackgroundBorderless"
         android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="16dp"
+        android:src="@drawable/ic_media_seek_backward"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/exo_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
-        android:background="?selectableItemBackgroundBorderless"
+        android:padding="10dp"
         android:src="@drawable/ic_media_pause"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <ImageButton
+        android:id="@+id/exo_ffwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/exo_ffwd"
+        android:layout_marginStart="20dp"
         android:background="?selectableItemBackgroundBorderless"
         android:padding="16dp"
-        android:layout_marginStart="20dp"
         android:src="@drawable/ic_forward_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
+        android:id="@+id/exo_full_Screen"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/exo_full_Screen"
-        android:paddingTop="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="10dp"
+        android:background="?selectableItemBackgroundBorderless"
         android:paddingStart="10dp"
+        android:paddingTop="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="6dp"
-        android:background="?selectableItemBackgroundBorderless"
-        app:tint="@color/media_player_controls"
         android:src="@drawable/exo_controls_fullscreen_enter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/media_player_controls" />
 
     <TextView
+        android:id="@+id/exo_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textStyle="bold"
         android:layout_marginStart="24dp"
-
         android:layout_marginBottom="24dp"
         android:textColor="@color/media_player_controls"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/exo_progress"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="22:04"
-        android:id="@+id/exo_position"/>
-
+        tools:text="22:04" />
 
 
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@id/exo_progress"
         android:layout_width="0dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="19dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="19dp"
         android:layout_weight="1"
-        app:scrubber_enabled_size="24dp"
-        app:scrubber_dragged_size="26dp"
+        app:bar_height="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/exo_duration"
         app:layout_constraintStart_toEndOf="@id/exo_position"
-        app:scrubber_color="?attr/colorPrimary"
-        app:bar_height="2dp"
         app:played_color="?attr/colorPrimary"
-        app:unplayed_color="@color/videoProgress"/>
-
+        app:scrubber_color="?attr/colorPrimary"
+        app:scrubber_dragged_size="26dp"
+        app:scrubber_enabled_size="24dp"
+        app:unplayed_color="@color/videoProgress" />
 
 
     <TextView
+        android:id="@+id/exo_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textStyle="bold"
-
         android:layout_marginEnd="24dp"
+
         android:layout_marginBottom="24dp"
-        android:id="@+id/exo_duration"
         android:text="40:00"
         android:textColor="@color/media_player_controls"
-        app:layout_constraintStart_toEndOf="@id/exo_progress"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/exo_progress" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
