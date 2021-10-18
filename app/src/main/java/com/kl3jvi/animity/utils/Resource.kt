@@ -1,5 +1,8 @@
 package com.kl3jvi.animity.utils
 
+import androidx.lifecycle.LiveData
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
+
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {
         fun <T> success(data: T): Resource<T> = Resource(status = Status.SUCCESS, data = data, message = null)

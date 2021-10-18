@@ -113,12 +113,16 @@ dependencies {
     implementation 'com.maxkeppeler.sheets:core:2.2.6'
     implementation 'com.maxkeppeler.sheets:input:2.2.6'
 
-    def lottieVersion = '4.1.0'
+
     //animation lib
+    def lottieVersion = '4.1.0'
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // image library
     implementation("io.coil-kt:coil:1.3.2")
+
+    //botoom sheet library
+    implementation 'com.github.andrefrsousa:SuperBottomSheet:2.0.0'
 
 
 }

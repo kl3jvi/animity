@@ -14,7 +14,6 @@ class HomeViewModel(
 
 
 
-
     fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {

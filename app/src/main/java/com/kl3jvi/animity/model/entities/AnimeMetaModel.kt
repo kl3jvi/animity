@@ -1,9 +1,11 @@
 package com.kl3jvi.animity.model.entities
 
 import android.os.Parcelable
+import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity(tableName = "anime_table")
 data class AnimeMetaModel(
     var ID: Int? = null,
     var typeValue: Int? = null,
