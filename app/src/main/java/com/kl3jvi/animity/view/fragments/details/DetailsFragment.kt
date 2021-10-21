@@ -82,6 +82,9 @@ class DetailsFragment : Fragment() {
                         binding.status.visibility = View.VISIBLE
                         binding.type.visibility = View.VISIBLE
 
+
+
+
                         info.genre.forEach { data ->
                             val chip = Chip(requireContext())
                             chip.apply {
@@ -108,7 +111,6 @@ class DetailsFragment : Fragment() {
             }
         })
     }
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

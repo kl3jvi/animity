@@ -26,4 +26,7 @@
     <string name="today_s_selection">Today\'s Selection</string>
     <string name="episode_num">8 Episodes</string>
     <string name="play_movie">Play movie</string>
+    <string name="released">Released:</string>
+    <string name="status">Status:</string>
+    <string name="type">Type:</string>
 </resources>

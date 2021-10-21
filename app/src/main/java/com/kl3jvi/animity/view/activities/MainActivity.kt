@@ -41,13 +41,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideBottomNavBar() {
-        binding.navView.clearAnimation()
         binding.navView.animate().translationY(binding.navView.height.toFloat()).duration = 300
         binding.navView.visibility = View.GONE
     }
 
     fun showBottomNavBar() {
-        binding.navView.clearAnimation()
         binding.navView.visibility = View.VISIBLE
         binding.navView.animate().translationY(0f).duration = 300
     }
