@@ -1,6 +1,8 @@
 package com.kl3jvi.animity.model.network
 
-class ApiHelper(private val apiService: ApiService) {
+import javax.inject.Inject
+
+class ApiHelper @Inject constructor(private val apiService: AnimeService) {
 
     suspend fun fetchRecentSubOrDub(header: Map<String, String>, page: Int, type: Int) =
         apiService.fetchRecentSubOrDub(header, page, type)
@@ -36,3 +38,5 @@ class ApiHelper(private val apiService: ApiService) {
             alias = alias
         )
 }
+
+

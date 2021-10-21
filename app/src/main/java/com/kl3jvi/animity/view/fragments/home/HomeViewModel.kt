@@ -1,14 +1,20 @@
 package com.kl3jvi.animity.view.fragments.home
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.liveData
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
@@ -25,7 +31,6 @@ class HomeViewModel(
                         Constants.TYPE_RECENT_DUB
                     ).string(), Constants.TYPE_RECENT_DUB
                 )
-
             emit(
                 Resource.success(
                     data = response

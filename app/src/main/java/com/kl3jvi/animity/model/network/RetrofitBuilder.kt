@@ -18,7 +18,7 @@ object RetrofitBuilder {
             .build()
     }
 
-    val apiService: ApiService = getRetrofit().create(ApiService::class.java)
+    val apiService: AnimeService = getRetrofit().create(AnimeService::class.java)
 }
 
 object AddLoggingInterceptor {

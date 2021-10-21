@@ -2,6 +2,8 @@ package com.kl3jvi.animity.utils
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.utils.parser.HtmlParser
 
 class Constants {
     companion object {
@@ -86,6 +88,17 @@ class Constants {
         fun getVerticalAdapterBackgroundColor(): ColorStateList {
             val color: Int = Color.argb(255, 49, 62, 80)
             return ColorStateList.valueOf(color)
+        }
+
+        fun parseList(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
+            return when (typeValue) {
+                TYPE_RECENT_DUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
+                TYPE_RECENT_SUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
+                TYPE_POPULAR_ANIME -> HtmlParser.parsePopular(response, typeValue)
+                TYPE_MOVIE -> HtmlParser.parseMovie(response, typeValue)
+                TYPE_NEW_SEASON -> HtmlParser.parseMovie(response, typeValue)
+                else -> ArrayList()
+            }
         }
     }
 

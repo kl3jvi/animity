@@ -46,7 +46,7 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         viewModel = ViewModelProvider(
-            this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+            this, ViewModelFactory(ApiHelper(RetrofitBuilder.apiService),null)
         ).get(PlayerViewModel::class.java)
     }
 

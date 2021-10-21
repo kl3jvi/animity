@@ -1,14 +1,17 @@
 package com.kl3jvi.animity.model.network
 
 import com.kl3jvi.animity.utils.Constants
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import retrofit2.Response
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.Query
 import retrofit2.http.Url
 
-interface ApiService {
+interface AnimeService {
 
 
     @GET("https://ajax.gogocdn.net/ajax/page-recent-release.html")
@@ -78,4 +81,24 @@ interface ApiService {
         @Query("keyword") keyword: String,
         @Query("page") page: Int
     ): ResponseBody
+
+
+    companion object {
+
+
+        fun create(): AnimeService {
+            val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logger)
+                .build()
+
+            return Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(AnimeService::class.java)
+        }
+    }
 }

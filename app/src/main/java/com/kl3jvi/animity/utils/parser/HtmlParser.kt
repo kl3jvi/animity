@@ -44,6 +44,7 @@ object HtmlParser {
             )
             i++
         }
+
         return animeMetaModelList
     }
 

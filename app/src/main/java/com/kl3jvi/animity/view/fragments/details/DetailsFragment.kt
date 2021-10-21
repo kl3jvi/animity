@@ -29,7 +29,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DetailsViewModel by viewModels {
-        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService),null)
     }
     private lateinit var episodeAdapter: CustomEpisodeAdapter
 

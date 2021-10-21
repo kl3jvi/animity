@@ -1,10 +1,11 @@
 package com.kl3jvi.animity.application
 
 import android.app.Application
-import com.kl3jvi.animity.model.network.ApiHelper
-import com.kl3jvi.animity.model.network.ApiService
-import com.kl3jvi.animity.view.fragments.home.HomeRepository
+import android.content.res.Configuration
+import com.kl3jvi.animity.BuildConfig
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class AnimityApplication : Application() {
 
 }
