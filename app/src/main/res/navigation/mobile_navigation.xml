@@ -12,28 +12,29 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_detailsFragment"
+            app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:destination="@id/detailsFragment" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_favorites"
         android:name="com.kl3jvi.animity.view.fragments.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_explore"
         android:name="com.kl3jvi.animity.view.fragments.search.SearchFragment"
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_search" />
+
     <fragment
-        android:id="@+id/detailsFragment"
+        android:id="@+id/navigation_details"
         android:name="com.kl3jvi.animity.view.fragments.details.DetailsFragment"
-        android:label="Anime Details"
+        android:label="@string/anime_details"
         tools:layout="@layout/fragment_details">
         <argument
             android:name="animeDetails"

@@ -17,58 +17,58 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val data: MutableLiveData<AnimeInfoModel> = MutableLiveData()
-
-
-    fun fetchAnimeInfo(url: String) = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(
-                Resource.success(
-                    data = HtmlParser.parseAnimeInfo(
-                        detailsRepository.fetchAnimeInfo(
-                            Constants.getHeader(),
-                            url
-                        ).string()
-                    )
-                )
-            )
-            data.postValue(
-                HtmlParser.parseAnimeInfo(
-                    detailsRepository.fetchAnimeInfo(
-                        Constants.getHeader(),
-                        url
-                    ).string()
-                )
-            )
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
-        }
-    }
-
-
-    fun fetchEpisodeList(
-        id: String,
-        endEpisode: String,
-        alias: String
-    ) = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(
-                Resource.success(
-                    data = HtmlParser.fetchEpisodeList(
-                        detailsRepository.fetchEpisodeList(
-                            header = Constants.getHeader(),
-                            id = id,
-                            endEpisode = endEpisode,
-                            alias = alias
-                        ).string()
-                    )
-                )
-            )
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
-        }
-    }
+//
+//
+//    fun fetchAnimeInfo(url: String) = liveData(Dispatchers.IO) {
+//        emit(Resource.loading(data = null))
+//        try {
+//            emit(
+//                Resource.success(
+//                    data = HtmlParser.parseAnimeInfo(
+//                        detailsRepository.fetchAnimeInfo(
+//                            Constants.getHeader(),
+//                            url
+//                        ).string()
+//                    )
+//                )
+//            )
+//            data.postValue(
+//                HtmlParser.parseAnimeInfo(
+//                    detailsRepository.fetchAnimeInfo(
+//                        Constants.getHeader(),
+//                        url
+//                    ).string()
+//                )
+//            )
+//        } catch (exception: Exception) {
+//            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
+//        }
+//    }
+//
+//
+//    fun fetchEpisodeList(
+//        id: String,
+//        endEpisode: String,
+//        alias: String
+//    ) = liveData(Dispatchers.IO) {
+//        emit(Resource.loading(data = null))
+//        try {
+//            emit(
+//                Resource.success(
+//                    data = HtmlParser.fetchEpisodeList(
+//                        detailsRepository.fetchEpisodeList(
+//                            header = Constants.getHeader(),
+//                            id = id,
+//                            endEpisode = endEpisode,
+//                            alias = alias
+//                        ).string()
+//                    )
+//                )
+//            )
+//        } catch (exception: Exception) {
+//            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
+//        }
+//    }
 
 
 }

@@ -17,7 +17,7 @@ import com.kl3jvi.animity.view.fragments.home.HomeFragment
 class CustomVerticalAdapter(private val fragment: Fragment) :
     RecyclerView.Adapter<CustomVerticalAdapter.ViewHolder>() {
 
-    private var list = ArrayList<AnimeMetaModel>()
+    private var list: List<AnimeMetaModel> = listOf()
 
     inner class ViewHolder(view: ItemTodaySelectionBinding) : RecyclerView.ViewHolder(view.root) {
         val title = view.animeTitle
@@ -73,7 +73,7 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
 
     override fun getItemCount() = list.size
 
-    fun getSelectedAnime(entry: ArrayList<AnimeMetaModel>) {
+    fun getSelectedAnime(entry: List<AnimeMetaModel>) {
         list = entry
         notifyDataSetChanged()
     }

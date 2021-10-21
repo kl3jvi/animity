@@ -2,6 +2,7 @@ package com.kl3jvi.animity.view.fragments.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.utils.Status
+import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
@@ -33,9 +34,8 @@ class HomeFragment : Fragment() {
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
 
-    private val snapHelperSub: SnapHelper = PagerSnapHelper()
-    private val snapHelperNewSeason: SnapHelper = PagerSnapHelper()
-    private val snapHelperMovies: SnapHelper = PagerSnapHelper()
+    private lateinit var snapHelperSub: SnapHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        initViews()
+
         return binding.root
     }
 
@@ -56,10 +56,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apply {
-            getNewSeason()
-            fetchRecentDub()
-            getTodaySelectionAnime()
-            fetchMovies()
+          getNewSeason()
+//            fetchRecentDub()
+//            getTodaySelectionAnime()
+//            getMovies()
+            initViews()
         }
     }
 
@@ -72,6 +73,7 @@ class HomeFragment : Fragment() {
             )
             subAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
             setHasFixedSize(true)
+            snapHelperSub = PagerSnapHelper()
             snapHelperSub.attachToRecyclerView(this)
             adapter = subAdapter
         }
@@ -84,7 +86,8 @@ class HomeFragment : Fragment() {
             )
             newSeasonAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
             setHasFixedSize(true)
-            snapHelperNewSeason.attachToRecyclerView(this)
+            snapHelperSub = PagerSnapHelper()
+            snapHelperSub.attachToRecyclerView(this)
             adapter = newSeasonAdapter
         }
 
@@ -96,7 +99,8 @@ class HomeFragment : Fragment() {
             )
             movieAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
             setHasFixedSize(true)
-            snapHelperMovies.attachToRecyclerView(this)
+            snapHelperSub = PagerSnapHelper()
+            snapHelperSub.attachToRecyclerView(this)
             adapter = movieAdapter
         }
 
@@ -109,98 +113,87 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun fetchRecentDub() {
-        viewModel.fetchRecentSubOrDub().observe(viewLifecycleOwner) { res ->
-            res?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        binding.recentSub.visibility = View.VISIBLE
-                        binding.recentSubTv.visibility = View.VISIBLE
-                        binding.progressBar.visibility = View.GONE
-                        resource.data?.let { entry -> retrieveAnimes(entry) }
-                    }
-                    Status.ERROR -> {
-                        showSnack(res.message)
-                    }
-                    Status.LOADING -> {
-                        binding.recentSub.visibility = View.GONE
-                        binding.recentSubTv.visibility = View.GONE
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
+        viewModel.recentSubDub.observe(viewLifecycleOwner, { res ->
+            println("fetchrecentsubdub--------------------------------_>")
+            when (res) {
+                is Resource.Success -> {
+                    binding.recentSub.visibility = View.VISIBLE
+                    binding.recentSubTv.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    res.data?.let { retrieveAnimes(it) }
+                }
+                is Resource.Loading -> {
+                    binding.recentSub.visibility = View.GONE
+                    binding.recentSubTv.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
                 }
             }
-        }
+        })
     }
 
-    private fun getTodaySelectionAnime() { // today selection anime
-        viewModel.fetchTodaySelectionAnime().observe(viewLifecycleOwner, { res ->
-            res?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        resource.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
-                        binding.todaySelection.visibility = View.VISIBLE
-                        binding.todSelectionTv.visibility = View.VISIBLE
-                    }
-                    Status.ERROR -> {
-                        showSnack(res.message)
-                    }
-                    Status.LOADING -> {
-                        binding.todaySelection.visibility = View.GONE
-                        binding.todSelectionTv.visibility = View.GONE
-                    }
+    private fun getTodaySelectionAnime() {
+        viewModel.todaySelection.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    res.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
+                    binding.todaySelection.visibility = View.VISIBLE
+                    binding.todSelectionTv.visibility = View.VISIBLE
+                }
+                is Resource.Loading -> {
+                    binding.recentSub.visibility = View.GONE
+                    binding.recentSubTv.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
                 }
             }
         })
     }
 
     private fun getNewSeason() {
-        viewModel.fetchNewSeason().observe(viewLifecycleOwner, { res ->
-            res?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        resource.data?.let { entry ->
-                            newSeasonAdapter.addAnimes(entry)
-                        }
-                        binding.newSeasonRv.visibility = View.VISIBLE
-                        binding.newSeasonTv.visibility = View.VISIBLE
-                    }
-                    Status.ERROR -> {
-                        showSnack(res.message)
-                    }
-                    Status.LOADING -> {
-                        binding.newSeasonRv.visibility = View.GONE
-                        binding.newSeasonTv.visibility = View.GONE
-                    }
+        viewModel.newSeason.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    Log.e("List", res.toString())
+                    res.data?.let { entry -> newSeasonAdapter.addAnimes(entry) }
+                    binding.newSeasonRv.visibility = View.VISIBLE
+                    binding.newSeasonTv.visibility = View.VISIBLE
+                }
+                is Resource.Loading -> {
+                    binding.newSeasonRv.visibility = View.GONE
+                    binding.newSeasonTv.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
                 }
             }
-
         })
     }
 
-    private fun fetchMovies() {
-        viewModel.fetchMovies().observe(viewLifecycleOwner, { res ->
-            res?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        resource.data?.let { entry ->
-                            movieAdapter.addAnimes(entry)
-                        }
-                        binding.moviesRv.visibility = View.VISIBLE
-                        binding.moviesTv.visibility = View.VISIBLE
-                    }
-                    Status.ERROR -> {
-                        showSnack(res.message)
-                    }
-                    Status.LOADING -> {
-                        binding.moviesRv.visibility = View.GONE
-                        binding.moviesTv.visibility = View.GONE
-                    }
+    private fun getMovies() {
+        viewModel.movies.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    res.data?.let { entry -> movieAdapter.addAnimes(entry) }
+                    binding.moviesRv.visibility = View.VISIBLE
+                    binding.moviesTv.visibility = View.VISIBLE
+                }
+                is Resource.Loading -> {
+                    binding.moviesRv.visibility = View.GONE
+                    binding.moviesTv.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
                 }
             }
-
         })
     }
+
 
     fun animeDetails(animeDetails: AnimeMetaModel) {
         findNavController().navigate(
