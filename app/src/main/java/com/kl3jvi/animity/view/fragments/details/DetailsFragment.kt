@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,13 +9,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
-import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 
-import com.kl3jvi.animity.utils.Constants.Companion.getColor
-import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
-import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
