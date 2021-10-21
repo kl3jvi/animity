@@ -49,15 +49,19 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         initViews()
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         apply {
             getNewSeason()
             fetchRecentDub()
             getTodaySelectionAnime()
             fetchMovies()
         }
-        return binding.root
     }
-
 
     private fun initViews() {
         // recent sub adapter
