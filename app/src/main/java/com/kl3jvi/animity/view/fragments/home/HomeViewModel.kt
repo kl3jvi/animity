@@ -3,10 +3,12 @@ package com.kl3jvi.animity.view.fragments.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.GetAnimesUseCase
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -35,25 +37,25 @@ class HomeViewModel @Inject constructor(
     private fun fetchRecentSubOrDub() {
         getAnimesUseCase.fetchRecentSubOrDub().onEach {
             _recentSubDub.value = it
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun fetchTodaySelectionAnime() {
         getAnimesUseCase.fetchTodaySelectionAnime().onEach {
             _todaySelection.value = it
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun fetchNewSeason() {
         getAnimesUseCase.fetchNewSeason().onEach {
             _newSeason.value = it
-        }
+        }.launchIn(viewModelScope)
     }
 
     private fun fetchMovies() {
         getAnimesUseCase.fetchMovies().onEach {
             _movies.value = it
-        }
+        }.launchIn(viewModelScope)
     }
 
 }

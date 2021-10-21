@@ -57,9 +57,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         apply {
           getNewSeason()
-//            fetchRecentDub()
-//            getTodaySelectionAnime()
-//            getMovies()
+            fetchRecentDub()
+            getTodaySelectionAnime()
+            getMovies()
             initViews()
         }
     }
@@ -121,7 +121,8 @@ class HomeFragment : Fragment() {
                     binding.recentSub.visibility = View.VISIBLE
                     binding.recentSubTv.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    res.data?.let { retrieveAnimes(it) }
+                    res.data?.let { retrieveAnimes(it)
+                        println("${it.size}---------------------------->")}
                 }
                 is Resource.Loading -> {
                     binding.recentSub.visibility = View.GONE
@@ -159,8 +160,9 @@ class HomeFragment : Fragment() {
         viewModel.newSeason.observe(viewLifecycleOwner, { res ->
             when (res) {
                 is Resource.Success -> {
-                    Log.e("List", res.toString())
-                    res.data?.let { entry -> newSeasonAdapter.addAnimes(entry) }
+
+                    res.data?.let { entry -> newSeasonAdapter.addAnimes(entry)
+                        println("${entry.size}---------------------------->")}
                     binding.newSeasonRv.visibility = View.VISIBLE
                     binding.newSeasonTv.visibility = View.VISIBLE
                 }
