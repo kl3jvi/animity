@@ -12,6 +12,7 @@ import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor
+
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomVerticalAdapter(private val fragment: Fragment) :

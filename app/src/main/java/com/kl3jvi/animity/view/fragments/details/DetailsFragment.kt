@@ -1,17 +1,25 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
+import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
-
+import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
+import com.kl3jvi.animity.utils.Constants.Companion.getColor
+import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,11 +32,17 @@ class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        fetchAnimeInfo()
         return binding.root
     }
 
@@ -46,10 +60,61 @@ class DetailsFragment : Fragment() {
                 binding.episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
-//                fetchAnimeInfo(url)
+                viewModel.passUrl(url)
             }
         }
+
     }
+
+    private fun fetchAnimeInfo() {
+        viewModel.animeInfo.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    res.data?.let { info ->
+                        binding.expandTextView.text = info.plotSummary
+                        binding.releaseDate.text = info.releasedTime
+                        binding.status.text = info.status
+                        binding.type.text = info.type
+
+                        binding.expandTextView.visibility = View.VISIBLE
+                        binding.releaseDate.visibility = View.VISIBLE
+                        binding.status.visibility = View.VISIBLE
+                        binding.type.visibility = View.VISIBLE
+
+                        info.genre.forEach { data ->
+                            val chip = Chip(requireContext())
+                            chip.apply {
+                                text = data.genreName
+                                setTextColor(Color.WHITE)
+                                chipStrokeColor = getColor()
+                                chipStrokeWidth = 3f
+                                chipBackgroundColor = getBackgroundColor()
+                            }
+                            binding.genreGroup.addView(chip)
+                        }
+                        viewModel.passEpisodeData(info.id, info.endEpisode, info.alias)
+                    }
+                }
+                is Resource.Loading -> {
+                    binding.expandTextView.visibility = View.GONE
+                    binding.releaseDate.visibility = View.GONE
+                    binding.status.visibility = View.GONE
+                    binding.type.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
+                }
+            }
+        })
+    }
+
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        findNavController().navigateUp()
+        return super.onOptionsItemSelected(item)
+    }
+
 
 //    private fun fetchEpisodeList(id: String, endEpisode: String, alias: String) {
 //        viewModel.fetchEpisodeList(id, endEpisode, alias)

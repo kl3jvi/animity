@@ -2,6 +2,7 @@ package com.kl3jvi.animity.utils
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
@@ -75,8 +76,18 @@ class Constants {
             )
         }
 
+        fun getColor(): ColorStateList {
+            val color: Int = Color.argb(255, 4, 138, 129)
+            return ColorStateList.valueOf(color)
+        }
+
+        fun getBackgroundColor(): ColorStateList {
+            val color: Int = Color.argb(255, 17, 17, 17)
+            return ColorStateList.valueOf(color)
+        }
+
         fun getVerticalAdapterBackgroundColor(): ColorStateList {
-            val color: Int = Color.argb(255, 49, 62, 80)
+            val color: Int = Color.argb(255, 17, 17, 17)
             return ColorStateList.valueOf(color)
         }
 
@@ -87,9 +98,12 @@ class Constants {
                 TYPE_POPULAR_ANIME -> HtmlParser.parsePopular(response, typeValue)
                 TYPE_MOVIE -> HtmlParser.parseMovie(response, typeValue)
                 TYPE_NEW_SEASON -> HtmlParser.parseMovie(response, typeValue)
+
                 else -> ArrayList()
             }
         }
+
+
     }
 
 }
