@@ -3,7 +3,9 @@ package com.kl3jvi.animity.view.fragments.details
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -13,9 +15,8 @@ import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
-
-import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
+import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,13 +35,6 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
         args.animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
@@ -56,6 +50,13 @@ class DetailsFragment : Fragment() {
                 fetchAnimeInfo(url)
             }
         }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
     }
 
 
