@@ -20,6 +20,7 @@ import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -115,6 +116,12 @@ class DetailsFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.hideBottomNavBar()
+        }
+    }
 
 //    private fun fetchEpisodeList(id: String, endEpisode: String, alias: String) {
 //        viewModel.fetchEpisodeList(id, endEpisode, alias)

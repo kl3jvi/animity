@@ -2,7 +2,6 @@ package com.kl3jvi.animity.view.fragments.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,7 +55,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apply {
-          getNewSeason()
+            getNewSeason()
             fetchRecentDub()
             getTodaySelectionAnime()
             getMovies()
@@ -115,14 +114,12 @@ class HomeFragment : Fragment() {
 
     private fun fetchRecentDub() {
         viewModel.recentSubDub.observe(viewLifecycleOwner, { res ->
-            println("fetchrecentsubdub--------------------------------_>")
             when (res) {
                 is Resource.Success -> {
                     binding.recentSub.visibility = View.VISIBLE
                     binding.recentSubTv.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    res.data?.let { retrieveAnimes(it)
-                        println("${it.size}---------------------------->")}
+                    res.data?.let { retrieveAnimes(it) }
                 }
                 is Resource.Loading -> {
                     binding.recentSub.visibility = View.GONE
@@ -145,8 +142,8 @@ class HomeFragment : Fragment() {
                     binding.todSelectionTv.visibility = View.VISIBLE
                 }
                 is Resource.Loading -> {
-                    binding.recentSub.visibility = View.GONE
-                    binding.recentSubTv.visibility = View.GONE
+                    binding.todaySelection.visibility = View.GONE
+                    binding.todSelectionTv.visibility = View.GONE
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
@@ -161,8 +158,10 @@ class HomeFragment : Fragment() {
             when (res) {
                 is Resource.Success -> {
 
-                    res.data?.let { entry -> newSeasonAdapter.addAnimes(entry)
-                        println("${entry.size}---------------------------->")}
+                    res.data?.let { entry ->
+                        newSeasonAdapter.addAnimes(entry)
+                        println("${entry.size}---------------------------->")
+                    }
                     binding.newSeasonRv.visibility = View.VISIBLE
                     binding.newSeasonTv.visibility = View.VISIBLE
                 }
@@ -198,11 +197,13 @@ class HomeFragment : Fragment() {
 
 
     fun animeDetails(animeDetails: AnimeMetaModel) {
+
         findNavController().navigate(
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
                 animeDetails
             )
         )
+
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.hideBottomNavBar()
         }

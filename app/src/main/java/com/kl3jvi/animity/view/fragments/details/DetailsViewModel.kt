@@ -68,16 +68,16 @@ class DetailsViewModel @Inject constructor(
         _endEpisode.value = endEpisode
         _alias.value = alias
 
-        episodeData.addSource(_id) { value ->
-            episodeData.setValue(value)
-        }
-
-        episodeData.addSource(_endEpisode) { value ->
-            episodeData.setValue(value)
-        }
-        episodeData.addSource(_alias) { value ->
-            episodeData.setValue(value)
-        }
+//        episodeData.addSource(_id) { value ->
+//            episodeData.setValue(value)
+//        }
+//
+//        episodeData.addSource(_endEpisode) { value ->
+//            episodeData.setValue(value)
+//        }
+//        episodeData.addSource(_alias) { value ->
+//            episodeData.setValue(value)
+//        }
 
     }
 
