@@ -7,9 +7,14 @@ import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class DetailsViewModel(private val detailsRepository: DetailsRepository) : ViewModel() {
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
+    private val detailsRepository: DetailsRepository
+) : ViewModel() {
 
     val data: MutableLiveData<AnimeInfoModel> = MutableLiveData()
 

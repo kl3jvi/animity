@@ -18,7 +18,6 @@ import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
-import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -33,6 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
+
     private val snapHelperSub: SnapHelper = PagerSnapHelper()
     private val snapHelperNewSeason: SnapHelper = PagerSnapHelper()
     private val snapHelperMovies: SnapHelper = PagerSnapHelper()
@@ -47,59 +47,66 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        initViews()
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getNewSeason()
-        fetchRecentDub()
-        getTodaySelectionAnime()
-        fetchMovies()
-        initViews()
+        apply {
+            getNewSeason()
+            fetchRecentDub()
+            getTodaySelectionAnime()
+            fetchMovies()
+        }
     }
 
     private fun initViews() {
         // recent sub adapter
-        binding.recentSub.layoutManager = LinearLayoutManager(
-            requireContext(),
-            RecyclerView.HORIZONTAL, false
-        )
-        subAdapter = CustomHorizontalAdapter(this, arrayListOf())
-        binding.recentSub.setHasFixedSize(true)
-        snapHelperSub.attachToRecyclerView(binding.recentSub)
-        binding.recentSub.adapter = subAdapter
+        binding.recentSub.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                RecyclerView.HORIZONTAL, false
+            )
+            subAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
+            setHasFixedSize(true)
+            snapHelperSub.attachToRecyclerView(this)
+            adapter = subAdapter
+        }
 
         // new season adapter
-        binding.newSeasonRv.layoutManager = LinearLayoutManager(
-            requireContext(),
-            RecyclerView.HORIZONTAL, false
-        )
-        newSeasonAdapter = CustomHorizontalAdapter(this, arrayListOf())
-        binding.newSeasonRv.setHasFixedSize(true)
-        snapHelperNewSeason.attachToRecyclerView(binding.newSeasonRv)
-        binding.newSeasonRv.adapter = newSeasonAdapter
+        binding.newSeasonRv.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                RecyclerView.HORIZONTAL, false
+            )
+            newSeasonAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
+            setHasFixedSize(true)
+            snapHelperNewSeason.attachToRecyclerView(this)
+            adapter = newSeasonAdapter
+        }
 
         // movies adapter
-        binding.moviesRv.layoutManager = LinearLayoutManager(
-            requireContext(),
-            RecyclerView.HORIZONTAL, false
-        )
-        movieAdapter = CustomHorizontalAdapter(this, arrayListOf())
-        binding.moviesRv.setHasFixedSize(true)
-        snapHelperMovies.attachToRecyclerView(binding.moviesRv)
-        binding.moviesRv.adapter = movieAdapter
-
+        binding.moviesRv.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                RecyclerView.HORIZONTAL, false
+            )
+            movieAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
+            setHasFixedSize(true)
+            snapHelperMovies.attachToRecyclerView(this)
+            adapter = movieAdapter
+        }
 
         // today selection adapter
-        binding.todaySelection.layoutManager = LinearLayoutManager(requireContext())
-        binding.todaySelection.setHasFixedSize(true)
-        todayAdapter = CustomVerticalAdapter(this)
-        binding.todaySelection.adapter = todayAdapter
+        binding.todaySelection.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            todayAdapter = CustomVerticalAdapter(this@HomeFragment)
+            adapter = todayAdapter
+        }
     }
 
 

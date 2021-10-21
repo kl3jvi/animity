@@ -3,9 +3,7 @@ package com.kl3jvi.animity.view.fragments.details
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -27,6 +25,7 @@ class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private val args: DetailsFragmentArgs by navArgs()
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
 
@@ -40,7 +39,7 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val args: DetailsFragmentArgs by navArgs()
+
 
         args.animeDetails.let { animeInfo ->
             binding.apply {
@@ -132,8 +131,6 @@ class DetailsFragment : Fragment() {
             }
         }
     }
-
-
 
 
     private fun showSnack(message: String?) {
