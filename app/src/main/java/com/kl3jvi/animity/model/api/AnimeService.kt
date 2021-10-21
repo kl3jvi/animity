@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.model.network
+package com.kl3jvi.animity.model.api
 
 import com.kl3jvi.animity.utils.Constants
 import okhttp3.OkHttpClient
@@ -11,8 +11,10 @@ import retrofit2.http.HeaderMap
 import retrofit2.http.Query
 import retrofit2.http.Url
 
+/**
+ * Used to connect to the GogoAnime page to fetch animes
+ */
 interface AnimeService {
-
 
     @GET("https://ajax.gogocdn.net/ajax/page-recent-release.html")
     suspend fun fetchRecentSubOrDub(
@@ -21,13 +23,11 @@ interface AnimeService {
         @Query("type") type: Int
     ): ResponseBody
 
-
     @GET("https://ajax.gogocdn.net/ajax/page-recent-release-ongoing.html")
     suspend fun fetchPopularFromAjax(
         @HeaderMap header: Map<String, String>,
         @Query("page") page: Int
     ): ResponseBody
-
 
     @GET("/anime-movies.html")
     suspend fun fetchMovies(
@@ -35,13 +35,11 @@ interface AnimeService {
         @Query("page") page: Int
     ): ResponseBody
 
-
     @GET("/new-season.html")
     suspend fun fetchNewestSeason(
         @HeaderMap header: Map<String, String>,
         @Query("page") page: Int
     ): ResponseBody
-
 
     @GET
     suspend fun fetchEpisodeMediaUrl(
@@ -49,20 +47,17 @@ interface AnimeService {
         @Url url: String
     ): ResponseBody
 
-
     @GET
     suspend fun fetchAnimeInfo(
         @HeaderMap header: Map<String, String>,
         @Url url: String
     ): ResponseBody
 
-
     @GET
-    suspend fun FetchM3u8Url(
+    suspend fun fetchM3u8Url(
         @HeaderMap header: Map<String, String>,
         @Url url: String
     ): ResponseBody
-
 
     @GET(Constants.EPISODE_LOAD_URL)
     suspend fun fetchEpisodeList(
@@ -74,7 +69,6 @@ interface AnimeService {
         @Query("alias") alias: String
     ): ResponseBody
 
-
     @GET(Constants.SEARCH_URL)
     suspend fun fetchSearchData(
         @HeaderMap header: Map<String, String>,
@@ -82,12 +76,10 @@ interface AnimeService {
         @Query("page") page: Int
     ): ResponseBody
 
-
     companion object {
-
-
         fun create(): AnimeService {
-            val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+            val logger =
+                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)

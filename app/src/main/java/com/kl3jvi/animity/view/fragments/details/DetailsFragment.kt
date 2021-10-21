@@ -15,22 +15,19 @@ import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
-import com.kl3jvi.animity.model.network.ApiHelper
-import com.kl3jvi.animity.model.network.RetrofitBuilder
+
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
-import com.kl3jvi.animity.view.factory.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DetailsViewModel by viewModels {
-        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService),null)
-    }
+    private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
 
     override fun onCreateView(

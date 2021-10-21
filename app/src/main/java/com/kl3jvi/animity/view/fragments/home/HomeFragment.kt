@@ -14,22 +14,21 @@ import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.model.network.ApiHelper
-import com.kl3jvi.animity.model.network.RetrofitBuilder
 import com.kl3jvi.animity.utils.Status
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
-import com.kl3jvi.animity.view.factory.ViewModelFactory
+import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by viewModels {
-        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
-    }
+    private val viewModel: HomeViewModel by viewModels()
+
     private lateinit var subAdapter: CustomHorizontalAdapter
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
     private lateinit var todayAdapter: CustomVerticalAdapter
@@ -50,6 +49,7 @@ class HomeFragment : Fragment() {
     ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 

@@ -6,6 +6,4 @@ import com.kl3jvi.animity.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class AnimityApplication : Application() {
-
-}
+class AnimityApplication : Application()

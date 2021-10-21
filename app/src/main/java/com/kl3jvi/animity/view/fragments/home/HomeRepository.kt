@@ -2,11 +2,11 @@ package com.kl3jvi.animity.view.fragments.home
 
 
 import androidx.annotation.WorkerThread
-import com.kl3jvi.animity.model.network.ApiHelper
-import kotlinx.coroutines.flow.Flow
+import com.kl3jvi.animity.model.api.AnimeService
+import javax.inject.Inject
 
 
-class HomeRepository(private val apiHelper: ApiHelper) {
+class HomeRepository @Inject constructor(private val apiHelper: AnimeService) {
 
     @WorkerThread
     suspend fun fetchRecentSubOrDub(header: Map<String, String>, page: Int, type: Int) =
@@ -18,12 +18,10 @@ class HomeRepository(private val apiHelper: ApiHelper) {
 
     @WorkerThread
     suspend fun fetchNewSeason(header: Map<String, String>, page: Int) =
-        apiHelper.fetchNewSeason(header, page)
+        apiHelper.fetchNewestSeason(header, page)
 
     @WorkerThread
     suspend fun fetchMovies(header: Map<String, String>, page: Int) =
         apiHelper.fetchMovies(header, page)
-
-
 
 }

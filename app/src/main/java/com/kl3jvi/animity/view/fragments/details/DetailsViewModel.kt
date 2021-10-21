@@ -2,10 +2,8 @@ package com.kl3jvi.animity.view.fragments.details
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import com.kl3jvi.animity.model.entities.AnimeInfoModel
-import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser

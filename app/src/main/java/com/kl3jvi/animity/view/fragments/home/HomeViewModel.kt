@@ -18,8 +18,6 @@ class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-
-
     fun fetchRecentSubOrDub() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {

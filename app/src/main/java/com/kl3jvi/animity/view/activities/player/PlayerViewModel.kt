@@ -1,13 +1,13 @@
 package com.kl3jvi.animity.view.activities.player
 
 import androidx.lifecycle.*
-import com.kl3jvi.animity.model.network.ApiHelper
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class PlayerViewModel(private val playerRepository: PlayerRepository) : ViewModel() {
+class PlayerViewModel @Inject constructor(private val playerRepository: PlayerRepository) : ViewModel() {
 
     private var _vidUrl = MutableLiveData<String>()
     var videoUrlLiveData: LiveData<String> = _vidUrl
