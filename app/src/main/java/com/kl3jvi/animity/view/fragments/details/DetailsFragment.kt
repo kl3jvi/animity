@@ -1,23 +1,20 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.NestedScrollView
+import android.view.*
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
@@ -34,7 +31,7 @@ class DetailsFragment : Fragment() {
     private val args: DetailsFragmentArgs by navArgs()
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
-
+    private lateinit var menu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -99,7 +96,7 @@ class DetailsFragment : Fragment() {
                                 resultPlayMovie.visibility = View.VISIBLE
                                 imageButton.visibility = View.GONE
                             }
-                        } else{
+                        } else {
                             binding.apply {
                                 resultEpisodesText.visibility = View.VISIBLE
                                 resultPlayMovie.visibility = View.GONE
@@ -135,6 +132,24 @@ class DetailsFragment : Fragment() {
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.favorite_menu, menu)
+        this.menu = menu
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> {
+                menu[0].setIcon(R.drawable.ic_favorite_complete)
+            }
+            else -> findNavController().navigateUp()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun fetchEpisodeList() {
         viewModel.episodeList.observe(viewLifecycleOwner, { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->

@@ -32,4 +32,5 @@
     <string name="no_data">No Data</string>
     <string name="search_hint">Search...</string>
     <string name="result_go_back">goback</string>
+    <string name="favorite">Add to Favorites</string>
 </resources>

@@ -5,8 +5,6 @@
     android:id="@+id/searchRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/navbarHeight"
-
     android:orientation="vertical"
     tools:context=".view.fragments.search.SearchFragment">
 
@@ -15,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/search_background"
-
         android:padding="5dp"
         android:visibility="visible">
 
@@ -31,6 +28,7 @@
                 android:layout_gravity="center_vertical"
                 android:iconifiedByDefault="false"
                 android:paddingStart="-10dp"
+                app:closeIcon="@drawable/ic_baseline_clear_24"
                 android:theme="@style/ThemeOverlay.SearchView"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@color/transparent"
@@ -43,11 +41,10 @@
                 <androidx.core.widget.ContentLoadingProgressBar
                     android:id="@+id/search_loading_bar"
                     style="@style/Widget.AppCompat.ProgressBar"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginStart="-60dp"
-
+                    android:layout_marginStart="-65dp"
                     android:foregroundTint="@color/white"
                     android:progressTint="@color/white"
                     android:visibility="gone"
@@ -56,8 +53,6 @@
                 </androidx.core.widget.ContentLoadingProgressBar>
             </androidx.appcompat.widget.SearchView>
         </FrameLayout>
-
-
     </FrameLayout>
 
 
@@ -65,6 +60,9 @@
         android:id="@+id/search_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp"
         android:visibility="gone"
         tools:listitem="@layout/search_layout" />
 
