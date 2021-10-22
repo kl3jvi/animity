@@ -26,6 +26,7 @@
             android:name=".view.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:theme="@style/Theme.Animity.NoActionBar"
             android:configChanges="orientation"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>

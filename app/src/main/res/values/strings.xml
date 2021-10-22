@@ -29,4 +29,7 @@
     <string name="released">Released:</string>
     <string name="status">Status:</string>
     <string name="type">Type:</string>
+    <string name="no_data">No Data</string>
+    <string name="search_hint">Search...</string>
+    <string name="result_go_back">goback</string>
 </resources>

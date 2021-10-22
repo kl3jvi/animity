@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.kl3jvi.animity.view.fragments.home.HomeFragment"
-        android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_detailsFragment"
@@ -23,19 +22,16 @@
     <fragment
         android:id="@+id/navigation_favorites"
         android:name="com.kl3jvi.animity.view.fragments.favorites.FavoritesFragment"
-        android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/navigation_explore"
         android:name="com.kl3jvi.animity.view.fragments.search.SearchFragment"
-        android:label="@string/title_explore"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_details"
         android:name="com.kl3jvi.animity.view.fragments.details.DetailsFragment"
-        android:label="@string/anime_details"
         tools:layout="@layout/fragment_details">
         <argument
             android:name="animeDetails"

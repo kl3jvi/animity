@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="bottom_bar_size">65dp</dimen>
     <dimen name="roundedImageRadius">5dp</dimen>
+    <dimen name="navbarHeight">0dp</dimen>
+    <dimen name="result_padding">15dp</dimen>
 </resources>

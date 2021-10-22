@@ -66,16 +66,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:paddingTop="3sp"
-                        android:textColor="@color/grayTextColor"
-                        android:textSize="15sp"
-                        android:textStyle="normal"
-                        android:text="@string/released"
-                        tools:text="2021 nda" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:paddingTop="3sp"
+                            android:text="@string/released"
+                            android:textColor="@color/grayTextColor"
+                            android:textSize="15sp"
+                            android:textStyle="normal"
+                            tools:text="2021 nda" />
 
                         <TextView
                             android:id="@+id/releaseDate"
@@ -93,17 +94,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                    <TextView
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:paddingTop="3sp"
-                        android:text="@string/status"
-                        android:textColor="@color/grayTextColor"
-                        android:textSize="15sp"
-                        android:textStyle="normal"
-                        tools:text="2021 nda" />
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:paddingTop="3sp"
+                            android:text="@string/status"
+                            android:textColor="@color/grayTextColor"
+                            android:textSize="15sp"
+                            android:textStyle="normal"
+                            tools:text="2021 nda" />
+
                         <TextView
                             android:id="@+id/status"
                             android:layout_width="wrap_content"
@@ -120,17 +123,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                    <TextView
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="3sp"
-                        android:paddingTop="3sp"
-                        android:text="@string/type"
-                        android:textColor="@color/grayTextColor"
-                        android:textSize="15sp"
-                        android:textStyle="normal"
-                        tools:text="2021 nda" />
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="3sp"
+                            android:paddingTop="3sp"
+                            android:text="@string/type"
+                            android:textColor="@color/grayTextColor"
+                            android:textSize="15sp"
+                            android:textStyle="normal"
+                            tools:text="2021 nda" />
 
                         <TextView
                             android:id="@+id/type"
@@ -204,13 +208,13 @@
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="0dp"
                 android:layout_marginBottom="5dp"
                 android:text="@string/play_movie"
                 android:visibility="gone"
-                tools:visibility="visible"
-                app:icon="@drawable/ic_baseline_play_arrow_24"/>
+                app:icon="@drawable/ic_baseline_play_arrow_24"
+                tools:visibility="visible" />
 
 
             <LinearLayout
@@ -236,23 +240,21 @@
                     android:id="@+id/imageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:background="?android:attr/selectableItemBackground"
                     android:padding="8dp"
-                    android:layout_gravity="end"
                     app:srcCompat="@drawable/ic_down_arrow" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/episode_list_recycler"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="afterDescendants"
-                tools:listitem="@layout/item_episode_number" />
+                android:visibility="gone"
+                tools:listitem="@layout/item_episode_number"
+                tools:visibility="visible" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

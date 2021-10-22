@@ -80,11 +80,9 @@ interface AnimeService {
         fun create(): AnimeService {
             val logger =
                 HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
-
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
-
             return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .client(client)

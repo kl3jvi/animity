@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -44,26 +46,32 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         fetchAnimeInfo()
+        fetchEpisodeList()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         args.animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
                     crossfade(true)
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
-                episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
+                episodeListRecycler.layoutManager =
+                    androidx.recyclerview.widget.LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
-                episodeAdapter = CustomEpisodeAdapter(requireParentFragment())
+                episodeAdapter =
+                    com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter(requireParentFragment())
                 binding.episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
             }
         }
+
 
     }
 
@@ -83,7 +91,22 @@ class DetailsFragment : Fragment() {
                         binding.type.visibility = View.VISIBLE
 
 
+                        // Check if the type is movie and this makes invisible the listview of the episodes
+                        if (info.type == " Movie") {
+                            binding.apply {
+                                resultEpisodesText.visibility = View.GONE
+                                binding.episodeListRecycler.visibility = View.GONE
+                                resultPlayMovie.visibility = View.VISIBLE
+                                imageButton.visibility = View.GONE
+                            }
+                        } else{
+                            binding.apply {
+                                resultEpisodesText.visibility = View.VISIBLE
+                                resultPlayMovie.visibility = View.GONE
 
+                                episodeListRecycler.visibility = View.VISIBLE
+                            }
+                        }
 
                         info.genre.forEach { data ->
                             val chip = Chip(requireContext())
@@ -112,11 +135,15 @@ class DetailsFragment : Fragment() {
         })
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        findNavController().navigateUp()
-        return super.onOptionsItemSelected(item)
+    private fun fetchEpisodeList() {
+        viewModel.episodeList.observe(viewLifecycleOwner, { episodeListResponse ->
+            episodeListResponse.data?.let { episodeList ->
+                episodeAdapter.getEpisodeInfo(episodeList)
+                binding.resultEpisodesText.text = "${episodeList.size} Episodes"
+            }
+        })
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -125,80 +152,9 @@ class DetailsFragment : Fragment() {
         }
     }
 
-//    private fun fetchEpisodeList(id: String, endEpisode: String, alias: String) {
-//        viewModel.fetchEpisodeList(id, endEpisode, alias)
-//            .observe(viewLifecycleOwner) { episodeListResponse ->
-//                episodeListResponse.data?.let { episodeList ->
-//                    episodeAdapter.getEpisodeInfo(episodeList)
-//                    if (episodeList.size == 1) {
-//                        binding.apply {
-//                            resultEpisodesText.visibility = View.GONE
-//                            binding.episodeListRecycler.visibility = View.GONE
-//                            resultPlayMovie.visibility = View.VISIBLE
-//                        }
-//                    } else {
-//                        binding.apply {
-//                            resultEpisodesText.visibility = View.VISIBLE
-//                            resultPlayMovie.visibility = View.GONE
-//                            resultEpisodesText.text = "${episodeList.size} Episodes"
-//                            episodeListRecycler.visibility = View.VISIBLE
-//                            imageButton.setOnClickListener {
-//
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//    }
-
-//    private fun fetchAnimeInfo(url: String) {
-//        viewModel.fetchAnimeInfo(url).observe(viewLifecycleOwner) { res ->
-//            res?.let { resource ->
-//                when (resource) {
-//                    Status.SUCCESS -> {
-//                        resource.data?.let { info ->
-//                            binding.expandTextView.text = info.plotSummary
-//                            binding.releaseDate.text = info.releasedTime
-//                            binding.status.text = info.status
-//                            binding.type.text = info.type
-//
-//                            binding.expandTextView.visibility = View.VISIBLE
-//                            binding.releaseDate.visibility = View.VISIBLE
-//                            binding.status.visibility = View.VISIBLE
-//                            binding.type.visibility = View.VISIBLE
-//
-//                            info.genre.forEach { data ->
-//                                val chip = Chip(requireContext())
-//                                chip.apply {
-//                                    text = data.genreName
-//                                    setTextColor(Color.WHITE)
-//                                    chipStrokeColor = getColor()
-//                                    chipStrokeWidth = 3f
-//                                    chipBackgroundColor = getBackgroundColor()
-//                                }
-//                                binding.genreGroup.addView(chip)
-//                            }
-//                            fetchEpisodeList(info.id, info.endEpisode, info.alias)
-//                        }
-//                    }
-//                    Status.ERROR -> {
-//                        showSnack(res.message)
-//                    }
-//                    Status.LOADING -> {
-//
-//                        binding.expandTextView.visibility = View.GONE
-//                        binding.releaseDate.visibility = View.GONE
-//                        binding.status.visibility = View.GONE
-//                        binding.type.visibility = View.GONE
-//
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     private fun showSnack(message: String?) {
-        val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
+        val snack =
+            Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
         if (!snack.isShown) {
             snack.show()
         }

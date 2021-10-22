@@ -46,7 +46,7 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
 
     override fun getItemCount() = list.size
 
-    fun getEpisodeInfo(retrieveData: ArrayList<EpisodeModel>) {
+    fun getEpisodeInfo(retrieveData: List<EpisodeModel>) {
         list = retrieveData.reversed()
         notifyDataSetChanged()
     }

@@ -1,11 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/navbarHeight"
+
+    android:orientation="vertical"
     tools:context=".view.fragments.search.SearchFragment">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+
+        android:background="@drawable/search_background"
+        android:visibility="visible">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/main_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_gravity="center_vertical"
+                android:iconifiedByDefault="false"
+                android:paddingStart="-10dp"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@color/transparent"
+                app:queryHint="@string/search_hint"
+                app:searchIcon="@drawable/search_icon"
+                tools:ignore="RtlSymmetry">
+
+                <requestFocus />
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/search_loading_bar"
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="-35dp"
+                    android:foregroundTint="@color/white"
+                    android:progressTint="@color/white">
+
+                </androidx.core.widget.ContentLoadingProgressBar>
+                <!--app:queryHint="@string/search_hint"
+                 android:background="@color/grayBackground" @color/itemBackground
+                            app:searchHintIcon="@drawable/search_white"
+                            -->
+            </androidx.appcompat.widget.SearchView>
+        </FrameLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/search_layout"/>
+</LinearLayout>

@@ -1,9 +1,6 @@
 package com.kl3jvi.animity.view.fragments.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimesUseCase
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
@@ -34,6 +31,9 @@ class HomeViewModel @Inject constructor(
         fetchMovies()
     }
 
+
+
+
     private fun fetchRecentSubOrDub() {
         getAnimesUseCase.fetchRecentSubOrDub().onEach {
             _recentSubDub.value = it
@@ -57,6 +57,8 @@ class HomeViewModel @Inject constructor(
             _movies.value = it
         }.launchIn(viewModelScope)
     }
+
+
 
 }
 

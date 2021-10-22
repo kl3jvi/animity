@@ -98,7 +98,6 @@ class Constants {
                 TYPE_POPULAR_ANIME -> HtmlParser.parsePopular(response, typeValue)
                 TYPE_MOVIE -> HtmlParser.parseMovie(response, typeValue)
                 TYPE_NEW_SEASON -> HtmlParser.parseMovie(response, typeValue)
-
                 else -> ArrayList()
             }
         }
