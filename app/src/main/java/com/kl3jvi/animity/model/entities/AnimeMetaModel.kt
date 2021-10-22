@@ -1,22 +1,24 @@
 package com.kl3jvi.animity.model.entities
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "anime_table")
 data class AnimeMetaModel(
-    var ID: Int? = null,
-    var typeValue: Int? = null,
-    var imageUrl: String = "",
-    var categoryUrl: String? = null,
-    var episodeUrl: String? = null,
-    var title: String = "",
-    var episodeNumber: String? = null,
-    var timestamp: Long = System.currentTimeMillis(),
-    var insertionOrder: Int = -1,
-    var genreList: List<GenreModel>? = null,
-    var releasedDate: String? = null
-
+    @PrimaryKey(autoGenerate = true) var ID: Int? = null,
+    @ColumnInfo var typeValue: Int? = null,
+    @ColumnInfo var imageUrl: String = "",
+    @ColumnInfo var categoryUrl: String? = null,
+    @ColumnInfo var episodeUrl: String? = null,
+    @ColumnInfo var title: String = "",
+    @ColumnInfo var episodeNumber: String? = null,
+    @ColumnInfo var timestamp: Long = System.currentTimeMillis(),
+    @ColumnInfo var insertionOrder: Int = -1,
+    @ColumnInfo var genreList: List<GenreModel>? = null,
+    @ColumnInfo var releasedDate: String? = null,
+    @ColumnInfo(name = "favorite_anime") var favoriteAnime: Boolean = false
 ) : Parcelable
