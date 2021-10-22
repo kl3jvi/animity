@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.view.fragments.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.snackbar.Snackbar
-import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
@@ -32,14 +30,8 @@ class HomeFragment : Fragment() {
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
-
     private lateinit var snapHelperSub: SnapHelper
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +39,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -119,7 +110,7 @@ class HomeFragment : Fragment() {
                     binding.recentSub.visibility = View.VISIBLE
                     binding.recentSubTv.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    res.data?.let { retrieveAnimes(it) }
+                    res.data?.let { subAdapter.addAnimes(it) }
                 }
                 is Resource.Loading -> {
                     binding.recentSub.visibility = View.GONE
@@ -157,11 +148,7 @@ class HomeFragment : Fragment() {
         viewModel.newSeason.observe(viewLifecycleOwner, { res ->
             when (res) {
                 is Resource.Success -> {
-
-                    res.data?.let { entry ->
-                        newSeasonAdapter.addAnimes(entry)
-                        println("${entry.size}---------------------------->")
-                    }
+                    res.data?.let { animeList -> newSeasonAdapter.addAnimes(animeList) }
                     binding.newSeasonRv.visibility = View.VISIBLE
                     binding.newSeasonTv.visibility = View.VISIBLE
                 }
@@ -180,7 +167,7 @@ class HomeFragment : Fragment() {
         viewModel.movies.observe(viewLifecycleOwner, { res ->
             when (res) {
                 is Resource.Success -> {
-                    res.data?.let { entry -> movieAdapter.addAnimes(entry) }
+                    res.data?.let { animeList -> movieAdapter.addAnimes(animeList) }
                     binding.moviesRv.visibility = View.VISIBLE
                     binding.moviesTv.visibility = View.VISIBLE
                 }
@@ -197,13 +184,11 @@ class HomeFragment : Fragment() {
 
 
     fun animeDetails(animeDetails: AnimeMetaModel) {
-
         findNavController().navigate(
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
                 animeDetails
             )
         )
-
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.hideBottomNavBar()
         }
@@ -213,21 +198,6 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.app_bar_search -> {
-
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
 
     private fun showSnack(message: String?) {
         val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
@@ -240,14 +210,6 @@ class HomeFragment : Fragment() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun retrieveAnimes(animes: List<AnimeMetaModel>) {
-        subAdapter.apply {
-            addAnimes(animes = animes)
-            notifyDataSetChanged()
         }
     }
 }

@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -28,6 +30,13 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_favorites, R.id.navigation_explore
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(menu, navController)
     }
 
