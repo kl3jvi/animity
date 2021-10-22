@@ -28,10 +28,10 @@
                 android:id="@+id/main_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:layout_gravity="center_vertical"
                 android:iconifiedByDefault="false"
                 android:paddingStart="-10dp"
+                android:theme="@style/ThemeOverlay.SearchView"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@color/transparent"
                 app:queryHint="@string/search_hint"
@@ -46,7 +46,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:layout_marginStart="-35dp"
+                    android:layout_marginStart="-60dp"
+
                     android:foregroundTint="@color/white"
                     android:progressTint="@color/white"
                     android:visibility="gone"
@@ -59,9 +60,24 @@
 
     </FrameLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
         android:id="@+id/search_recycler"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         tools:listitem="@layout/search_layout" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/search" />
 </LinearLayout>

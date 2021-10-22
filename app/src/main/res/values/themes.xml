@@ -14,13 +14,18 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/animity</item>
         <item name="android:textColorHint">@color/grayTextColor</item>
-        <item name="android:textColor">@color/white</item>
         <item name="android:colorBackground">@color/primaryBlackBackground</item>
     </style>
 
 
-    <style name="Theme.Animity" parent="Base.Theme.Animity"/>
+    <style name="Theme.Animity" parent="Base.Theme.Animity" />
 
+
+    <style name="ThemeOverlay.SearchView" parent="">
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/grayTextColor</item>
+        <item name="closeIconTint">@color/white</item>
+    </style>
 
 
     <style name="VideoPlayer" parent="Theme.AppCompat.Light.NoActionBar">
@@ -31,7 +36,8 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
-    </style>>
+    </style>
+    >
 
     <style name="MyCardView" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut

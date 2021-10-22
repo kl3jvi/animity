@@ -34,6 +34,7 @@
         <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.24427083333333333" />
+        <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3140625" />

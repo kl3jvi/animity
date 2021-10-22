@@ -9,7 +9,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
+import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.adapters.CustomSearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,8 +65,23 @@ class SearchFragment : Fragment() {
     }
 
     private fun getSearchData() {
-        viewModel.searchResult.observe(viewLifecycleOwner, {
-            searchAdapter.passSearchData(it.data?: listOf())
+        viewModel.searchResult.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    binding.searchLoadingBar.visibility = View.GONE
+                    binding.noSearchResult.visibility = View.GONE
+                    binding.searchRecycler.visibility = View.VISIBLE
+                    res.data?.let { searchAdapter.passSearchData(it) }
+                }
+                is Resource.Loading -> {
+                    binding.searchRecycler.visibility = View.GONE
+                    binding.searchLoadingBar.visibility = View.VISIBLE
+                    binding.noSearchResult.visibility = View.VISIBLE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
+                }
+            }
         })
     }
 
@@ -72,5 +89,12 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showSnack(message: String?) {
+        val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
+        if (!snack.isShown) {
+            snack.show()
+        }
     }
 }

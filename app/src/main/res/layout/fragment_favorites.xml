@@ -6,18 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.favorites.FavoritesFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/nothingSaved"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="idk"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/favorites" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
