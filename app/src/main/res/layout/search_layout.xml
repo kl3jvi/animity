@@ -62,15 +62,6 @@
                 android:textSize="13sp"
                 android:textStyle="bold"
                 tools:text="@string/no_data" />
-
-            <TextView
-                android:id="@+id/imageTextProvider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:textColor="?attr/colorPrimary"
-                android:visibility="gone"
-                tools:text="Rated 4.13" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

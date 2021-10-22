@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:padding="5dp"
-
         android:background="@drawable/search_background"
+
+        android:padding="5dp"
         android:visibility="visible">
 
         <FrameLayout
@@ -45,18 +45,14 @@
                     style="@style/Widget.AppCompat.ProgressBar"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:layout_gravity="center"
                     android:layout_marginStart="-35dp"
                     android:foregroundTint="@color/white"
-                    android:progressTint="@color/white">
+                    android:progressTint="@color/white"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                 </androidx.core.widget.ContentLoadingProgressBar>
-                <!--app:queryHint="@string/search_hint"
-                 android:background="@color/grayBackground" @color/itemBackground
-                            app:searchHintIcon="@drawable/search_white"
-                            -->
             </androidx.appcompat.widget.SearchView>
         </FrameLayout>
 
@@ -65,6 +61,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
+        android:id="@+id/search_recycler"
         android:layout_height="match_parent"
-        tools:listitem="@layout/search_layout"/>
+        tools:listitem="@layout/search_layout" />
 </LinearLayout>
