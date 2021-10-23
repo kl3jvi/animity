@@ -1,13 +1,10 @@
-package com.kl3jvi.animity.view.viewmodels
+package com.kl3jvi.animity.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
-import com.kl3jvi.animity.model.entities.AnimeInfoModel
-import com.kl3jvi.animity.model.entities.EpisodeModel
-import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

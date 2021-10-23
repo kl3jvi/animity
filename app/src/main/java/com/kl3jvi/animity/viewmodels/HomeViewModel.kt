@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.viewmodels
+package com.kl3jvi.animity.viewmodels
 
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimesUseCase
