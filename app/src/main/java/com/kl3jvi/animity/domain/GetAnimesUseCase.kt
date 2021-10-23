@@ -28,30 +28,16 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                     data = response
                 )
             )
-        } catch (e: HttpException) {
+        } catch (e:Exception) {
             emit(
                 Resource.Error(
                     message = e.localizedMessage ?: "An unexpected error occurred",
-                    Constants.parseList(
-                        homeRepository.fetchRecentSubOrDub(
-                            Constants.getHeader(),
-                            1,
-                            Constants.TYPE_RECENT_DUB
-                        ).string(), Constants.TYPE_RECENT_DUB
-                    ).toList()
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    Constants.parseList(
-                        homeRepository.fetchRecentSubOrDub(
-                            Constants.getHeader(),
-                            1,
-                            Constants.TYPE_RECENT_DUB
-                        ).string(), Constants.TYPE_RECENT_DUB
-                    ).toList()
                 )
             )
         }
@@ -76,14 +62,12 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "An unexpected error occurred",
-                    emptyList()
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    emptyList()
                 )
             )
         }
@@ -108,14 +92,12 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "An unexpected error occurred",
-                    emptyList()
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    emptyList()
                 )
             )
         }
@@ -140,14 +122,12 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "An unexpected error occurred",
-                    emptyList()
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    emptyList()
                 )
             )
         }

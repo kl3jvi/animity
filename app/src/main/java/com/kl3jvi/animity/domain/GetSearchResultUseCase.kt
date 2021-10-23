@@ -33,26 +33,13 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
             emit(
                 Resource.Error(
                     message = e.localizedMessage ?: "An unexpected error occurred",
-                    Constants.parseList(
-                        searchRepository.fetchSearchData(
-                            Constants.getHeader(),
-                            searchQuery,
-                            1
-                        ).string(), Constants.TYPE_MOVIE
-                    ).toList()
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    Constants.parseList(
-                        searchRepository.fetchSearchData(
-                            Constants.getHeader(),
-                            searchQuery,
-                            1
-                        ).string(), Constants.TYPE_MOVIE
-                    ).toList()
+
                 )
             )
         }

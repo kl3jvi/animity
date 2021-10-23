@@ -33,24 +33,12 @@ class GetAnimeDetailsUseCase @Inject constructor(private val detailsRepository: 
             emit(
                 Resource.Error(
                     message = e.localizedMessage ?: "An unexpected error occurred",
-                    HtmlParser.parseAnimeInfo(
-                        detailsRepository.fetchAnimeInfo(
-                            Constants.getHeader(),
-                            url,
-                        ).string()
-                    )
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    HtmlParser.parseAnimeInfo(
-                        detailsRepository.fetchAnimeInfo(
-                            Constants.getHeader(),
-                            url,
-                        ).string()
-                    )
                 )
             )
         }
@@ -80,29 +68,13 @@ class GetAnimeDetailsUseCase @Inject constructor(private val detailsRepository: 
         } catch (e: HttpException) {
             emit(
                 Resource.Error(
-                    message = e.localizedMessage ?: "An unexpected error occurred",
-                    HtmlParser.fetchEpisodeList(
-                        detailsRepository.fetchEpisodeList(
-                            header = Constants.getHeader(),
-                            id = id,
-                            endEpisode = endEpisode,
-                            alias = alias
-                        ).string()
-                    ).toList()
+                    message = e.localizedMessage ?: "An unexpected error occurred"
                 )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
-                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                    HtmlParser.fetchEpisodeList(
-                        detailsRepository.fetchEpisodeList(
-                            header = Constants.getHeader(),
-                            id = id,
-                            endEpisode = endEpisode,
-                            alias = alias
-                        ).string()
-                    ).toList()
+                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection."
                 )
             )
         }

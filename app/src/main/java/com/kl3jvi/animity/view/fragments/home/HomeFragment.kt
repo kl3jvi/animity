@@ -16,6 +16,7 @@ import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
+import com.kl3jvi.animity.view.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
