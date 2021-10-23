@@ -33,6 +33,8 @@ class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
     private lateinit var menu: Menu
+    private var isFavorite: Boolean = false
+    private var check = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -44,7 +46,8 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         fetchAnimeInfo()
-        fetchEpisodeList()
+//        fetchEpisodeList()
+//        observeDatabase()
         return binding.root
     }
 
@@ -62,7 +65,7 @@ class DetailsFragment : Fragment() {
                     androidx.recyclerview.widget.LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
-                    com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter(requireParentFragment())
+                    CustomEpisodeAdapter(requireParentFragment())
                 binding.episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
@@ -70,7 +73,7 @@ class DetailsFragment : Fragment() {
             }
         }
 
-
+        observeDatabase()
     }
 
     private fun fetchAnimeInfo() {
@@ -136,14 +139,36 @@ class DetailsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
         this.menu = menu
+
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    private fun observeDatabase() {
+        viewModel.checkDatabase(args.animeDetails.ID!!)
+        viewModel.isAnimeOnDatabase.observe(viewLifecycleOwner, {
+            if (it) {
+                menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+            } else {
+                menu[0].setIcon(R.drawable.ic_favorite_complete)
+            }
+        })
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_to_favorites -> {
-                menu[0].setIcon(R.drawable.ic_favorite_complete)
+                if (!check) {
+                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+//                    viewModel.insert(anime = args.animeDetails)
+                    check = true
+                } else {
+                    menu[0].setIcon(R.drawable.ic_favorite_complete)
+//                    viewModel.delete(args.animeDetails)
+                    check = false
+                }
+
             }
             else -> findNavController().navigateUp()
         }

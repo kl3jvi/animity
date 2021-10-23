@@ -1,12 +1,11 @@
 package com.kl3jvi.animity.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.model.database.AnimeRepository
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +16,9 @@ class DetailsViewModel @Inject constructor(
 
     private val _url = MutableLiveData<String>()
     private val episodeData = MutableLiveData<List<String>>()
+
+    private val _isAnimeOnDatabase = MutableLiveData<Boolean>()
+    val isAnimeOnDatabase: LiveData<Boolean> = _isAnimeOnDatabase
 
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
@@ -30,13 +32,37 @@ class DetailsViewModel @Inject constructor(
         _url.value = url
     }
 
-    fun passEpisodeData(
-        id: String,
-        endEpisode: String,
-        alias: String
-    ) {
+    fun passEpisodeData(id: String, endEpisode: String, alias: String) {
         val list = listOf(id, endEpisode, alias)
         episodeData.value = list
     }
+
+
+    /**
+     * Insert Anime to database
+     */
+    fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
+        animeRepository.insertFavoriteAnime(anime)
+    }
+
+    /**
+     * Update Anime in database
+     */
+    fun update(anime: AnimeMetaModel) = viewModelScope.launch {
+        animeRepository.updateAnime(anime = anime)
+    }
+
+    fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
+        animeRepository.deleteAnime(anime)
+    }
+
+
+    fun checkDatabase(id: Int) {
+        viewModelScope.launch {
+            _isAnimeOnDatabase.value = animeRepository.checkIfAnimeIsOnDatabase(id = id)
+        }
+    }
+
+
 }
 
