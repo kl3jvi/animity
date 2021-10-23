@@ -5,13 +5,14 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
+import com.kl3jvi.animity.model.database.AnimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase
+    private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
+    private val animeRepository: AnimeRepository
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()

@@ -12,7 +12,8 @@ interface AnimeDao {
     @Insert
     suspend fun insertAnime(animeMetaModel: AnimeMetaModel)
 
-    @Query("SELECT * FROM ANIME_TABLE ORDER BY ID")
-    fun getAllAnimes(): Flow<List<AnimeMetaModel>>
+    @Query("SELECT * FROM ANIME_TABLE WHERE favorite_anime = 1")
+    fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>>
+
 
 }
