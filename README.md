@@ -20,9 +20,10 @@
 
 ## Screenshots
 
-[<img src="assets/Screenshot_2021-09-28-23-38-53-545_com.kl3jvi.animity.jpg" width=160>](assets/Screenshot_2021-09-28-23-38-53-545_com.kl3jvi.animity.jpg)
-[<img src="assets/Screenshot_2021-09-28-23-39-01-314_com.kl3jvi.animity.jpg" width=160>](assets/Screenshot_2021-09-28-23-39-01-314_com.kl3jvi.animity.jpg)
-[<img src="assets/Screenshot_2021-09-28-23-39-17-840_com.kl3jvi.animity.jpg" height=160>](assets/Screenshot_2021-09-28-23-39-17-840_com.kl3jvi.animity.jpg)
+[<img src="assets/image1.jpg" width=23%>](assets/image1.jpg)
+[<img src="assets/image2.jpg" width=23%>](assets/image2.jpg)
+[<img src="assets/image3.jpg" width=23%>](assets/image3.jpg)
+[<img src="assets/image4.jpg" width=23%>](assets/image4.jpg)
 
 ## Description
 
