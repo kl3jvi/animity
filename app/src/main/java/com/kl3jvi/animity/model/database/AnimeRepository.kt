@@ -14,7 +14,7 @@ class AnimeRepository @Inject constructor(private val dao: AnimeDao) {
 
     suspend fun updateAnime(anime: AnimeMetaModel) = dao.updateAnime(anime)
 
-    suspend fun checkIfAnimeIsOnDatabase(id: Int) = dao.count(id) > 0
+    suspend fun checkIfAnimeIsOnDatabase(id: Int) = dao.isAnimeOnDatabase(id)
 
     suspend fun deleteAnime(anime: AnimeMetaModel) = dao.deleteAnime(anime)
 

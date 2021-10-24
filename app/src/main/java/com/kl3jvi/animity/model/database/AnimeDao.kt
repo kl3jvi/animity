@@ -16,11 +16,10 @@ interface AnimeDao {
     @Update
     suspend fun updateAnime(anime: AnimeMetaModel)
 
-    @Query("SELECT COUNT() FROM anime_table WHERE id = :id")
-    suspend fun count(id: Int): Int
+    @Query("SELECT EXISTS(SELECT * FROM anime_table WHERE id = :userId)")
+    suspend fun isAnimeOnDatabase(userId: Int): Boolean
 
     @Delete
     suspend fun deleteAnime(anime: AnimeMetaModel)
-
 
 }

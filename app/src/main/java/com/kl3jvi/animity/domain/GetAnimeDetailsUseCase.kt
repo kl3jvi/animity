@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.domain
 
+import com.kl3jvi.animity.model.database.AnimeDao
 import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
@@ -12,7 +13,10 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetAnimeDetailsUseCase @Inject constructor(private val detailsRepository: DetailsRepository) {
+class GetAnimeDetailsUseCase @Inject constructor(
+    private val detailsRepository: DetailsRepository,
+    private val animeDao: AnimeDao
+) {
 
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
         try {
@@ -78,5 +82,10 @@ class GetAnimeDetailsUseCase @Inject constructor(private val detailsRepository: 
                 )
             )
         }
+    }
+
+
+    fun checkIfExists(id: Int) = flow {
+        emit(animeDao.isAnimeOnDatabase(id))
     }
 }

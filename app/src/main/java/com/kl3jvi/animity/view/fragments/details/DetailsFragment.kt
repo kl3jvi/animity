@@ -4,6 +4,7 @@ package com.kl3jvi.animity.view.fragments.details
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -47,7 +48,7 @@ class DetailsFragment : Fragment() {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         fetchAnimeInfo()
         fetchEpisodeList()
-//        observeDatabase()
+        observeDatabase()
         return binding.root
     }
 
@@ -71,9 +72,8 @@ class DetailsFragment : Fragment() {
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
             }
+            viewModel.passId(animeInfo.id)
         }
-
-        observeDatabase()
     }
 
     private fun fetchAnimeInfo() {
@@ -145,9 +145,9 @@ class DetailsFragment : Fragment() {
 
 
     private fun observeDatabase() {
-        viewModel.checkDatabase(args.animeDetails.ID!!)
-        viewModel.isAnimeOnDatabase.observe(viewLifecycleOwner, {
-            if (it) {
+        viewModel.isOnDatabase.observe(viewLifecycleOwner,{
+            Log.e("Is anime on database",it.toString())
+            if (!it) {
                 menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
             } else {
                 menu[0].setIcon(R.drawable.ic_favorite_complete)
@@ -161,21 +161,19 @@ class DetailsFragment : Fragment() {
             R.id.add_to_favorites -> {
                 if (!check) {
                     menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-//                    viewModel.insert(anime = args.animeDetails)
+                    viewModel.delete(args.animeDetails)
                     check = true
                 } else {
                     menu[0].setIcon(R.drawable.ic_favorite_complete)
-//                    viewModel.delete(args.animeDetails)
+                    viewModel.insert(anime = args.animeDetails)
                     check = false
                 }
-
             }
             else -> findNavController().navigateUp()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun fetchEpisodeList() {
         viewModel.episodeList.observe(viewLifecycleOwner, { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->

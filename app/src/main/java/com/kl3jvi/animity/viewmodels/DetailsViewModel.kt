@@ -15,53 +15,46 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
-    private val episodeData = MutableLiveData<List<String>>()
-
+    private val _animeId = MutableLiveData<Int>()
+    private val _episodeData = MutableLiveData<List<String>>()
     private val _isAnimeOnDatabase = MutableLiveData<Boolean>()
-    val isAnimeOnDatabase: LiveData<Boolean> = _isAnimeOnDatabase
 
+
+    val isAnimeOnDatabase: LiveData<Boolean> = _isAnimeOnDatabase
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
     }
-
-    val episodeList = Transformations.switchMap(episodeData) { list ->
+    val episodeList = Transformations.switchMap(_episodeData) { list ->
         getAnimeDetailsUseCase.fetchEpisodeList(list[0], list[1], list[2]).asLiveData()
     }
+    val isOnDatabase = Transformations.switchMap(_animeId){ id->
+        getAnimeDetailsUseCase.checkIfExists(id).asLiveData()
+    }
+
 
     fun passUrl(url: String) {
         _url.value = url
     }
 
+    fun passId(id:Int){
+        _animeId.value = id
+    }
+
     fun passEpisodeData(id: String, endEpisode: String, alias: String) {
         val list = listOf(id, endEpisode, alias)
-        episodeData.value = list
+        _episodeData.value = list
     }
 
 
-    /**
-     * Insert Anime to database
-     */
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
     }
 
-    /**
-     * Update Anime in database
-     */
-    fun update(anime: AnimeMetaModel) = viewModelScope.launch {
-        animeRepository.updateAnime(anime = anime)
-    }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.deleteAnime(anime)
     }
 
-
-    fun checkDatabase(id: Int) {
-        viewModelScope.launch {
-            _isAnimeOnDatabase.value = animeRepository.checkIfAnimeIsOnDatabase(id = id)
-        }
-    }
 
 
 }

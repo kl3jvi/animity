@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "anime_table")
 data class AnimeMetaModel(
-    @PrimaryKey(autoGenerate = true) var ID: Int? = 0,
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
     @ColumnInfo var typeValue: Int? = null,
     @ColumnInfo var imageUrl: String = "",
     @ColumnInfo var categoryUrl: String? = null,

@@ -2,6 +2,7 @@ package com.kl3jvi.animity.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -20,6 +21,7 @@ class CustomHorizontalAdapter(
         val title = view.animeTitle
         val image = view.animeImage
         val episodeNumber = view.episodeNumber
+        val episodeCard = view.episodeCard
         val card = view.backgroundImage
     }
 
@@ -31,33 +33,32 @@ class CustomHorizontalAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = animes[position]
-        holder.image.load(element.imageUrl) {
-            crossfade(true)
-            diskCachePolicy(CachePolicy.ENABLED)
-        }
 
-        holder.title.text = element.title
-        holder.episodeNumber.text = element.episodeNumber
 
-        holder.card.setOnClickListener {
-            if (fragment is HomeFragment) {
-                fragment.animeDetails(element)
+        holder.apply {
+            image.load(element.imageUrl) {
+                crossfade(true)
+                diskCachePolicy(CachePolicy.ENABLED)
+            }
+            title.text = element.title
+            if (!element.episodeNumber.isNullOrEmpty()) {
+                episodeNumber.text = element.episodeNumber
+            } else {
+                episodeCard.isVisible = false
+            }
+            card.setOnClickListener {
+                if (fragment is HomeFragment) {
+                    fragment.animeDetails(element)
+                }
             }
         }
     }
 
     override fun getItemCount() = animes.size
-
-
-
-
-
-    fun addAnimes(animes:List<AnimeMetaModel>) {
+    fun addAnimes(animes: List<AnimeMetaModel>) {
         this.animes.apply {
             clear()
             addAll(animes)
         }
     }
-
-
 }

@@ -32,7 +32,7 @@ object HtmlParser {
 
             animeMetaModelList.add(
                 AnimeMetaModel(
-                    ID = title.hashCode(),
+                    id = title.hashCode(),
                     title = title,
                     episodeNumber = episodeNumber,
                     episodeUrl = episodeUrl,
@@ -73,7 +73,7 @@ object HtmlParser {
             genreList.addAll(getGenreList(genreHtmlList))
             animeMetaModelList.add(
                 AnimeMetaModel(
-                    ID = "$animeTitle$typeValue".hashCode(),
+                    id = "$animeTitle$typeValue".hashCode(),
                     title = animeTitle,
                     episodeNumber = episodeNumber,
                     episodeUrl = episodeUrl,
@@ -102,7 +102,7 @@ object HtmlParser {
             val releasedDate = it.getElementsByClass("released")?.first()?.text()
             animeMetaModelList.add(
                 AnimeMetaModel(
-                    ID = "$movieName$typeValue".hashCode().hashCode(),
+                    id = "$movieName$typeValue".hashCode().hashCode(),
                     title = movieName,
                     imageUrl = imageUrl,
                     categoryUrl = movieUrl,
