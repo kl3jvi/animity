@@ -46,7 +46,7 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         fetchAnimeInfo()
-//        fetchEpisodeList()
+        fetchEpisodeList()
 //        observeDatabase()
         return binding.root
     }
