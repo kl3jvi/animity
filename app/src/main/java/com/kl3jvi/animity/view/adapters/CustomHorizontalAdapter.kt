@@ -55,8 +55,9 @@ class CustomHorizontalAdapter(
     }
 
     override fun getItemCount() = animes.size
+
     fun addAnimes(animes: List<AnimeMetaModel>) {
-        this.animes.apply {
+       this.animes.apply {
             clear()
             addAll(animes)
         }

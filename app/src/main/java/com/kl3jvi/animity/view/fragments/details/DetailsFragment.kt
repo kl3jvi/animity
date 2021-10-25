@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
@@ -62,8 +63,7 @@ class DetailsFragment : Fragment() {
                     crossfade(true)
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
-                episodeListRecycler.layoutManager =
-                    androidx.recyclerview.widget.LinearLayoutManager(requireContext())
+                episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
                     CustomEpisodeAdapter(requireParentFragment())

@@ -10,7 +10,7 @@ interface AnimeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAnime(animeMetaModel: AnimeMetaModel)
 
-    @Query("SELECT * FROM ANIME_TABLE WHERE favorite_anime = 1")
+    @Query("SELECT * FROM ANIME_TABLE ORDER BY ID")
     fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>>
 
     @Update
