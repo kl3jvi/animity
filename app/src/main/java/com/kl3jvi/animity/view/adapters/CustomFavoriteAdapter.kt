@@ -9,6 +9,7 @@ import coil.load
 import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.view.fragments.favorites.FavoritesFragment
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomFavoriteAdapter(
@@ -51,8 +52,8 @@ class CustomFavoriteAdapter(
                 episodeCard.isVisible = false
             }
             card.setOnClickListener {
-                if (fragment is HomeFragment) {
-                    fragment.animeDetails(element)
+                if (fragment is FavoritesFragment) {
+                    fragment.navigateToDetails(element)
                 }
             }
         }

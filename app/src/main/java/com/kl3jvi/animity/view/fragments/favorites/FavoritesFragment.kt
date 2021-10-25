@@ -6,10 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomFavoriteAdapter
 import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
+import com.kl3jvi.animity.view.fragments.search.SearchFragmentDirections
 import com.kl3jvi.animity.viewmodels.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,6 +56,17 @@ class FavoritesFragment : Fragment() {
                 binding.nothingSaved.visibility = View.VISIBLE
             }
         })
+    }
+
+    fun navigateToDetails(animeDetails: AnimeMetaModel) {
+        findNavController().navigate(
+            FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                animeDetails
+            )
+        )
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.hideBottomNavBar()
+        }
     }
 
     override fun onDestroyView() {

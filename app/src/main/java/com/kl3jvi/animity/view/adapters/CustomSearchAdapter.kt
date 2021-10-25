@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.view.fragments.home.HomeFragment
+import com.kl3jvi.animity.view.fragments.search.SearchFragment
 
 
 class CustomSearchAdapter(private val fragment: Fragment) :
@@ -19,6 +21,7 @@ class CustomSearchAdapter(private val fragment: Fragment) :
         val image = view.imageView
         val title = view.imageText
         val extra = view.imageTextExtra
+        val card = view.backgroundCard
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,6 +35,12 @@ class CustomSearchAdapter(private val fragment: Fragment) :
         holder.image.load(item.imageUrl)
         holder.title.text = item.title
         holder.extra.text = item.releasedDate
+        holder.card.setOnClickListener{
+            if (fragment is SearchFragment) {
+                fragment.navigateToDetails(item)
+            }
+        }
+
     }
 
     override fun getItemCount() = list.size

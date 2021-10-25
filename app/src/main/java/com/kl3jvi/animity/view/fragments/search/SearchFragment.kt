@@ -8,11 +8,15 @@ import androidx.appcompat.widget.SearchView
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomSearchAdapter
+import com.kl3jvi.animity.view.fragments.home.HomeFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -85,6 +89,16 @@ class SearchFragment : Fragment() {
         })
     }
 
+    fun navigateToDetails(animeDetails: AnimeMetaModel) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionNavigationExploreToNavigationDetails(
+                animeDetails
+            )
+        )
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.hideBottomNavBar()
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

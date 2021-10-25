@@ -184,7 +184,7 @@ class HomeFragment : Fragment() {
     }
 
 
-    fun animeDetails(animeDetails: AnimeMetaModel) {
+    fun navigateToDetails(animeDetails: AnimeMetaModel) {
         findNavController().navigate(
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
                 animeDetails

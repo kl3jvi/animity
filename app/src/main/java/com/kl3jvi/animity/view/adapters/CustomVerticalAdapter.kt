@@ -62,7 +62,7 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
 
         holder.itemView.setOnClickListener {
             if (fragment is HomeFragment) {
-                fragment.animeDetails(element)
+                fragment.navigateToDetails(element)
             }
         }
     }

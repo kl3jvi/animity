@@ -48,7 +48,7 @@ class CustomHorizontalAdapter(
             }
             card.setOnClickListener {
                 if (fragment is HomeFragment) {
-                    fragment.animeDetails(element)
+                    fragment.navigateToDetails(element)
                 }
             }
         }
