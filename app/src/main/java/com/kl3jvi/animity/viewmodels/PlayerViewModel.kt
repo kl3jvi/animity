@@ -1,10 +1,7 @@
-package com.kl3jvi.animity.view.activities.player
+package com.kl3jvi.animity.viewmodels
 
 import androidx.lifecycle.*
-import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.parser.HtmlParser
-import kotlinx.coroutines.Dispatchers
+import com.kl3jvi.animity.view.activities.player.PlayerRepository
 import javax.inject.Inject
 
 class PlayerViewModel @Inject constructor(private val playerRepository: PlayerRepository) : ViewModel() {

@@ -1,14 +1,10 @@
 package com.kl3jvi.animity.utils.parser
 
-import com.kl3jvi.animity.model.entities.AnimeInfoModel
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.model.entities.EpisodeModel
-import com.kl3jvi.animity.model.entities.GenreModel
+import com.kl3jvi.animity.model.entities.*
 import com.kl3jvi.animity.utils.Constants
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import timber.log.Timber
-import java.lang.NullPointerException
 import java.util.regex.Pattern
 
 
@@ -178,7 +174,7 @@ object HtmlParser {
     }
 
 
-    fun fetchEpisodeList(response: String): ArrayList<EpisodeModel>{
+    fun fetchEpisodeList(response: String): ArrayList<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
         val lists = document?.select("li")
@@ -197,33 +193,42 @@ object HtmlParser {
         return episodeList
     }
 
-    fun parseMediaUrl(response: String): String{
+    fun parseMediaUrl(response: String): EpisodeInfo {
         var mediaUrl: String?
         val document = Jsoup.parse(response)
         val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
-       /* val nextEpisodeUrl = document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()?.attr("href")
-        val previousEpisodeUrl = document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()?.attr("href") */
-        return  mediaUrl
-
+        val nextEpisodeUrl =
+            document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
+                ?.attr("href")
+        val previousEpisodeUrl =
+            document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()
+                ?.attr("href")
+        return EpisodeInfo(
+            nextEpisodeUrl = nextEpisodeUrl,
+            previousEpisodeUrl = previousEpisodeUrl,
+            vidCdnUrl = mediaUrl
+        )
     }
 
-    fun parseM3U8Url(response: String): String?{
-        var m3u8Url: String?= ""
+    fun parseM3U8Url(response: String): String? {
+        var m3u8Url: String? = ""
         val document = Jsoup.parse(response)
         val info = document?.getElementsByClass("videocontent")
         val pattern = Pattern.compile(Constants.M3U8_REGEX_PATTERN)
         val matcher = pattern.matcher(info.toString())
-        return try{
-            while (matcher.find()){
+        return try {
+            while (matcher.find()) {
                 Timber.e(matcher.group((0)))
-                if( matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!.contains("googlevideo")){
-                    m3u8Url =  matcher.group(0)
+                if (matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!
+                        .contains("googlevideo")
+                ) {
+                    m3u8Url = matcher.group(0)
                     break
                 }
             }
             m3u8Url
-        } catch (npe: NullPointerException){
+        } catch (npe: NullPointerException) {
             m3u8Url
         }
 

@@ -26,12 +26,13 @@
         <entry key="app/src/main/res/drawable/search_background.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/drawable/search_icon.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/drawable/title_shadow.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/drawable/video_ripple.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/bottom_sheet_search.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/error_screen_video_player.xml" value="0.3140625" />
-        <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.12916666666666668" />
@@ -45,6 +46,7 @@
         <entry key="app/src/main/res/layout/item_favorite_anime.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/search_layout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/video_ripple.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3140625" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.3140625" />
       </map>
