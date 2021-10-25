@@ -42,6 +42,7 @@
         <entry key="app/src/main/res/layout/item_big_card_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_card_anime.xml" value="0.536" />
         <entry key="app/src/main/res/layout/item_episode_number.xml" value="0.536" />
+        <entry key="app/src/main/res/layout/item_favorite_anime.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/search_layout.xml" value="0.335" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3140625" />
