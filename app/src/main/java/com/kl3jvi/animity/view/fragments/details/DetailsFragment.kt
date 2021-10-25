@@ -183,7 +183,6 @@ class DetailsFragment : Fragment() {
         })
     }
 
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {

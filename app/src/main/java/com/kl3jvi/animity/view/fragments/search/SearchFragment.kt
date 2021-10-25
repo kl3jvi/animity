@@ -105,6 +105,13 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.showBottomNavBar()
+        }
+    }
+
     private fun showSnack(message: String?) {
         val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
         if (!snack.isShown) {
