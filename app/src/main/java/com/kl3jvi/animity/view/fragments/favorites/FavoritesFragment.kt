@@ -45,7 +45,13 @@ class FavoritesFragment : Fragment() {
         viewModel.favoriteAnimesList.observe(viewLifecycleOwner, { animeList ->
             if(animeList.isNotEmpty()){
                 favoriteAdapter.addAnimes(animeList)
+                binding.favoritesRecycler.visibility = View.VISIBLE
+            } else{
+                binding.favoritesRecycler.visibility = View.GONE
+                binding.nothingSaved.visibility = View.VISIBLE
+
             }
+
         })
     }
 
