@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Converters
 
 /**
@@ -18,19 +19,22 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun animeDao(): AnimeDao
 
     companion object {
+
+        // For Singleton instantiation
         @Volatile
-        private var INSTANCE: AppDatabase? = null
-        fun getDatabase(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "word_database"
-                ).build()
-                INSTANCE = instance
-                // return instance
-                instance
+        private var instance: AppDatabase? = null
+
+        fun getInstance(context: Context): AppDatabase {
+            return instance ?: synchronized(this) {
+                instance ?: buildDatabase(context).also { instance = it }
             }
+        }
+
+        private fun buildDatabase(context: Context): AppDatabase {
+            return Room.databaseBuilder(context, AppDatabase::class.java, Constants.DATABASE_NAME)
+                .build()
         }
     }
 }
+
+

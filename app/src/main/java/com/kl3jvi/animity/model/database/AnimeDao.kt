@@ -13,8 +13,6 @@ interface AnimeDao {
     @Query("SELECT * FROM ANIME_TABLE ORDER BY ID")
     fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>>
 
-    @Update
-    suspend fun updateAnime(anime: AnimeMetaModel)
 
     @Query("SELECT EXISTS(SELECT * FROM anime_table WHERE id = :userId)")
     suspend fun isAnimeOnDatabase(userId: Int): Boolean

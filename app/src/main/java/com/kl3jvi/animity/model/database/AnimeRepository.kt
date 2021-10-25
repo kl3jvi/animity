@@ -12,7 +12,6 @@ class AnimeRepository @Inject constructor(private val dao: AnimeDao) {
 
     suspend fun insertFavoriteAnime(anime: AnimeMetaModel) = dao.insertAnime(anime)
 
-    suspend fun updateAnime(anime: AnimeMetaModel) = dao.updateAnime(anime)
 
     suspend fun checkIfAnimeIsOnDatabase(id: Int) = dao.isAnimeOnDatabase(id)
 

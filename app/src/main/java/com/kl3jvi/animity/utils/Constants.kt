@@ -2,12 +2,13 @@ package com.kl3jvi.animity.utils
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
 class Constants {
     companion object {
+
+        const val DATABASE_NAME = "anime_databbase"
 
         //Base URLS
         var BASE_URL = "https://gogoanime.pe"
