@@ -33,7 +33,6 @@ class HomeFragment : Fragment() {
     private lateinit var movieAdapter: CustomHorizontalAdapter
     private lateinit var snapHelperSub: SnapHelper
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,15 +42,14 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         apply {
-            getNewSeason()
-            fetchRecentDub()
-            getTodaySelectionAnime()
-            getMovies()
             initViews()
+            fetchRecentDub()
+            getNewSeason()
+            getMovies()
+            getTodaySelectionAnime()
         }
     }
 
@@ -125,26 +123,6 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun getTodaySelectionAnime() {
-        viewModel.todaySelection.observe(viewLifecycleOwner, { res ->
-            when (res) {
-                is Resource.Success -> {
-                    res.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
-                    binding.todaySelection.visibility = View.VISIBLE
-                    binding.todSelectionTv.visibility = View.VISIBLE
-                }
-                is Resource.Loading -> {
-                    binding.todaySelection.visibility = View.GONE
-                    binding.todSelectionTv.visibility = View.GONE
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is Resource.Error -> {
-                    showSnack(res.message)
-                }
-            }
-        })
-    }
-
     private fun getNewSeason() {
         viewModel.newSeason.observe(viewLifecycleOwner, { res ->
             when (res) {
@@ -183,6 +161,25 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun getTodaySelectionAnime() {
+        viewModel.todaySelection.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    res.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
+                    binding.todaySelection.visibility = View.VISIBLE
+                    binding.todSelectionTv.visibility = View.VISIBLE
+                }
+                is Resource.Loading -> {
+                    binding.todaySelection.visibility = View.GONE
+                    binding.todSelectionTv.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is Resource.Error -> {
+                    showSnack(res.message)
+                }
+            }
+        })
+    }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
         findNavController().navigate(

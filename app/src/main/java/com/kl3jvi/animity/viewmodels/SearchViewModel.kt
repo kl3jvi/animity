@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.search
+package com.kl3jvi.animity.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations

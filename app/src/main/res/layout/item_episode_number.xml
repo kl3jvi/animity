@@ -7,7 +7,7 @@
     android:layout_height="50dp"
     android:layout_marginBottom="5dp"
     android:foreground="@drawable/outline_drawable"
-    app:cardBackgroundColor="@color/transparent"
+    app:cardBackgroundColor="@color/iconGrayBackground"
     app:cardCornerRadius="@dimen/roundedImageRadius"
     app:cardElevation="0dp">
 
@@ -25,7 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless">
+        android:background="?android:attr/selectableItemBackgroundBorderless">
 
         <ImageView
             android:id="@+id/episode_play"
@@ -42,7 +42,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="50dp"
             android:ellipsize="marquee"
             android:gravity="center_vertical"
             android:marqueeRepeatLimit="0"

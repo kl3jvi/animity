@@ -16,7 +16,7 @@ import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomSearchAdapter
-import com.kl3jvi.animity.view.fragments.home.HomeFragmentDirections
+import com.kl3jvi.animity.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

@@ -1,10 +1,8 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -101,6 +99,7 @@ class DetailsFragment : Fragment() {
                                 imageButton.visibility = View.GONE
                             }
                         } else {
+
                             binding.apply {
                                 resultEpisodesText.visibility = View.VISIBLE
                                 resultPlayMovie.visibility = View.GONE
@@ -145,9 +144,9 @@ class DetailsFragment : Fragment() {
 
 
     private fun observeDatabase() {
-        viewModel.isOnDatabase.observe(viewLifecycleOwner,{
-            Log.e("Is anime on database",it.toString())
-            if (!it) {
+        viewModel.isOnDatabase.observe(viewLifecycleOwner, {
+            check = it
+            if (!check) {
                 menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
             } else {
                 menu[0].setIcon(R.drawable.ic_favorite_complete)
@@ -159,14 +158,16 @@ class DetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_to_favorites -> {
-                if (!check) {
-                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-                    viewModel.delete(args.animeDetails)
-                    check = true
-                } else {
+                check = if (!check) {
                     menu[0].setIcon(R.drawable.ic_favorite_complete)
                     viewModel.insert(anime = args.animeDetails)
-                    check = false
+                    showSnack("Anime added to Favorites")
+                    true
+                } else {
+                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+                    viewModel.delete(args.animeDetails)
+                    showSnack("Anime removed from Favorites")
+                    false
                 }
             }
             else -> findNavController().navigateUp()
