@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
@@ -16,6 +17,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
@@ -100,27 +102,32 @@ class PlayerActivity : AppCompatActivity() {
             when (res) {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
-                    Log.e("Video URL",videoM3U8Url)
-                    val trackSelector = DefaultTrackSelector(this).apply {
-                        setParameters(buildUponParameters().setMaxVideoSizeSd())
-                    }
-                    val videoSource: MediaSource = buildMediaSource(Uri.parse(videoM3U8Url))
-                    player = SimpleExoPlayer.Builder(this)
-                        .setTrackSelector(trackSelector)
-                        .build()
-                        .also { exoPlayer ->
-                            viewBinding.videoView.player = exoPlayer
-                            val mediaItem = MediaItem.Builder()
-                                .setUri(videoM3U8Url)
-                                .setMimeType(MimeTypes.APPLICATION_M3U8)
-                                .build()
+                    Log.e("Video URL", videoM3U8Url)
+                    try {
 
-                            exoPlayer.setMediaItem(mediaItem)
-                            exoPlayer.setMediaSource(videoSource)
-                            exoPlayer.playWhenReady = playWhenReady
-                            exoPlayer.seekTo(currentWindow, playbackPosition)
-                            exoPlayer.prepare()
+                        val trackSelector = DefaultTrackSelector(this).apply {
+                            setParameters(buildUponParameters().setMaxVideoSizeSd())
                         }
+                        val videoSource: MediaSource = buildMediaSource(Uri.parse(videoM3U8Url))
+                        player = SimpleExoPlayer.Builder(this)
+                            .setTrackSelector(trackSelector)
+                            .build()
+                            .also { exoPlayer ->
+                                viewBinding.videoView.player = exoPlayer
+                                val mediaItem = MediaItem.Builder()
+                                    .setUri(videoM3U8Url)
+                                    .setMimeType(MimeTypes.APPLICATION_M3U8)
+                                    .build()
+
+                                exoPlayer.setMediaItem(mediaItem)
+                                exoPlayer.setMediaSource(videoSource)
+                                exoPlayer.playWhenReady = playWhenReady
+                                exoPlayer.seekTo(currentWindow, playbackPosition)
+                                exoPlayer.prepare()
+                            }
+                    } catch (e: ExoPlaybackException) {
+                        showSnack(e.localizedMessage)
+                    }
                     viewBinding.progress.visibility = View.GONE
                     hideSystemUi()
                 }
@@ -129,6 +136,7 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     hideSystemUi()
+                    showSnack(res.message)
                 }
             }
         })
@@ -175,6 +183,14 @@ class PlayerActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+
+    private fun showSnack(message: String?) {
+        val snack =
+            Snackbar.make(viewBinding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
+        if (!snack.isShown) {
+            snack.show()
+        }
     }
 
 }
