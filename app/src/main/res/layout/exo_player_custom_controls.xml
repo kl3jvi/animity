@@ -44,13 +44,15 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
+        android:contentDescription="@string/play_movie"
         android:focusable="true"
         android:padding="10dp"
         android:src="@drawable/ic_media_play"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/exo_rew"
@@ -58,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/exo_controls_rewind_description"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/ic_media_seek_backward"
@@ -81,7 +84,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/exo_ffwd"
@@ -89,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/exo_controls_rewind_description"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/ic_forward_icon"
@@ -144,6 +149,30 @@
         tools:text="22:04" />
 
 
+    <TextView
+        android:id="@+id/previousEpisode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="8dp"
+        android:text="@string/previous_episode"
+        android:textColor="@color/media_player_controls"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/exo_position"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/nextEpisode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:padding="8dp"
+        android:text="@string/next_episode"
+        android:textColor="@color/media_player_controls"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/exo_duration"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@id/exo_progress"
         android:layout_width="0dp"
@@ -152,6 +181,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="19dp"
         android:layout_weight="1"
+        android:contentDescription="@string/exo_controls_rewind_description"
         app:bar_height="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/exo_duration"

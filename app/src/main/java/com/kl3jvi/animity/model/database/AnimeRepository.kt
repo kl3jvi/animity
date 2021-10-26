@@ -12,10 +12,9 @@ class AnimeRepository @Inject constructor(private val dao: AnimeDao) {
 
     suspend fun insertFavoriteAnime(anime: AnimeMetaModel) = dao.insertAnime(anime)
 
-
     suspend fun checkIfAnimeIsOnDatabase(id: Int) = dao.isAnimeOnDatabase(id)
 
     suspend fun deleteAnime(anime: AnimeMetaModel) = dao.deleteAnime(anime)
 
-
+    fun getAnimeByOrder(order: String) = dao.getAnimeOrdered(order)
 }

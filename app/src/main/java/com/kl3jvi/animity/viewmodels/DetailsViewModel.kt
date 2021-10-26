@@ -17,10 +17,7 @@ class DetailsViewModel @Inject constructor(
     private val _url = MutableLiveData<String>()
     private val _animeId = MutableLiveData<Int>()
     private val _episodeData = MutableLiveData<List<String>>()
-    private val _isAnimeOnDatabase = MutableLiveData<Boolean>()
 
-
-    val isAnimeOnDatabase: LiveData<Boolean> = _isAnimeOnDatabase
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
     }
@@ -30,7 +27,6 @@ class DetailsViewModel @Inject constructor(
     val isOnDatabase = Transformations.switchMap(_animeId){ id->
         getAnimeDetailsUseCase.checkIfExists(id).asLiveData()
     }
-
 
     fun passUrl(url: String) {
         _url.value = url
@@ -45,11 +41,9 @@ class DetailsViewModel @Inject constructor(
         _episodeData.value = list
     }
 
-
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
     }
-
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.deleteAnime(anime)
