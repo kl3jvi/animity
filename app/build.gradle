@@ -37,6 +37,10 @@ android {
         viewBinding true
     }
 
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+
     splits {
         // Configures multiple APKs based on ABI.
         abi {

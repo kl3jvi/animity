@@ -65,7 +65,7 @@ class PlayerActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > 23 && player == null) {
             initializePlayer()
         }
     }
@@ -89,7 +89,7 @@ class PlayerActivity : AppCompatActivity() {
 
     public override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > 23 && player == null) {
             if (player != null) {
                 player?.pause()
             }
@@ -142,7 +142,7 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
-    fun getDataSourceFactory(currentUrl: String?): DefaultHttpDataSource.Factory {
+    private fun getDataSourceFactory(currentUrl: String?): DefaultHttpDataSource.Factory {
         return DefaultHttpDataSource.Factory().apply {
             setUserAgent(USER_AGENT)
             if (currentUrl != null) {
@@ -160,7 +160,7 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    fun buildMediaSource(uri: Uri): HlsMediaSource {
+    private fun buildMediaSource(uri: Uri): HlsMediaSource {
         val dataSourceFactory: DataSource.Factory = getDataSourceFactory(uri.toString())
         return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
     }

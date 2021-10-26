@@ -34,4 +34,5 @@
     <string name="result_go_back">goback</string>
     <string name="favorite">Add to Favorites</string>
     <string name="order">Order Animes</string>
+    <string name="movie_not_released">Movie not released yet</string>
 </resources>

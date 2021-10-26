@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.view.fragments.details
 
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -16,10 +17,12 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.activities.MainActivity
+import com.kl3jvi.animity.view.activities.player.PlayerActivity
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,6 +100,8 @@ class DetailsFragment : Fragment() {
                                 binding.episodeListRecycler.visibility = View.GONE
                                 resultPlayMovie.visibility = View.VISIBLE
                                 imageButton.visibility = View.GONE
+
+
                             }
                         } else {
 
@@ -180,6 +185,17 @@ class DetailsFragment : Fragment() {
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.getEpisodeInfo(episodeList)
                 binding.resultEpisodesText.text = "${episodeList.size} Episodes"
+                if (episodeList.isNotEmpty()) {
+                    binding.resultPlayMovie.setOnClickListener {
+                        val intent =
+                            Intent(requireActivity(), PlayerActivity::class.java)
+                        intent.putExtra(Constants.EPISODE_DETAILS, episodeList.first())
+                        requireContext().startActivity(intent)
+                    }
+                } else {
+                    binding.resultPlayMovie.isEnabled = false
+                    binding.resultPlayMovie.text = getString(R.string.movie_not_released)
+                }
             }
         })
     }
