@@ -16,5 +16,4 @@ class AnimeRepository @Inject constructor(private val dao: AnimeDao) {
 
     suspend fun deleteAnime(anime: AnimeMetaModel) = dao.deleteAnime(anime)
 
-    fun getAnimeByOrder(order: String) = dao.getAnimeOrdered(order)
 }

@@ -19,7 +19,5 @@ interface AnimeDao {
     @Query("SELECT EXISTS(SELECT * FROM ANIME_TABLE WHERE id = :userId)")
     suspend fun isAnimeOnDatabase(userId: Int): Boolean
 
-    @Query("SELECT * FROM ANIME_TABLE ORDER BY :filterType")
-    fun getAnimeOrdered(filterType: String): Flow<List<AnimeMetaModel>>
 
 }

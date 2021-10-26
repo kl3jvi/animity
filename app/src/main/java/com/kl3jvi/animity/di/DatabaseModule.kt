@@ -20,7 +20,7 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providePlantDao(appDatabase: AppDatabase): AnimeDao {
+    fun provideAnimesDao(appDatabase: AppDatabase): AnimeDao {
         return appDatabase.animeDao()
     }
 }
