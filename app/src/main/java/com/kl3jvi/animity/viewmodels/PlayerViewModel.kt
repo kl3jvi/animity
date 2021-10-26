@@ -1,52 +1,34 @@
 package com.kl3jvi.animity.viewmodels
 
-import androidx.lifecycle.*
-import com.kl3jvi.animity.view.activities.player.PlayerRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class PlayerViewModel @Inject constructor(private val playerRepository: PlayerRepository) : ViewModel() {
+@HiltViewModel
+class PlayerViewModel @Inject constructor(
+    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase
+) : ViewModel() {
 
     private var _vidUrl = MutableLiveData<String>()
-    var videoUrlLiveData: LiveData<String> = _vidUrl
+    private var _mediaUrlForFetch = MutableLiveData<String>()
+    fun updateEpisodeUrl(vidUrl: String) {
+        _vidUrl.value = vidUrl
+    }
 
-//    fun fetchEpisodeMediaUrl(url:String) = liveData(Dispatchers.IO) {
-//        emit(Resource.loading(data = null))
-//        try {
-//            emit(
-//                Resource.success(
-//                    data = HtmlParser.parseMediaUrl(
-//                    playerRepository.fetchEpisodeMediaUrl(
-//                        Constants.getHeader(),
-//                        url
-//                    ).string())
-//                )
-//            )
-//        } catch (exception: Exception) {
-//            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
-//        }
-//    }
-//
-//
-//    fun fetchM3U8(url:String) = liveData(Dispatchers.IO) {
-//        emit(Resource.loading(data = null))
-//        try {
-//            emit(
-//                Resource.success(
-//                    data = HtmlParser.parseM3U8Url(
-//                        playerRepository.fetchM3u8Url(
-//                            Constants.getHeader(),
-//                            url
-//                        ).string()
-//                    )
-//                )
-//            )
-//        } catch (exception: Exception) {
-//            emit(Resource.error(data = null, message = exception.message ?: "error Occurred!"))
-//        }
-//    }
-//
-//    fun updateEpisodeUrl(vidUrl: String) {
-//        _vidUrl.value = vidUrl
-//    }
+    fun updateUrlForFetch(url: String) {
+        _mediaUrlForFetch.value = url
+    }
 
+
+    val videoUrlLiveData = Transformations.switchMap(_vidUrl) { url ->
+        getEpisodeInfoUseCase.fetchEpisodeMediaUrl(url).asLiveData()
+    }
+
+    val fetchM3U8 = Transformations.switchMap(_mediaUrlForFetch) { url ->
+        getEpisodeInfoUseCase.fetchM3U8(url).asLiveData()
+    }
 }

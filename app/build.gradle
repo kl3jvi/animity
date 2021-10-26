@@ -104,6 +104,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
     implementation 'com.google.android.exoplayer:extension-cast:2.15.1'
     implementation "com.google.android.exoplayer:extension-mediasession:2.15.1"
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
 
     //Bottom bar
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.8'
