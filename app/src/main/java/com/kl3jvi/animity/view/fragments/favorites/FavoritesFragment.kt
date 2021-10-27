@@ -53,13 +53,17 @@ class FavoritesFragment : Fragment() {
     }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
-        findNavController().navigate(
-            FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-                animeDetails
+        try {
+            findNavController().navigate(
+                FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                    animeDetails
+                )
             )
-        )
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.hideBottomNavBar()
+            if (requireActivity() is MainActivity) {
+                (activity as MainActivity?)?.hideBottomNavBar()
+            }
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
         }
     }
 

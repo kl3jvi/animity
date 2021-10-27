@@ -23,7 +23,6 @@ class PlayerViewModel @Inject constructor(
         _mediaUrlForFetch.value = url
     }
 
-
     val videoUrlLiveData = Transformations.switchMap(_vidUrl) { url ->
         getEpisodeInfoUseCase.fetchEpisodeMediaUrl(url).asLiveData()
     }

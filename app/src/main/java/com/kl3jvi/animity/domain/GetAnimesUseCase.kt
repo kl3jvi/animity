@@ -9,7 +9,9 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepository) {
 
     fun fetchRecentSubOrDub(): Flow<Resource<List<AnimeMetaModel>>> = flow {
@@ -28,7 +30,7 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                     data = response
                 )
             )
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             emit(
                 Resource.Error(
                     message = e.localizedMessage ?: "An unexpected error occurred",

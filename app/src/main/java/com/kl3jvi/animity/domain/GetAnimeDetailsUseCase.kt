@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.domain
 
-import com.kl3jvi.animity.model.database.AnimeDao
 import com.kl3jvi.animity.model.database.AnimeRepository
 import com.kl3jvi.animity.model.entities.AnimeInfoModel
 import com.kl3jvi.animity.model.entities.EpisodeModel
@@ -13,13 +12,14 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+
+@Singleton
 class GetAnimeDetailsUseCase @Inject constructor(
     private val detailsRepository: DetailsRepository,
-    private val animeDao: AnimeDao,
     private val animeRepository: AnimeRepository
 ) {
-
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
         try {
             emit(Resource.Loading())

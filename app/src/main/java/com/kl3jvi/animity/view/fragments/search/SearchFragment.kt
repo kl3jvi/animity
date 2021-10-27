@@ -90,13 +90,17 @@ class SearchFragment : Fragment() {
     }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
-        findNavController().navigate(
-            SearchFragmentDirections.actionNavigationExploreToNavigationDetails(
-                animeDetails
+        try {
+            findNavController().navigate(
+                SearchFragmentDirections.actionNavigationExploreToNavigationDetails(
+                    animeDetails
+                )
             )
-        )
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.hideBottomNavBar()
+            if (requireActivity() is MainActivity) {
+                (activity as MainActivity?)?.hideBottomNavBar()
+            }
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
         }
     }
 

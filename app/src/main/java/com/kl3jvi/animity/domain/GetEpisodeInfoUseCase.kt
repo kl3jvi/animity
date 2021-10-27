@@ -6,9 +6,10 @@ import com.kl3jvi.animity.utils.parser.HtmlParser
 import com.kl3jvi.animity.view.activities.player.PlayerRepository
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class GetEpisodeInfoUseCase @Inject constructor(private val playerRepository: PlayerRepository) {
-
     fun fetchEpisodeMediaUrl(url: String) = flow {
         emit(Resource.Loading())
         try {
@@ -38,6 +39,5 @@ class GetEpisodeInfoUseCase @Inject constructor(private val playerRepository: Pl
             emit(Resource.Error(e.localizedMessage))
         }
     }
-
 
 }
