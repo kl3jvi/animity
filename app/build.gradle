@@ -24,6 +24,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable true
         }
     }
     compileOptions {
@@ -134,6 +135,4 @@ dependencies {
 
     //botoom sheet library
     implementation 'com.github.andrefrsousa:SuperBottomSheet:2.0.0'
-
-
 }

@@ -104,7 +104,6 @@ class DetailsFragment : Fragment() {
 
                             }
                         } else {
-
                             binding.apply {
                                 resultEpisodesText.visibility = View.VISIBLE
                                 resultPlayMovie.visibility = View.GONE
@@ -112,7 +111,6 @@ class DetailsFragment : Fragment() {
                                 episodeListRecycler.visibility = View.VISIBLE
                             }
                         }
-
                         info.genre.forEach { data ->
                             val chip = Chip(requireContext())
                             chip.apply {
@@ -193,8 +191,7 @@ class DetailsFragment : Fragment() {
                         requireContext().startActivity(intent)
                     }
                 } else {
-                    binding.resultPlayMovie.isEnabled = false
-                    binding.resultPlayMovie.text = getString(R.string.movie_not_released)
+                    binding.resultPlayMovie.visibility = View.GONE
                 }
             }
         })
