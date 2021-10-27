@@ -249,7 +249,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun showDialogForSpeedSelection() {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this,R.style.MaterialThemeDialog)
         builder.apply {
             setTitle("Set your playback speed")
             setSingleChoiceItems(showableSpeed, checkedItem) { _, which ->

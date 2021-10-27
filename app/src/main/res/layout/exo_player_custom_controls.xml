@@ -112,7 +112,7 @@
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="15dp"
-        android:text="@string/quality_auto"
+        android:text="@string/speed"
         android:textColor="@color/media_player_controls"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/exo_full_Screen"
@@ -173,13 +173,14 @@
         app:layout_constraintBottom_toTopOf="@id/exo_duration"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@id/exo_progress"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="16dp"
         android:layout_weight="1"
         android:contentDescription="@string/exo_controls_rewind_description"
         app:bar_height="2dp"
@@ -188,24 +189,23 @@
         app:layout_constraintStart_toEndOf="@id/exo_position"
         app:played_color="@color/colorProgress"
         app:scrubber_color="@color/colorProgress"
-        app:scrubber_dragged_size="26dp"
-        app:scrubber_enabled_size="24dp"
+        app:scrubber_dragged_size="20dp"
+        app:scrubber_enabled_size="15dp"
         app:unplayed_color="@color/videoProgress" />
-
 
     <TextView
         android:id="@+id/exo_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        tools:text="40:00"
         android:textColor="@color/media_player_controls"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/exo_progress"
-        app:layout_constraintTop_toTopOf="@+id/exo_progress" />
+        app:layout_constraintTop_toTopOf="@+id/exo_progress"
+        tools:text="40:00" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

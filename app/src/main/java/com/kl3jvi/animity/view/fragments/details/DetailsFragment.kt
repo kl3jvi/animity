@@ -36,7 +36,7 @@ class DetailsFragment : Fragment() {
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
     private lateinit var menu: Menu
-    private var isFavorite: Boolean = false
+    private var title: String = ""
     private var check = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +68,7 @@ class DetailsFragment : Fragment() {
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
                     CustomEpisodeAdapter(requireParentFragment(), animeInfo.title)
+                title = animeInfo.title
                 binding.episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
@@ -187,6 +188,7 @@ class DetailsFragment : Fragment() {
                         val intent =
                             Intent(requireActivity(), PlayerActivity::class.java)
                         intent.putExtra(Constants.EPISODE_DETAILS, episodeList.first())
+                        intent.putExtra(Constants.ANIME_TITLE, title)
                         requireContext().startActivity(intent)
                         binding.resultPlayMovie.visibility = View.VISIBLE
                     }
