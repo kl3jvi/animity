@@ -38,6 +38,8 @@ class DetailsFragment : Fragment() {
     private lateinit var menu: Menu
     private var title: String = ""
     private var check = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -50,14 +52,11 @@ class DetailsFragment : Fragment() {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         fetchAnimeInfo()
         fetchEpisodeList()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         args.animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
@@ -145,7 +144,6 @@ class DetailsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-
     private fun observeDatabase() {
         viewModel.isOnDatabase.observe(viewLifecycleOwner, {
             check = it
@@ -156,7 +154,6 @@ class DetailsFragment : Fragment() {
             }
         })
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

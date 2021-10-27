@@ -36,4 +36,5 @@
     <string name="order">Order Animes</string>
     <string name="movie_not_released">Movie not released yet</string>
     <string name="test">%s - %s</string>
+    <string name="skip_loading">Skip Intro</string>
 </resources>

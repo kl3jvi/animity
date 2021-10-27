@@ -74,7 +74,7 @@ class PlayerActivity : AppCompatActivity() {
                     viewModel.updateUrlForFetch(vidUrl)
                 }
                 is Resource.Error -> {
-                    finish()
+                    showErrorDialog("An error occured, check your internet connection")
                 }
                 else -> vidUrl = ""
             }
@@ -159,11 +159,11 @@ class PlayerActivity : AppCompatActivity() {
                     } catch (e: ExoPlaybackException) {
                         showSnack(e.localizedMessage)
                     }
-                    viewBinding.progress.visibility = View.GONE
+                    viewBinding.loadingOverlay.visibility = View.GONE
                     hideSystemUi()
                 }
                 is Resource.Loading -> {
-                    viewBinding.progress.visibility = View.VISIBLE
+                    viewBinding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
                     hideSystemUi()
@@ -178,6 +178,7 @@ class PlayerActivity : AppCompatActivity() {
         val backButton = viewBinding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
             finish()
+
         }
 
         val qualityButton =
@@ -248,8 +249,22 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun showErrorDialog(error: String) {
+        val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)
+        builder.apply {
+            setTitle("ERROR")
+            setMessage(error)
+            setCancelable(false)
+            setPositiveButton("Go Back") { p0, p1 ->
+                finish()
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     private fun showDialogForSpeedSelection() {
-        val builder = AlertDialog.Builder(this,R.style.MaterialThemeDialog)
+        val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)
         builder.apply {
             setTitle("Set your playback speed")
             setSingleChoiceItems(showableSpeed, checkedItem) { _, which ->
