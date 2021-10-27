@@ -50,7 +50,7 @@ class DetailsFragment : Fragment() {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         fetchAnimeInfo()
         fetchEpisodeList()
-        observeDatabase()
+
         return binding.root
     }
 
@@ -67,7 +67,7 @@ class DetailsFragment : Fragment() {
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
-                    CustomEpisodeAdapter(requireParentFragment())
+                    CustomEpisodeAdapter(requireParentFragment(), animeInfo.title)
                 binding.episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
@@ -107,7 +107,6 @@ class DetailsFragment : Fragment() {
                             binding.apply {
                                 resultEpisodesText.visibility = View.VISIBLE
                                 resultPlayMovie.visibility = View.GONE
-
                                 episodeListRecycler.visibility = View.VISIBLE
                             }
                         }
@@ -141,7 +140,7 @@ class DetailsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
         this.menu = menu
-
+        observeDatabase()
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -189,6 +188,7 @@ class DetailsFragment : Fragment() {
                             Intent(requireActivity(), PlayerActivity::class.java)
                         intent.putExtra(Constants.EPISODE_DETAILS, episodeList.first())
                         requireContext().startActivity(intent)
+                        binding.resultPlayMovie.visibility = View.VISIBLE
                     }
                 } else {
                     binding.resultPlayMovie.visibility = View.GONE

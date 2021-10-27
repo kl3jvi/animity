@@ -10,7 +10,7 @@ import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.view.activities.player.PlayerActivity
 
-class CustomEpisodeAdapter(private val fragment: Fragment) :
+class CustomEpisodeAdapter(private val fragment: Fragment, private val animeTitle: String) :
     RecyclerView.Adapter<CustomEpisodeAdapter.ViewHolder>() {
 
     private var list = listOf<EpisodeModel>()
@@ -37,6 +37,7 @@ class CustomEpisodeAdapter(private val fragment: Fragment) :
             val intent =
                 Intent(fragment.requireActivity(), PlayerActivity::class.java)
             intent.putExtra(Constants.EPISODE_DETAILS, element)
+            intent.putExtra(Constants.ANIME_TITLE, animeTitle)
             fragment.requireContext().startActivity(intent)
         }
     }

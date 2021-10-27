@@ -186,8 +186,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/exo_duration"
         app:layout_constraintStart_toEndOf="@id/exo_position"
-        app:played_color="?attr/colorPrimary"
-        app:scrubber_color="?attr/colorPrimary"
+        app:played_color="@color/colorProgress"
+        app:scrubber_color="@color/colorProgress"
         app:scrubber_dragged_size="26dp"
         app:scrubber_enabled_size="24dp"
         app:unplayed_color="@color/videoProgress" />
@@ -198,8 +198,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-
-        android:text="40:00"
+        tools:text="40:00"
         android:textColor="@color/media_player_controls"
         android:textSize="14sp"
         android:textStyle="bold"

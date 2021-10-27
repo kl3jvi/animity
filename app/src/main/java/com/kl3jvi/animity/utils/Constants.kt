@@ -8,6 +8,7 @@ import com.kl3jvi.animity.utils.parser.HtmlParser
 class Constants {
     companion object {
 
+        const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_databbase"
 

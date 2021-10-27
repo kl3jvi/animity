@@ -4,20 +4,24 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
+import androidx.core.content.ContextCompat
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
@@ -30,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
 
+
     private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
@@ -39,17 +44,27 @@ class PlayerActivity : AppCompatActivity() {
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition = 0L
+    private val speeds = arrayOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
+    private val showableSpeed = arrayOf("0.25x", "0.50x", "1x", "1.25x", "1.50x", "2x")
+    private var checkedItem = 2
+    private var selectedSpeed = 2
+    private var isFullScreen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
+            val animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE)
+            val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
+            title.text =
+                getString(R.string.test).format(animeTitlePassed, getIntentData?.episodeNumber)
+
+            initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
             observeData()
         }
     }
-
 
     private fun observeData() {
         viewModel.videoUrlLiveData.observe(this, { status ->
@@ -57,6 +72,9 @@ class PlayerActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     vidUrl = status.data?.vidCdnUrl.toString()
                     viewModel.updateUrlForFetch(vidUrl)
+                }
+                is Resource.Error -> {
+                    finish()
                 }
                 else -> vidUrl = ""
             }
@@ -67,6 +85,8 @@ class PlayerActivity : AppCompatActivity() {
         super.onStart()
         if (Util.SDK_INT > 23 && player == null) {
             initializePlayer()
+            onIsPlayingChanged(isPlaying = true)
+
         }
     }
 
@@ -75,6 +95,7 @@ class PlayerActivity : AppCompatActivity() {
         hideSystemUi()
         if (Util.SDK_INT <= 23 && player == null) {
             initializePlayer()
+            onIsPlayingChanged(isPlaying = true)
         }
         player?.playWhenReady = true
     }
@@ -83,6 +104,7 @@ class PlayerActivity : AppCompatActivity() {
         super.onPause()
         if (Util.SDK_INT <= 23 && player == null) {
             releasePlayer()
+            onIsPlayingChanged(isPlaying = false)
         }
         player?.playWhenReady = false
     }
@@ -92,6 +114,7 @@ class PlayerActivity : AppCompatActivity() {
         if (Util.SDK_INT > 23 && player == null) {
             if (player != null) {
                 player?.pause()
+                onIsPlayingChanged(isPlaying = false)
             }
             releasePlayer()
         }
@@ -102,14 +125,20 @@ class PlayerActivity : AppCompatActivity() {
             when (res) {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
-                    Log.e("Video URL", videoM3U8Url)
                     try {
 
                         val trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())
                         }
+
+                        val audioAttributes: AudioAttributes = AudioAttributes.Builder()
+                            .setUsage(C.USAGE_MEDIA)
+                            .setContentType(C.CONTENT_TYPE_MOVIE)
+                            .build()
+
                         val videoSource: MediaSource = buildMediaSource(Uri.parse(videoM3U8Url))
                         player = SimpleExoPlayer.Builder(this)
+                            .setAudioAttributes(audioAttributes, true)
                             .setTrackSelector(trackSelector)
                             .build()
                             .also { exoPlayer ->
@@ -118,13 +147,15 @@ class PlayerActivity : AppCompatActivity() {
                                     .setUri(videoM3U8Url)
                                     .setMimeType(MimeTypes.APPLICATION_M3U8)
                                     .build()
-
                                 exoPlayer.setMediaItem(mediaItem)
                                 exoPlayer.setMediaSource(videoSource)
+
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.seekTo(currentWindow, playbackPosition)
+
                                 exoPlayer.prepare()
                             }
+
                     } catch (e: ExoPlaybackException) {
                         showSnack(e.localizedMessage)
                     }
@@ -140,6 +171,26 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun initialisePlayerLayout() {
+
+        val backButton = viewBinding.videoView.findViewById<ImageView>(R.id.back)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+        val qualityButton =
+            viewBinding.videoView.findViewById<TextView>(R.id.exo_track_selection_view)
+        qualityButton.setOnClickListener {
+            showDialogForSpeedSelection()
+        }
+
+
+        val fullView = viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+        fullView.setOnClickListener {
+            toggleFullView()
+        }
     }
 
     private fun getDataSourceFactory(currentUrl: String?): DefaultHttpDataSource.Factory {
@@ -175,6 +226,10 @@ class PlayerActivity : AppCompatActivity() {
         player = null
     }
 
+    private fun onIsPlayingChanged(isPlaying: Boolean) {
+        viewBinding.videoView.keepScreenOn = isPlaying
+    }
+
     @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
         viewBinding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -190,6 +245,77 @@ class PlayerActivity : AppCompatActivity() {
             Snackbar.make(viewBinding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
         if (!snack.isShown) {
             snack.show()
+        }
+    }
+
+    private fun showDialogForSpeedSelection() {
+        val builder = AlertDialog.Builder(this)
+        builder.apply {
+            setTitle("Set your playback speed")
+            setSingleChoiceItems(showableSpeed, checkedItem) { _, which ->
+                when (which) {
+                    0 -> setSpeed(0)
+                    1 -> setSpeed(1)
+                    2 -> setSpeed(2)
+                    3 -> setSpeed(3)
+                    4 -> setSpeed(4)
+                    5 -> setSpeed(5)
+                }
+            }
+            setPositiveButton("OK") { dialog, _ ->
+                setPlaybackSpeed(speeds[selectedSpeed])
+                dialog.dismiss()
+            }
+            setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun setSpeed(speed: Int) {
+        selectedSpeed = speed
+        checkedItem = speed
+        val quality = viewBinding.videoView.findViewById<TextView>(R.id.exo_track_selection_view)
+        quality.text = showableSpeed[speed]
+    }
+
+    private fun setPlaybackSpeed(speed: Float) {
+        val params = PlaybackParameters(speed)
+        player?.playbackParameters = params
+    }
+
+    private fun toggleFullView() {
+        if (isFullScreen) {
+            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+            isFullScreen = false
+            this?.let {
+                viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+                    .setImageDrawable(
+                        ContextCompat.getDrawable(
+                            it,
+                            com.google.android.exoplayer2.R.drawable.exo_controls_fullscreen_enter
+                        )
+                    )
+            }
+
+        } else {
+            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+            player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+            isFullScreen = true
+            this.let {
+                viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+                    .setImageDrawable(
+                        ContextCompat.getDrawable(
+                            it,
+                            com.google.android.exoplayer2.R.drawable.exo_controls_fullscreen_exit
+                        )
+                    )
+            }
         }
     }
 
