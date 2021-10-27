@@ -49,7 +49,7 @@ Animity parses website data and filter required info, thus It removes the ads fo
 * Retrofit & Coroutines
 * ExoPlayer
 * Android Architecture Components
-* Glide
+* Coil
 
 ## Contribution
 Your ideas, translations, design changes, code cleaning, or real heavy code changes or any help is always welcome. The more is contribution the better it gets
