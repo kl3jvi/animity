@@ -260,6 +260,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="@string/cast_expanded_controller_ad_image_description"
                     android:padding="8dp"
                     app:srcCompat="@drawable/ic_down_arrow" />
             </LinearLayout>

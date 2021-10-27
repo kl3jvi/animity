@@ -7,6 +7,7 @@
     tools:context=".view.fragments.home.HomeFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/main_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

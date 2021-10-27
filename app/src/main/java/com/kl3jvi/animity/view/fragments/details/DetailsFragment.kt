@@ -13,6 +13,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
+import coil.transition.CrossfadeTransition
+import coil.transition.Transition
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.R
@@ -64,6 +66,7 @@ class DetailsFragment : Fragment() {
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
+                episodeListRecycler.isNestedScrollingEnabled = false
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
                     CustomEpisodeAdapter(requireParentFragment(), animeInfo.title)
@@ -179,7 +182,28 @@ class DetailsFragment : Fragment() {
         viewModel.episodeList.observe(viewLifecycleOwner, { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.getEpisodeInfo(episodeList)
-                binding.resultEpisodesText.text = "${episodeList.size} Episodes"
+                binding.resultEpisodesText.text =
+                    requireActivity().getString(
+                        R.string.total_episodes,
+                        episodeList.size.toString()
+                    )
+                var check = false
+                binding.imageButton.setOnClickListener {
+                    check = if (!check) {
+                        binding.imageButton.load(R.drawable.ic_up_arrow){
+                            crossfade(true)
+                        }
+                        episodeAdapter.getEpisodeInfo(episodeList.reversed())
+                        true
+                    } else {
+                        binding.imageButton.load(R.drawable.ic_down_arrow){
+                            crossfade(true)
+                        }
+                        episodeAdapter.getEpisodeInfo(episodeList)
+                        false
+                    }
+
+                }
                 if (episodeList.isNotEmpty()) {
                     binding.resultPlayMovie.setOnClickListener {
                         val intent =

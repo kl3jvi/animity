@@ -182,13 +182,18 @@ class HomeFragment : Fragment() {
     }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
-        findNavController().navigate(
-            HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
-                animeDetails
+        try {
+            findNavController().navigate(
+                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
+                    animeDetails
+                )
             )
-        )
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.hideBottomNavBar()
+
+            if (requireActivity() is MainActivity) {
+                (activity as MainActivity?)?.hideBottomNavBar()
+            }
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
         }
     }
 

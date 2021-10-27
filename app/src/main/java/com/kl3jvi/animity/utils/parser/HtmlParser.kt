@@ -4,7 +4,6 @@ import com.kl3jvi.animity.model.entities.*
 import com.kl3jvi.animity.utils.Constants
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
-import timber.log.Timber
 import java.util.regex.Pattern
 
 
@@ -219,7 +218,6 @@ object HtmlParser {
         val matcher = pattern.matcher(info.toString())
         return try {
             while (matcher.find()) {
-                Timber.e(matcher.group((0)))
                 if (matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!
                         .contains("googlevideo")
                 ) {
@@ -242,7 +240,6 @@ object HtmlParser {
         } catch (exception: StringIndexOutOfBoundsException) {
             exception.message
         }.toString()
-
     }
 
     private fun filterGenreName(genreName: String): String {
