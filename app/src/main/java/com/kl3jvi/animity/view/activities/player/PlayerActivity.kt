@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +55,7 @@ class PlayerActivity : AppCompatActivity() {
     private var isFullScreen = false
     private var mappedTrackInfo: MappingTrackSelector.MappedTrackInfo? = null
     private var trackSelector: DefaultTrackSelector? = null
+    private var currentTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,19 +168,15 @@ class PlayerActivity : AppCompatActivity() {
                             }
 
                         /*progress bar for skip intro*/
-                        val progressBar =
-                            viewBinding.videoView.findViewById<ProgressBar>(R.id.progressBar2)
+//                        val progressBar =
+//                            viewBinding.videoView.findViewById<ProgressBar>(R.id.progressBar2)
                         val layout =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
 
-                        progressBar.max = 15000
+
                         viewModel.audioProgress(player).observe(this, { currentProgress ->
                             currentProgress?.let {
-                                if (it <= 15000) {
-                                    progressBar.progress = it.toInt()
-                                } else {
-                                    layout.visibility = View.GONE
-                                }
+                                currentTime = it
                             }
                         })
 
@@ -226,7 +226,15 @@ class PlayerActivity : AppCompatActivity() {
         val skipIntro =
             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
         skipIntro.setOnClickListener {
-            player?.seekTo(90000)
+
+            if (currentTime < 300000) {
+                player?.seekTo(currentTime + 90000)
+                skipIntro.visibility = View.GONE
+            } else {
+                skipIntro.visibility = View.GONE
+            }
+
+
         }
     }
 
