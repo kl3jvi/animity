@@ -37,12 +37,11 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun audioProgress(exoPlayer: SimpleExoPlayer?) = flow {
-        while (true) {
-            emit(
-                exoPlayer?.currentPosition
-            )
-
-            delay(1000)
+        exoPlayer?.currentPosition?.let {
+            while (it < 15000) {
+                emit(exoPlayer.currentPosition)
+                delay(1000)
+            }
         }
     }.flowOn(Dispatchers.Main).asLiveData()
 
