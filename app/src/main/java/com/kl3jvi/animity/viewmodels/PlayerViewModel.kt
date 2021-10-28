@@ -44,6 +44,4 @@ class PlayerViewModel @Inject constructor(
             }
         }
     }.flowOn(Dispatchers.Main).asLiveData()
-
-
 }
