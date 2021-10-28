@@ -45,6 +45,8 @@
 
     <style name="MaterialThemeDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorProgress</item>
+        <item name="android:windowBackground">@drawable/dialog_rounded_corner</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 
     <style name="NiceButton">

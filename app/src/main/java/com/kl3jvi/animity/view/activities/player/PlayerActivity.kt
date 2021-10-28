@@ -4,8 +4,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -67,7 +66,11 @@ class PlayerActivity : AppCompatActivity() {
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
             observeData()
+
+
         }
+
+
     }
 
     private fun observeData() {
@@ -160,6 +163,24 @@ class PlayerActivity : AppCompatActivity() {
                                 exoPlayer.prepare()
                             }
 
+                        /*progress bar for skip intro*/
+                        val progressBar =
+                            viewBinding.videoView.findViewById<ProgressBar>(R.id.progressBar2)
+                        val layout =
+                            viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
+
+                        progressBar.max = 15000
+                        viewModel.audioProgress(player).observe(this, { currentProgress ->
+                            currentProgress?.let {
+                                if (it <= 15000) {
+                                    progressBar.progress = it.toInt()
+                                } else {
+                                    layout.visibility = View.GONE
+                                }
+                            }
+                        })
+
+
                     } catch (e: ExoPlaybackException) {
                         showSnack(e.localizedMessage)
                     }
@@ -177,12 +198,12 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
+
     private fun initialisePlayerLayout() {
 
         val backButton = viewBinding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
             finish()
-
         }
 
         val speedButton =
@@ -191,18 +212,21 @@ class PlayerActivity : AppCompatActivity() {
             showDialogForSpeedSelection()
         }
 
-
         val qualityButton =
-            viewBinding.videoView.findViewById<TextView>(R.id.exo_track_selection_view)
+            viewBinding.videoView.findViewById<ImageButton>(R.id.exo_track_selection_view)
         qualityButton.setOnClickListener {
             showQualityDialog()
-
         }
-
 
         val fullView = viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
         fullView.setOnClickListener {
             toggleFullView()
+        }
+
+        val skipIntro =
+            viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
+        skipIntro.setOnClickListener {
+            player?.seekTo(90000)
         }
     }
 
@@ -215,12 +239,17 @@ class PlayerActivity : AppCompatActivity() {
                 trackSelector!!,
                 0
             ).setTheme(R.style.MaterialThemeDialog)
+                .setTrackNameProvider { f: Format ->
+                    "${f.height}p"
+                }
                 .build()
                 .show()
-        } catch (ignored: NullPointerException) {
 
+        } catch (ignored: NullPointerException) {
+            ignored.printStackTrace()
         }
     }
+
 
     private fun getDataSourceFactory(currentUrl: String?): DefaultHttpDataSource.Factory {
         return DefaultHttpDataSource.Factory().apply {
@@ -317,10 +346,11 @@ class PlayerActivity : AppCompatActivity() {
         dialog.show()
     }
 
+
     private fun setSpeed(speed: Int) {
         selectedSpeed = speed
         checkedItem = speed
-        val quality = viewBinding.videoView.findViewById<TextView>(R.id.exo_track_selection_view)
+        val quality = viewBinding.videoView.findViewById<TextView>(R.id.exo_speed_selection_view)
         quality.text = showableSpeed[speed]
     }
 
@@ -359,6 +389,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
 
