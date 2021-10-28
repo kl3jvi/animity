@@ -29,7 +29,7 @@ class GetEpisodeInfoUseCase @Inject constructor(private val playerRepository: Pl
         emit(Resource.Loading())
         try {
             val response = HtmlParser.parseM3U8Url(
-                playerRepository.fetchEpisodeMediaUrl(
+                playerRepository.fetchM3u8Url(
                     Constants.getHeader(),
                     url
                 ).string()

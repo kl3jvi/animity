@@ -104,15 +104,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/exo_track_selection_view"
+        android:id="@+id/exo_speed_selection_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="8dp"
         android:background="?selectableItemBackgroundBorderless"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="15dp"
         android:text="@string/speed"
+        android:textColor="@color/media_player_controls"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintTop_toTopOf="@+id/exo_track_selection_view" />
+
+    <TextView
+        android:id="@+id/exo_track_selection_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:paddingStart="20dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="20dp"
+        android:text="@string/quality_auto"
         android:textColor="@color/media_player_controls"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/exo_full_Screen"

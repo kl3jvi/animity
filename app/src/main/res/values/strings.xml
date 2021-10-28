@@ -30,7 +30,7 @@
     <string name="status">Status:</string>
     <string name="type">Type:</string>
     <string name="no_data">No Data</string>
-    <string name="search_hint">Search...</string>
+    <string name="search_hint">Search…</string>
     <string name="result_go_back">goback</string>
     <string name="favorite">Add to Favorites</string>
     <string name="order">Order Animes</string>
@@ -38,4 +38,5 @@
     <string name="test">%s - %s</string>
     <string name="skip_loading">Skip Intro</string>
     <string name="total_episodes">%s Episodes</string>
+    <string name="video_quality">Video Quality</string>
 </resources>

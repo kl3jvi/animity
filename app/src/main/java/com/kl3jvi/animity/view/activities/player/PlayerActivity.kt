@@ -15,7 +15,9 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.MimeTypes
@@ -34,10 +36,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
 
-
     private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
+
     private var vidUrl: String = "null"
     private var player: SimpleExoPlayer? = null
     private val viewModel: PlayerViewModel by viewModels()
@@ -49,6 +51,8 @@ class PlayerActivity : AppCompatActivity() {
     private var checkedItem = 2
     private var selectedSpeed = 2
     private var isFullScreen = false
+    private var mappedTrackInfo: MappingTrackSelector.MappedTrackInfo? = null
+    private var trackSelector: DefaultTrackSelector? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,7 +131,7 @@ class PlayerActivity : AppCompatActivity() {
                     val videoM3U8Url = res.data.toString()
                     try {
 
-                        val trackSelector = DefaultTrackSelector(this).apply {
+                        trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())
                         }
 
@@ -139,7 +143,7 @@ class PlayerActivity : AppCompatActivity() {
                         val videoSource: MediaSource = buildMediaSource(Uri.parse(videoM3U8Url))
                         player = SimpleExoPlayer.Builder(this)
                             .setAudioAttributes(audioAttributes, true)
-                            .setTrackSelector(trackSelector)
+                            .setTrackSelector(trackSelector!!)
                             .build()
                             .also { exoPlayer ->
                                 viewBinding.videoView.player = exoPlayer
@@ -181,16 +185,40 @@ class PlayerActivity : AppCompatActivity() {
 
         }
 
+        val speedButton =
+            viewBinding.videoView.findViewById<TextView>(R.id.exo_speed_selection_view)
+        speedButton.setOnClickListener {
+            showDialogForSpeedSelection()
+        }
+
+
         val qualityButton =
             viewBinding.videoView.findViewById<TextView>(R.id.exo_track_selection_view)
         qualityButton.setOnClickListener {
-            showDialogForSpeedSelection()
+            showQualityDialog()
+
         }
 
 
         val fullView = viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
         fullView.setOnClickListener {
             toggleFullView()
+        }
+    }
+
+    private fun showQualityDialog() {
+        mappedTrackInfo = trackSelector?.currentMappedTrackInfo
+        try {
+            TrackSelectionDialogBuilder(
+                this,
+                getString(R.string.video_quality),
+                trackSelector!!,
+                0
+            ).setTheme(R.style.MaterialThemeDialog)
+                .build()
+                .show()
+        } catch (ignored: NullPointerException) {
+
         }
     }
 
@@ -304,10 +332,9 @@ class PlayerActivity : AppCompatActivity() {
     private fun toggleFullView() {
         if (isFullScreen) {
             viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-            player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+            player?.videoScalingMode = C.VIDEO_SCALING_MODE_DEFAULT
             isFullScreen = false
-            this?.let {
+            this.let {
                 viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
                     .setImageDrawable(
                         ContextCompat.getDrawable(
@@ -319,8 +346,7 @@ class PlayerActivity : AppCompatActivity() {
 
         } else {
             viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-            player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+            player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
             isFullScreen = true
             this.let {
                 viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
