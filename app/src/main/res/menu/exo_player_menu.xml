@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/quality"
+        android:icon="@drawable/ic_quality"
+        android:title="@string/quality"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/playback_speed"
+        android:icon="@drawable/ic_quality"
+        android:title="@string/playback_speed"
+        app:showAsAction="always" />
+</menu>

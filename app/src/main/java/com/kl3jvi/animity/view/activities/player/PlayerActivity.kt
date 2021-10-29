@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -179,8 +180,6 @@ class PlayerActivity : AppCompatActivity() {
                                 currentTime = it
                             }
                         })
-
-
                     } catch (e: ExoPlaybackException) {
                         showSnack(e.localizedMessage)
                     }
@@ -206,16 +205,20 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val speedButton =
-            viewBinding.videoView.findViewById<TextView>(R.id.exo_speed_selection_view)
-        speedButton.setOnClickListener {
-            showDialogForSpeedSelection()
-        }
-
         val qualityButton =
             viewBinding.videoView.findViewById<ImageButton>(R.id.exo_track_selection_view)
         qualityButton.setOnClickListener {
-            showQualityDialog()
+            val popMenu = PopupMenu(this, qualityButton)
+            popMenu.menuInflater.inflate(R.menu.exo_player_menu, popMenu.menu)
+            popMenu.setOnMenuItemClickListener {
+                if (it.itemId == R.id.quality) {
+                    showQualityDialog()
+                } else if (it.itemId == R.id.playback_speed) {
+                    showDialogForSpeedSelection()
+                }
+                true
+            }
+            popMenu.show()
         }
 
         val fullView = viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
@@ -225,16 +228,13 @@ class PlayerActivity : AppCompatActivity() {
 
         val skipIntro =
             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-        skipIntro.setOnClickListener {
-
-            if (currentTime < 300000) {
+        if (currentTime < 300000) {
+            skipIntro.setOnClickListener {
                 player?.seekTo(currentTime + 90000)
                 skipIntro.visibility = View.GONE
-            } else {
-                skipIntro.visibility = View.GONE
             }
-
-
+        } else {
+            skipIntro.visibility = View.GONE
         }
     }
 
@@ -358,8 +358,8 @@ class PlayerActivity : AppCompatActivity() {
     private fun setSpeed(speed: Int) {
         selectedSpeed = speed
         checkedItem = speed
-        val quality = viewBinding.videoView.findViewById<TextView>(R.id.exo_speed_selection_view)
-        quality.text = showableSpeed[speed]
+//        val quality = viewBinding.videoView.findViewById<TextView>(R.id.exo_speed_selection_view)
+//        quality.text = showableSpeed[speed]
     }
 
     private fun setPlaybackSpeed(speed: Float) {

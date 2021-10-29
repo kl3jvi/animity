@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="14dp"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         android:minWidth="48dp"
@@ -103,20 +103,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/exo_speed_selection_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:padding="15dp"
-        android:text="@string/speed"
-        android:textColor="@color/media_player_controls"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_full_Screen"
-        app:layout_constraintEnd_toStartOf="@+id/exo_full_Screen"
-        app:layout_constraintTop_toTopOf="@+id/exo_full_Screen" />
 
     <ImageButton
         android:id="@+id/exo_track_selection_view"
@@ -137,14 +123,14 @@
         android:id="@+id/exo_full_Screen"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="10dp"
         android:background="?selectableItemBackgroundBorderless"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="10dp"
         android:src="@drawable/exo_controls_fullscreen_enter"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
-        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
-        app:layout_constraintTop_toTopOf="@+id/exo_track_selection_view"
+        app:layout_constraintBottom_toTopOf="@+id/exo_progress"
+        app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/media_player_controls" />
 
     <TextView
@@ -165,13 +151,13 @@
         android:id="@+id/skipLayout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginStart="14dp"
         android:layout_marginBottom="10dp"
         android:background="?selectableItemBackgroundBorderless"
         android:orientation="horizontal"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
