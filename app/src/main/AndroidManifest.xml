@@ -7,7 +7,6 @@
 
     <application
         android:name=".application.AnimityApplication"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -22,12 +21,13 @@
             android:theme="@style/VideoPlayer"
             tools:ignore="LockedOrientationActivity"
             tools:targetApi="n" />
+
         <activity
             android:name=".view.activities.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-
             android:configChanges="orientation"
+            android:exported="true"
+
+            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

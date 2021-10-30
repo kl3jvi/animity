@@ -26,6 +26,9 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
@@ -34,6 +37,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.USER_AGENT
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @AndroidEntryPoint
@@ -43,14 +47,14 @@ class PlayerActivity : AppCompatActivity() {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
 
-    private var vidUrl: String = "null"
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private var player: SimpleExoPlayer? = null
     private val viewModel: PlayerViewModel by viewModels()
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition = 0L
     private val speeds = arrayOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
-    private val showableSpeed = arrayOf("0.25x", "0.50x", "1x", "1.25x", "1.50x", "2x")
+    private val shownSpeed = arrayOf("0.25x", "0.50x", "1x", "1.25x", "1.50x", "2x")
     private var checkedItem = 2
     private var selectedSpeed = 2
     private var isFullScreen = false
@@ -61,44 +65,25 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
+        firebaseAnalytics = Firebase.analytics
+
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
             val animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE)
             val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
             title.text =
                 getString(R.string.test).format(animeTitlePassed, getIntentData?.episodeNumber)
-
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
-            observeData()
-
-
         }
-
-
     }
 
-    private fun observeData() {
-        viewModel.videoUrlLiveData.observe(this, { status ->
-            when (status) {
-                is Resource.Success -> {
-                    vidUrl = status.data?.vidCdnUrl.toString()
-                    viewModel.updateUrlForFetch(vidUrl)
-                }
-                is Resource.Error -> {
-                    showErrorDialog("An error occured, check your internet connection")
-                }
-                else -> vidUrl = ""
-            }
-        })
-    }
 
     public override fun onStart() {
         super.onStart()
         if (Util.SDK_INT > 23 && player == null) {
             initializePlayer()
             onIsPlayingChanged(isPlaying = true)
-
         }
     }
 
@@ -132,8 +117,9 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     private fun initializePlayer() {
-        viewModel.fetchM3U8.observe(this, { res ->
+        viewModel.videoUrlLiveData.observe(this, { res ->
             when (res) {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
@@ -168,16 +154,19 @@ class PlayerActivity : AppCompatActivity() {
                                 exoPlayer.prepare()
                             }
 
-                        /*progress bar for skip intro*/
-//                        val progressBar =
-//                            viewBinding.videoView.findViewById<ProgressBar>(R.id.progressBar2)
-                        val layout =
+                        val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-
-
                         viewModel.audioProgress(player).observe(this, { currentProgress ->
                             currentProgress?.let {
                                 currentTime = it
+                                if (currentTime < 300000) {
+                                    skipIntro.setOnClickListener {
+                                        player?.seekTo(currentTime + Constants.INTRO_SKIP_TIME)
+                                        skipIntro.visibility = View.GONE
+                                    }
+                                } else {
+                                    skipIntro.visibility = View.GONE
+                                }
                             }
                         })
                     } catch (e: ExoPlaybackException) {
@@ -226,16 +215,7 @@ class PlayerActivity : AppCompatActivity() {
             toggleFullView()
         }
 
-        val skipIntro =
-            viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-        if (currentTime < 300000) {
-            skipIntro.setOnClickListener {
-                player?.seekTo(currentTime + 90000)
-                skipIntro.visibility = View.GONE
-            }
-        } else {
-            skipIntro.visibility = View.GONE
-        }
+
     }
 
     private fun showQualityDialog() {
@@ -332,7 +312,7 @@ class PlayerActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)
         builder.apply {
             setTitle("Set your playback speed")
-            setSingleChoiceItems(showableSpeed, checkedItem) { _, which ->
+            setSingleChoiceItems(shownSpeed, checkedItem) { _, which ->
                 when (which) {
                     0 -> setSpeed(0)
                     1 -> setSpeed(1)

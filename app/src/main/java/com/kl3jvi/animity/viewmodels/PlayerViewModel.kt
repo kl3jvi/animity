@@ -8,7 +8,9 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -19,22 +21,18 @@ class PlayerViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _vidUrl = MutableLiveData<String>()
-    private var _mediaUrlForFetch = MutableLiveData<String>()
     fun updateEpisodeUrl(vidUrl: String) {
         _vidUrl.value = vidUrl
     }
 
-    fun updateUrlForFetch(url: String) {
-        _mediaUrlForFetch.value = url
-    }
 
+    @ExperimentalCoroutinesApi
     val videoUrlLiveData = Transformations.switchMap(_vidUrl) { url ->
-        getEpisodeInfoUseCase.fetchEpisodeMediaUrl(url).asLiveData()
+        getEpisodeInfoUseCase.fetchEpisodeMediaUrl(url).flatMapLatest { episodeInfo ->
+            getEpisodeInfoUseCase.fetchM3U8(episodeInfo.data?.vidCdnUrl)
+        }.asLiveData()
     }
 
-    val fetchM3U8 = Transformations.switchMap(_mediaUrlForFetch) { url ->
-        getEpisodeInfoUseCase.fetchM3U8(url).asLiveData()
-    }
 
     fun audioProgress(exoPlayer: SimpleExoPlayer?) = flow {
         exoPlayer?.currentPosition?.let {

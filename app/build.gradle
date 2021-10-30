@@ -5,6 +5,8 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -27,6 +29,13 @@ android {
             debuggable false
         }
     }
+    applicationVariants.all{ variant->
+        variant.outputs.forEach{ output->
+            output.outputFileName.replace("app","animity")
+        }
+
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -73,9 +82,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-    implementation 'androidx.navigation:navigation-runtime-ktx:2.4.0-alpha10'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-alpha10'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0-alpha10'
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.4.0-beta01'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-beta01'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0-beta01'
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
@@ -84,7 +93,8 @@ dependencies {
     // Coroutine Lifecycle Scopes
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.4'
 
     //dependency injection
     kapt "com.google.dagger:hilt-android-compiler:2.38.1"
@@ -109,7 +119,6 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
     implementation 'com.google.android.exoplayer:extension-cast:2.15.1'
     implementation "com.google.android.exoplayer:extension-mediasession:2.15.1"
-
     //Bottom bar
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.8'
 

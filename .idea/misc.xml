@@ -14,27 +14,38 @@
         <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.334375" />
+        <entry key="app/src/main/res/drawable/ic_cast.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/drawable/ic_down_arrow.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_favorite_complete.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_favorite_uncomplete.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_forward_icon.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_media_pause.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_media_play.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_media_seek_backward.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.334375" />
+        <entry key="app/src/main/res/drawable/ic_outline_explore_24.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_play_button.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_play_tv.xml" value="0.334375" />
+        <entry key="app/src/main/res/drawable/ic_quality.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_up_arrow.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/netflix_skip_back.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/outline.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/outline_drawable.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/search_background.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/drawable/search_icon.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/drawable/title_shadow.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/drawable/video_player_ripple_effect.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/video_ripple.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/bottom_sheet_search.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/error_screen_video_player.xml" value="0.3140625" />
-        <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.12916666666666668" />

@@ -5,7 +5,10 @@ import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.model.database.AnimeRepository
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import okhttp3.internal.assertThreadDoesntHoldLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,15 +19,23 @@ class DetailsViewModel @Inject constructor(
 
     private val _url = MutableLiveData<String>()
     private val _animeId = MutableLiveData<Int>()
-    private val _episodeData = MutableLiveData<List<String>>()
 
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
     }
-    val episodeList = Transformations.switchMap(_episodeData) { list ->
-        getAnimeDetailsUseCase.fetchEpisodeList(list[0], list[1], list[2]).asLiveData()
+
+    @ExperimentalCoroutinesApi
+    val episodeList = Transformations.switchMap(_url) { list ->
+        getAnimeDetailsUseCase.fetchAnimeInfo(list).flatMapLatest { info ->
+            getAnimeDetailsUseCase.fetchEpisodeList(
+                info.data?.id,
+                info.data?.endEpisode,
+                info.data?.alias
+            )
+        }.asLiveData()
     }
-    val isOnDatabase = Transformations.switchMap(_animeId){ id->
+
+    val isOnDatabase = Transformations.switchMap(_animeId) { id ->
         getAnimeDetailsUseCase.checkIfExists(id).asLiveData()
     }
 
@@ -32,13 +43,8 @@ class DetailsViewModel @Inject constructor(
         _url.value = url
     }
 
-    fun passId(id:Int){
+    fun passId(id: Int) {
         _animeId.value = id
-    }
-
-    fun passEpisodeData(id: String, endEpisode: String, alias: String) {
-        val list = listOf(id, endEpisode, alias)
-        _episodeData.value = list
     }
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
@@ -48,8 +54,5 @@ class DetailsViewModel @Inject constructor(
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.deleteAnime(anime)
     }
-
-
-
 }
 

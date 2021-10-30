@@ -17,6 +17,9 @@ import coil.transition.CrossfadeTransition
 import coil.transition.Transition
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.utils.Constants
@@ -40,11 +43,12 @@ class DetailsFragment : Fragment() {
     private lateinit var menu: Menu
     private var title: String = ""
     private var check = false
-
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onCreateView(
@@ -103,8 +107,6 @@ class DetailsFragment : Fragment() {
                                 binding.episodeListRecycler.visibility = View.GONE
                                 resultPlayMovie.visibility = View.VISIBLE
                                 imageButton.visibility = View.GONE
-
-
                             }
                         } else {
                             binding.apply {
@@ -124,7 +126,6 @@ class DetailsFragment : Fragment() {
                             }
                             binding.genreGroup.addView(chip)
                         }
-                        viewModel.passEpisodeData(info.id, info.endEpisode, info.alias)
                     }
                 }
                 is Resource.Loading -> {

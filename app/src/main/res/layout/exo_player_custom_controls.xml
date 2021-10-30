@@ -30,10 +30,11 @@
         android:layout_marginStart="10dp"
         android:fontFamily="sans-serif"
         android:maxWidth="450dp"
+        android:textStyle="bold"
         android:maxLines="2"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintEnd_toStartOf="@+id/cast"
         app:layout_constraintStart_toEndOf="@id/back"
         app:layout_constraintTop_toTopOf="@+id/back"
         tools:text="Naruto Shippuden Episode 7" />
@@ -108,7 +109,7 @@
         android:id="@+id/exo_track_selection_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="10dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:minWidth="48dp"
@@ -123,14 +124,14 @@
         android:id="@+id/exo_full_Screen"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
         android:background="?selectableItemBackgroundBorderless"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:padding="10dp"
         android:src="@drawable/exo_controls_fullscreen_enter"
-        app:layout_constraintBottom_toTopOf="@+id/exo_progress"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_duration"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/exo_progress"
         app:tint="@color/media_player_controls" />
 
     <TextView
@@ -232,15 +233,28 @@
         android:id="@+id/exo_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:textColor="@color/media_player_controls"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exo_full_Screen"
         app:layout_constraintStart_toEndOf="@id/exo_progress"
         app:layout_constraintTop_toTopOf="@+id/exo_progress"
         tools:text="40:00" />
+
+    <androidx.mediarouter.app.MediaRouteButton
+        android:id="@+id/cast"
+        style="@style/Theme.CastVideosTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:mediaRouteTypes="user"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
+        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintTop_toTopOf="@+id/exo_track_selection_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

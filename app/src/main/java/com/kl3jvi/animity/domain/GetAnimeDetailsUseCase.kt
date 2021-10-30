@@ -51,9 +51,9 @@ class GetAnimeDetailsUseCase @Inject constructor(
     }
 
     fun fetchEpisodeList(
-        id: String,
-        endEpisode: String,
-        alias: String
+        id: String?,
+        endEpisode: String?,
+        alias: String?
     ): Flow<Resource<List<EpisodeModel>>> = flow {
         try {
             emit(Resource.Loading())
@@ -61,9 +61,9 @@ class GetAnimeDetailsUseCase @Inject constructor(
                 HtmlParser.fetchEpisodeList(
                     detailsRepository.fetchEpisodeList(
                         header = Constants.getHeader(),
-                        id = id,
-                        endEpisode = endEpisode,
-                        alias = alias
+                        id = id ?: "",
+                        endEpisode = endEpisode ?: "0",
+                        alias = alias ?: ""
                     ).string()
                 ).toList()
             emit(

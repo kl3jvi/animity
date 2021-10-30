@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "235533252528",
+    "project_id": "animity-anime-streaming",
+    "storage_bucket": "animity-anime-streaming.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235533252528:android:6df8e7822e0ba2445d0875",
+        "android_client_info": {
+          "package_name": "com.kl3jvi.animity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235533252528-0muenu8batgb3978d41dunhfe92odqgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm9qn9CjNO2_3670vmXaR29D6dXTVa_a8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235533252528-0muenu8batgb3978d41dunhfe92odqgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

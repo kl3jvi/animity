@@ -12,5 +12,4 @@ class PlayerRepository @Inject constructor(private val apiHelper: AnimeService) 
 
     suspend fun fetchM3u8Url(header: Map<String, String>, url: String) =
         apiHelper.fetchM3u8Url(header, url)
-
 }

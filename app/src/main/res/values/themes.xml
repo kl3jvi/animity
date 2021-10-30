@@ -49,6 +49,21 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+
+    <style name="Theme.CastVideosTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- ... -->
+        <item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
+    </style>
+
+    <style name="CustomMediaRouterTheme" parent="Theme.MediaRouter">
+        <item name="mediaRouteButtonStyle">@style/CustomMediaRouteButtonStyle</item>
+    </style>
+
+    <style name="CustomMediaRouteButtonStyle" parent="Widget.MediaRouter.Light.MediaRouteButton">
+        <item name="mediaRouteButtonTint">#EEFF41</item>
+    </style>
+
+
     <style name="NiceButton">
         <item name="android:padding">5dp</item>
         <item name="android:layout_marginStart">5dp</item>
