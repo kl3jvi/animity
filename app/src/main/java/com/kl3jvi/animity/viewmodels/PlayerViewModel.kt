@@ -1,9 +1,6 @@
 package com.kl3jvi.animity.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase
+    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
 ) : ViewModel() {
 
     private var _vidUrl = MutableLiveData<String>()
@@ -42,4 +39,5 @@ class PlayerViewModel @Inject constructor(
             }
         }
     }.flowOn(Dispatchers.Main).asLiveData()
+
 }

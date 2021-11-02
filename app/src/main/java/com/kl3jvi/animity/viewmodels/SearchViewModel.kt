@@ -1,16 +1,18 @@
 package com.kl3jvi.animity.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
+import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getSearchResultUseCase: GetSearchResultUseCase
+    private val getSearchResultUseCase: GetSearchResultUseCase,
+    private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase
 ) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
@@ -18,6 +20,9 @@ class SearchViewModel @Inject constructor(
     val searchResult = Transformations.switchMap(_query) { query ->
         getSearchResultUseCase.getSearchData(query).asLiveData()
     }
+
+
+
 
     fun passQuery(query: String) {
         _query.value = query

@@ -30,11 +30,11 @@
         android:layout_marginStart="10dp"
         android:fontFamily="sans-serif"
         android:maxWidth="450dp"
-        android:textStyle="bold"
         android:maxLines="2"
         android:textColor="@android:color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/back"
-        app:layout_constraintEnd_toStartOf="@+id/cast"
+        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
         app:layout_constraintStart_toEndOf="@id/back"
         app:layout_constraintTop_toTopOf="@+id/back"
         tools:text="Naruto Shippuden Episode 7" />
@@ -241,20 +241,6 @@
         app:layout_constraintStart_toEndOf="@id/exo_progress"
         app:layout_constraintTop_toTopOf="@+id/exo_progress"
         tools:text="40:00" />
-
-    <androidx.mediarouter.app.MediaRouteButton
-        android:id="@+id/cast"
-        style="@style/Theme.CastVideosTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:mediaRouteTypes="user"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
-        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
-        app:layout_constraintTop_toTopOf="@+id/exo_track_selection_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

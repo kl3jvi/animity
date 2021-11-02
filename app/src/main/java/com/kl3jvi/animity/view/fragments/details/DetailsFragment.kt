@@ -85,7 +85,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun fetchAnimeInfo() {
-        viewModel.animeInfo.observe(viewLifecycleOwner, { res ->
+        viewModel.animeInfo.observe(viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { info ->
@@ -138,7 +138,7 @@ class DetailsFragment : Fragment() {
                     showSnack(res.message)
                 }
             }
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -149,14 +149,14 @@ class DetailsFragment : Fragment() {
     }
 
     private fun observeDatabase() {
-        viewModel.isOnDatabase.observe(viewLifecycleOwner, {
+        viewModel.isOnDatabase.observe(viewLifecycleOwner) {
             check = it
             if (!check) {
                 menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
             } else {
                 menu[0].setIcon(R.drawable.ic_favorite_complete)
             }
-        })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -180,7 +180,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun fetchEpisodeList() {
-        viewModel.episodeList.observe(viewLifecycleOwner, { episodeListResponse ->
+        viewModel.episodeList.observe(viewLifecycleOwner) { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.getEpisodeInfo(episodeList)
                 binding.resultEpisodesText.text =
@@ -191,13 +191,13 @@ class DetailsFragment : Fragment() {
                 var check = false
                 binding.imageButton.setOnClickListener {
                     check = if (!check) {
-                        binding.imageButton.load(R.drawable.ic_up_arrow){
+                        binding.imageButton.load(R.drawable.ic_up_arrow) {
                             crossfade(true)
                         }
                         episodeAdapter.getEpisodeInfo(episodeList.reversed())
                         true
                     } else {
-                        binding.imageButton.load(R.drawable.ic_down_arrow){
+                        binding.imageButton.load(R.drawable.ic_down_arrow) {
                             crossfade(true)
                         }
                         episodeAdapter.getEpisodeInfo(episodeList)
@@ -218,7 +218,7 @@ class DetailsFragment : Fragment() {
                     binding.resultPlayMovie.visibility = View.GONE
                 }
             }
-        })
+        }
     }
 
     override fun onResume() {

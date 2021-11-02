@@ -78,7 +78,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun getSearchData() {
-        viewModel.searchResult.observe(viewLifecycleOwner, { res ->
+        viewModel.searchResult.observe(viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     binding.searchLoadingBar.visibility = View.GONE
@@ -95,7 +95,8 @@ class SearchFragment : Fragment() {
                     showSnack(res.message)
                 }
             }
-        })
+        }
+
     }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
