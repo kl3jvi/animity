@@ -12,7 +12,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getSearchResultUseCase: GetSearchResultUseCase,
-    private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase
 ) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
