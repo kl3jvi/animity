@@ -134,23 +134,19 @@ class PlayerActivity : AppCompatActivity() {
                             .setContentType(C.CONTENT_TYPE_MOVIE)
                             .build()
 
-                        val videoSource: MediaSource = buildMediaSource(Uri.parse(videoM3U8Url))
+
                         player = SimpleExoPlayer.Builder(this)
                             .setAudioAttributes(audioAttributes, true)
                             .setTrackSelector(trackSelector!!)
                             .build()
                             .also { exoPlayer ->
                                 viewBinding.videoView.player = exoPlayer
-                                val mediaItem = MediaItem.Builder()
-                                    .setUri(videoM3U8Url)
-                                    .setMimeType(MimeTypes.APPLICATION_M3U8)
-                                    .build()
-                                exoPlayer.setMediaItem(mediaItem)
-                                exoPlayer.setMediaSource(videoSource)
 
+                                val videoSource: MediaSource =
+                                    buildMediaSource(Uri.parse(videoM3U8Url))
+                                exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.seekTo(currentWindow, playbackPosition)
-
                                 exoPlayer.prepare()
                             }
 

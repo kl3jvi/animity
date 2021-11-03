@@ -160,13 +160,14 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nest"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="1080dp"
             android:orientation="vertical">
 
 
@@ -260,6 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Reverse Episode List"
                     android:padding="8dp"
                     app:srcCompat="@drawable/ic_down_arrow" />
             </LinearLayout>
@@ -270,6 +272,7 @@
                 android:layout_height="wrap_content"
                 android:descendantFocusability="afterDescendants"
                 android:visibility="gone"
+                android:nestedScrollingEnabled="true"
                 tools:listitem="@layout/item_episode_number"
                 tools:visibility="visible" />
         </LinearLayout>

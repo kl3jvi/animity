@@ -74,30 +74,29 @@
             android:clickable="false"
             android:focusable="false"
             android:src="@drawable/title_shadow"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/animeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_marginTop="4dp"
             android:background="?selectableItemBackgroundBorderless"
             android:ellipsize="end"
-            android:textStyle="bold"
-            android:paddingBottom="5dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:layout_gravity="bottom"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:maxLines="2"
             android:minLines="2"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/textColor"
             android:textSize="14sp"
+            android:textStyle="bold"
             tools:text="One Piece" />
 
     </androidx.cardview.widget.CardView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
