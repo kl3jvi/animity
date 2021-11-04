@@ -292,20 +292,6 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun showErrorDialog(error: String) {
-        val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)
-        builder.apply {
-            setTitle("ERROR")
-            setMessage(error)
-            setCancelable(false)
-            setPositiveButton("Go Back") { p0, p1 ->
-                finish()
-            }
-        }
-        val dialog = builder.create()
-        dialog.show()
-    }
-
     private fun showDialogForSpeedSelection() {
         val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)
         builder.apply {
@@ -336,8 +322,6 @@ class PlayerActivity : AppCompatActivity() {
     private fun setSpeed(speed: Int) {
         selectedSpeed = speed
         checkedItem = speed
-//        val quality = viewBinding.videoView.findViewById<TextView>(R.id.exo_speed_selection_view)
-//        quality.text = showableSpeed[speed]
     }
 
     private fun setPlaybackSpeed(speed: Float) {
@@ -355,7 +339,7 @@ class PlayerActivity : AppCompatActivity() {
                     .setImageDrawable(
                         ContextCompat.getDrawable(
                             it,
-                            com.google.android.exoplayer2.R.drawable.exo_controls_fullscreen_enter
+                            R.drawable.exo_controls_fullscreen_enter
                         )
                     )
             }
@@ -369,18 +353,16 @@ class PlayerActivity : AppCompatActivity() {
                     .setImageDrawable(
                         ContextCompat.getDrawable(
                             it,
-                            com.google.android.exoplayer2.R.drawable.exo_controls_fullscreen_exit
+                            R.drawable.exo_controls_fullscreen_exit
                         )
                     )
             }
         }
     }
 
-
     private fun downloadMedia(context: Context, videoM3U8Url: String) {
         val downloadRequest: DownloadRequest =
             DownloadRequest.Builder(DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
-
         DownloadService.sendAddDownload(
             context,
             VideoDownloadService::class.java,

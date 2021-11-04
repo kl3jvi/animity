@@ -36,7 +36,7 @@ class VideoDownloadService :
     override fun onCreate() {
         super.onCreate()
         context = this
-        notificationHelper = DownloadNotificationHelper(this, "Animity")
+        notificationHelper = DownloadNotificationHelper(this, DOWNLOAD_CHANNEL_ID)
     }
 
 
@@ -72,7 +72,7 @@ class VideoDownloadService :
     override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
         return notificationHelper.buildProgressNotification(
             this@VideoDownloadService,
-            R.drawable.ic_launcher_foreground,
+            R.drawable.ic_downloading,
             null,
             "sdads",
             downloads,

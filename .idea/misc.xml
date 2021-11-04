@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_test.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/drawable/ic_up_arrow.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/netflix_skip_back.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/outline.xml" value="0.2604166666666667" />
@@ -51,6 +52,7 @@
         <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.24427083333333333" />
+        <entry key="app/src/main/res/layout/fragment_downloads.xml" value="0.2056159420289855" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.3140625" />

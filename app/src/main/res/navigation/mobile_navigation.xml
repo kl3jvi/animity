@@ -24,7 +24,7 @@
         android:id="@+id/navigation_favorites"
         android:name="com.kl3jvi.animity.view.fragments.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
-        tools:layout="@layout/fragment_favorites" >
+        tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_navigation_favorites_to_navigation_details"
             app:destination="@id/navigation_details" />
@@ -49,5 +49,11 @@
             android:name="animeDetails"
             app:argType="com.kl3jvi.animity.model.entities.AnimeMetaModel" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_downloads"
+        android:name="com.kl3jvi.animity.view.fragments.downloads.DownloadsFragment"
+        android:label="@string/title_downloads"
+        tools:layout="@layout/fragment_downloads"/>
 
 </navigation>
