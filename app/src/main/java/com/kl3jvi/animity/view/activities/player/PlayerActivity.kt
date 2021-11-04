@@ -1,13 +1,11 @@
 package com.kl3jvi.animity.view.activities.player
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +13,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -23,7 +23,6 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -32,7 +31,9 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
+import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.USER_AGENT
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.viewmodels.PlayerViewModel
@@ -144,6 +145,7 @@ class PlayerActivity : AppCompatActivity() {
 
                                 val videoSource: MediaSource =
                                     buildMediaSource(Uri.parse(videoM3U8Url))
+                                downloadMedia(this, videoM3U8Url)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.seekTo(currentWindow, playbackPosition)
@@ -375,6 +377,17 @@ class PlayerActivity : AppCompatActivity() {
     }
 
 
+    private fun downloadMedia(context: Context, videoM3U8Url: String) {
+        val downloadRequest: DownloadRequest =
+            DownloadRequest.Builder(DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
+
+        DownloadService.sendAddDownload(
+            context,
+            VideoDownloadService::class.java,
+            downloadRequest,
+            false
+        )
+    }
 }
 
 

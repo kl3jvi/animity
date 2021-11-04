@@ -36,42 +36,18 @@ class Constants {
             "https://wallpaperaccess.com/full/9939.jpg"
         )
 
-        // Retrofit Request TYPE
+        const val DOWNLOAD_CHANNEL_ID = "animity.general"
+        const val DOWNLOAD_CHANNEL_NAME = "Downloads"
+        const val DOWNLOAD_CHANNEL_DESCRIPT = "The download notification channel"
 
-        const val RECENT_SUB = 1
-        const val RECENT_DUB = 2
-
-        const val MAX_LIMIT_FOR_SUB_DUB = 10
-        const val NEWEST_SEASON_POSITION = 2
-        const val RECENT_SUB_POSITION = 0
-        const val RECENT_DUB_POSITION = 1
-        const val POPULAR_POSITION = 4
-        const val MOVIE_POSITION = 3
-
-        //Episode URL Type
-        const val TYPE_MEDIA_URL = 100
-        const val TYPE_M3U8_URL = 101
-
-        //Anime Info URL Type
-        const val TYPE_ANIME_INFO = 1000
-        const val TYPE_EPISODE_LIST = 1001
         const val M3U8_REGEX_PATTERN =
             "(http|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?"
-
-        //Anime Search Types
-        const val TYPE_SEARCH_NEW = 2000
-        const val TYPE_SEARCH_UPDATE = 2001
-
         //Network Requests Header
         const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
         const val ORIGIN = "https://gogoanime.vc/"
         const val REFERER = "https://gogoanime.vc/"
-
-        //Realm
-        const val MAX_TIME_M3U8_URL = 2 * 60 * 60 * 1000
-        const val MAX_TIME_FOR_ANIME = 2 * 24 * 60 * 60 * 1000
 
         fun getHeader(): Map<String, String> {
             return mapOf(

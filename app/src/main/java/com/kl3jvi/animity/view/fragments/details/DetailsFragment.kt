@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,9 @@ import coil.load
 import coil.request.CachePolicy
 import coil.transition.CrossfadeTransition
 import coil.transition.Transition
+import com.google.android.exoplayer2.offline.DownloadHelper
+import com.google.android.exoplayer2.offline.DownloadService
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -22,6 +26,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
@@ -31,6 +36,8 @@ import com.kl3jvi.animity.view.activities.player.PlayerActivity
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
+import java.io.IOException
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -235,4 +242,6 @@ class DetailsFragment : Fragment() {
             snack.show()
         }
     }
+
+
 }

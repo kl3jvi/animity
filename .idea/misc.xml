@@ -16,6 +16,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_cast.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/drawable/ic_down_arrow.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_download_error.xml" value="0.140625" />
+        <entry key="app/src/main/res/drawable/ic_downloading.xml" value="0.140625" />
         <entry key="app/src/main/res/drawable/ic_favorite_complete.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_favorite_uncomplete.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.26614583333333336" />
@@ -35,6 +37,7 @@
         <entry key="app/src/main/res/drawable/netflix_skip_back.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/outline.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/outline_drawable.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/drawable/rddone.xml" value="0.140625" />
         <entry key="app/src/main/res/drawable/search_background.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/drawable/search_icon.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/drawable/title_shadow.xml" value="0.2604166666666667" />
