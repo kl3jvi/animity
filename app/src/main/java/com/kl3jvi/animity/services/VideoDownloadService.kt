@@ -2,7 +2,9 @@ package com.kl3jvi.animity.services
 
 import android.app.Notification
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -10,7 +12,9 @@ import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.application.AnimityApplication
 import com.kl3jvi.animity.application.AppContainer
+import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPT
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -27,7 +31,7 @@ class VideoDownloadService :
     ) {
     private lateinit var notificationHelper: DownloadNotificationHelper
     private lateinit var context: Context
-    private lateinit var appContainer: AppContainer
+
     private lateinit var manager: DownloadManager
 
     @Inject
@@ -42,7 +46,7 @@ class VideoDownloadService :
 
     override fun getDownloadManager(): DownloadManager {
         exoDatabaseProvider = ExoDatabaseProvider(applicationContext)
-        appContainer = AppContainer(applicationContext, exoDatabaseProvider)
+        val appContainer = (applicationContext as AnimityApplication).appContainer
         manager = appContainer.downloadManager
         manager.maxParallelDownloads = 5
         manager.addListener(object : DownloadManager.Listener {
@@ -70,11 +74,18 @@ class VideoDownloadService :
     }
 
     override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
+
+        val contentIntent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.navigation_downloads)
+            .setArguments(null)
+            .createPendingIntent()
+
         return notificationHelper.buildProgressNotification(
             this@VideoDownloadService,
             R.drawable.ic_downloading,
-            null,
-            "sdads",
+            contentIntent,
+            DOWNLOAD_CHANNEL_DESCRIPT,
             downloads,
         )
     }

@@ -2,6 +2,7 @@ package com.kl3jvi.animity.application
 
 
 import android.content.Context
+import com.google.android.exoplayer2.database.DatabaseProvider
 
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -15,7 +16,6 @@ import java.io.File
 
 class AppContainer(
     val context: Context,
-    exoDatabaseProvider: ExoDatabaseProvider
 ) {
 
 
@@ -36,18 +36,16 @@ class AppContainer(
     }
 
 
-    var downloadContentDirectory: File
+    private var dataBase: DatabaseProvider
+    private var downloadContentDirectory: File
     var downloadCache: Cache
     var downloadManager: DownloadManager
 
     init {
+        dataBase = ExoDatabaseProvider(context)
         downloadContentDirectory = File(context.getExternalFilesDir(null), "Animity")
-        downloadCache =
-            SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), exoDatabaseProvider)
-        downloadManager = DownloadManager(
-            context, exoDatabaseProvider, downloadCache, getDataSourceFactory(),
-            Runnable::run
-        )
+        downloadCache = SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), dataBase)
+        downloadManager = DownloadManager(context, dataBase, downloadCache, getDataSourceFactory())
     }
 
 }

@@ -77,11 +77,11 @@ android {
 
 dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
     implementation 'androidx.navigation:navigation-runtime-ktx:2.4.0-beta01'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-beta01'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.0-beta01'
@@ -91,8 +91,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     // Coroutine Lifecycle Scopes
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
     implementation 'com.google.firebase:firebase-analytics-ktx:20.0.0'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.4'
 
@@ -131,4 +131,8 @@ dependencies {
 
     // image library
     implementation "io.coil-kt:coil:1.3.2"
+
+    def beagleVersion = "2.6.4"
+    debugImplementation "com.github.pandulapeter.beagle:ui-drawer:$beagleVersion"
+    releaseImplementation "com.github.pandulapeter.beagle:noop:$beagleVersion"
 }

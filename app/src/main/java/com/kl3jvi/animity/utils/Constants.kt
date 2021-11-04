@@ -36,7 +36,7 @@ class Constants {
             "https://wallpaperaccess.com/full/9939.jpg"
         )
 
-        const val DOWNLOAD_CHANNEL_ID = "animity.general"
+        const val DOWNLOAD_CHANNEL_ID = "Animity"
         const val DOWNLOAD_CHANNEL_NAME = "Downloads"
         const val DOWNLOAD_CHANNEL_DESCRIPT = "The download notification channel"
 

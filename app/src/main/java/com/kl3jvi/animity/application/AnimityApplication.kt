@@ -19,15 +19,14 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class AnimityApplication : Application() {
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     lateinit var appContainer: AppContainer
-    @Inject
-    lateinit var exoDatabaseProvider: ExoDatabaseProvider
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate() {
         super.onCreate()
         firebaseAnalytics = Firebase.analytics
-        exoDatabaseProvider = ExoDatabaseProvider(this)
-        appContainer = AppContainer(this, exoDatabaseProvider)
+        appContainer = AppContainer(this)
         createNotificationChannel()
     }
 
