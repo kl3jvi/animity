@@ -13,6 +13,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.source.MediaSource
@@ -29,6 +30,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.application.AnimityApplication
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.services.VideoDownloadService
@@ -39,6 +41,8 @@ import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.json.JSONObject
+import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -62,7 +66,8 @@ class PlayerActivity : AppCompatActivity() {
     private var mappedTrackInfo: MappingTrackSelector.MappedTrackInfo? = null
     private var trackSelector: DefaultTrackSelector? = null
     private var currentTime = 0L
-
+    lateinit var animeTitlePassed: String
+    lateinit var episodeNumber: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
@@ -70,7 +75,8 @@ class PlayerActivity : AppCompatActivity() {
 
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
-            val animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE)
+            animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE).toString()
+            episodeNumber = getIntentData?.episodeNumber.toString()
             val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
             title.text =
                 getString(R.string.test).format(animeTitlePassed, getIntentData?.episodeNumber)
@@ -142,15 +148,14 @@ class PlayerActivity : AppCompatActivity() {
                             .build()
                             .also { exoPlayer ->
                                 viewBinding.videoView.player = exoPlayer
-
                                 val videoSource: MediaSource =
                                     buildMediaSource(Uri.parse(videoM3U8Url))
-                                downloadMedia(this, videoM3U8Url)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.seekTo(currentWindow, playbackPosition)
                                 exoPlayer.prepare()
                             }
+                        downloadMedia(videoM3U8Url)
 
                         val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
@@ -172,6 +177,7 @@ class PlayerActivity : AppCompatActivity() {
                     }
                     viewBinding.loadingOverlay.visibility = View.GONE
                     hideSystemUi()
+
                 }
                 is Resource.Loading -> {
                     viewBinding.loadingOverlay.visibility = View.VISIBLE
@@ -360,16 +366,35 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun downloadMedia(context: Context, videoM3U8Url: String) {
-        val downloadRequest: DownloadRequest =
-            DownloadRequest.Builder(DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
-        DownloadService.sendAddDownload(
-            context,
-            VideoDownloadService::class.java,
-            downloadRequest,
-            false
-        )
+    private fun downloadMedia(videoM3U8Url: String) {
+        val uri = Uri.parse(videoM3U8Url)
+        val mediaItem: MediaItem = MediaItem.fromUri(uri)
+        val helper = DownloadHelper.forMediaItem(this, mediaItem)
+        helper.prepare(object : DownloadHelper.Callback {
+            override fun onPrepared(helper: DownloadHelper) {
+                val json = JSONObject()
+                json.put("anime title", animeTitlePassed)
+                json.put("episode", episodeNumber)
+                val downloadRequest =
+                    helper.getDownloadRequest(
+                        DOWNLOAD_CHANNEL_ID,
+                        Util.getUtf8Bytes(json.toString())
+                    )
+                DownloadService.sendAddDownload(
+                    this@PlayerActivity,
+                    VideoDownloadService::class.java,
+                    downloadRequest,
+                    false
+                )
+            }
+
+            override fun onPrepareError(helper: DownloadHelper, e: IOException) {
+                e.printStackTrace()
+            }
+        })
+
     }
+
 }
 
 
