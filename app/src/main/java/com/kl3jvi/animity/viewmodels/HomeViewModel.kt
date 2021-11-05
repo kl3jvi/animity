@@ -31,9 +31,6 @@ class HomeViewModel @Inject constructor(
         fetchMovies()
     }
 
-
-
-
     private fun fetchRecentSubOrDub() {
         getAnimesUseCase.fetchRecentSubOrDub().onEach {
             _recentSubDub.value = it

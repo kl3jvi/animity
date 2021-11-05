@@ -8,6 +8,7 @@ import com.kl3jvi.animity.utils.parser.HtmlParser
 class Constants {
     companion object {
 
+        const val RECENT_SUB: String= "RECENT_SUB"
         const val INTRO_SKIP_TIME = 85000
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"

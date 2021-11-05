@@ -18,6 +18,7 @@
 
     <item
         android:id="@+id/navigation_downloads"
-        android:icon="@drawable/ic_downloading"
+        android:icon="@drawable/ic_download_folder"
         android:title="" />
+
 </menu>

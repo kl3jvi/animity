@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.view.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -10,6 +11,8 @@ import coil.request.CachePolicy
 
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.view.activities.player.PlayerActivity
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomHorizontalAdapter(
@@ -57,7 +60,7 @@ class CustomHorizontalAdapter(
     override fun getItemCount() = animes.size
 
     fun addAnimes(animes: List<AnimeMetaModel>) {
-       this.animes.apply {
+        this.animes.apply {
             clear()
             addAll(animes)
         }

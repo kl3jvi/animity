@@ -24,6 +24,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -32,6 +33,7 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.application.AnimityApplication
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.utils.Constants
@@ -144,6 +146,7 @@ class PlayerActivity : AppCompatActivity() {
                             .setContentType(C.CONTENT_TYPE_MOVIE)
                             .build()
 
+//                        downloadMedia(videoM3U8Url)
 
                         player = SimpleExoPlayer.Builder(this)
                             .setAudioAttributes(audioAttributes, true)
@@ -153,7 +156,6 @@ class PlayerActivity : AppCompatActivity() {
                                 viewBinding.videoView.player = exoPlayer
                                 val videoSource: MediaSource =
                                     buildMediaSource(Uri.parse(videoM3U8Url))
-//                                downloadMedia(videoM3U8Url)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.seekTo(currentWindow, playbackPosition)
@@ -371,34 +373,32 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun downloadMedia(videoM3U8Url: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val uri = Uri.parse(videoM3U8Url)
-            val mediaItem: MediaItem = MediaItem.fromUri(uri)
-            val helper = DownloadHelper.forMediaItem(this@PlayerActivity, mediaItem)
-            helper.prepare(object : DownloadHelper.Callback {
-                override fun onPrepared(helper: DownloadHelper) {
-                    val json = JSONObject()
-                    json.put("anime title", animeTitlePassed)
-                    json.put("episode", episodeNumber)
-                    val downloadRequest =
-                        helper.getDownloadRequest(
-                            DOWNLOAD_CHANNEL_ID,
-                            Util.getUtf8Bytes(json.toString())
-                        )
-                    DownloadService.sendAddDownload(
-                        this@PlayerActivity,
-                        VideoDownloadService::class.java,
-                        downloadRequest,
-                        false
+
+        val uri = Uri.parse(videoM3U8Url)
+        val mediaItem: MediaItem = MediaItem.fromUri(uri)
+        val helper = DownloadHelper.forMediaItem(this@PlayerActivity, mediaItem)
+        helper.prepare(object : DownloadHelper.Callback {
+            override fun onPrepared(helper: DownloadHelper) {
+                val json = JSONObject()
+                json.put("anime title", animeTitlePassed)
+                json.put("episode", episodeNumber)
+                val downloadRequest =
+                    helper.getDownloadRequest(
+                        DOWNLOAD_CHANNEL_ID,
+                        Util.getUtf8Bytes(json.toString())
                     )
-                }
-                override fun onPrepareError(helper: DownloadHelper, e: IOException) {
-                    e.printStackTrace()
-                }
-            })
+                DownloadService.sendAddDownload(
+                    this@PlayerActivity,
+                    VideoDownloadService::class.java,
+                    downloadRequest,
+                    false
+                )
+            }
 
-        }
-
+            override fun onPrepareError(helper: DownloadHelper, e: IOException) {
+                e.printStackTrace()
+            }
+        })
     }
 
 }

@@ -14,5 +14,4 @@ class FavoritesViewModel @Inject constructor(
 ) : ViewModel() {
     val favoriteAnimesList: LiveData<List<AnimeMetaModel>> =
         animeRepository.getFavoriteAnimes.asLiveData()
-
 }

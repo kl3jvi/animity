@@ -38,6 +38,6 @@ class PlayerViewModel @Inject constructor(
                 delay(1000)
             }
         }
-    }.flowOn(Dispatchers.Main).asLiveData()
+    }.flowOn(Dispatchers.Main).asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
 
 }

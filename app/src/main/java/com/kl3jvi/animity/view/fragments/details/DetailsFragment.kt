@@ -36,7 +36,9 @@ import com.kl3jvi.animity.view.activities.player.PlayerActivity
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.IOException
 
@@ -214,7 +216,6 @@ class DetailsFragment : Fragment() {
                         episodeAdapter.getEpisodeInfo(episodeList)
                         false
                     }
-
                 }
                 if (episodeList.isNotEmpty()) {
                     binding.resultPlayMovie.setOnClickListener {

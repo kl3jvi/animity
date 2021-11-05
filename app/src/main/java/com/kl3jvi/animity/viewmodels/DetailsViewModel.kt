@@ -5,9 +5,12 @@ import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.model.database.AnimeRepository
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.internal.assertThreadDoesntHoldLock
 import javax.inject.Inject
 
@@ -32,7 +35,7 @@ class DetailsViewModel @Inject constructor(
                 info.data?.endEpisode,
                 info.data?.alias
             )
-        }.asLiveData()
+        }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
     }
 
     val isOnDatabase = Transformations.switchMap(_animeId) { id ->
