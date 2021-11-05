@@ -36,6 +36,7 @@ import com.kl3jvi.animity.view.activities.player.PlayerActivity
 import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.json.JSONObject
 import java.io.IOException
 
@@ -77,7 +78,7 @@ class DetailsFragment : Fragment() {
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
-                episodeListRecycler.isNestedScrollingEnabled = false
+
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
                     CustomEpisodeAdapter(requireParentFragment(), animeInfo.title)
@@ -106,6 +107,7 @@ class DetailsFragment : Fragment() {
                         binding.status.visibility = View.VISIBLE
                         binding.type.visibility = View.VISIBLE
 
+                        binding.progressBar2.visibility = View.VISIBLE
 
                         // Check if the type is movie and this makes invisible the listview of the episodes
                         if (info.type == " Movie") {
@@ -186,10 +188,12 @@ class DetailsFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
         viewModel.episodeList.observe(viewLifecycleOwner) { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.getEpisodeInfo(episodeList)
+                binding.progressBar2.visibility = View.GONE
                 binding.resultEpisodesText.text =
                     requireActivity().getString(
                         R.string.total_episodes,

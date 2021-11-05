@@ -45,7 +45,8 @@ class AppContainer(
         dataBase = ExoDatabaseProvider(context)
         downloadContentDirectory = File(context.getExternalFilesDir(null), "Animity")
         downloadCache = SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), dataBase)
-        downloadManager = DownloadManager(context, dataBase, downloadCache, getDataSourceFactory())
+        downloadManager =
+            DownloadManager(context, dataBase, downloadCache, getDataSourceFactory(), Runnable::run)
     }
 
 }

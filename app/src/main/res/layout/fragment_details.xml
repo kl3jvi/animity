@@ -7,6 +7,11 @@
     android:paddingStart="10dp"
     android:paddingEnd="10dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -152,6 +157,71 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/result_plot_header2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/synopsis"
+                    android:textColor="@color/textColor"
+                    android:textSize="17sp"
+                    android:textStyle="normal" />
+
+                <com.ms.square.android.expandabletextview.ExpandableTextView
+                    android:id="@+id/expand_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:animDuration="200"
+                    app:maxCollapsedLines="4">
+
+                    <TextView
+                        android:id="@id/expandable_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grayTextColor"
+                        android:textSize="15sp" />
+
+                    <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:padding="3dp" />
+                </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+                <TextView
+                    android:id="@+id/result_tag_holder2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/genre"
+                    android:textColor="@color/textColor"
+                    android:textSize="17sp"
+                    android:textStyle="normal" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/genreGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/result_play_movie"
+                    style="@style/WhiteButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/play_movie"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_baseline_play_arrow_24"
+                    tools:visibility="visible" />
+
             </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -161,84 +231,19 @@
         android:id="@+id/nest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:fillViewport="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1080dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/result_plot_header2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/synopsis"
-                android:textColor="@color/textColor"
-                android:textSize="17sp"
-                android:textStyle="normal" />
-
-            <com.ms.square.android.expandabletextview.ExpandableTextView
-                android:id="@+id/expand_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:animDuration="200"
-                app:maxCollapsedLines="4">
-
-                <TextView
-                    android:id="@id/expandable_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/grayTextColor"
-                    android:textSize="15sp" />
-
-                <ImageButton
-                    android:id="@id/expand_collapse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:padding="3dp" />
-            </com.ms.square.android.expandabletextview.ExpandableTextView>
-
-            <TextView
-                android:id="@+id/result_tag_holder2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/genre"
-                android:textColor="@color/textColor"
-                android:textSize="17sp"
-                android:textStyle="normal" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/genreGroup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/result_play_movie"
-                style="@style/WhiteButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/play_movie"
-                android:visibility="gone"
-                app:icon="@drawable/ic_baseline_play_arrow_24"
-                tools:visibility="visible" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -262,6 +267,8 @@
                     android:layout_gravity="end"
                     android:background="?android:attr/selectableItemBackground"
                     android:contentDescription="Reverse Episode List"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
                     android:padding="8dp"
                     app:srcCompat="@drawable/ic_down_arrow" />
             </LinearLayout>
@@ -269,12 +276,17 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/episode_list_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="afterDescendants"
+                android:layout_height="match_parent"
                 android:visibility="gone"
-                android:nestedScrollingEnabled="true"
                 tools:listitem="@layout/item_episode_number"
                 tools:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

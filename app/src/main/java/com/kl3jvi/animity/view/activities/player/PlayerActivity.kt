@@ -40,7 +40,10 @@ import com.kl3jvi.animity.utils.Constants.Companion.USER_AGENT
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.IOException
 
@@ -150,12 +153,13 @@ class PlayerActivity : AppCompatActivity() {
                                 viewBinding.videoView.player = exoPlayer
                                 val videoSource: MediaSource =
                                     buildMediaSource(Uri.parse(videoM3U8Url))
+//                                downloadMedia(videoM3U8Url)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.seekTo(currentWindow, playbackPosition)
                                 exoPlayer.prepare()
                             }
-                        downloadMedia(videoM3U8Url)
+
 
                         val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
@@ -367,31 +371,33 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun downloadMedia(videoM3U8Url: String) {
-        val uri = Uri.parse(videoM3U8Url)
-        val mediaItem: MediaItem = MediaItem.fromUri(uri)
-        val helper = DownloadHelper.forMediaItem(this, mediaItem)
-        helper.prepare(object : DownloadHelper.Callback {
-            override fun onPrepared(helper: DownloadHelper) {
-                val json = JSONObject()
-                json.put("anime title", animeTitlePassed)
-                json.put("episode", episodeNumber)
-                val downloadRequest =
-                    helper.getDownloadRequest(
-                        DOWNLOAD_CHANNEL_ID,
-                        Util.getUtf8Bytes(json.toString())
+        CoroutineScope(Dispatchers.IO).launch {
+            val uri = Uri.parse(videoM3U8Url)
+            val mediaItem: MediaItem = MediaItem.fromUri(uri)
+            val helper = DownloadHelper.forMediaItem(this@PlayerActivity, mediaItem)
+            helper.prepare(object : DownloadHelper.Callback {
+                override fun onPrepared(helper: DownloadHelper) {
+                    val json = JSONObject()
+                    json.put("anime title", animeTitlePassed)
+                    json.put("episode", episodeNumber)
+                    val downloadRequest =
+                        helper.getDownloadRequest(
+                            DOWNLOAD_CHANNEL_ID,
+                            Util.getUtf8Bytes(json.toString())
+                        )
+                    DownloadService.sendAddDownload(
+                        this@PlayerActivity,
+                        VideoDownloadService::class.java,
+                        downloadRequest,
+                        false
                     )
-                DownloadService.sendAddDownload(
-                    this@PlayerActivity,
-                    VideoDownloadService::class.java,
-                    downloadRequest,
-                    false
-                )
-            }
+                }
+                override fun onPrepareError(helper: DownloadHelper, e: IOException) {
+                    e.printStackTrace()
+                }
+            })
 
-            override fun onPrepareError(helper: DownloadHelper, e: IOException) {
-                e.printStackTrace()
-            }
-        })
+        }
 
     }
 
