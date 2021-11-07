@@ -16,10 +16,7 @@
         <service
             android:name=".services.VideoDownloadService"
             android:enabled="true"
-            android:exported="true"
-            tools:ignore="Instantiatable" />
-
-
+            android:exported="true" />
         <activity
             android:name=".view.activities.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -34,7 +31,6 @@
             android:name=".view.activities.MainActivity"
             android:configChanges="orientation"
             android:exported="true"
-
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>

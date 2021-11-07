@@ -3,7 +3,9 @@ package com.kl3jvi.animity.view.fragments.details
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.get
@@ -17,6 +19,7 @@ import coil.request.CachePolicy
 import coil.transition.CrossfadeTransition
 import coil.transition.Transition
 import com.google.android.exoplayer2.offline.DownloadHelper
+import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.chip.Chip
@@ -73,17 +76,19 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         args.animeDetails.let { animeInfo ->
+
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
                     crossfade(true)
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
-
-                resultTitle.text = animeInfo.title
                 episodeAdapter =
-                    CustomEpisodeAdapter(requireParentFragment(), animeInfo.title, arrayListOf())
+                    CustomEpisodeAdapter(this@DetailsFragment, animeInfo.title, arrayListOf())
+                resultTitle.text = animeInfo.title
+
                 title = animeInfo.title
                 binding.episodeListRecycler.adapter = episodeAdapter
             }
@@ -248,5 +253,37 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    @ExperimentalCoroutinesApi
+    fun downloadEpisode(episodeUrl: String) {
+        Log.e("download episode", "clicked")
+        viewModel.passDownloadEpisodeUrl(episodeUrl)
+        viewModel.downloadEpisodeUrl.observe(viewLifecycleOwner, { res ->
+            when (res) {
+                is Resource.Success -> {
+                    val videoM3U8Url = res.data.toString()
+                    downloadMedia(videoM3U8Url)
+//                    showSnack(videoM3U8Url)
+                }
+                is Resource.Error -> {
+                    showSnack("Downloading Episode")
+                }
+                is Resource.Loading -> {
+//                    Toast.makeText(requireContext(), res.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 
+    }
+
+    private fun downloadMedia(videoM3U8Url: String) {
+        val downloadRequest: DownloadRequest =
+            DownloadRequest.Builder(Constants.DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
+
+        DownloadService.sendAddDownload(
+            requireContext(),
+            VideoDownloadService::class.java,
+            downloadRequest,
+            false
+        )
+    }
 }

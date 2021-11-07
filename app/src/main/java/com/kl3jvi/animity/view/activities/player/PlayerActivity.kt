@@ -63,6 +63,7 @@ class PlayerActivity : AppCompatActivity() {
     private var currentTime = 0L
     lateinit var animeTitlePassed: String
     lateinit var episodeNumber: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
@@ -138,8 +139,6 @@ class PlayerActivity : AppCompatActivity() {
                             .setUsage(C.USAGE_MEDIA)
                             .setContentType(C.CONTENT_TYPE_MOVIE)
                             .build()
-
-//                        downloadMedia(videoM3U8Url)
 
                         player = SimpleExoPlayer.Builder(this)
                             .setAudioAttributes(audioAttributes, true)
@@ -364,19 +363,6 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun downloadMedia(videoM3U8Url: String) {
-        val downloadRequest: DownloadRequest =
-            DownloadRequest.Builder(DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
-
-        DownloadService.sendAddDownload(
-            this,
-            VideoDownloadService::class.java,
-            downloadRequest,
-            false
-        )
-    }
-
 }
 
 

@@ -36,10 +36,12 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_favorites, R.id.navigation_explore,R.id.navigation_downloads
+                R.id.navigation_home,
+                R.id.navigation_favorites,
+                R.id.navigation_explore,
+                R.id.navigation_downloads
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -55,6 +57,5 @@ class MainActivity : AppCompatActivity() {
         binding.navView.visibility = View.VISIBLE
         binding.navView.animate().translationY(0f).duration = 300
     }
-
 
 }

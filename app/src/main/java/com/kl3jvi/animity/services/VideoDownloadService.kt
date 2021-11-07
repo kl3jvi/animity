@@ -23,7 +23,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class VideoDownloadService :
     DownloadService(
-        0,
+        1,
         DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
         DOWNLOAD_CHANNEL_ID,
         R.string.app_name,

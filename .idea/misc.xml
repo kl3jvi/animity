@@ -6,6 +6,8 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.21382636655948553" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/bottom_gradient.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.14114583333333333" />
+        <entry key="app/src/main/res/drawable/circular_progress_bar.xml" value="0.14114583333333333" />
         <entry key="app/src/main/res/drawable/dialog_rounded_corner.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.18385416666666668" />
