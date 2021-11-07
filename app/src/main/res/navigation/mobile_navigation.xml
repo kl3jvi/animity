@@ -54,6 +54,10 @@
         android:id="@+id/navigation_downloads"
         android:name="com.kl3jvi.animity.view.fragments.downloads.DownloadsFragment"
         android:label="@string/title_downloads"
-        tools:layout="@layout/fragment_downloads"/>
+        tools:layout="@layout/fragment_downloads">
+        <action
+            android:id="@+id/action_navigation_downloads_to_navigation_details"
+            app:destination="@id/navigation_details" />
+    </fragment>
 
 </navigation>

@@ -36,7 +36,7 @@
     <string name="favorite">Add to Favorites</string>
     <string name="order">Order Animes</string>
     <string name="movie_not_released">Movie not released yet</string>
-    <string name="test">%s - %s</string>
+    <string name="episode_title">%s - %s</string>
     <string name="skip_loading">Skip Intro</string>
     <string name="total_episodes">%s Episodes</string>
     <string name="video_quality">Video Quality</string>

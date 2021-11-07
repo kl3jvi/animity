@@ -106,7 +106,7 @@ class HomeFragment : Fragment() {
         binding.todaySelection.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            todayAdapter = CustomVerticalAdapter(this@HomeFragment)
+            todayAdapter = CustomVerticalAdapter(this@HomeFragment, arrayListOf())
             adapter = todayAdapter
         }
     }

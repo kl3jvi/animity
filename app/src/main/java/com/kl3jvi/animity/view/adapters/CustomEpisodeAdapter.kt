@@ -10,10 +10,12 @@ import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.view.activities.player.PlayerActivity
 
-class CustomEpisodeAdapter(private val fragment: Fragment, private val animeTitle: String) :
+class CustomEpisodeAdapter(
+    private val fragment: Fragment,
+    private val animeTitle: String,
+    private var list: ArrayList<EpisodeModel>
+) :
     RecyclerView.Adapter<CustomEpisodeAdapter.ViewHolder>() {
-
-    private var list = listOf<EpisodeModel>()
 
 
     inner class ViewHolder(view: ItemEpisodeNumberBinding) : RecyclerView.ViewHolder(view.root) {
@@ -45,7 +47,10 @@ class CustomEpisodeAdapter(private val fragment: Fragment, private val animeTitl
     override fun getItemCount() = list.size
 
     fun getEpisodeInfo(retrieveData: List<EpisodeModel>) {
-        list = retrieveData.reversed()
-        notifyDataSetChanged()
+        this.list.apply {
+            clear()
+            addAll(retrieveData.reversed())
+            notifyDataSetChanged()
+        }
     }
 }

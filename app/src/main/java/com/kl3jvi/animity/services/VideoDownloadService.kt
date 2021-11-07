@@ -48,7 +48,7 @@ class VideoDownloadService :
         exoDatabaseProvider = ExoDatabaseProvider(applicationContext)
         val appContainer = (applicationContext as AnimityApplication).appContainer
         manager = appContainer.downloadManager
-        manager.maxParallelDownloads = 5
+        manager.maxParallelDownloads = 3
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
                 Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show()

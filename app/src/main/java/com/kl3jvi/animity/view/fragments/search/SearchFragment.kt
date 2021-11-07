@@ -70,7 +70,7 @@ class SearchFragment : Fragment() {
         binding.searchRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            searchAdapter = CustomSearchAdapter(this@SearchFragment)
+            searchAdapter = CustomSearchAdapter(this@SearchFragment, arrayListOf())
             adapter = searchAdapter
         }
     }

@@ -83,7 +83,7 @@ class DetailsFragment : Fragment() {
 
                 resultTitle.text = animeInfo.title
                 episodeAdapter =
-                    CustomEpisodeAdapter(requireParentFragment(), animeInfo.title)
+                    CustomEpisodeAdapter(requireParentFragment(), animeInfo.title, arrayListOf())
                 title = animeInfo.title
                 binding.episodeListRecycler.adapter = episodeAdapter
             }

@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.view.activities.player
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.offline.DownloadHelper
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.source.MediaSource
@@ -24,16 +22,13 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.application.AnimityApplication
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.utils.Constants
@@ -42,12 +37,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.USER_AGENT
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
-import org.json.JSONObject
-import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -84,13 +74,17 @@ class PlayerActivity : AppCompatActivity() {
             episodeNumber = getIntentData?.episodeNumber.toString()
             val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
             title.text =
-                getString(R.string.test).format(animeTitlePassed, getIntentData?.episodeNumber)
+                getString(R.string.episode_title).format(
+                    animeTitlePassed,
+                    getIntentData?.episodeNumber
+                )
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
         }
     }
 
 
+    @ExperimentalCoroutinesApi
     public override fun onStart() {
         super.onStart()
         if (Util.SDK_INT > 23 && player == null) {
@@ -99,6 +93,7 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    @ExperimentalCoroutinesApi
     public override fun onResume() {
         super.onResume()
         hideSystemUi()
@@ -136,11 +131,9 @@ class PlayerActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
                     try {
-
                         trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())
                         }
-
                         val audioAttributes: AudioAttributes = AudioAttributes.Builder()
                             .setUsage(C.USAGE_MEDIA)
                             .setContentType(C.CONTENT_TYPE_MOVIE)
@@ -373,32 +366,15 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun downloadMedia(videoM3U8Url: String) {
+        val downloadRequest: DownloadRequest =
+            DownloadRequest.Builder(DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
 
-        val uri = Uri.parse(videoM3U8Url)
-        val mediaItem: MediaItem = MediaItem.fromUri(uri)
-        val helper = DownloadHelper.forMediaItem(this@PlayerActivity, mediaItem)
-        helper.prepare(object : DownloadHelper.Callback {
-            override fun onPrepared(helper: DownloadHelper) {
-                val json = JSONObject()
-                json.put("anime title", animeTitlePassed)
-                json.put("episode", episodeNumber)
-                val downloadRequest =
-                    helper.getDownloadRequest(
-                        DOWNLOAD_CHANNEL_ID,
-                        Util.getUtf8Bytes(json.toString())
-                    )
-                DownloadService.sendAddDownload(
-                    this@PlayerActivity,
-                    VideoDownloadService::class.java,
-                    downloadRequest,
-                    false
-                )
-            }
-
-            override fun onPrepareError(helper: DownloadHelper, e: IOException) {
-                e.printStackTrace()
-            }
-        })
+        DownloadService.sendAddDownload(
+            this,
+            VideoDownloadService::class.java,
+            downloadRequest,
+            false
+        )
     }
 
 }

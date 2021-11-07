@@ -5,16 +5,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.util.CoilUtils.clear
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 import com.kl3jvi.animity.view.fragments.search.SearchFragment
+import java.util.Collections.addAll
 
 
-class CustomSearchAdapter(private val fragment: Fragment) :
+class CustomSearchAdapter(
+    private val fragment: Fragment,
+    private var list: ArrayList<AnimeMetaModel>
+) :
     RecyclerView.Adapter<CustomSearchAdapter.ViewHolder>() {
-
-    private var list: List<AnimeMetaModel> = listOf()
 
 
     inner class ViewHolder(view: SearchLayoutBinding) : RecyclerView.ViewHolder(view.root) {
@@ -35,7 +38,7 @@ class CustomSearchAdapter(private val fragment: Fragment) :
         holder.image.load(item.imageUrl)
         holder.title.text = item.title
         holder.extra.text = item.releasedDate
-        holder.card.setOnClickListener{
+        holder.card.setOnClickListener {
             if (fragment is SearchFragment) {
                 fragment.navigateToDetails(item)
             }
@@ -46,7 +49,9 @@ class CustomSearchAdapter(private val fragment: Fragment) :
     override fun getItemCount() = list.size
 
     fun passSearchData(entry: List<AnimeMetaModel>) {
-        list = entry
-        notifyDataSetChanged()
+        this.list.apply {
+            clear()
+            addAll(entry)
+        }
     }
 }

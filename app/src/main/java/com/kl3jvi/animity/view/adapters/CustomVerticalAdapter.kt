@@ -15,10 +15,12 @@ import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackground
 
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
-class CustomVerticalAdapter(private val fragment: Fragment) :
+class CustomVerticalAdapter(
+    private val fragment: Fragment,
+    private val list: ArrayList<AnimeMetaModel>
+) :
     RecyclerView.Adapter<CustomVerticalAdapter.ViewHolder>() {
 
-    private var list: List<AnimeMetaModel> = listOf()
 
     inner class ViewHolder(view: ItemTodaySelectionBinding) : RecyclerView.ViewHolder(view.root) {
         val title = view.animeTitle
@@ -75,7 +77,9 @@ class CustomVerticalAdapter(private val fragment: Fragment) :
     override fun getItemCount() = list.size
 
     fun getSelectedAnime(entry: List<AnimeMetaModel>) {
-        list = entry
-        notifyDataSetChanged()
+        this.list.apply {
+            clear()
+            addAll(entry)
+        }
     }
 }
