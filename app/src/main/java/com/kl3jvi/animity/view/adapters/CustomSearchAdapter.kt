@@ -8,17 +8,14 @@ import coil.load
 import coil.util.CoilUtils.clear
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.view.fragments.home.HomeFragment
 import com.kl3jvi.animity.view.fragments.search.SearchFragment
 import java.util.Collections.addAll
-
 
 class CustomSearchAdapter(
     private val fragment: Fragment,
     private var list: ArrayList<AnimeMetaModel>
 ) :
     RecyclerView.Adapter<CustomSearchAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(view: SearchLayoutBinding) : RecyclerView.ViewHolder(view.root) {
         val image = view.imageView
@@ -43,7 +40,6 @@ class CustomSearchAdapter(
                 fragment.navigateToDetails(item)
             }
         }
-
     }
 
     override fun getItemCount() = list.size

@@ -23,7 +23,8 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                         Constants.getHeader(),
                         1,
                         Constants.TYPE_RECENT_DUB
-                    ).string(), Constants.TYPE_RECENT_DUB
+                    ).string(),
+                    Constants.TYPE_RECENT_DUB
                 ).toList()
             emit(
                 Resource.Success(
@@ -53,7 +54,8 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                     homeRepository.fetchPopularFromAjax(
                         Constants.getHeader(),
                         1
-                    ).string(), Constants.TYPE_POPULAR_ANIME
+                    ).string(),
+                    Constants.TYPE_POPULAR_ANIME
                 ).toList()
             emit(
                 Resource.Success(
@@ -83,7 +85,8 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                     homeRepository.fetchNewSeason(
                         Constants.getHeader(),
                         1
-                    ).string(), Constants.TYPE_NEW_SEASON
+                    ).string(),
+                    Constants.TYPE_NEW_SEASON
                 ).toList()
             emit(
                 Resource.Success(
@@ -113,7 +116,8 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                     homeRepository.fetchMovies(
                         Constants.getHeader(),
                         1
-                    ).string(), Constants.TYPE_MOVIE
+                    ).string(),
+                    Constants.TYPE_MOVIE
                 ).toList()
             emit(
                 Resource.Success(
@@ -134,5 +138,4 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
             )
         }
     }
-
 }

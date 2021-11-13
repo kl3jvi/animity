@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,7 +20,6 @@ import com.kl3jvi.animity.view.activities.MainActivity
 import com.kl3jvi.animity.view.adapters.CustomSearchAdapter
 import com.kl3jvi.animity.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -63,7 +61,6 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-
     }
 
     private fun initViews() {
@@ -94,7 +91,6 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-
     }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {

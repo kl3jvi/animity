@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Singleton
 class GetSearchResultUseCase @Inject constructor(private val searchRepository: SearchRepository) {
 
-
     fun getSearchData(searchQuery: String): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
@@ -24,7 +23,8 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
                         Constants.getHeader(),
                         searchQuery,
                         1
-                    ).string(), Constants.TYPE_MOVIE
+                    ).string(),
+                    Constants.TYPE_MOVIE
                 ).toList()
             emit(
                 Resource.Success(
@@ -46,5 +46,4 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
             )
         }
     }
-
 }

@@ -1,11 +1,14 @@
 package com.kl3jvi.animity.utils.parser
 
-import com.kl3jvi.animity.model.entities.*
+import com.kl3jvi.animity.model.entities.AnimeInfoModel
+import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.entities.EpisodeInfo
+import com.kl3jvi.animity.model.entities.EpisodeModel
+import com.kl3jvi.animity.model.entities.GenreModel
 import com.kl3jvi.animity.utils.Constants
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.util.regex.Pattern
-
 
 /**
  *  This File gets response in String format and parses it
@@ -42,7 +45,6 @@ object HtmlParser {
 
         return animeMetaModelList
     }
-
 
     fun parsePopular(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
@@ -150,9 +152,7 @@ object HtmlParser {
             alias = alias,
             endEpisode = endEpisode
         )
-
     }
-
 
     private fun getGenreList(genreHtmlList: Elements): ArrayList<GenreModel> {
         val genreList = ArrayList<GenreModel>()
@@ -166,12 +166,10 @@ object HtmlParser {
                     genreName = filterGenreName(genreName)
                 )
             )
-
         }
 
         return genreList
     }
-
 
     fun fetchEpisodeList(response: String): ArrayList<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
@@ -219,7 +217,7 @@ object HtmlParser {
         return try {
             while (matcher.find()) {
                 if (matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!
-                        .contains("googlevideo")
+                    .contains("googlevideo")
                 ) {
                     m3u8Url = matcher.group(0)
                     break
@@ -229,7 +227,6 @@ object HtmlParser {
         } catch (npe: NullPointerException) {
             m3u8Url
         }
-
     }
 
     private fun getCategoryUrl(url: String): String {

@@ -3,14 +3,12 @@ package com.kl3jvi.animity.view.adapters
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemEpisodeNumberBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.view.activities.player.PlayerActivity
-import com.kl3jvi.animity.view.fragments.details.DetailsFragment
 
 class CustomEpisodeAdapter(
     private val fragment: Fragment,
@@ -18,7 +16,6 @@ class CustomEpisodeAdapter(
     private var list: ArrayList<EpisodeModel>
 ) :
     RecyclerView.Adapter<CustomEpisodeAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(view: ItemEpisodeNumberBinding) : RecyclerView.ViewHolder(view.root) {
         val num = view.episodeText

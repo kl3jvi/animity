@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
@@ -57,5 +57,4 @@ class MainActivity : AppCompatActivity() {
         binding.navView.visibility = View.VISIBLE
         binding.navView.animate().translationY(0f).duration = 300
     }
-
 }

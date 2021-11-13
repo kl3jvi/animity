@@ -1,18 +1,14 @@
 package com.kl3jvi.animity.application
 
-
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import java.io.File
-
 
 class AppContainer(
     val context: Context,
@@ -29,5 +25,4 @@ class AppContainer(
         downloadManager =
             DownloadManager(context, dataBase, downloadCache, getDataSourceFactory(), Runnable::run)
     }
-
 }

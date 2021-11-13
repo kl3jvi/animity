@@ -4,7 +4,6 @@ import android.app.Notification
 import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavDeepLinkBuilder
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
@@ -17,7 +16,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPT
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class VideoDownloadService @Inject constructor() :
@@ -42,7 +40,6 @@ class VideoDownloadService @Inject constructor() :
         notificationHelper = DownloadNotificationHelper(this, DOWNLOAD_CHANNEL_ID)
     }
 
-
     override fun getDownloadManager(): DownloadManager {
         exoDatabaseProvider = StandaloneDatabaseProvider(applicationContext)
         val appContainer = (applicationContext as AnimityApplication).appContainer
@@ -62,7 +59,6 @@ class VideoDownloadService @Inject constructor() :
                 } else {
                     Toast.makeText(this@VideoDownloadService, "resumed", Toast.LENGTH_SHORT).show()
                 }
-
             }
         })
         return manager
@@ -91,7 +87,6 @@ class VideoDownloadService @Inject constructor() :
             notMetRequirements
         )
     }
-
 }
 
 fun getRandomId(): Int {

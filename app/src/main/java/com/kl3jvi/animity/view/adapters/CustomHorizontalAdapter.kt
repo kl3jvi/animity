@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.view.adapters
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -8,11 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
-
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.view.activities.player.PlayerActivity
 import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomHorizontalAdapter(
@@ -36,7 +32,6 @@ class CustomHorizontalAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = animes[position]
-
 
         holder.apply {
             image.load(element.imageUrl) {

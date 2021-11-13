@@ -22,7 +22,6 @@ import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 

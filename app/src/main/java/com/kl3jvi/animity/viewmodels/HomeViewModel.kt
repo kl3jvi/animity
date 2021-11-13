@@ -54,11 +54,4 @@ class HomeViewModel @Inject constructor(
             _movies.value = it
         }.launchIn(viewModelScope)
     }
-
-
-
 }
-
-
-
-

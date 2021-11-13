@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.view.fragments.home
 
-
 import com.kl3jvi.animity.model.api.AnimeService
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,5 +18,4 @@ class HomeRepository @Inject constructor(private val apiHelper: AnimeService) {
 
     suspend fun fetchMovies(header: Map<String, String>, page: Int) =
         apiHelper.fetchMovies(header, page)
-
 }

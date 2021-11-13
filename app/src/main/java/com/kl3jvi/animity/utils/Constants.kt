@@ -15,12 +15,12 @@ class Constants {
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
 
-        //Base URLS
+        // Base URLS
         var BASE_URL = "https://gogoanime.cm"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
 
-        //Model Type
+        // Model Type
         private const val TYPE_RECENT_SUB = 1
         const val TYPE_POPULAR_ANIME = 2
         const val TYPE_RECENT_DUB = 3
@@ -34,7 +34,7 @@ class Constants {
         const val M3U8_REGEX_PATTERN =
             "(http|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?"
 
-        //Network Requests Header
+        // Network Requests Header
         const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 

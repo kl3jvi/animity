@@ -35,7 +35,6 @@ import com.kl3jvi.animity.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
 
@@ -78,7 +77,6 @@ class PlayerActivity : AppCompatActivity() {
             viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
         }
     }
-
 
     public override fun onStart() {
         super.onStart()
@@ -147,7 +145,6 @@ class PlayerActivity : AppCompatActivity() {
                                 exoPlayer.prepare()
                             }
 
-
                         val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
                         viewModel.audioProgress(player).observe(this, { currentProgress ->
@@ -167,7 +164,6 @@ class PlayerActivity : AppCompatActivity() {
                         showSnack(e.localizedMessage)
                     }
                     viewBinding.loadingOverlay.visibility = View.GONE
-
                 }
                 is Resource.Loading -> {
                     viewBinding.loadingOverlay.visibility = View.VISIBLE
@@ -178,7 +174,6 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
     }
-
 
     private fun initialisePlayerLayout() {
 
@@ -207,8 +202,6 @@ class PlayerActivity : AppCompatActivity() {
         fullView.setOnClickListener {
             toggleFullView()
         }
-
-
     }
 
     private fun showQualityDialog() {
@@ -225,12 +218,10 @@ class PlayerActivity : AppCompatActivity() {
                 }
                 .build()
                 .show()
-
         } catch (ignored: NullPointerException) {
             ignored.printStackTrace()
         }
     }
-
 
     private fun buildMediaSource(mediaItem: MediaItem): HlsMediaSource {
         val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
@@ -250,7 +241,6 @@ class PlayerActivity : AppCompatActivity() {
     private fun onIsPlayingChanged(isPlaying: Boolean) {
         viewBinding.videoView.keepScreenOn = isPlaying
     }
-
 
     private fun showSnack(message: String?) {
         val snack =
@@ -286,7 +276,6 @@ class PlayerActivity : AppCompatActivity() {
         dialog.show()
     }
 
-
     private fun setSpeed(speed: Int) {
         selectedSpeed = speed
         checkedItem = speed
@@ -311,7 +300,6 @@ class PlayerActivity : AppCompatActivity() {
                         )
                     )
             }
-
         } else {
             viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
             player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
@@ -328,8 +316,3 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
-
-

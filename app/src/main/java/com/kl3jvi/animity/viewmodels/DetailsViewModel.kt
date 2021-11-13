@@ -9,10 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.internal.assertThreadDoesntHoldLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -72,4 +69,3 @@ class DetailsViewModel @Inject constructor(
         animeRepository.deleteAnime(anime)
     }
 }
-

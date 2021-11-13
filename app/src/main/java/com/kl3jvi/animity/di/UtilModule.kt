@@ -18,5 +18,4 @@ object UtilModule {
     fun provideExoPlayerDatabase(@ApplicationContext context: Context): StandaloneDatabaseProvider {
         return StandaloneDatabaseProvider(context)
     }
-
 }

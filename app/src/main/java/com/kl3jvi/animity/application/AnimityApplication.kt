@@ -15,8 +15,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.ONESIGNAL_APP_ID
 import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
 
-
-
 @HiltAndroidApp
 class AnimityApplication : Application() {
 
@@ -29,15 +27,14 @@ class AnimityApplication : Application() {
         appContainer = AppContainer(this)
 
         // Enable verbose OneSignal logging to debug issues if needed.
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
 
         // OneSignal Initialization
-        OneSignal.initWithContext(this);
-        OneSignal.setAppId(ONESIGNAL_APP_ID);
+        OneSignal.initWithContext(this)
+        OneSignal.setAppId(ONESIGNAL_APP_ID)
 
         createNotificationChannel()
     }
-
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

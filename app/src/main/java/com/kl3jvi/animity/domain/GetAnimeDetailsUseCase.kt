@@ -14,7 +14,6 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class GetAnimeDetailsUseCase @Inject constructor(
     private val detailsRepository: DetailsRepository,
@@ -85,7 +84,6 @@ class GetAnimeDetailsUseCase @Inject constructor(
             )
         }
     }
-
 
     fun checkIfExists(id: Int) = flow {
         emit(animeRepository.checkIfAnimeIsOnDatabase(id))

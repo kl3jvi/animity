@@ -10,7 +10,6 @@ import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.view.fragments.favorites.FavoritesFragment
-import com.kl3jvi.animity.view.fragments.home.HomeFragment
 
 class CustomFavoriteAdapter(
     private val fragment: Fragment,
@@ -26,7 +25,6 @@ class CustomFavoriteAdapter(
         val card = view.backgroundImage
     }
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,7 +36,6 @@ class CustomFavoriteAdapter(
 
     override fun onBindViewHolder(holder: CustomFavoriteAdapter.ViewHolder, position: Int) {
         val element = animes[position]
-
 
         holder.apply {
             image.load(element.imageUrl) {
@@ -59,9 +56,7 @@ class CustomFavoriteAdapter(
         }
     }
 
-
     override fun getItemCount() = animes.size
-
 
     fun addAnimes(animes: List<AnimeMetaModel>) {
         this.animes.apply {
@@ -69,5 +64,4 @@ class CustomFavoriteAdapter(
             addAll(animes)
         }
     }
-
 }

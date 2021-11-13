@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.view.fragments.details
 
-
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -56,7 +55,8 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
@@ -263,7 +263,6 @@ class DetailsFragment : Fragment() {
                 }
             }
         })
-
     }
 
     private fun downloadMedia(videoM3U8Url: String) {

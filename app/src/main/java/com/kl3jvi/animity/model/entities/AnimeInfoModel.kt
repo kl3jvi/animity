@@ -16,5 +16,3 @@ data class AnimeInfoModel(
     var alias: String,
     var endEpisode: String
 ) : Parcelable
-
-

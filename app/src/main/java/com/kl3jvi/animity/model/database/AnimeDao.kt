@@ -1,6 +1,10 @@
 package com.kl3jvi.animity.model.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import kotlinx.coroutines.flow.Flow
 
@@ -18,6 +22,4 @@ interface AnimeDao {
 
     @Query("SELECT EXISTS(SELECT * FROM ANIME_TABLE WHERE id = :userId)")
     suspend fun isAnimeOnDatabase(userId: Int): Boolean
-
-
 }
