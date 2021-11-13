@@ -10,15 +10,17 @@ import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.application.AnimityApplication
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPT
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
+import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class VideoDownloadService @Inject constructor() :
+class VideoDownloadService :
     DownloadService(
         getRandomId(),
         DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
@@ -34,6 +36,9 @@ class VideoDownloadService @Inject constructor() :
     @Inject
     lateinit var exoDatabaseProvider: StandaloneDatabaseProvider
 
+    @Inject
+    lateinit var downloadCache: SimpleCache
+
     override fun onCreate() {
         super.onCreate()
         context = this
@@ -41,9 +46,14 @@ class VideoDownloadService @Inject constructor() :
     }
 
     override fun getDownloadManager(): DownloadManager {
-        exoDatabaseProvider = StandaloneDatabaseProvider(applicationContext)
-        val appContainer = (applicationContext as AnimityApplication).appContainer
-        manager = appContainer.downloadManager
+//        val appContainer = (applicationContext as AnimityApplication).appContainer
+        manager = DownloadManager(
+            context,
+            exoDatabaseProvider,
+            downloadCache,
+            getDataSourceFactory(),
+            Runnable::run
+        )
         manager.maxParallelDownloads = 3
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {

@@ -18,13 +18,11 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class AnimityApplication : Application() {
 
-    lateinit var appContainer: AppContainer
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate() {
         super.onCreate()
         firebaseAnalytics = Firebase.analytics
-        appContainer = AppContainer(this)
 
         // Enable verbose OneSignal logging to debug issues if needed.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)

@@ -6,14 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.offline.DownloadCursor
-import com.kl3jvi.animity.application.AnimityApplication
+import com.google.android.exoplayer2.offline.DownloadManager
 import com.kl3jvi.animity.databinding.FragmentDownloadsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DownloadsFragment : Fragment() {
     private var _binding: FragmentDownloadsBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var downloadManager: DownloadManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,7 +37,7 @@ class DownloadsFragment : Fragment() {
         String, var title: String)*/
         val downloadedTracks = ArrayList<String>()
         val downloadCursor: DownloadCursor =
-            (context?.applicationContext as AnimityApplication).appContainer.downloadManager.downloadIndex.getDownloads()
+            downloadManager.downloadIndex.getDownloads()
         if (downloadCursor.moveToFirst()) {
             do {
                 downloadCursor.download.bytesDownloaded
