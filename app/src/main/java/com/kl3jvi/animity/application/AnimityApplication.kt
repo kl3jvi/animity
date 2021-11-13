@@ -18,8 +18,8 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class AnimityApplication : Application() {
 
-
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    
     override fun onCreate() {
         super.onCreate()
         firebaseAnalytics = Firebase.analytics

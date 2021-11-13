@@ -24,6 +24,7 @@ object UtilModule {
         return StandaloneDatabaseProvider(context)
     }
 
+    @Singleton
     @Provides
     fun provideDownloadContentDirectory(
         @ApplicationContext context: Context

@@ -105,7 +105,7 @@ class DetailsFragment : Fragment() {
                         binding.status.visibility = View.VISIBLE
                         binding.type.visibility = View.VISIBLE
 
-                        binding.progressBar2.visibility = View.VISIBLE
+                        binding.detailsProgress.visibility = View.VISIBLE
 
                         // Check if the type is movie and this makes invisible the listview of the episodes
                         if (info.type == " Movie") {
@@ -191,7 +191,7 @@ class DetailsFragment : Fragment() {
         viewModel.episodeList.observe(viewLifecycleOwner) { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.getEpisodeInfo(episodeList)
-                binding.progressBar2.visibility = View.GONE
+                binding.detailsProgress.visibility = View.GONE
                 binding.resultEpisodesText.text =
                     requireActivity().getString(
                         R.string.total_episodes,
@@ -246,14 +246,12 @@ class DetailsFragment : Fragment() {
 
     @ExperimentalCoroutinesApi
     fun downloadEpisode(episodeUrl: String) {
-        Log.e("download episode", "clicked")
         viewModel.passDownloadEpisodeUrl(episodeUrl)
         viewModel.downloadEpisodeUrl.observe(viewLifecycleOwner, { res ->
             when (res) {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
                     downloadMedia(videoM3U8Url)
-//                    showSnack(videoM3U8Url)
                 }
                 is Resource.Error -> {
                     showSnack("Downloading Episode")
@@ -276,4 +274,7 @@ class DetailsFragment : Fragment() {
             false
         )
     }
+
+
 }
+

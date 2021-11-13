@@ -282,7 +282,7 @@
                 tools:visibility="visible" />
 
             <ProgressBar
-                android:id="@+id/progressBar2"
+                android:id="@+id/details_progress"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

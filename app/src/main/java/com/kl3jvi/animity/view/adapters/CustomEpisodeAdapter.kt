@@ -9,6 +9,7 @@ import com.kl3jvi.animity.databinding.ItemEpisodeNumberBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.view.activities.player.PlayerActivity
+import com.kl3jvi.animity.view.fragments.details.DetailsFragment
 
 class CustomEpisodeAdapter(
     private val fragment: Fragment,
@@ -21,8 +22,8 @@ class CustomEpisodeAdapter(
         val num = view.episodeText
         val progress = view.episodeProgress
         val item = view.watchEpisode
-//        val download = view.resultEpisodeDownload
-//        val downloadProgress = view.resultEpisodeProgressDownloaded
+        val download = view.resultEpisodeDownload
+        val downloadProgress = view.resultEpisodeProgressDownloaded
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,17 +41,17 @@ class CustomEpisodeAdapter(
         holder.item.setOnClickListener {
             val intent =
                 Intent(fragment.requireActivity(), PlayerActivity::class.java)
+
             intent.putExtra(Constants.EPISODE_DETAILS, element)
             intent.putExtra(Constants.ANIME_TITLE, animeTitle)
             fragment.requireContext().startActivity(intent)
         }
 
-//        holder.download.setOnClickListener {
-//            if (fragment is DetailsFragment) {
-//                fragment.downloadEpisode(element.episodeurl)
-//
-//            }
-//        }
+        holder.download.setOnClickListener {
+            if (fragment is DetailsFragment) {
+                fragment.downloadEpisode(element.episodeurl)
+            }
+        }
     }
 
     override fun getItemCount() = list.size

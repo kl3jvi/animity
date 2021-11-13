@@ -1,10 +1,6 @@
 package com.kl3jvi.animity.utils.parser
 
-import com.kl3jvi.animity.model.entities.AnimeInfoModel
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.model.entities.EpisodeInfo
-import com.kl3jvi.animity.model.entities.EpisodeModel
-import com.kl3jvi.animity.model.entities.GenreModel
+import com.kl3jvi.animity.model.entities.*
 import com.kl3jvi.animity.utils.Constants
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -217,7 +213,7 @@ object HtmlParser {
         return try {
             while (matcher.find()) {
                 if (matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!
-                    .contains("googlevideo")
+                        .contains("googlevideo")
                 ) {
                     m3u8Url = matcher.group(0)
                     break
