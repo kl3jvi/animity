@@ -1,8 +1,6 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ kotlin_app ]
   pull_request:
     branches: [ kotlin_app ]
 
