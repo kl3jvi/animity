@@ -5,17 +5,17 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.os.Build.ID
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.R
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPT
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_NAME
+import com.kl3jvi.animity.utils.Constants.Companion.ONESIGNAL_APP_ID
+import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+
+
 
 @HiltAndroidApp
 class AnimityApplication : Application() {
@@ -27,6 +27,14 @@ class AnimityApplication : Application() {
         super.onCreate()
         firebaseAnalytics = Firebase.analytics
         appContainer = AppContainer(this)
+
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(this);
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
         createNotificationChannel()
     }
 

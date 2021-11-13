@@ -2,6 +2,7 @@ package com.kl3jvi.animity.di
 
 import android.content.Context
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.kl3jvi.animity.model.database.AnimeDao
 import com.kl3jvi.animity.model.database.AppDatabase
 import dagger.Module
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class DatabaseModule {
+object DatabaseModule {
     @Singleton
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
@@ -25,11 +26,6 @@ class DatabaseModule {
         return appDatabase.animeDao()
     }
 
-    @Singleton
-    @Provides
-    fun provideExoPlayerDatabase(@ApplicationContext context: Context): ExoDatabaseProvider {
-        return ExoDatabaseProvider(context)
-    }
 
 
 }

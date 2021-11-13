@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.viewmodels
 
 import androidx.lifecycle.*
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +32,7 @@ class PlayerViewModel @Inject constructor(
     }
 
 
-    fun audioProgress(exoPlayer: SimpleExoPlayer?) = flow {
+    fun audioProgress(exoPlayer: ExoPlayer?) = flow {
         exoPlayer?.currentPosition?.let {
             while (it < 300000) {
                 emit(exoPlayer.currentPosition)

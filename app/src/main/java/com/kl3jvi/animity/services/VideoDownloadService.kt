@@ -2,10 +2,10 @@ package com.kl3jvi.animity.services
 
 import android.app.Notification
 import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import androidx.navigation.NavDeepLinkBuilder
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService
@@ -13,7 +13,6 @@ import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.application.AnimityApplication
-import com.kl3jvi.animity.application.AppContainer
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPT
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,9 +20,9 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class VideoDownloadService :
+class VideoDownloadService @Inject constructor() :
     DownloadService(
-        1,
+        getRandomId(),
         DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
         DOWNLOAD_CHANNEL_ID,
         R.string.app_name,
@@ -35,7 +34,7 @@ class VideoDownloadService :
     private lateinit var manager: DownloadManager
 
     @Inject
-    lateinit var exoDatabaseProvider: ExoDatabaseProvider
+    lateinit var exoDatabaseProvider: StandaloneDatabaseProvider
 
     override fun onCreate() {
         super.onCreate()
@@ -45,7 +44,7 @@ class VideoDownloadService :
 
 
     override fun getDownloadManager(): DownloadManager {
-        exoDatabaseProvider = ExoDatabaseProvider(applicationContext)
+        exoDatabaseProvider = StandaloneDatabaseProvider(applicationContext)
         val appContainer = (applicationContext as AnimityApplication).appContainer
         manager = appContainer.downloadManager
         manager.maxParallelDownloads = 3
@@ -73,8 +72,10 @@ class VideoDownloadService :
         return null
     }
 
-    override fun getForegroundNotification(downloads: MutableList<Download>): Notification {
-
+    override fun getForegroundNotification(
+        downloads: MutableList<Download>,
+        notMetRequirements: Int
+    ): Notification {
         val contentIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.mobile_navigation)
             .setDestination(R.id.navigation_downloads)
@@ -87,6 +88,12 @@ class VideoDownloadService :
             contentIntent,
             DOWNLOAD_CHANNEL_DESCRIPT,
             downloads,
+            notMetRequirements
         )
     }
+
+}
+
+fun getRandomId(): Int {
+    return System.currentTimeMillis().toInt()
 }

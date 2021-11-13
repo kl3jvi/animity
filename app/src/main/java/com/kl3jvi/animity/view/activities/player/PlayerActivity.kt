@@ -1,10 +1,11 @@
 package com.kl3jvi.animity.view.activities.player
 
-import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +13,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.offline.DownloadRequest
-import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -21,7 +20,6 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -30,10 +28,8 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
-import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
-import com.kl3jvi.animity.utils.Constants.Companion.USER_AGENT
+import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.viewmodels.PlayerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,10 +44,9 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private var player: SimpleExoPlayer? = null
+    private var player: ExoPlayer? = null
     private val viewModel: PlayerViewModel by viewModels()
     private var playWhenReady = true
-    private var currentWindow = 0
     private var playbackPosition = 0L
     private val speeds = arrayOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
     private val shownSpeed = arrayOf("0.25x", "0.50x", "1x", "1.25x", "1.50x", "2x")
@@ -61,7 +56,7 @@ class PlayerActivity : AppCompatActivity() {
     private var mappedTrackInfo: MappingTrackSelector.MappedTrackInfo? = null
     private var trackSelector: DefaultTrackSelector? = null
     private var currentTime = 0L
-    lateinit var animeTitlePassed: String
+    private lateinit var animeTitlePassed: String
     lateinit var episodeNumber: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +80,6 @@ class PlayerActivity : AppCompatActivity() {
     }
 
 
-    @ExperimentalCoroutinesApi
     public override fun onStart() {
         super.onStart()
         if (Util.SDK_INT > 23 && player == null) {
@@ -94,10 +88,8 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    @ExperimentalCoroutinesApi
     public override fun onResume() {
         super.onResume()
-        hideSystemUi()
         if (Util.SDK_INT <= 23 && player == null) {
             initializePlayer()
             onIsPlayingChanged(isPlaying = true)
@@ -140,17 +132,18 @@ class PlayerActivity : AppCompatActivity() {
                             .setContentType(C.CONTENT_TYPE_MOVIE)
                             .build()
 
-                        player = SimpleExoPlayer.Builder(this)
+                        player = ExoPlayer.Builder(this)
                             .setAudioAttributes(audioAttributes, true)
                             .setTrackSelector(trackSelector!!)
                             .build()
                             .also { exoPlayer ->
                                 viewBinding.videoView.player = exoPlayer
+                                val mdItem = MediaItem.fromUri(videoM3U8Url)
                                 val videoSource: MediaSource =
-                                    buildMediaSource(Uri.parse(videoM3U8Url))
+                                    buildMediaSource(mdItem)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
-                                exoPlayer.seekTo(currentWindow, playbackPosition)
+                                exoPlayer.seekTo(playbackPosition)
                                 exoPlayer.prepare()
                             }
 
@@ -174,14 +167,12 @@ class PlayerActivity : AppCompatActivity() {
                         showSnack(e.localizedMessage)
                     }
                     viewBinding.loadingOverlay.visibility = View.GONE
-                    hideSystemUi()
 
                 }
                 is Resource.Loading -> {
                     viewBinding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    hideSystemUi()
                     showSnack(res.message)
                 }
             }
@@ -241,33 +232,15 @@ class PlayerActivity : AppCompatActivity() {
     }
 
 
-    private fun getDataSourceFactory(currentUrl: String?): DefaultHttpDataSource.Factory {
-        return DefaultHttpDataSource.Factory().apply {
-            setUserAgent(USER_AGENT)
-            if (currentUrl != null) {
-                val headers = mapOf(
-                    "referer" to Constants.REFERER,
-                    "accept" to "*/*",
-                    "sec-ch-ua" to "\"Chromium\";v=\"91\", \" Not;A Brand\";v=\"99\"",
-                    "sec-ch-ua-mobile" to "?0",
-                    "sec-fetch-user" to "?1",
-                    "sec-fetch-mode" to "navigate",
-                    "sec-fetch-dest" to "video"
-                ) + Constants.getHeader() // Adds the headers from the provider, e.g Authorization
-                setDefaultRequestProperties(headers)
-            }
-        }
-    }
-
-    private fun buildMediaSource(uri: Uri): HlsMediaSource {
-        val dataSourceFactory: DataSource.Factory = getDataSourceFactory(uri.toString())
-        return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+    private fun buildMediaSource(mediaItem: MediaItem): HlsMediaSource {
+        val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
+        return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
     }
 
     private fun releasePlayer() {
         player?.run {
             playbackPosition = this.currentPosition
-            currentWindow = this.currentWindowIndex
+//            currentWindow = this.currentWindowIndex
             playWhenReady = this.playWhenReady
             release()
         }
@@ -278,15 +251,6 @@ class PlayerActivity : AppCompatActivity() {
         viewBinding.videoView.keepScreenOn = isPlaying
     }
 
-    @SuppressLint("InlinedApi")
-    private fun hideSystemUi() {
-        viewBinding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-    }
 
     private fun showSnack(message: String?) {
         val snack =

@@ -24,8 +24,8 @@ class CustomEpisodeAdapter(
         val num = view.episodeText
         val progress = view.episodeProgress
         val item = view.watchEpisode
-        val download = view.resultEpisodeDownload
-        val downloadProgress = view.resultEpisodeProgressDownloaded
+//        val download = view.resultEpisodeDownload
+//        val downloadProgress = view.resultEpisodeProgressDownloaded
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,12 +48,12 @@ class CustomEpisodeAdapter(
             fragment.requireContext().startActivity(intent)
         }
 
-        holder.download.setOnClickListener {
-            if (fragment is DetailsFragment) {
-                fragment.downloadEpisode(element.episodeurl)
-
-            }
-        }
+//        holder.download.setOnClickListener {
+//            if (fragment is DetailsFragment) {
+//                fragment.downloadEpisode(element.episodeurl)
+//
+//            }
+//        }
     }
 
     override fun getItemCount() = list.size
