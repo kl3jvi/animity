@@ -19,9 +19,13 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-        
-    - name: Super-Linter
-      uses: github/super-linter@v4.8.1
+    - name: Kotlin Linter (ktlint)
+  # You may pin to the exact commit or the version.
+  # uses: block42-blockchain-company/ktlint-action@0adb79e068ecbb3df158458784e37614210336cf
+      uses: block42-blockchain-company/ktlint-action@v2.3
+        with:
+    # A list of patterns to pass along to the ktlint command
+    patterns: # optional, default is **/*.kt
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
