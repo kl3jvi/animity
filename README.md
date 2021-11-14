@@ -1,9 +1,9 @@
 
-<p align="center"><a href="https://github.com/kl3jvi/animity"><img src="https://image.flaticon.com/icons/svg/541/541589.svg" width="150"></a></p> 
+<p align="center"><a href="https://github.com/kl3jvi/animity"><img src="https://github.com/kl3jvi/animity/blob/kotlin_app/app/src/main/ic_launcher-playstore.png" width="150"></a></p> 
 <h2 align="center"><b>Animity - Anime Streaming App </b></h2>
 <h4 align="center">An Android app to watch anime on your phone without ads.</h4>
-<p align="center"><a href="https://github.com/kl3jvi/animity/releases"><img src="https://image.flaticon.com/icons/svg/892/892634.svg" width="50"></a>
-<a href="https://discord.gg/eNuX9U57SM"><img src="https://image.flaticon.com/icons/svg/2111/2111370.svg" width="50"></a></p> 
+<p align="center"><a href="https://github.com/kl3jvi/animity/releases"><img src="https://cdn-icons-png.flaticon.com/512/892/892634.png" width="50"></a>
+<a href="https://discord.gg/eNuX9U57SM"><img src="https://cdn-icons.flaticon.com/png/512/3670/premium/3670157.png?token=exp=1636879048~hmac=7520839c9f038314c51a731eff9517a0" width="50"></a></p> 
 
 <p align="center">
 <a href="hhttps://github.com/kl3jvi/animity/issues" alt="GitHub release"><img src="https://img.shields.io/github/issues/kl3jvi/animity" ></a>
