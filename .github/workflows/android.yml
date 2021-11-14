@@ -1,26 +1,16 @@
-name: Build & Publish Release APK
+name: Publish Release
 
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
-  Gradle:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout code
-      uses: actions/checkout@v2
-    - name: setup jdk
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - name: Make Gradle executable
-      run: chmod +x ./gradlew
-    - name: Build Release APK
-      run: ./gradlew assembleRelease
-    - name: Releasing using Hub
-      uses: kyze8439690/action-release-releaseapk@master
+    - uses: actions/checkout@master
+    - name: Create a Release
+      uses: elgohr/Github-Release-Action@master
       env:
-       GITHUB_TOKEN: ${{ secrets.SECRET }}
-       APP_FOLDER: app
+        GITHUB_TOKEN: ${{ secrets.SECRET }}
