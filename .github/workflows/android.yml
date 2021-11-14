@@ -19,10 +19,8 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-    - name: Kotlin Linter (ktlint)
-      uses: block42-blockchain-company/ktlint-action@v2.3
-    - name: Cache
-      uses: actions/cache@v2.1.6
+    - name: Android Builder
+      uses: b4s36t4/Android-Action@0.0.1
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
