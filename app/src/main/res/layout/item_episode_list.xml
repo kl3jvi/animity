@@ -54,44 +54,44 @@
             tools:text="Episode 1" />
     </LinearLayout>
 
-<!--    <FrameLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="end">-->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
 
-<!--        <androidx.core.widget.ContentLoadingProgressBar-->
-<!--            android:id="@+id/result_episode_progress_downloaded"-->
-<!--            style="?android:attr/progressBarStyleHorizontal"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="end|center_vertical"-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:background="@drawable/circle_shape"-->
-<!--            android:indeterminate="false"-->
-<!--            android:max="100"-->
-<!--            android:progress="0"-->
-<!--            android:progressDrawable="@drawable/circular_progress_bar"-->
-<!--            android:visibility="visible" />-->
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/result_episode_progress_downloaded"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_margin="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/circle_shape"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:visibility="visible" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/result_episode_download"-->
-<!--            android:layout_width="30dp"-->
+        <ImageView
+            android:id="@+id/result_episode_download"
+            android:layout_width="30dp"
 
-<!--            android:layout_height="wrap_content"-->
+            android:layout_height="wrap_content"
 
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:background="?selectableItemBackgroundBorderless"-->
-<!--            android:contentDescription="@string/download"-->
-<!--            android:nextFocusLeft="@id/episode_holder"-->
-<!--            android:nextFocusRight="@id/episode_holder"-->
-<!--            android:padding="2dp"-->
-<!--            android:src="@drawable/ic_outline_arrow_downward_24"-->
-<!--            android:visibility="visible"-->
-<!--            app:tint="@color/white" />-->
-<!--    </FrameLayout>-->
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:nextFocusLeft="@id/episode_holder"
+            android:nextFocusRight="@id/episode_holder"
+            android:padding="2dp"
+            android:src="@drawable/ic_outline_arrow_downward_24"
+            android:visibility="visible"
+            app:tint="@color/white" />
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>

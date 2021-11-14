@@ -187,7 +187,7 @@ object HtmlParser {
     }
 
     fun parseMediaUrl(response: String): EpisodeInfo {
-        var mediaUrl: String?
+        val mediaUrl: String?
         val document = Jsoup.parse(response)
         val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()

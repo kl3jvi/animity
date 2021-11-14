@@ -1,10 +1,16 @@
 package com.kl3jvi.animity.di
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.util.NotificationUtil.createNotificationChannel
+import com.kl3jvi.animity.utils.Constants.Companion.SAVE_DIRECTORY
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import dagger.Module
 import dagger.Provides
@@ -29,7 +35,7 @@ object UtilModule {
     fun provideDownloadContentDirectory(
         @ApplicationContext context: Context
     ): File {
-        return File(context.getExternalFilesDir(null), "Animity")
+        return File(context.getExternalFilesDir(null), SAVE_DIRECTORY)
     }
 
     @Singleton
@@ -52,4 +58,5 @@ object UtilModule {
             context, databaseProvider, downloadCache, getDataSourceFactory(), Runnable::run
         )
     }
+
 }

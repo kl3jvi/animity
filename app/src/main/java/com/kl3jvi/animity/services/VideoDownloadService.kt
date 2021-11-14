@@ -11,7 +11,7 @@ import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPT
+import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPTION
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +89,7 @@ class VideoDownloadService :
             this@VideoDownloadService,
             R.drawable.ic_downloading,
             contentIntent,
-            DOWNLOAD_CHANNEL_DESCRIPT,
+            DOWNLOAD_CHANNEL_DESCRIPTION,
             downloads,
             notMetRequirements
         )

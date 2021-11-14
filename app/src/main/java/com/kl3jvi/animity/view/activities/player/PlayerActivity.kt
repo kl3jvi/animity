@@ -162,6 +162,8 @@ class PlayerActivity : AppCompatActivity() {
                         })
                     } catch (e: ExoPlaybackException) {
                         showSnack(e.localizedMessage)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                     viewBinding.loadingOverlay.visibility = View.GONE
                 }

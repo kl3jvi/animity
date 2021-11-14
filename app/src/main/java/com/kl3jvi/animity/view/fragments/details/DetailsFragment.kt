@@ -52,6 +52,7 @@ class DetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         firebaseAnalytics = Firebase.analytics
+
     }
 
     override fun onCreateView(
@@ -254,7 +255,7 @@ class DetailsFragment : Fragment() {
                     downloadMedia(videoM3U8Url)
                 }
                 is Resource.Error -> {
-                    showSnack("Downloading Episode")
+                    showSnack("Downloading Error")
                 }
                 is Resource.Loading -> {
                     Log.e("Episode Download", "Loading")
@@ -273,6 +274,8 @@ class DetailsFragment : Fragment() {
             downloadRequest,
             false
         )
+
+
     }
 
 

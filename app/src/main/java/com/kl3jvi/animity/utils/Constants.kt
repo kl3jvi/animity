@@ -14,6 +14,7 @@ class Constants {
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
+        const val SAVE_DIRECTORY = "Animity"
 
         // Base URLS
         var BASE_URL = "https://gogoanime.cm"
@@ -29,17 +30,17 @@ class Constants {
 
         const val DOWNLOAD_CHANNEL_ID = "animity.channel.id"
         const val DOWNLOAD_CHANNEL_NAME = "Downloads"
-        const val DOWNLOAD_CHANNEL_DESCRIPT = "The download notification channel"
+        const val DOWNLOAD_CHANNEL_DESCRIPTION = "The download notification channel"
 
         const val M3U8_REGEX_PATTERN =
             "(http|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?"
 
         // Network Requests Header
-        const val USER_AGENT =
+        private const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
-        const val ORIGIN = "https://goload.one"
-        const val REFERER = "https://goload.one"
+        private const val ORIGIN = "https://goload.one"
+        private const val REFERER = "https://goload.one"
 
         fun getHeader(): Map<String, String> {
             return mapOf(
@@ -77,16 +78,16 @@ class Constants {
 
         fun getDataSourceFactory(): DefaultHttpDataSource.Factory {
             return DefaultHttpDataSource.Factory().apply {
-                setUserAgent(Constants.USER_AGENT)
+                setUserAgent(USER_AGENT)
                 val headers = mapOf(
-                    "referer" to Constants.REFERER,
+                    "referer" to REFERER,
                     "accept" to "*/*",
                     "sec-ch-ua" to "\"Chromium\";v=\"91\", \" Not;A Brand\";v=\"99\"",
                     "sec-ch-ua-mobile" to "?0",
                     "sec-fetch-user" to "?1",
                     "sec-fetch-mode" to "navigate",
                     "sec-fetch-dest" to "video"
-                ) + Constants.getHeader() // Adds the headers from the provider, e.g Authorization
+                ) + getHeader() // Adds the headers from the provider, e.g Authorization
                 setDefaultRequestProperties(headers)
             }
         }
