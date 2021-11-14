@@ -1,29 +1,26 @@
-name: Android CI
+name: Build & Publish Release APK
 
 on:
-  pull_request:
-    branches: [ kotlin_app ]
   push:
-    branches: [ kotlin_app ]
+    tags:
+      - '*'
 
 jobs:
-  build:
-
+  Gradle:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: set up JDK 11
-      uses: actions/setup-java@v2
+    - name: checkout code
+      uses: actions/checkout@v2
+    - name: setup jdk
+      uses: actions/setup-java@v1
       with:
-        java-version: '11'
-        distribution: 'adopt'
-        cache: gradle
-   
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Android Builder
-      uses: vgaidarji/android-github-actions-build@v1.0.1
-      
+        java-version: 11
+    - name: Make Gradle executable
+      run: chmod +x ./gradlew
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+    - name: Releasing using Hub
+      uses: kyze8439690/action-release-releaseapk@master
+      env:
+       GITHUB_TOKEN: ${{ secrets.SECRET }}
+       APP_FOLDER: app
