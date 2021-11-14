@@ -48,6 +48,7 @@ class CustomSearchAdapter(
         this.list.apply {
             clear()
             addAll(entry)
+            notifyDataSetChanged()
         }
     }
 }

@@ -78,6 +78,7 @@ class CustomVerticalAdapter(
         this.list.apply {
             clear()
             addAll(entry)
+            notifyDataSetChanged()
         }
     }
 }

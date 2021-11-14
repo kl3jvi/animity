@@ -58,6 +58,7 @@ class CustomHorizontalAdapter(
         this.animes.apply {
             clear()
             addAll(animes)
+            notifyDataSetChanged()
         }
     }
 }

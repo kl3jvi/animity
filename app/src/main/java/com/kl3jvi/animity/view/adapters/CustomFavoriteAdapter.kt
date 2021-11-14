@@ -62,6 +62,7 @@ class CustomFavoriteAdapter(
         this.animes.apply {
             clear()
             addAll(animes)
+            notifyDataSetChanged()
         }
     }
 }
