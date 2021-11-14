@@ -13,16 +13,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Super-Linter
+      uses: github/super-linter@v4.8.3
     - name: set up JDK 11
       uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-        
-    - name: Super-Linter
-      uses: github/super-linter@v4.8.3
+      
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+      
