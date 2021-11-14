@@ -25,6 +25,5 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Android Builder
-      uses: b4s36t4/Android-Action@0.0.1
-
+      uses: vgaidarji/android-github-actions-build@v1.0.1
       
