@@ -142,4 +142,5 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
 
     implementation 'com.onesignal:OneSignal:4.6.2'
+
 }

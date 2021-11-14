@@ -27,7 +27,11 @@
         tools:layout="@layout/fragment_favorites">
         <action
             android:id="@+id/action_navigation_favorites_to_navigation_details"
-            app:destination="@id/navigation_details" />
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -37,7 +41,11 @@
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_navigation_explore_to_navigation_details"
-            app:destination="@id/navigation_details" />
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -45,6 +53,12 @@
         android:name="com.kl3jvi.animity.view.fragments.details.DetailsFragment"
         android:label="@string/anime_details"
         tools:layout="@layout/fragment_details">
+        <action
+            android:id="@+id/animations"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="animeDetails"
             app:argType="com.kl3jvi.animity.model.entities.AnimeMetaModel" />
@@ -57,7 +71,11 @@
         tools:layout="@layout/fragment_downloads">
         <action
             android:id="@+id/action_navigation_downloads_to_navigation_details"
-            app:destination="@id/navigation_details" />
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
 </navigation>

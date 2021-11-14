@@ -7,8 +7,10 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import com.kl3jvi.animity.view.fragments.details.DetailsRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -17,7 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class GetAnimeDetailsUseCase @Inject constructor(
     private val detailsRepository: DetailsRepository,
-    private val animeRepository: AnimeRepository
+    private val animeRepository: AnimeRepository,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
         try {
@@ -47,7 +50,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
                 )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     fun fetchEpisodeList(
         id: String?,
@@ -83,9 +86,9 @@ class GetAnimeDetailsUseCase @Inject constructor(
                 )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     fun checkIfExists(id: Int) = flow {
         emit(animeRepository.checkIfAnimeIsOnDatabase(id))
-    }
+    }.flowOn(ioDispatcher)
 }

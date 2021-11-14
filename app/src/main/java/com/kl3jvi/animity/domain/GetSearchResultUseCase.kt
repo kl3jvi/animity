@@ -4,15 +4,20 @@ import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.fragments.search.SearchRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetSearchResultUseCase @Inject constructor(private val searchRepository: SearchRepository) {
+class GetSearchResultUseCase @Inject constructor(
+    private val searchRepository: SearchRepository,
+    private val ioDispatcher: CoroutineDispatcher
+) {
 
     fun getSearchData(searchQuery: String): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
@@ -42,8 +47,9 @@ class GetSearchResultUseCase @Inject constructor(private val searchRepository: S
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
 
-                )
+                    )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
+
 }

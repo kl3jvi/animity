@@ -4,15 +4,20 @@ import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.view.fragments.home.HomeRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepository) {
+class GetAnimesUseCase @Inject constructor(
+    private val homeRepository: HomeRepository,
+    private val ioDispatcher: CoroutineDispatcher
+) {
 
     fun fetchRecentSubOrDub(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
@@ -44,7 +49,7 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                 )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     fun fetchTodaySelectionAnime(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
@@ -75,7 +80,7 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                 )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     fun fetchNewSeason(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
@@ -106,7 +111,7 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                 )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     fun fetchMovies(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
@@ -137,5 +142,5 @@ class GetAnimesUseCase @Inject constructor(private val homeRepository: HomeRepos
                 )
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 }
