@@ -3,6 +3,8 @@ name: Android CI
 on:
   pull_request:
     branches: [ kotlin_app ]
+  push:
+    branches: [ kotlin_app ]
 
 jobs:
   build:
@@ -17,7 +19,9 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-
+        
+    - name: Super-Linter
+      uses: github/super-linter@v4.8.3
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
