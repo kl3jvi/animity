@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.favorites
+package com.kl3jvi.animity.ui.fragments.favorites
 
 import android.os.Bundle
 import android.view.*
@@ -11,8 +11,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.view.activities.MainActivity
-import com.kl3jvi.animity.view.adapters.CustomFavoriteAdapter
+import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.adapters.CustomFavoriteAdapter
 import com.kl3jvi.animity.viewmodels.FavoritesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

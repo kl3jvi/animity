@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/media_player_controls_background">
+    android:background="@drawable/outline_drawable">
 
 
     <ImageView
@@ -33,11 +33,23 @@
         android:maxLines="2"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/back"
+        app:layout_constraintBottom_toTopOf="@+id/episodeNum"
         app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toEndOf="@id/back"
         app:layout_constraintTop_toTopOf="@+id/back"
         tools:text="Naruto Shippuden Episode 7" />
+
+    <TextView
+        android:id="@+id/episodeNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="episode 2"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
+        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintStart_toEndOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@+id/episodeName" />
 
     <ImageButton
         android:id="@+id/exo_play"
@@ -110,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="24dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:minWidth="48dp"
         android:minHeight="48dp"
@@ -124,6 +136,7 @@
         android:id="@+id/exo_full_Screen"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
         android:background="?selectableItemBackgroundBorderless"
         android:minWidth="48dp"
         android:minHeight="48dp"
@@ -154,8 +167,9 @@
         android:layout_height="0dp"
         android:layout_marginStart="14dp"
         android:layout_marginBottom="10dp"
-        android:background="?selectableItemBackgroundBorderless"
+        android:background="@drawable/outline_drawable"
         android:orientation="horizontal"
+        android:padding="5dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.adapters
+package com.kl3jvi.animity.ui.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
 import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.view.activities.player.PlayerActivity
-import com.kl3jvi.animity.view.fragments.details.DetailsFragment
+import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 
 class CustomEpisodeAdapter(
     private val fragment: Fragment,

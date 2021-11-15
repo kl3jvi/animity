@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.activities.player
+package com.kl3jvi.animity.ui.activities.player
 
 import com.kl3jvi.animity.model.api.AnimeService
 import javax.inject.Inject

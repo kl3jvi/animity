@@ -3,7 +3,7 @@ package com.kl3jvi.animity.domain
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.view.fragments.home.HomeRepository
+import com.kl3jvi.animity.ui.fragments.home.HomeRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

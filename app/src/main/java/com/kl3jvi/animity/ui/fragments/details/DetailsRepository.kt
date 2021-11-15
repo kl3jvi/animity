@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.details
+package com.kl3jvi.animity.ui.fragments.details
 
 import com.kl3jvi.animity.model.api.AnimeService
 import javax.inject.Inject

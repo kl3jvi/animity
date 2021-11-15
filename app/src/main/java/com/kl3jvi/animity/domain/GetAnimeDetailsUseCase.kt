@@ -6,7 +6,7 @@ import com.kl3jvi.animity.model.entities.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
-import com.kl3jvi.animity.view.fragments.details.DetailsRepository
+import com.kl3jvi.animity.ui.fragments.details.DetailsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

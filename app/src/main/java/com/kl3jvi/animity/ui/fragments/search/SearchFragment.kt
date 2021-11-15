@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.search
+package com.kl3jvi.animity.ui.fragments.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +16,8 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.view.activities.MainActivity
-import com.kl3jvi.animity.view.adapters.CustomSearchAdapter
+import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.adapters.CustomSearchAdapter
 import com.kl3jvi.animity.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

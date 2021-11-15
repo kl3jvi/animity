@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.home
+package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
 import android.view.*
@@ -16,9 +16,9 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.view.activities.MainActivity
-import com.kl3jvi.animity.view.adapters.CustomHorizontalAdapter
-import com.kl3jvi.animity.view.adapters.CustomVerticalAdapter
+import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
+import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.activities.player
+package com.kl3jvi.animity.ui.activities.player
 
 import android.os.Bundle
 import android.view.View
@@ -68,11 +68,11 @@ class PlayerActivity : AppCompatActivity() {
             animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE).toString()
             episodeNumber = getIntentData?.episodeNumber.toString()
             val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
-            title.text =
-                getString(R.string.episode_title).format(
-                    animeTitlePassed,
-                    getIntentData?.episodeNumber
-                )
+            val episodeNum = viewBinding.videoView.findViewById<TextView>(R.id.episodeNum)
+
+            title.text = animeTitlePassed
+            episodeNum.text = getIntentData?.episodeNumber
+
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
         }

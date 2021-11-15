@@ -18,7 +18,7 @@
             android:enabled="true"
             android:exported="true" />
         <activity
-            android:name=".view.activities.player.PlayerActivity"
+            android:name=".ui.activities.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape"
@@ -28,7 +28,7 @@
             tools:targetApi="n" />
 
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:configChanges="orientation"
             android:exported="true"
             android:label="@string/app_name"

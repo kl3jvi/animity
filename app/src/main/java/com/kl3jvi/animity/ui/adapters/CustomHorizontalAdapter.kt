@@ -1,15 +1,13 @@
-package com.kl3jvi.animity.view.adapters
+package com.kl3jvi.animity.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.view.fragments.home.HomeFragment
+import com.kl3jvi.animity.ui.fragments.home.HomeFragment
 
 class CustomHorizontalAdapter(
     private val fragment: Fragment,

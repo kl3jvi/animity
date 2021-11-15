@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.kl3jvi.animity.view.fragments.home.HomeFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.kl3jvi.animity.view.fragments.favorites.FavoritesFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites">
         <action
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.kl3jvi.animity.view.fragments.search.SearchFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.search.SearchFragment"
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_search">
         <action
@@ -50,7 +50,7 @@
 
     <fragment
         android:id="@+id/navigation_details"
-        android:name="com.kl3jvi.animity.view.fragments.details.DetailsFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.details.DetailsFragment"
         android:label="@string/anime_details"
         tools:layout="@layout/fragment_details">
         <action
@@ -66,7 +66,7 @@
 
     <fragment
         android:id="@+id/navigation_downloads"
-        android:name="com.kl3jvi.animity.view.fragments.downloads.DownloadsFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.downloads.DownloadsFragment"
         android:label="@string/title_downloads"
         tools:layout="@layout/fragment_downloads">
         <action

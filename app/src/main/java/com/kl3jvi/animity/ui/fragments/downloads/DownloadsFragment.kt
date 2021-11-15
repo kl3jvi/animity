@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.downloads
+package com.kl3jvi.animity.ui.fragments.downloads
 
 import android.os.Bundle
 import android.view.LayoutInflater

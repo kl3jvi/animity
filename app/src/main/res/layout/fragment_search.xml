@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.fragments.search.SearchFragment">
+    tools:context=".ui.fragments.search.SearchFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -1,15 +1,12 @@
-package com.kl3jvi.animity.view.adapters
+package com.kl3jvi.animity.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.util.CoilUtils.clear
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.model.entities.AnimeMetaModel
-import com.kl3jvi.animity.view.fragments.search.SearchFragment
-import java.util.Collections.addAll
+import com.kl3jvi.animity.ui.fragments.search.SearchFragment
 
 class CustomSearchAdapter(
     private val fragment: Fragment,

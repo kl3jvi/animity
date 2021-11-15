@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.view.fragments.details
+package com.kl3jvi.animity.ui.fragments.details
 
 import android.content.Intent
 import android.graphics.Color
@@ -28,9 +28,9 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.view.activities.MainActivity
-import com.kl3jvi.animity.view.activities.player.PlayerActivity
-import com.kl3jvi.animity.view.adapters.CustomEpisodeAdapter
+import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.activities.player.PlayerActivity
+import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,7 +52,6 @@ class DetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         firebaseAnalytics = Firebase.analytics
-
     }
 
     override fun onCreateView(
