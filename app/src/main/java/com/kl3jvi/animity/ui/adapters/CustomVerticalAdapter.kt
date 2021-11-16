@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding

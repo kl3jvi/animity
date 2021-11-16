@@ -24,13 +24,13 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.services.VideoDownloadService
+import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.activities.player.PlayerActivity
+import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.ui.activities.MainActivity
-import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -104,7 +104,6 @@ class DetailsFragment : Fragment() {
                         binding.releaseDate.visibility = View.VISIBLE
                         binding.status.visibility = View.VISIBLE
                         binding.type.visibility = View.VISIBLE
-
                         binding.detailsProgress.visibility = View.VISIBLE
 
                         // Check if the type is movie and this makes invisible the listview of the episodes
@@ -276,7 +275,6 @@ class DetailsFragment : Fragment() {
 
 
     }
-
 
 }
 
