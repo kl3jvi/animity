@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.model.api.AnimeService
+import com.kl3jvi.animity.network.AnimeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

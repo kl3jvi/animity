@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.model.entities
+package com.kl3jvi.animity.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.viewmodels
+package com.kl3jvi.animity.ui.fragments.search
 
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetSearchResultUseCase

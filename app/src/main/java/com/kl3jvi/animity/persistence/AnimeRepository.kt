@@ -1,6 +1,6 @@
-package com.kl3jvi.animity.model.database
+package com.kl3jvi.animity.persistence
 
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

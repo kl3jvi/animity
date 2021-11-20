@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.viewmodels
+package com.kl3jvi.animity.ui.activities.player
 
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.ExoPlayer

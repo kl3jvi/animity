@@ -1,8 +1,8 @@
 package com.kl3jvi.animity.di
 
 import android.content.Context
-import com.kl3jvi.animity.model.database.AnimeDao
-import com.kl3jvi.animity.model.database.AppDatabase
+import com.kl3jvi.animity.persistence.AnimeDao
+import com.kl3jvi.animity.persistence.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

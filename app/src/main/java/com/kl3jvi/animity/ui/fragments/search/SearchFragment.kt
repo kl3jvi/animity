@@ -14,11 +14,10 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomSearchAdapter
-import com.kl3jvi.animity.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

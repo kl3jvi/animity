@@ -24,16 +24,16 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.services.VideoDownloadService
-import com.kl3jvi.animity.ui.activities.MainActivity
+import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.viewmodels.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
@@ -246,7 +246,7 @@ class DetailsFragment : Fragment() {
     @ExperimentalCoroutinesApi
     fun downloadEpisode(episodeUrl: String) {
         viewModel.passDownloadEpisodeUrl(episodeUrl)
-        viewModel.downloadEpisodeUrl.observe(viewLifecycleOwner, { res ->
+        viewModel.downloadEpisodeUrl.observe(viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
@@ -259,7 +259,7 @@ class DetailsFragment : Fragment() {
                     Log.e("Episode Download", "Loading")
                 }
             }
-        })
+        }
     }
 
     private fun downloadMedia(videoM3U8Url: String) {

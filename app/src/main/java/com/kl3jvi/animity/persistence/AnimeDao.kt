@@ -1,11 +1,11 @@
-package com.kl3jvi.animity.model.database
+package com.kl3jvi.animity.persistence
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,6 +1,6 @@
-package com.kl3jvi.animity.ui.fragments.home
+package com.kl3jvi.animity.repository
 
-import com.kl3jvi.animity.model.api.AnimeService
+import com.kl3jvi.animity.network.AnimeService
 import javax.inject.Inject
 import javax.inject.Singleton
 

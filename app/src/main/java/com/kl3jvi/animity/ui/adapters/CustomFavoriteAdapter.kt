@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragment
 
 class CustomFavoriteAdapter(

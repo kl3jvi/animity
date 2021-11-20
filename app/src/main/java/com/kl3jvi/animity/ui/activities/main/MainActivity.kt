@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.activities
+package com.kl3jvi.animity.ui.activities.main
 
 import android.os.Bundle
 import android.view.View

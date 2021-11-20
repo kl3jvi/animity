@@ -3,7 +3,7 @@ package com.kl3jvi.animity.domain
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
-import com.kl3jvi.animity.ui.activities.player.PlayerRepository
+import com.kl3jvi.animity.repository.PlayerRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

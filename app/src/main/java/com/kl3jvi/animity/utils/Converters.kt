@@ -3,7 +3,7 @@ package com.kl3jvi.animity.utils
 import androidx.room.TypeConverter
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
-import com.kl3jvi.animity.model.entities.GenreModel
+import com.kl3jvi.animity.model.GenreModel
 import java.lang.reflect.Type
 
 class Converters {

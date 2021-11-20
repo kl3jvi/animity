@@ -1,8 +1,8 @@
-package com.kl3jvi.animity.viewmodels
+package com.kl3jvi.animity.ui.fragments.home
 
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimesUseCase
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn

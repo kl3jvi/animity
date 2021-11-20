@@ -1,11 +1,11 @@
-package com.kl3jvi.animity.model.database
+package com.kl3jvi.animity.persistence
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Converters
 

@@ -1,10 +1,10 @@
-package com.kl3jvi.animity.viewmodels
+package com.kl3jvi.animity.ui.fragments.details
 
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
-import com.kl3jvi.animity.model.database.AnimeRepository
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.persistence.AnimeRepository
+import com.kl3jvi.animity.model.AnimeMetaModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

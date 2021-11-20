@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.model.api
+package com.kl3jvi.animity.network
 
 import com.kl3jvi.animity.utils.Constants
 import okhttp3.OkHttpClient

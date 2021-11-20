@@ -28,7 +28,7 @@
             tools:targetApi="n" />
 
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".ui.activities.main.MainActivity"
             android:configChanges="orientation"
             android:exported="true"
             android:label="@string/app_name"

@@ -61,7 +61,7 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="animeDetails"
-            app:argType="com.kl3jvi.animity.model.entities.AnimeMetaModel" />
+            app:argType="com.kl3jvi.animity.model.AnimeMetaModel" />
     </fragment>
 
     <fragment

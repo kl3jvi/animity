@@ -1,9 +1,9 @@
 package com.kl3jvi.animity.domain
 
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.ui.fragments.search.SearchRepository
+import com.kl3jvi.animity.repository.SearchRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

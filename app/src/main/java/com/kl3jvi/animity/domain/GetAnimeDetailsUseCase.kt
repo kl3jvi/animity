@@ -1,12 +1,12 @@
 package com.kl3jvi.animity.domain
 
-import com.kl3jvi.animity.model.database.AnimeRepository
-import com.kl3jvi.animity.model.entities.AnimeInfoModel
-import com.kl3jvi.animity.model.entities.EpisodeModel
+import com.kl3jvi.animity.persistence.AnimeRepository
+import com.kl3jvi.animity.model.AnimeInfoModel
+import com.kl3jvi.animity.model.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
-import com.kl3jvi.animity.ui.fragments.details.DetailsRepository
+import com.kl3jvi.animity.repository.DetailsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

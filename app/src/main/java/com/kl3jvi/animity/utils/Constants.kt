@@ -3,7 +3,7 @@ package com.kl3jvi.animity.utils
 import android.content.res.ColorStateList
 import android.graphics.Color
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.kl3jvi.animity.model.entities.AnimeMetaModel
+import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
 class Constants {
@@ -39,8 +39,8 @@ class Constants {
         private const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
-        private const val ORIGIN = "https://goload.one"
-        private const val REFERER = "https://goload.one"
+        private const val ORIGIN = "https://gogoanime.pe"
+        private const val REFERER = "https://gogoanime.pe"
 
         fun getHeader(): Map<String, String> {
             return mapOf(

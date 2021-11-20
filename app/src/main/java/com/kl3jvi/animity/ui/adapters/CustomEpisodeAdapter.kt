@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
-import com.kl3jvi.animity.model.entities.EpisodeModel
+import com.kl3jvi.animity.model.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 
