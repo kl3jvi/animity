@@ -7,6 +7,12 @@ on:
     types: [opened, synchronize]
     
 jobs:
+  run:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      
   ktlint:
     name: Check Code Quality
     runs-on: ubuntu-latest
