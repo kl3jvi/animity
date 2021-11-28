@@ -17,7 +17,7 @@ class Constants {
         const val SAVE_DIRECTORY = "Animity"
 
         // Base URLS
-        var BASE_URL = "https://gogoanime.cm"
+        var BASE_URL = "https://www1.gogoanime.cm/"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
 
@@ -39,8 +39,8 @@ class Constants {
         private const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
-        private const val ORIGIN = "https://gogoanime.pe"
-        private const val REFERER = "https://gogoanime.pe"
+        private const val ORIGIN = "https://goload.one"
+        private const val  REFERER = "https://goload.one"
 
         fun getHeader(): Map<String, String> {
             return mapOf(
