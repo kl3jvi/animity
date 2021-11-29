@@ -1,97 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/episode_holder"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_marginBottom="5dp"
-    android:foreground="@drawable/outline_drawable"
-    app:cardBackgroundColor="@color/primaryGrayBackground"
-    app:cardCornerRadius="@dimen/roundedImageRadius"
-    app:cardElevation="0dp">
+<layout>
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/episode_progress"
-        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="downloadClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="episodeInfo"
+            type="com.kl3jvi.animity.model.EpisodeModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/episode_holder"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="-1.5dp"
-        android:progressBackgroundTint="@color/colorPrimary"
-        android:progressTint="@color/colorProgress"
-        tools:progress="50" />
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:foreground="@drawable/outline_drawable"
+        app:cardBackgroundColor="@color/primaryGrayBackground"
+        app:cardCornerRadius="@dimen/roundedImageRadius"
+        app:cardElevation="0dp">
 
-    <LinearLayout
-        android:id="@+id/watchEpisode"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/episode_progress"
+            style="@android:style/Widget.Material.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="-1.5dp"
+            android:progressBackgroundTint="@color/colorPrimary"
+            android:progressTint="@color/colorProgress"
+            tools:progress="50" />
 
-        <ImageView
-            android:id="@+id/episode_play"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_baseline_play_arrow_24" />
-
-        <TextView
-            android:id="@+id/episode_text"
+        <LinearLayout
+            android:id="@+id/watchEpisode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:marqueeRepeatLimit="0"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:textColor="@color/textColor"
-            tools:text="Episode 1" />
-    </LinearLayout>
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{clickListener}">
 
-<!--    <FrameLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="end">-->
+            <ImageView
+                android:id="@+id/episode_play"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_baseline_play_arrow_24" />
 
-<!--        <androidx.core.widget.ContentLoadingProgressBar-->
-<!--            android:id="@+id/result_episode_progress_downloaded"-->
-<!--            style="?android:attr/progressBarStyleHorizontal"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="end|center_vertical"-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:background="@drawable/circle_shape"-->
-<!--            android:indeterminate="false"-->
-<!--            android:max="100"-->
-<!--            android:progress="0"-->
-<!--            android:progressDrawable="@drawable/circular_progress_bar"-->
-<!--            android:visibility="visible" />-->
+            <TextView
+                android:id="@+id/episode_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:marqueeRepeatLimit="0"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="@{episodeInfo.episodeNumber.replace(`EP`,`Episode`)}"
+                android:textColor="@color/textColor"
+                tools:text="Episode 1" />
+        </LinearLayout>
 
-<!--        <ImageView-->
-<!--            android:id="@+id/result_episode_download"-->
-<!--            android:layout_width="30dp"-->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:onClick="@{downloadClickListener}"
+            android:background="?selectableItemBackground">
 
-<!--            android:layout_height="wrap_content"-->
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/result_episode_progress_downloaded"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_margin="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/circle_shape"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                android:visibility="visible" />
 
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            android:background="?selectableItemBackgroundBorderless"-->
-<!--            android:contentDescription="@string/download"-->
-<!--            android:nextFocusLeft="@id/episode_holder"-->
-<!--            android:nextFocusRight="@id/episode_holder"-->
-<!--            android:padding="2dp"-->
-<!--            android:src="@drawable/ic_outline_arrow_downward_24"-->
-<!--            android:visibility="visible"-->
-<!--            app:tint="@color/white" />-->
-<!--    </FrameLayout>-->
+            <ImageView
+                android:id="@+id/result_episode_download"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/download"
+                android:nextFocusLeft="@id/episode_holder"
+                android:nextFocusRight="@id/episode_holder"
+                android:padding="2dp"
+                android:src="@drawable/ic_outline_arrow_downward_24"
+                android:visibility="visible"
+                app:tint="@color/white" />
+        </FrameLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

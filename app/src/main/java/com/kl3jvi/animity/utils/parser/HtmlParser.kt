@@ -179,7 +179,7 @@ object HtmlParser {
                 EpisodeModel(
                     episodeNumber = episodeNumber,
                     episodeType = episodeType,
-                    episodeurl = episodeUrl
+                    episodeUrl = episodeUrl
                 )
             )
         }

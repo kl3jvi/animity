@@ -4,25 +4,49 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
 import com.kl3jvi.animity.model.EpisodeModel
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
+import com.kl3jvi.animity.ui.fragments.details.DetailsFragment
+import com.kl3jvi.animity.utils.Constants
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class CustomEpisodeAdapter(
     private val fragment: Fragment,
     private val animeTitle: String,
-    private var list: ArrayList<EpisodeModel>
-) :
-    RecyclerView.Adapter<CustomEpisodeAdapter.ViewHolder>() {
+) : ListAdapter<EpisodeModel, CustomEpisodeAdapter.ViewHolder>(AnimeDiffCallback()) {
 
-    inner class ViewHolder(view: ItemEpisodeListBinding) : RecyclerView.ViewHolder(view.root) {
-        val num = view.episodeText
-        val progress = view.episodeProgress
-        val item = view.watchEpisode
-//        val download = view.resultEpisodeDownload
-//        val downloadProgress = view.resultEpisodeProgressDownloaded
+
+    inner class ViewHolder(private val binding: ItemEpisodeListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.apply {
+                setClickListener {
+                    binding.episodeInfo?.let { element ->
+                        val context = fragment.requireContext()
+                        val intent = Intent(context, PlayerActivity::class.java)
+                        intent.putExtra(Constants.EPISODE_DETAILS, element)
+                        intent.putExtra(Constants.ANIME_TITLE, animeTitle)
+                        context.startActivity(intent)
+                    }
+                }
+
+                setDownloadClickListener {
+                    binding.episodeInfo?.let { element ->
+                        if (fragment is DetailsFragment) fragment.getM3U8EpisodeUrl(element.episodeUrl)
+                    }
+                }
+            }
+        }
+
+        fun bindEpisodeInfo(episodeInfo: EpisodeModel) {
+            binding.episodeInfo = episodeInfo
+            binding.executePendingBindings()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,35 +55,26 @@ class CustomEpisodeAdapter(
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val element = list[position]
-        holder.num.text = element.episodeNumber.replace("EP", "Episode")
-//        holder.progress.progress = (0..100).random()
-        holder.progress.progress = 0
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bindEpisodeInfo(getItem(position))
 
-        holder.item.setOnClickListener {
-            val intent =
-                Intent(fragment.requireActivity(), PlayerActivity::class.java)
+    override fun getItemCount() = currentList.size
 
-            intent.putExtra(Constants.EPISODE_DETAILS, element)
-            intent.putExtra(Constants.ANIME_TITLE, animeTitle)
-            fragment.requireContext().startActivity(intent)
+    private class AnimeDiffCallback : DiffUtil.ItemCallback<EpisodeModel>() {
+
+        override fun areItemsTheSame(
+            oldItem: EpisodeModel,
+            newItem: EpisodeModel
+        ): Boolean {
+            return oldItem.episodeUrl == newItem.episodeUrl
         }
 
-//        holder.download.setOnClickListener {
-//            if (fragment is DetailsFragment) {
-//                fragment.downloadEpisode(element.episodeurl)
-//            }
-//        }
-    }
-
-    override fun getItemCount() = list.size
-
-    fun getEpisodeInfo(retrieveData: List<EpisodeModel>) {
-        this.list.apply {
-            clear()
-            addAll(retrieveData.reversed())
-            notifyDataSetChanged()
+        override fun areContentsTheSame(
+            oldItem: EpisodeModel,
+            newItem: EpisodeModel
+        ): Boolean {
+            return oldItem.episodeUrl == newItem.episodeUrl
         }
     }
 }
+

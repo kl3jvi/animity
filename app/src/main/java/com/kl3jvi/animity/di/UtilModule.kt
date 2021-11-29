@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
@@ -57,6 +58,12 @@ object UtilModule {
         return DownloadManager(
             context, databaseProvider, downloadCache, getDataSourceFactory(), Runnable::run
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationManager(@ApplicationContext context: Context):NotificationManager{
+        return getSystemService(context,NotificationManager::class.java)!!
     }
 
 }

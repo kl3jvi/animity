@@ -73,7 +73,7 @@ class PlayerActivity : AppCompatActivity() {
             episodeNum.text = getIntentData?.episodeNumber
 
             initialisePlayerLayout()
-            viewModel.updateEpisodeUrl(getIntentData?.episodeurl.toString())
+            viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
         }
     }
 

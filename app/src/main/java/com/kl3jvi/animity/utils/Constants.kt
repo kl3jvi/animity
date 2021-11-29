@@ -91,5 +91,7 @@ class Constants {
                 setDefaultRequestProperties(headers)
             }
         }
+
+        fun getRandomId(): Int = System.currentTimeMillis().toInt()
     }
 }

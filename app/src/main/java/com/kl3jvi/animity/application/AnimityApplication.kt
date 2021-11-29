@@ -20,39 +20,25 @@ import javax.inject.Inject
 class AnimityApplication : Application() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    @Inject
     lateinit var notificationManager: NotificationManager
 
     override fun onCreate() {
         super.onCreate()
         firebaseAnalytics = Firebase.analytics
-
-
-        // Enable verbose OneSignal logging to debug issues if needed.
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-
-        // OneSignal Initialization
-        OneSignal.initWithContext(this)
-        OneSignal.setAppId(ONESIGNAL_APP_ID)
-
-        createNotificationChannel()
-    }
-
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = DOWNLOAD_CHANNEL_NAME
-            val descriptionText = DOWNLOAD_CHANNEL_DESCRIPTION
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(DOWNLOAD_CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            notificationManager =
-                this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        apply {
+            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+            OneSignal.initWithContext(this)
+            OneSignal.setAppId(ONESIGNAL_APP_ID)
+            createNotificationChannels()
         }
     }
 
-
+    private fun createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(DOWNLOAD_CHANNEL_ID, DOWNLOAD_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH )
+            channel.description = DOWNLOAD_CHANNEL_DESCRIPTION
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 }

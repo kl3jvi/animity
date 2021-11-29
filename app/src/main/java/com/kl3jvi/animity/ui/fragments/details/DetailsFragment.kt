@@ -1,15 +1,16 @@
 package com.kl3jvi.animity.ui.fragments.details
 
+import android.app.NotificationManager
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.app.NotificationCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -28,11 +29,13 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -47,6 +50,9 @@ class DetailsFragment : Fragment() {
     private var title: String = ""
     private var check = false
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    @Inject
+    lateinit var notificationManager: NotificationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +83,7 @@ class DetailsFragment : Fragment() {
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 episodeAdapter =
-                    CustomEpisodeAdapter(this@DetailsFragment, animeInfo.title, arrayListOf())
+                    CustomEpisodeAdapter(this@DetailsFragment, animeInfo.title)
                 resultTitle.text = animeInfo.title
 
                 title = animeInfo.title
@@ -159,8 +165,10 @@ class DetailsFragment : Fragment() {
             check = it
             if (!check) {
                 menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+
             } else {
                 menu[0].setIcon(R.drawable.ic_favorite_complete)
+                testChangeOfNotification()
             }
         }
     }
@@ -188,33 +196,27 @@ class DetailsFragment : Fragment() {
     private fun fetchEpisodeList() {
         viewModel.episodeList.observe(viewLifecycleOwner) { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->
-                episodeAdapter.getEpisodeInfo(episodeList)
+                episodeAdapter.submitList(episodeList.reversed())
                 binding.detailsProgress.visibility = View.GONE
-                binding.resultEpisodesText.text =
-                    requireActivity().getString(
-                        R.string.total_episodes,
-                        episodeList.size.toString()
-                    )
                 var check = false
                 binding.imageButton.setOnClickListener {
                     check = if (!check) {
                         binding.imageButton.load(R.drawable.ic_up_arrow) {
                             crossfade(true)
                         }
-                        episodeAdapter.getEpisodeInfo(episodeList.reversed())
+                        episodeAdapter.submitList(episodeList)
                         true
                     } else {
                         binding.imageButton.load(R.drawable.ic_down_arrow) {
                             crossfade(true)
                         }
-                        episodeAdapter.getEpisodeInfo(episodeList)
+                        episodeAdapter.submitList(episodeList.reversed())
                         false
                     }
                 }
                 if (episodeList.isNotEmpty()) {
                     binding.resultPlayMovie.setOnClickListener {
-                        val intent =
-                            Intent(requireActivity(), PlayerActivity::class.java)
+                        val intent = Intent(requireActivity(), PlayerActivity::class.java)
                         intent.putExtra(Constants.EPISODE_DETAILS, episodeList.first())
                         intent.putExtra(Constants.ANIME_TITLE, title)
                         requireContext().startActivity(intent)
@@ -243,13 +245,12 @@ class DetailsFragment : Fragment() {
     }
 
     @ExperimentalCoroutinesApi
-    fun downloadEpisode(episodeUrl: String) {
+    fun getM3U8EpisodeUrl(episodeUrl: String) {
         viewModel.passDownloadEpisodeUrl(episodeUrl)
         viewModel.downloadEpisodeUrl.observe(viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
-                    val videoM3U8Url = res.data.toString()
-                    downloadMedia(videoM3U8Url)
+                    downloadEpisode(res.data.toString())
                 }
                 is Resource.Error -> {
                     showSnack("Downloading Error")
@@ -261,9 +262,12 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun downloadMedia(videoM3U8Url: String) {
+    private fun downloadEpisode(videoM3U8Url: String) {
         val downloadRequest: DownloadRequest =
-            DownloadRequest.Builder(Constants.DOWNLOAD_CHANNEL_ID, Uri.parse(videoM3U8Url)).build()
+            DownloadRequest.Builder(
+                DOWNLOAD_CHANNEL_ID,
+                Uri.parse(videoM3U8Url)
+            ).build()
 
         DownloadService.sendAddDownload(
             requireContext(),
@@ -271,9 +275,15 @@ class DetailsFragment : Fragment() {
             downloadRequest,
             false
         )
-
-
     }
 
+    private fun testChangeOfNotification() {
+        val builder: NotificationCompat.Builder =
+            NotificationCompat.Builder(requireContext(), DOWNLOAD_CHANNEL_ID)
+                .setContentText("akdsfjkadsf")
+                .setContentTitle("adsfjasdfkjsadf")
+val notification = builder.build()
+        notificationManager.notify(1, notification)
+    }
 }
 

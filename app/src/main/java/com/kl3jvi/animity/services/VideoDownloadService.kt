@@ -14,20 +14,20 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPTION
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
+import com.kl3jvi.animity.utils.Constants.Companion.getRandomId
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class VideoDownloadService :
     DownloadService(
-        getRandomId(),
+        1,
         DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
         DOWNLOAD_CHANNEL_ID,
         R.string.app_name,
         R.string.title_home
     ) {
     private lateinit var notificationHelper: DownloadNotificationHelper
-
     private lateinit var manager: DownloadManager
 
     @Inject
@@ -38,7 +38,6 @@ class VideoDownloadService :
 
     override fun onCreate() {
         super.onCreate()
-
         notificationHelper = DownloadNotificationHelper(this, DOWNLOAD_CHANNEL_ID)
     }
 
@@ -96,6 +95,5 @@ class VideoDownloadService :
     }
 }
 
-fun getRandomId(): Int {
-    return System.currentTimeMillis().toInt()
-}
+
+
