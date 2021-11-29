@@ -42,7 +42,7 @@ class FavoritesFragment : Fragment() {
     private fun initViews() {
         binding.favoritesRecycler.apply {
             layoutManager = GridLayoutManager(requireActivity(), 3)
-            favoriteAdapter = CustomFavoriteAdapter(this@FavoritesFragment, arrayListOf())
+            favoriteAdapter = CustomFavoriteAdapter()
             setHasFixedSize(true)
             adapter = favoriteAdapter
         }
@@ -51,7 +51,7 @@ class FavoritesFragment : Fragment() {
     private fun observeDatabase() {
         viewModel.favoriteAnimesList.observe(viewLifecycleOwner, { animeList ->
             if (animeList.isNotEmpty()) {
-                favoriteAdapter.addAnimes(animeList)
+                favoriteAdapter.submitList(animeList)
                 binding.favoritesRecycler.visibility = View.VISIBLE
             } else {
                 binding.favoritesRecycler.visibility = View.GONE

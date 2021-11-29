@@ -12,13 +12,12 @@ plugins {
 
 android {
     compileSdk 31
-
     defaultConfig {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 31
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,6 +45,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 
     packagingOptions {

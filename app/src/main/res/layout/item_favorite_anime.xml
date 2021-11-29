@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
+
+       <variable
+           name="animeInfo"
+           type="com.kl3jvi.animity.model.AnimeMetaModel" />
+
+        <variable
+            name="isVisible"
+            type="boolean" />
+    </data>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,6 +38,7 @@
             android:id="@+id/animeImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:image="@{animeInfo.imageUrl}"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerCrop" />
 
@@ -33,6 +48,7 @@
             android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{clickListener}"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="#60000000"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -51,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
             android:layout_marginEnd="-10dp"
+            android:visibility="@{isVisible}"
             android:alpha="0.8"
             app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="8dp">
@@ -61,10 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:padding="3dp"
-                android:text="TextView"
+                android:text="@{animeInfo.episodeNumber}"
                 android:textColor="#FFFFFF"
-                android:textSize="10sp" />
-
+                android:textSize="11sp" />
 
         </androidx.cardview.widget.CardView>
 
@@ -85,6 +101,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:ellipsize="end"
             android:textStyle="bold"
+            android:text="@{animeInfo.title}"
             android:paddingBottom="5dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
@@ -98,3 +115,4 @@
             tools:text="One Piece" />
     </androidx.cardview.widget.CardView>
 </androidx.cardview.widget.CardView>
+</layout>

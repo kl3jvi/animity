@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
-    private lateinit var snapHelperSub: SnapHelper
+    private lateinit var snapHelper: SnapHelper
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,10 +67,10 @@ class HomeFragment : Fragment() {
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
-            subAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
+            subAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
-            snapHelperSub = PagerSnapHelper()
-            snapHelperSub.attachToRecyclerView(this)
+            snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(this)
             adapter = subAdapter
         }
 
@@ -80,10 +80,10 @@ class HomeFragment : Fragment() {
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
-            newSeasonAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
+            newSeasonAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
-            snapHelperSub = PagerSnapHelper()
-            snapHelperSub.attachToRecyclerView(this)
+            snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(this)
             adapter = newSeasonAdapter
         }
 
@@ -93,10 +93,10 @@ class HomeFragment : Fragment() {
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
-            movieAdapter = CustomHorizontalAdapter(this@HomeFragment, arrayListOf())
+            movieAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
-            snapHelperSub = PagerSnapHelper()
-            snapHelperSub.attachToRecyclerView(this)
+            snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(this)
             adapter = movieAdapter
         }
 
@@ -116,7 +116,7 @@ class HomeFragment : Fragment() {
                     binding.recentSub.visibility = View.VISIBLE
                     binding.recentSubTv.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
-                    res.data?.let { subAdapter.addAnimes(it) }
+                    res.data?.let { subAdapter.submitList(it) }
                 }
                 is Resource.Loading -> {
                     binding.recentSub.visibility = View.GONE
@@ -134,7 +134,7 @@ class HomeFragment : Fragment() {
         viewModel.newSeason.observe(viewLifecycleOwner, { res ->
             when (res) {
                 is Resource.Success -> {
-                    res.data?.let { animeList -> newSeasonAdapter.addAnimes(animeList) }
+                    res.data?.let { animeList -> newSeasonAdapter.submitList(animeList) }
                     binding.newSeasonRv.visibility = View.VISIBLE
                     binding.newSeasonTv.visibility = View.VISIBLE
                 }
@@ -153,7 +153,7 @@ class HomeFragment : Fragment() {
         viewModel.movies.observe(viewLifecycleOwner, { res ->
             when (res) {
                 is Resource.Success -> {
-                    res.data?.let { animeList -> movieAdapter.addAnimes(animeList) }
+                    res.data?.let { animeList -> movieAdapter.submitList(animeList) }
                     binding.moviesRv.visibility = View.VISIBLE
                     binding.moviesTv.visibility = View.VISIBLE
                 }

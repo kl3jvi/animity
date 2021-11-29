@@ -1,64 +1,67 @@
 package com.kl3jvi.animity.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.ui.fragments.home.HomeFragment
+import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 
-class CustomHorizontalAdapter(
-    private val fragment: Fragment,
-    private val animes: ArrayList<AnimeMetaModel>
-) : RecyclerView.Adapter<CustomHorizontalAdapter.ViewHolder>() {
+class CustomHorizontalAdapter : ListAdapter<AnimeMetaModel, CustomHorizontalAdapter.AnimeViewHolder>(
+    AnimeDiffCallback()
+) {
 
-    inner class ViewHolder(view: ItemCardAnimeBinding) : RecyclerView.ViewHolder(view.root) {
-        val title = view.animeTitle
-        val image = view.animeImage
-        val episodeNumber = view.episodeNumber
-        val episodeCard = view.episodeCard
-        val card = view.backgroundImage
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemCardAnimeBinding =
-            ItemCardAnimeBinding.inflate(LayoutInflater.from(fragment.context), parent, false)
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val element = animes[position]
-
-        holder.apply {
-            image.load(element.imageUrl) {
-                crossfade(true)
-                diskCachePolicy(CachePolicy.ENABLED)
-            }
-            title.text = element.title
-            if (!element.episodeNumber.isNullOrEmpty()) {
-                episodeNumber.text = element.episodeNumber
-            } else {
-                episodeCard.isVisible = false
-            }
-            card.setOnClickListener {
-                if (fragment is HomeFragment) {
-                    fragment.navigateToDetails(element)
+    inner class AnimeViewHolder constructor(
+        private val binding: ItemCardAnimeBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.setClickListener { view ->
+                binding.animeInfo?.let{
+                    navigateToDetails(it, view)
                 }
             }
         }
+
+        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
+            val direction =
+                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
+            view.findNavController().navigate(direction)
+        }
+
+        fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
+            binding.animeInfo = animeInfo
+            binding.isVisible = !animeInfo.episodeNumber.isNullOrEmpty()
+            binding.executePendingBindings()
+        }
     }
 
-    override fun getItemCount() = animes.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimeViewHolder {
+        val binding: ItemCardAnimeBinding =
+            ItemCardAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AnimeViewHolder(binding)
+    }
 
-    fun addAnimes(animes: List<AnimeMetaModel>) {
-        this.animes.apply {
-            clear()
-            addAll(animes)
-            notifyDataSetChanged()
+    override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) =
+        holder.bindAnimeInfo(getItem(position))
+
+    private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
+
+        override fun areItemsTheSame(
+            oldItem: AnimeMetaModel,
+            newItem: AnimeMetaModel
+        ): Boolean {
+            return oldItem.imageUrl == newItem.imageUrl
+        }
+
+        override fun areContentsTheSame(
+            oldItem: AnimeMetaModel,
+            newItem: AnimeMetaModel
+        ): Boolean {
+            return oldItem.imageUrl == newItem.imageUrl
         }
     }
 }

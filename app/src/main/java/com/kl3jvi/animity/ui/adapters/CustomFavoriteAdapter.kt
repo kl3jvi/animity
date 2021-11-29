@@ -1,28 +1,46 @@
 package com.kl3jvi.animity.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
 import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragment
+import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragmentDirections
+import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 
-class CustomFavoriteAdapter(
-    private val fragment: Fragment,
-    private val animes: ArrayList<AnimeMetaModel>
-) :
-    RecyclerView.Adapter<CustomFavoriteAdapter.ViewHolder>() {
+class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.ViewHolder>(
+    AnimeDiffCallback()
+) {
+//    RecyclerView.Adapter<CustomFavoriteAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view: ItemFavoriteAnimeBinding) : RecyclerView.ViewHolder(view.root) {
-        val title = view.animeTitle
-        val image = view.animeImage
-        val episodeNumber = view.episodeNumber
-        val episodeCard = view.episodeCard
-        val card = view.backgroundImage
+    inner class ViewHolder(private val binding: ItemFavoriteAnimeBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.setClickListener { view ->
+                binding.animeInfo?.let{
+                    navigateToDetails(it, view)
+                }
+            }
+        }
+
+        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
+            val direction = FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(animeDetails)
+            view.findNavController().navigate(direction)
+        }
+
+        fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
+            binding.animeInfo = animeInfo
+            binding.isVisible = !animeInfo.episodeNumber.isNullOrEmpty()
+            binding.executePendingBindings()
+        }
     }
 
     override fun onCreateViewHolder(
@@ -30,39 +48,30 @@ class CustomFavoriteAdapter(
         viewType: Int
     ): CustomFavoriteAdapter.ViewHolder {
         val binding: ItemFavoriteAnimeBinding =
-            ItemFavoriteAnimeBinding.inflate(LayoutInflater.from(fragment.context), parent, false)
+            ItemFavoriteAnimeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CustomFavoriteAdapter.ViewHolder, position: Int) {
-        val element = animes[position]
+    override fun onBindViewHolder(holder: CustomFavoriteAdapter.ViewHolder, position: Int)=
+        holder.bindAnimeInfo(getItem(position))
 
-        holder.apply {
-            image.load(element.imageUrl) {
-                crossfade(true)
-                diskCachePolicy(CachePolicy.ENABLED)
-            }
-            title.text = element.title
-            if (!element.episodeNumber.isNullOrEmpty()) {
-                episodeNumber.text = element.episodeNumber
-            } else {
-                episodeCard.isVisible = false
-            }
-            card.setOnClickListener {
-                if (fragment is FavoritesFragment) {
-                    fragment.navigateToDetails(element)
-                }
-            }
-        }
+
+}
+
+private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
+
+    override fun areItemsTheSame(
+        oldItem: AnimeMetaModel,
+        newItem: AnimeMetaModel
+    ): Boolean {
+        return oldItem.imageUrl == newItem.imageUrl
     }
 
-    override fun getItemCount() = animes.size
-
-    fun addAnimes(animes: List<AnimeMetaModel>) {
-        this.animes.apply {
-            clear()
-            addAll(animes)
-            notifyDataSetChanged()
-        }
+    override fun areContentsTheSame(
+        oldItem: AnimeMetaModel,
+        newItem: AnimeMetaModel
+    ): Boolean {
+        return oldItem.imageUrl == newItem.imageUrl
     }
 }
+

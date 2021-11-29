@@ -1,52 +1,72 @@
 package com.kl3jvi.animity.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.search.SearchFragment
+import com.kl3jvi.animity.ui.fragments.search.SearchFragmentDirections
 
 class CustomSearchAdapter(
-    private val fragment: Fragment,
-    private var list: ArrayList<AnimeMetaModel>
-) :
-    RecyclerView.Adapter<CustomSearchAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view: SearchLayoutBinding) : RecyclerView.ViewHolder(view.root) {
-        val image = view.imageView
-        val title = view.imageText
-        val extra = view.imageTextExtra
-        val card = view.backgroundCard
+) : ListAdapter<AnimeMetaModel, CustomSearchAdapter.ViewHolder>(
+    AnimeDiffCallback()
+) {
+
+    inner class ViewHolder(private val binding: SearchLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.setClickListener { view ->
+                binding.animeInfo?.let{
+                    navigateToDetails(it, view)
+                }
+            }
+        }
+
+        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
+            val direction = SearchFragmentDirections.actionNavigationExploreToNavigationDetails(animeDetails)
+            view.findNavController().navigate(direction)
+        }
+
+        fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
+            binding.animeInfo = animeInfo
+            binding.isVisible = !animeInfo.episodeNumber.isNullOrEmpty()
+            binding.executePendingBindings()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: SearchLayoutBinding =
-            SearchLayoutBinding.inflate(LayoutInflater.from(fragment.context), parent, false)
+            SearchLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
-        holder.image.load(item.imageUrl)
-        holder.title.text = item.title
-        holder.extra.text = item.releasedDate
-        holder.card.setOnClickListener {
-            if (fragment is SearchFragment) {
-                fragment.navigateToDetails(item)
-            }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bindAnimeInfo(getItem(position))
+
+    private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
+
+        override fun areItemsTheSame(
+            oldItem: AnimeMetaModel,
+            newItem: AnimeMetaModel
+        ): Boolean {
+            return oldItem.imageUrl == newItem.imageUrl
+        }
+
+        override fun areContentsTheSame(
+            oldItem: AnimeMetaModel,
+            newItem: AnimeMetaModel
+        ): Boolean {
+            return oldItem.imageUrl == newItem.imageUrl
         }
     }
 
-    override fun getItemCount() = list.size
-
-    fun passSearchData(entry: List<AnimeMetaModel>) {
-        this.list.apply {
-            clear()
-            addAll(entry)
-            notifyDataSetChanged()
-        }
-    }
 }

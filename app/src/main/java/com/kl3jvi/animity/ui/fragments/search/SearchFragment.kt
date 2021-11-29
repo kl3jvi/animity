@@ -66,7 +66,7 @@ class SearchFragment : Fragment() {
         binding.searchRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            searchAdapter = CustomSearchAdapter(this@SearchFragment, arrayListOf())
+            searchAdapter = CustomSearchAdapter()
             adapter = searchAdapter
         }
     }
@@ -78,7 +78,7 @@ class SearchFragment : Fragment() {
                     binding.searchLoadingBar.visibility = View.GONE
                     binding.noSearchResult.visibility = View.GONE
                     binding.searchRecycler.visibility = View.VISIBLE
-                    res.data?.let { searchAdapter.passSearchData(it) }
+                    res.data?.let { searchAdapter.submitList(it) }
                 }
                 is Resource.Loading -> {
                     binding.searchRecycler.visibility = View.GONE
