@@ -3,37 +3,39 @@ package com.kl3jvi.animity.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.request.CachePolicy
 import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
 import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragment
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragmentDirections
-import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 
 class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.ViewHolder>(
     AnimeDiffCallback()
 ) {
 //    RecyclerView.Adapter<CustomFavoriteAdapter.ViewHolder>() {
 
-    inner class ViewHolder(private val binding: ItemFavoriteAnimeBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemFavoriteAnimeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener { view ->
-                binding.animeInfo?.let{
+                binding.animeInfo?.let {
                     navigateToDetails(it, view)
                 }
             }
         }
 
         private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
-            val direction = FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(animeDetails)
-            view.findNavController().navigate(direction)
+            try {
+                val direction =
+                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                        animeDetails
+                    )
+                view.findNavController().navigate(direction)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
         }
 
         fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
@@ -52,9 +54,10 @@ class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CustomFavoriteAdapter.ViewHolder, position: Int)=
+    override fun onBindViewHolder(holder: CustomFavoriteAdapter.ViewHolder, position: Int) =
         holder.bindAnimeInfo(getItem(position))
 
+    override fun getItemCount(): Int = currentList.size
 
 }
 

@@ -3,16 +3,12 @@ package com.kl3jvi.animity.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
-import com.kl3jvi.animity.ui.fragments.search.SearchFragment
 import com.kl3jvi.animity.ui.fragments.search.SearchFragmentDirections
 
 class CustomSearchAdapter(
@@ -21,19 +17,25 @@ class CustomSearchAdapter(
     AnimeDiffCallback()
 ) {
 
-    inner class ViewHolder(private val binding: SearchLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: SearchLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.setClickListener { view ->
-                binding.animeInfo?.let{
+                binding.animeInfo?.let {
                     navigateToDetails(it, view)
                 }
             }
         }
 
         private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
-            val direction = SearchFragmentDirections.actionNavigationExploreToNavigationDetails(animeDetails)
-            view.findNavController().navigate(direction)
+            try {
+                val direction =
+                    SearchFragmentDirections.actionNavigationExploreToNavigationDetails(animeDetails)
+                view.findNavController().navigate(direction)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
         }
 
         fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
@@ -52,6 +54,8 @@ class CustomSearchAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bindAnimeInfo(getItem(position))
 
+    override fun getItemCount(): Int = currentList.size
+
     private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
 
         override fun areItemsTheSame(
@@ -68,5 +72,4 @@ class CustomSearchAdapter(
             return oldItem.imageUrl == newItem.imageUrl
         }
     }
-
 }

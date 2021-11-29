@@ -180,7 +180,6 @@ class DetailsFragment : Fragment() {
                     false
                 }
             }
-            else -> findNavController().navigateUp()
         }
         return super.onOptionsItemSelected(item)
     }

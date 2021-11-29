@@ -11,25 +11,30 @@ import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 
-class CustomHorizontalAdapter : ListAdapter<AnimeMetaModel, CustomHorizontalAdapter.AnimeViewHolder>(
-    AnimeDiffCallback()
-) {
+class CustomHorizontalAdapter :
+    ListAdapter<AnimeMetaModel, CustomHorizontalAdapter.AnimeViewHolder>(
+        AnimeDiffCallback()
+    ) {
 
     inner class AnimeViewHolder constructor(
         private val binding: ItemCardAnimeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener { view ->
-                binding.animeInfo?.let{
+                binding.animeInfo?.let {
                     navigateToDetails(it, view)
                 }
             }
         }
 
         private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
-            val direction =
-                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
-            view.findNavController().navigate(direction)
+            try {
+                val direction =
+                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
+                view.findNavController().navigate(direction)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
         }
 
         fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
@@ -47,6 +52,8 @@ class CustomHorizontalAdapter : ListAdapter<AnimeMetaModel, CustomHorizontalAdap
 
     override fun onBindViewHolder(holder: AnimeViewHolder, position: Int) =
         holder.bindAnimeInfo(getItem(position))
+
+    override fun getItemCount(): Int = currentList.size
 
     private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
 
