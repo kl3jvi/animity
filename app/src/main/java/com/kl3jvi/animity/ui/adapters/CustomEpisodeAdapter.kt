@@ -35,11 +35,11 @@ class CustomEpisodeAdapter(
                     }
                 }
 
-                setDownloadClickListener {
-                    binding.episodeInfo?.let { element ->
-                        if (fragment is DetailsFragment) fragment.getM3U8EpisodeUrl(element.episodeUrl)
-                    }
-                }
+//                setDownloadClickListener {
+//                    binding.episodeInfo?.let { element ->
+//                        if (fragment is DetailsFragment) fragment.getM3U8EpisodeUrl(element.episodeUrl)
+//                    }
+//                }
             }
         }
 

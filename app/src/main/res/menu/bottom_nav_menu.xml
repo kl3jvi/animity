@@ -16,9 +16,9 @@
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="" />
 
-    <item
-        android:id="@+id/navigation_downloads"
-        android:icon="@drawable/ic_download_fragment"
-        android:title="" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_downloads"-->
+<!--        android:icon="@drawable/ic_download_fragment"-->
+<!--        android:title="" />-->
 
 </menu>
