@@ -1,12 +1,13 @@
 package com.kl3jvi.animity.domain
 
-import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.model.AnimeInfoModel
 import com.kl3jvi.animity.model.EpisodeModel
+import com.kl3jvi.animity.persistence.AnimeRepository
+import com.kl3jvi.animity.persistence.EpisodeDao
+import com.kl3jvi.animity.repository.DetailsRepository
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.parser.HtmlParser
-import com.kl3jvi.animity.repository.DetailsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,6 +21,7 @@ import javax.inject.Singleton
 class GetAnimeDetailsUseCase @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val animeRepository: AnimeRepository,
+    private val episodeDao: EpisodeDao,
     private val ioDispatcher: CoroutineDispatcher
 ) {
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
@@ -68,6 +70,14 @@ class GetAnimeDetailsUseCase @Inject constructor(
                         alias = alias ?: ""
                     ).string()
                 ).toList()
+
+            response.map {
+                if (episodeDao.isEpisodeOnDatabase(it.episodeUrl)) {
+                    it.percentage =
+                        episodeDao.getEpisodeContent(it.episodeUrl).getWatchedPercentage()
+                }
+            }
+
             emit(
                 Resource.Success(
                     data = response

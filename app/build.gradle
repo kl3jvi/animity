@@ -29,11 +29,10 @@ android {
             debuggable false
         }
     }
-    applicationVariants.all{ variant->
-        variant.outputs.forEach{ output->
-            output.outputFileName.replace("app","animity")
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
-
     }
 
     compileOptions {
@@ -142,4 +141,7 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.0-alpha02"
 
     implementation 'com.onesignal:OneSignal:4.6.2'
+
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 }

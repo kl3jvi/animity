@@ -27,12 +27,14 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
+import com.kl3jvi.animity.model.Content
 import com.kl3jvi.animity.model.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
@@ -55,8 +57,9 @@ class PlayerActivity : AppCompatActivity() {
     private var trackSelector: DefaultTrackSelector? = null
     private var currentTime = 0L
     private lateinit var animeTitlePassed: String
-    lateinit var episodeNumber: String
-
+    lateinit var episodeNumberLocal: String
+    lateinit var episodeUrlLocal: String
+    lateinit var content: Content
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
@@ -65,7 +68,9 @@ class PlayerActivity : AppCompatActivity() {
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
             animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE).toString()
-            episodeNumber = getIntentData?.episodeNumber.toString()
+            episodeNumberLocal = getIntentData?.episodeNumber.toString()
+            episodeUrlLocal = getIntentData?.episodeUrl.toString()
+
             val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
             val episodeNum = viewBinding.videoView.findViewById<TextView>(R.id.episodeNum)
 
@@ -74,7 +79,13 @@ class PlayerActivity : AppCompatActivity() {
 
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
+
+
         }
+    }
+
+    private fun insertEpisodeToDatabase(content: Content) {
+        viewModel.insertOrUpdate(content = content)
     }
 
     public override fun onStart() {
@@ -143,6 +154,25 @@ class PlayerActivity : AppCompatActivity() {
                                 exoPlayer.seekTo(playbackPosition)
                                 exoPlayer.prepare()
                             }
+                        player!!.addListener(object : Player.Listener {
+                            override fun onPlayerStateChanged(
+                                playWhenReady: Boolean,
+                                playbackState: Int
+                            ) {
+                                if (playbackState == ExoPlayer.STATE_READY) {
+                                    val realDurationMillis: Long = player!!.duration
+                                    content = Content().apply {
+                                        episodeUrl = episodeUrlLocal
+                                        animeName = animeTitlePassed
+                                        episodeNumber = episodeNumberLocal
+                                        watchedDuration = 0
+                                        duration = realDurationMillis
+                                    }
+                                }
+
+                            }
+                        })
+
 
                         val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
@@ -176,10 +206,12 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
+
     private fun initialisePlayerLayout() {
 
         val backButton = viewBinding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
+            insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
             finish()
         }
 
@@ -203,6 +235,11 @@ class PlayerActivity : AppCompatActivity() {
         fullView.setOnClickListener {
             toggleFullView()
         }
+    }
+
+    private fun getVideoDurationSeconds(player: ExoPlayer): Long {
+        val timeMs = player.duration
+        return timeMs / 1000
     }
 
     private fun showQualityDialog() {

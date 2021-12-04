@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.kl3jvi.animity.persistence.AnimeDao
 import com.kl3jvi.animity.persistence.AppDatabase
+import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants.Companion.DATABASE_NAME
 import com.kl3jvi.animity.utils.Converters
 import dagger.Module
@@ -31,7 +32,11 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    fun provideAnimesDao(appDatabase: AppDatabase): AnimeDao {
-        return appDatabase.animeDao()
-    }
+    fun provideAnimesDao(appDatabase: AppDatabase): AnimeDao = appDatabase.animeDao()
+
+    @Provides
+    @Singleton
+    fun providesEpisodeDao(appDatabase: AppDatabase): EpisodeDao = appDatabase.episodeDao()
+
+
 }
