@@ -44,6 +44,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val args: DetailsFragmentArgs by navArgs()
+    private val animeDetails get() = args.animeDetails
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
     private lateinit var menu: Menu
@@ -66,16 +67,15 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        fetchAnimeInfo()
-        fetchEpisodeList()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fetchAnimeInfo()
+        fetchEpisodeList()
 
-        args.animeDetails.let { animeInfo ->
-
+        animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
                     crossfade(true)
@@ -168,7 +168,6 @@ class DetailsFragment : Fragment() {
 
             } else {
                 menu[0].setIcon(R.drawable.ic_favorite_complete)
-                testChangeOfNotification()
             }
         }
     }
@@ -277,13 +276,5 @@ class DetailsFragment : Fragment() {
         )
     }
 
-    private fun testChangeOfNotification() {
-        val builder: NotificationCompat.Builder =
-            NotificationCompat.Builder(requireContext(), DOWNLOAD_CHANNEL_ID)
-                .setContentText("akdsfjkadsf")
-                .setContentTitle("adsfjasdfkjsadf")
-val notification = builder.build()
-        notificationManager.notify(1, notification)
-    }
 }
 

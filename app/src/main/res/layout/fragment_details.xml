@@ -225,7 +225,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nest"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:ignore="SpeakableTextPresentCheck">
