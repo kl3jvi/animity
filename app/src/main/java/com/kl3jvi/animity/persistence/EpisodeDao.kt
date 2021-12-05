@@ -10,7 +10,7 @@ interface EpisodeDao {
     suspend fun insertEpisode(content: Content)
 
     @Query("SELECT * FROM Content WHERE episodeUrl =:episodeUrl")
-    fun getEpisodeContent(episodeUrl: String): Content
+    suspend fun getEpisodeContent(episodeUrl: String): Content
 
     @Update
     suspend fun updateEpisode(content: Content)

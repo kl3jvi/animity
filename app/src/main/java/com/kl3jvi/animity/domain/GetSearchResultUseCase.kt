@@ -1,9 +1,9 @@
 package com.kl3jvi.animity.domain
 
 import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.repository.SearchRepository
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.repository.SearchRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,37 +19,39 @@ class GetSearchResultUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    fun getSearchData(searchQuery: String): Flow<Resource<List<AnimeMetaModel>>> = flow {
-        try {
-            emit(Resource.Loading())
-            val response =
-                Constants.parseList(
-                    searchRepository.fetchSearchData(
-                        Constants.getHeader(),
-                        searchQuery,
-                        1
-                    ).string(),
-                    Constants.TYPE_MOVIE
-                ).toList()
-            emit(
-                Resource.Success(
-                    data = response
-                )
-            )
-        } catch (e: HttpException) {
-            emit(
-                Resource.Error(
-                    message = e.localizedMessage ?: "An unexpected error occurred",
-                )
-            )
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(
-                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-
+    operator fun invoke(searchQuery: String): Flow<Resource<List<AnimeMetaModel>>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+                val response =
+                    Constants.parseList(
+                        searchRepository.fetchSearchData(
+                            Constants.getHeader(),
+                            searchQuery,
+                            1
+                        ).string(),
+                        Constants.TYPE_MOVIE
+                    ).toList()
+                emit(
+                    Resource.Success(
+                        data = response
                     )
-            )
-        }
-    }.flowOn(ioDispatcher)
+                )
+            } catch (e: HttpException) {
+                emit(
+                    Resource.Error(
+                        message = e.localizedMessage ?: "An unexpected error occurred",
+                    )
+                )
+            } catch (e: IOException) {
+                emit(
+                    Resource.Error(
+                        e.localizedMessage
+                            ?: "Couldn't reach server. Check your internet connection.",
+
+                        )
+                )
+            }
+        }.flowOn(ioDispatcher)
 
 }

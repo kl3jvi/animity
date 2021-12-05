@@ -15,7 +15,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
     private val playerRepository: PlayerRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    fun fetchEpisodeMediaUrl(url: String) = flow {
+   operator fun invoke(url: String) = flow {
         emit(Resource.Loading())
         try {
             val response = HtmlParser.parseMediaUrl(

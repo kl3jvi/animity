@@ -3,19 +3,18 @@ package com.kl3jvi.animity.ui.fragments.search
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getSearchResultUseCase: GetSearchResultUseCase,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _query = MutableLiveData<String>()
-
     val searchResult = Transformations.switchMap(_query) { query ->
-        getSearchResultUseCase.getSearchData(query)
-            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        getSearchResultUseCase(query).asLiveData(ioDispatcher + viewModelScope.coroutineContext)
     }
 
     fun passQuery(query: String) {

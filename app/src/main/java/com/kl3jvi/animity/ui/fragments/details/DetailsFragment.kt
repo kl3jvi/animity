@@ -83,8 +83,7 @@ class DetailsFragment : Fragment() {
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
-                episodeAdapter =
-                    CustomEpisodeAdapter(this@DetailsFragment, animeInfo.title)
+                episodeAdapter = CustomEpisodeAdapter(this@DetailsFragment, animeInfo.title)
                 resultTitle.text = animeInfo.title
 
                 title = animeInfo.title
@@ -129,6 +128,7 @@ class DetailsFragment : Fragment() {
                             }
                         }
                         info.genre.forEach { data ->
+                            binding.genreGroup.removeAllViews()
                             val chip = Chip(requireContext())
                             chip.apply {
                                 text = data.genreName
@@ -234,7 +234,6 @@ class DetailsFragment : Fragment() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.hideBottomNavBar()
-            episodeAdapter
         }
     }
 

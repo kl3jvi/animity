@@ -60,6 +60,8 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
     lateinit var content: Content
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
@@ -79,7 +81,6 @@ class PlayerActivity : AppCompatActivity() {
 
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
-
 
         }
     }
@@ -154,6 +155,7 @@ class PlayerActivity : AppCompatActivity() {
                                 exoPlayer.seekTo(playbackPosition)
                                 exoPlayer.prepare()
                             }
+
                         player!!.addListener(object : Player.Listener {
                             override fun onPlayerStateChanged(
                                 playWhenReady: Boolean,
@@ -206,12 +208,18 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (::content.isInitialized)
+            insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
+    }
 
     private fun initialisePlayerLayout() {
 
         val backButton = viewBinding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
-            insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
+            if (::content.isInitialized)
+                insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
             finish()
         }
 
@@ -235,11 +243,6 @@ class PlayerActivity : AppCompatActivity() {
         fullView.setOnClickListener {
             toggleFullView()
         }
-    }
-
-    private fun getVideoDurationSeconds(player: ExoPlayer): Long {
-        val timeMs = player.duration
-        return timeMs / 1000
     }
 
     private fun showQualityDialog() {

@@ -40,12 +40,9 @@ class DetailsViewModel @Inject constructor(
         }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
     }
 
-
-
-
     @ExperimentalCoroutinesApi
     val downloadEpisodeUrl = Transformations.switchMap(_downloadUrl) { url ->
-        getEpisodeInfoUseCase.fetchEpisodeMediaUrl(url).flatMapLatest { episodeInfo ->
+        getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
             getEpisodeInfoUseCase.fetchM3U8(episodeInfo.data?.vidCdnUrl)
         }.asLiveData()
     }

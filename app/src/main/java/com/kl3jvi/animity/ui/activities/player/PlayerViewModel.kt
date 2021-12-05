@@ -28,7 +28,7 @@ class PlayerViewModel @Inject constructor(
 
     @ExperimentalCoroutinesApi
     val videoUrlLiveData = Transformations.switchMap(_vidUrl) { url ->
-        getEpisodeInfoUseCase.fetchEpisodeMediaUrl(url).flatMapLatest { episodeInfo ->
+        getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
             getEpisodeInfoUseCase.fetchM3U8(episodeInfo.data?.vidCdnUrl)
         }.asLiveData()
     }
@@ -52,5 +52,6 @@ class PlayerViewModel @Inject constructor(
             }
         }
     }
+
 
 }
