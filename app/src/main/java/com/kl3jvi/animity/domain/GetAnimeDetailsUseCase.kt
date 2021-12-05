@@ -73,8 +73,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
 
             response.map {
                 if (episodeDao.isEpisodeOnDatabase(it.episodeUrl)) {
-                    it.percentage =
-                        episodeDao.getEpisodeContent(it.episodeUrl).getWatchedPercentage()
+                    it.percentage = episodeDao.getEpisodeContent(it.episodeUrl).getWatchedPercentage()
                 }
             }
 

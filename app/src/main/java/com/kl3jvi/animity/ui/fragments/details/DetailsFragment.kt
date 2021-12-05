@@ -35,6 +35,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.internal.notify
 import javax.inject.Inject
 
 
@@ -197,6 +198,7 @@ class DetailsFragment : Fragment() {
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.submitList(episodeList.reversed())
                 binding.detailsProgress.visibility = View.GONE
+                binding.resultEpisodesText.text = "${episodeList.size} Episodes"
                 var check = false
                 binding.imageButton.setOnClickListener {
                     check = if (!check) {
@@ -232,8 +234,11 @@ class DetailsFragment : Fragment() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.hideBottomNavBar()
+            episodeAdapter
         }
     }
+
+
 
     private fun showSnack(message: String?) {
         val snack =

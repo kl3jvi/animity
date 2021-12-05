@@ -248,7 +248,6 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:text=""
                     android:textColor="@color/textColor"
                     android:textSize="17sp"
                     android:textStyle="normal"

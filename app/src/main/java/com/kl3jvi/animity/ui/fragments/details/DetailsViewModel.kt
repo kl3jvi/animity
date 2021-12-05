@@ -3,8 +3,9 @@ package com.kl3jvi.animity.ui.fragments.details
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
-import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.persistence.AnimeRepository
+import com.kl3jvi.animity.persistence.EpisodeDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
     private val animeRepository: AnimeRepository,
-    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase
+    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
+    private val episodeDao: EpisodeDao
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
@@ -37,6 +39,9 @@ class DetailsViewModel @Inject constructor(
             )
         }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
     }
+
+
+
 
     @ExperimentalCoroutinesApi
     val downloadEpisodeUrl = Transformations.switchMap(_downloadUrl) { url ->
