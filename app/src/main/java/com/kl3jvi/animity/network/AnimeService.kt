@@ -1,5 +1,8 @@
 package com.kl3jvi.animity.network
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kl3jvi.animity.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -83,6 +86,7 @@ interface AnimeService {
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
+
             return Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .client(client)
