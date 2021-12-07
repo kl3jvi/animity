@@ -22,6 +22,8 @@ class PlayerViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _vidUrl = MutableLiveData<String>()
+    private var _playBackPosition = MutableLiveData<Long>()
+
     fun updateEpisodeUrl(vidUrl: String) {
         _vidUrl.value = vidUrl
     }
@@ -42,7 +44,6 @@ class PlayerViewModel @Inject constructor(
         }
     }.flowOn(Dispatchers.Main).asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
 
-
     fun insertOrUpdate(content: Content) {
         viewModelScope.launch {
             if (episodeDao.isEpisodeOnDatabase(content.episodeUrl) && content.watchedDuration > 0) {
@@ -53,5 +54,12 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-
+    fun getPlaybackPosition(episodeUrl: String): LiveData<Long> {
+        viewModelScope.launch {
+            if (episodeDao.isEpisodeOnDatabase(episodeUrl)) {
+                _playBackPosition.value = episodeDao.getEpisodeContent(episodeUrl).watchedDuration
+            }
+        }
+        return _playBackPosition
+    }
 }

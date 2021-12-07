@@ -237,8 +237,6 @@ class DetailsFragment : Fragment() {
         }
     }
 
-
-
     private fun showSnack(message: String?) {
         val snack =
             Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)

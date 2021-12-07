@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.activities.player
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -81,7 +82,7 @@ class PlayerActivity : AppCompatActivity() {
 
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
-
+            Log.e("Playback position",playbackPosition.toString())
         }
     }
 
@@ -152,9 +153,14 @@ class PlayerActivity : AppCompatActivity() {
                                     buildMediaSource(mdItem)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
-                                exoPlayer.seekTo(playbackPosition)
+                                exoPlayer.seekTo(1471)
+                                Log.e("Playback position",playbackPosition.toString())
                                 exoPlayer.prepare()
                             }
+                        viewModel.getPlaybackPosition(episodeUrlLocal).observe(this@PlayerActivity,{
+                            player?.seekTo(it)
+                        })
+
 
                         player!!.addListener(object : Player.Listener {
                             override fun onPlayerStateChanged(
@@ -171,7 +177,6 @@ class PlayerActivity : AppCompatActivity() {
                                         duration = realDurationMillis
                                     }
                                 }
-
                             }
                         })
 
