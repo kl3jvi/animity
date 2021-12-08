@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.details
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.GetEpisodeInfoUseCase
@@ -47,12 +48,17 @@ class DetailsViewModel @Inject constructor(
         }.asLiveData()
     }
 
+    val lastEpisodeReleaseTime = Transformations.switchMap(_url){
+        getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData()
+    }
+
     val isOnDatabase = Transformations.switchMap(_animeId) { id ->
         getAnimeDetailsUseCase.checkIfExists(id).asLiveData()
     }
 
     fun passUrl(url: String) {
         _url.value = url
+        Log.e("Category URL",url)
     }
 
     fun passId(id: Int) {

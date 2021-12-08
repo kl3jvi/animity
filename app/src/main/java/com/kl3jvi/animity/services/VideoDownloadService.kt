@@ -17,6 +17,12 @@ import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Constants.Companion.getRandomId
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import com.google.android.exoplayer2.scheduler.PlatformScheduler
+
+import com.google.android.exoplayer2.util.Util
+
+
+
 
 @AndroidEntryPoint
 class VideoDownloadService :
@@ -71,7 +77,7 @@ class VideoDownloadService :
     }
 
     override fun getScheduler(): Scheduler? {
-        return null
+        return if (Util.SDK_INT >= 21) PlatformScheduler(this, 1) else null
     }
 
     override fun getForegroundNotification(

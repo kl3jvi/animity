@@ -20,6 +20,7 @@ class Constants {
         var BASE_URL = "https://www1.gogoanime.cm/"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
+        const val ANIME_SCHEDULE="https://animeschedule.net/anime"
 
         // Model Type
         private const val TYPE_RECENT_SUB = 1

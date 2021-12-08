@@ -2,6 +2,7 @@ package com.kl3jvi.animity.domain
 
 import com.kl3jvi.animity.model.AnimeInfoModel
 import com.kl3jvi.animity.model.EpisodeModel
+import com.kl3jvi.animity.model.EpisodeReleaseModel
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.repository.DetailsRepository
@@ -73,7 +74,8 @@ class GetAnimeDetailsUseCase @Inject constructor(
 
             response.map {
                 if (episodeDao.isEpisodeOnDatabase(it.episodeUrl)) {
-                    it.percentage = episodeDao.getEpisodeContent(it.episodeUrl).getWatchedPercentage()
+                    it.percentage =
+                        episodeDao.getEpisodeContent(it.episodeUrl).getWatchedPercentage()
                 }
             }
 
@@ -92,6 +94,36 @@ class GetAnimeDetailsUseCase @Inject constructor(
             emit(
                 Resource.Error(
                     e.localizedMessage ?: "Couldn't reach server. Check your internet connection."
+                )
+            )
+        }
+    }.flowOn(ioDispatcher)
+
+
+    fun fetchEpisodeReleaseTime(url: String): Flow<Resource<EpisodeReleaseModel>> = flow {
+        try {
+            emit(Resource.Loading())
+            val response =
+                HtmlParser.fetchEpisodeReleaseTime(
+                    detailsRepository.fetchEpisodeTimeRelease(
+                        url,
+                    ).string()
+                )
+            emit(
+                Resource.Success(
+                    data = response
+                )
+            )
+        } catch (e: HttpException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "An unexpected error occurred",
+                )
+            )
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
                 )
             )
         }

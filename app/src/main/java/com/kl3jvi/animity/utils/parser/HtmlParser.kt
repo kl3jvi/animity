@@ -186,6 +186,24 @@ object HtmlParser {
         return episodeList
     }
 
+    fun fetchEpisodeReleaseTime(response: String): EpisodeReleaseModel {
+        val document = Jsoup.parse(response)
+        var episodeNumber = ""
+        var time = ""
+        try {
+            episodeNumber =
+                document.getElementsByClass("release-time-type-text release-time-type-raw").first()
+                    .text()
+            time = document.getElementsByClass("release-time").first().text()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return EpisodeReleaseModel(
+            episodeTitle = episodeNumber,
+            time = time
+        )
+    }
+
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)

@@ -60,4 +60,5 @@
     <string name="title_settings">Settings</string>
     <string name="app_describe">test</string>
     <string name="download">Download</string>
+    <string name="next">Next: </string>
 </resources>

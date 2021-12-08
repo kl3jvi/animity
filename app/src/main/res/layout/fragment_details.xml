@@ -48,11 +48,13 @@
 
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
+
+
 
                         <TextView
                             android:id="@+id/result_title"
@@ -62,7 +64,7 @@
                             android:textColor="@color/textColor"
                             android:textSize="20sp"
                             android:textStyle="normal"
-                            tools:text="The Perfect Run The Perfect Run The Perfect Run" />
+                            tools:text="The Perfect " />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -149,6 +151,37 @@
                                 android:textStyle="normal"
                                 tools:text="2021 nda" />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/nextEpisodeContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/episodeToBeReleased"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3sp"
+                                android:paddingTop="3sp"
+                                android:text="@string/next"
+                                android:textColor="@color/grayTextColor"
+                                android:textSize="15sp"
+                                android:textStyle="normal"
+                                tools:text="Episode 13" />
+
+                            <TextView
+                                android:id="@+id/releaseTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="3sp"
+                                android:paddingTop="3sp"
+                                android:textColor="@color/textColor"
+                                android:textSize="15sp"
+                                android:textStyle="normal"
+                                tools:text=" Monday 13 Dec, 04:00 AM" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
 

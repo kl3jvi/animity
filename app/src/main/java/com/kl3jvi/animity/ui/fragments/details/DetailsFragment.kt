@@ -7,7 +7,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.core.app.NotificationCompat
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -35,7 +36,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import okhttp3.internal.notify
 import javax.inject.Inject
 
 
@@ -75,7 +75,7 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fetchAnimeInfo()
         fetchEpisodeList()
-
+        showLatestEpisodeReleaseTime()
         animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
@@ -242,6 +242,27 @@ class DetailsFragment : Fragment() {
             Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
         if (!snack.isShown) {
             snack.show()
+        }
+    }
+
+    private fun showLatestEpisodeReleaseTime() {
+        viewModel.lastEpisodeReleaseTime.observe(viewLifecycleOwner) { res ->
+            when (res) {
+                is Resource.Success -> {
+                    res.data?.let {
+                        if (it.time.isNotEmpty()) {
+                            binding.nextEpisodeContainer.visibility = VISIBLE
+                            binding.releaseTime.text = " ${it.time}"
+                        }else binding.nextEpisodeContainer.visibility = GONE
+                    }
+                }
+                is Resource.Error -> {
+                    binding.nextEpisodeContainer.visibility = GONE
+                }
+                is Resource.Loading -> {
+                    binding.nextEpisodeContainer.visibility = GONE
+                }
+            }
         }
     }
 

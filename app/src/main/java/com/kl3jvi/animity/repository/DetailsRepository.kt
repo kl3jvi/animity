@@ -16,4 +16,6 @@ class DetailsRepository @Inject constructor(private val apiHelper: AnimeService)
         endEpisode: String,
         alias: String
     ) = apiHelper.fetchEpisodeList(header = header, id = id, endEpisode = endEpisode, alias = alias)
+
+    suspend fun fetchEpisodeTimeRelease(episodeUrl: String) = apiHelper.fetchEpisodeTimeRelease(episodeUrl)
 }

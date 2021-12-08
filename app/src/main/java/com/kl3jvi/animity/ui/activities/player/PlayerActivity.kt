@@ -49,6 +49,7 @@ class PlayerActivity : AppCompatActivity() {
     private val viewModel: PlayerViewModel by viewModels()
     private var playWhenReady = true
     private var playbackPosition = 0L
+    private var seekForwardSeconds = 10000L
     private val speeds = arrayOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
     private val shownSpeed = arrayOf("0.25x", "0.50x", "1x", "1.25x", "1.50x", "2x")
     private var checkedItem = 2
@@ -145,6 +146,8 @@ class PlayerActivity : AppCompatActivity() {
                         player = ExoPlayer.Builder(this)
                             .setAudioAttributes(audioAttributes, true)
                             .setTrackSelector(trackSelector!!)
+                            .setSeekBackIncrementMs(seekForwardSeconds)
+                            .setSeekForwardIncrementMs(seekForwardSeconds)
                             .build()
                             .also { exoPlayer ->
                                 viewBinding.videoView.player = exoPlayer
@@ -153,8 +156,6 @@ class PlayerActivity : AppCompatActivity() {
                                     buildMediaSource(mdItem)
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
-                                exoPlayer.seekTo(1471)
-                                Log.e("Playback position",playbackPosition.toString())
                                 exoPlayer.prepare()
                             }
                         viewModel.getPlaybackPosition(episodeUrlLocal).observe(this@PlayerActivity,{
