@@ -49,7 +49,7 @@
             android:focusable="true"
             android:onClick="@{clickListener}"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:src="#60000000"
+            android:src="#33000000"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <androidx.appcompat.widget.AppCompatImageView
