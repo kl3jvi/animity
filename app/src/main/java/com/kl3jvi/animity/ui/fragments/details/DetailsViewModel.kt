@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
-import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import dagger.hilt.android.lifecycle.HiltViewModel

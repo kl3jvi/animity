@@ -4,7 +4,7 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
-import com.kl3jvi.animity.model.GenreModel
+import com.kl3jvi.animity.data.model.GenreModel
 import java.lang.reflect.Type
 import javax.inject.Inject
 

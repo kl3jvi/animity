@@ -10,7 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
-import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomFavoriteAdapter
 import dagger.hilt.android.AndroidEntryPoint

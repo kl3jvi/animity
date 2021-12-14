@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.model
+package com.kl3jvi.animity.data.model
 
 import android.os.Parcelable
 import androidx.room.Entity

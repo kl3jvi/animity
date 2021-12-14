@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
-import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
 class Constants {

@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
-import com.kl3jvi.animity.model.EpisodeModel
+import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.fragments.details.DetailsFragment
 import com.kl3jvi.animity.utils.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -73,7 +72,7 @@ class CustomEpisodeAdapter(
             oldItem: EpisodeModel,
             newItem: EpisodeModel
         ): Boolean {
-            return oldItem.episodeUrl == newItem.episodeUrl
+            return oldItem == newItem
         }
     }
 }

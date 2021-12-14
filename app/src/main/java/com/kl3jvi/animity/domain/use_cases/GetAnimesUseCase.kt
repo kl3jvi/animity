@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.domain.use_cases
 
-import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.repository.HomeRepositoryImpl
+import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.repository.HomeRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher

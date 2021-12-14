@@ -1,11 +1,10 @@
 package com.kl3jvi.animity.persistence
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.model.Content
+import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.Content
 import com.kl3jvi.animity.utils.Converters
 
 /**

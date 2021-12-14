@@ -1,8 +1,8 @@
-package com.kl3jvi.animity.repository
+package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.domain.repositories.HomeRepository
-import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.network.AnimeApiClient
+import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.network.AnimeApiClient
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_MOVIE
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_POPULAR_ANIME
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_RECENT_SUB

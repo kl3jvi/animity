@@ -1,8 +1,8 @@
-package com.kl3jvi.animity.repository
+package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.domain.repositories.SearchRepository
-import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.network.AnimeApiClient
+import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.network.AnimeApiClient
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_SEARCH
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import javax.inject.Inject

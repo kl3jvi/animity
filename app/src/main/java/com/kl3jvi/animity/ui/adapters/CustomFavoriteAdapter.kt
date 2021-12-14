@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
-import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragmentDirections
 
 class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.ViewHolder>(
@@ -74,7 +74,7 @@ private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
         oldItem: AnimeMetaModel,
         newItem: AnimeMetaModel
     ): Boolean {
-        return oldItem.imageUrl == newItem.imageUrl
+        return oldItem == newItem
     }
 }
 

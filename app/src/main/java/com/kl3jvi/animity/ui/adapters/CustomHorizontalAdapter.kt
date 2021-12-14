@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
-import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 
 class CustomHorizontalAdapter :
@@ -68,7 +68,7 @@ class CustomHorizontalAdapter :
             oldItem: AnimeMetaModel,
             newItem: AnimeMetaModel
         ): Boolean {
-            return oldItem.imageUrl == newItem.imageUrl
+            return oldItem == newItem
         }
     }
 }

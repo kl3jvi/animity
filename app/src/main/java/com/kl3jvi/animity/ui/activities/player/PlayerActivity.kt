@@ -28,8 +28,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
-import com.kl3jvi.animity.model.Content
-import com.kl3jvi.animity.model.EpisodeModel
+import com.kl3jvi.animity.data.model.Content
+import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Resource

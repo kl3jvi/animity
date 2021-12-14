@@ -1,11 +1,10 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.network.AnimeApiClient
-import com.kl3jvi.animity.network.AnimeService
-import com.kl3jvi.animity.repository.DetailsRepositoryImpl
-import com.kl3jvi.animity.repository.HomeRepositoryImpl
-import com.kl3jvi.animity.repository.PlayerRepositoryImpl
-import com.kl3jvi.animity.repository.SearchRepositoryImpl
+import com.kl3jvi.animity.data.network.AnimeApiClient
+import com.kl3jvi.animity.data.repository.DetailsRepositoryImpl
+import com.kl3jvi.animity.data.repository.HomeRepositoryImpl
+import com.kl3jvi.animity.data.repository.PlayerRepositoryImpl
+import com.kl3jvi.animity.data.repository.SearchRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

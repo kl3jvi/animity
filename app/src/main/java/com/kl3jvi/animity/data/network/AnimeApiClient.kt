@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.network
+package com.kl3jvi.animity.data.network
 
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.network
+package com.kl3jvi.animity.data.network
 
 import com.kl3jvi.animity.utils.Constants
 import okhttp3.ResponseBody

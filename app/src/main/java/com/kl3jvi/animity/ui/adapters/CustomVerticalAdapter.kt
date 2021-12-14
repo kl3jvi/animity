@@ -10,15 +10,14 @@ import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
-import com.kl3jvi.animity.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor
 import com.kl3jvi.animity.ui.fragments.home.HomeFragment
 
 class CustomVerticalAdapter(
     private val fragment: Fragment,
     private val list: ArrayList<AnimeMetaModel>
-) :
-    RecyclerView.Adapter<CustomVerticalAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CustomVerticalAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: ItemTodaySelectionBinding) : RecyclerView.ViewHolder(view.root) {
         val title = view.animeTitle

@@ -1,11 +1,11 @@
 package com.kl3jvi.animity.domain.use_cases
 
-import com.kl3jvi.animity.model.AnimeInfoModel
-import com.kl3jvi.animity.model.EpisodeModel
-import com.kl3jvi.animity.model.EpisodeReleaseModel
+import com.kl3jvi.animity.data.model.AnimeInfoModel
+import com.kl3jvi.animity.data.model.EpisodeModel
+import com.kl3jvi.animity.data.model.EpisodeReleaseModel
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.repository.DetailsRepositoryImpl
+import com.kl3jvi.animity.data.repository.DetailsRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher

@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.network.AnimeApiClient
-import com.kl3jvi.animity.network.AnimeService
+import com.kl3jvi.animity.data.network.AnimeApiClient
+import com.kl3jvi.animity.data.network.AnimeService
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides

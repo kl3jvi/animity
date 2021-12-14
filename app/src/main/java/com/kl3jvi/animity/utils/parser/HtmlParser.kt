@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.utils.parser
 
-import com.kl3jvi.animity.model.*
+import com.kl3jvi.animity.data.model.*
 import com.kl3jvi.animity.utils.Constants
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
