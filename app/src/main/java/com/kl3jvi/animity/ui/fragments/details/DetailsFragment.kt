@@ -10,7 +10,6 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +18,6 @@ import coil.request.CachePolicy
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -29,10 +27,12 @@ import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
+import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,7 +40,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class DetailsFragment : Fragment() {
+class DetailsFragment : BaseFragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -71,11 +71,11 @@ class DetailsFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun observeViewModel() {
         fetchAnimeInfo()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
+
         animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
@@ -96,6 +96,11 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    override fun initViews() {
+
+    }
+
+
     private fun fetchAnimeInfo() {
         viewModel.animeInfo.observe(viewLifecycleOwner) { res ->
             when (res) {
@@ -106,25 +111,25 @@ class DetailsFragment : Fragment() {
                         binding.status.text = info.status
                         binding.type.text = info.type
 
-                        binding.expandTextView.visibility = View.VISIBLE
-                        binding.releaseDate.visibility = View.VISIBLE
-                        binding.status.visibility = View.VISIBLE
-                        binding.type.visibility = View.VISIBLE
-                        binding.detailsProgress.visibility = View.VISIBLE
+                        binding.expandTextView.visibility = VISIBLE
+                        binding.releaseDate.visibility = VISIBLE
+                        binding.status.visibility = VISIBLE
+                        binding.type.visibility = VISIBLE
+                        binding.detailsProgress.visibility = VISIBLE
 
                         // Check if the type is movie and this makes invisible the listview of the episodes
                         if (info.type == " Movie") {
                             binding.apply {
-                                resultEpisodesText.visibility = View.GONE
-                                binding.episodeListRecycler.visibility = View.GONE
-                                resultPlayMovie.visibility = View.VISIBLE
-                                imageButton.visibility = View.GONE
+                                resultEpisodesText.visibility = GONE
+                                binding.episodeListRecycler.visibility = GONE
+                                resultPlayMovie.visibility = VISIBLE
+                                imageButton.visibility = GONE
                             }
                         } else {
                             binding.apply {
-                                resultEpisodesText.visibility = View.VISIBLE
-                                resultPlayMovie.visibility = View.GONE
-                                episodeListRecycler.visibility = View.VISIBLE
+                                resultEpisodesText.visibility = VISIBLE
+                                resultPlayMovie.visibility = GONE
+                                episodeListRecycler.visibility = VISIBLE
                             }
                         }
                         info.genre.forEach { data ->
@@ -142,13 +147,13 @@ class DetailsFragment : Fragment() {
                     }
                 }
                 is Resource.Loading -> {
-                    binding.expandTextView.visibility = View.GONE
-                    binding.releaseDate.visibility = View.GONE
-                    binding.status.visibility = View.GONE
-                    binding.type.visibility = View.GONE
+                    binding.expandTextView.visibility = GONE
+                    binding.releaseDate.visibility = GONE
+                    binding.status.visibility = GONE
+                    binding.type.visibility = GONE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(binding.root, res.message)
                 }
             }
         }
@@ -179,12 +184,12 @@ class DetailsFragment : Fragment() {
                 check = if (!check) {
                     menu[0].setIcon(R.drawable.ic_favorite_complete)
                     viewModel.insert(anime = args.animeDetails)
-                    showSnack("Anime added to Favorites")
+                    showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
                     menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
                     viewModel.delete(args.animeDetails)
-                    showSnack("Anime removed from Favorites")
+                    showSnack(binding.root, "Anime removed from Favorites")
                     false
                 }
             }
@@ -197,7 +202,7 @@ class DetailsFragment : Fragment() {
         viewModel.episodeList.observe(viewLifecycleOwner) { episodeListResponse ->
             episodeListResponse.data?.let { episodeList ->
                 episodeAdapter.submitList(episodeList.reversed())
-                binding.detailsProgress.visibility = View.GONE
+                binding.detailsProgress.visibility = GONE
                 binding.resultEpisodesText.text = "${episodeList.size} Episodes"
                 var check = false
                 binding.imageButton.setOnClickListener {
@@ -221,10 +226,10 @@ class DetailsFragment : Fragment() {
                         intent.putExtra(Constants.EPISODE_DETAILS, episodeList.first())
                         intent.putExtra(Constants.ANIME_TITLE, title)
                         requireContext().startActivity(intent)
-                        binding.resultPlayMovie.visibility = View.VISIBLE
+                        binding.resultPlayMovie.visibility = VISIBLE
                     }
                 } else {
-                    binding.resultPlayMovie.visibility = View.GONE
+                    binding.resultPlayMovie.visibility = GONE
                 }
             }
         }
@@ -237,13 +242,6 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun showSnack(message: String?) {
-        val snack =
-            Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
-        if (!snack.isShown) {
-            snack.show()
-        }
-    }
 
     private fun showLatestEpisodeReleaseTime() {
         viewModel.lastEpisodeReleaseTime.observe(viewLifecycleOwner) { res ->
@@ -253,7 +251,7 @@ class DetailsFragment : Fragment() {
                         if (it.time.isNotEmpty()) {
                             binding.nextEpisodeContainer.visibility = VISIBLE
                             binding.releaseTime.text = " ${it.time}"
-                        }else binding.nextEpisodeContainer.visibility = GONE
+                        } else binding.nextEpisodeContainer.visibility = GONE
                     }
                 }
                 is Resource.Error -> {
@@ -275,7 +273,7 @@ class DetailsFragment : Fragment() {
                     downloadEpisode(res.data.toString())
                 }
                 is Resource.Error -> {
-                    showSnack("Downloading Error")
+                    showSnack(binding.root, "Downloading Error")
                 }
                 is Resource.Loading -> {
                     Log.e("Episode Download", "Loading")

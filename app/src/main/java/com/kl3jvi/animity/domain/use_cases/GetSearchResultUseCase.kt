@@ -1,7 +1,7 @@
-package com.kl3jvi.animity.domain
+package com.kl3jvi.animity.domain.use_cases
 
 import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.repository.SearchRepository
+import com.kl3jvi.animity.repository.SearchRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,23 +15,18 @@ import javax.inject.Singleton
 
 @Singleton
 class GetSearchResultUseCase @Inject constructor(
-    private val searchRepository: SearchRepository,
+    private val searchRepository: SearchRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-
     operator fun invoke(searchQuery: String): Flow<Resource<List<AnimeMetaModel>>> =
         flow {
             try {
                 emit(Resource.Loading())
-                val response =
-                    Constants.parseList(
-                        searchRepository.fetchSearchData(
-                            Constants.getHeader(),
-                            searchQuery,
-                            1
-                        ).string(),
-                        Constants.TYPE_MOVIE
-                    ).toList()
+                val response = searchRepository.fetchSearchData(
+                    Constants.getHeader(),
+                    searchQuery,
+                    1
+                ).toList()
                 emit(
                     Resource.Success(
                         data = response

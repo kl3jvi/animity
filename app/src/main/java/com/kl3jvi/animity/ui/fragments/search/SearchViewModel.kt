@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.search
 
 import androidx.lifecycle.*
-import com.kl3jvi.animity.domain.GetSearchResultUseCase
+import com.kl3jvi.animity.domain.use_cases.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject

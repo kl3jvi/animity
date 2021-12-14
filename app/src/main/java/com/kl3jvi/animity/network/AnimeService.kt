@@ -1,18 +1,8 @@
 package com.kl3jvi.animity.network
 
-import android.content.Context
-import com.chuckerteam.chucker.api.ChuckerCollector
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kl3jvi.animity.utils.Constants
-import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.HeaderMap
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 /**
  * Used to connect to the GogoAnime page to fetch animes
@@ -79,20 +69,26 @@ interface AnimeService {
         @Query("page") page: Int
     ): ResponseBody
 
-    companion object {
-        fun create(): AnimeService {
-            val logger =
-                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
-            val client = OkHttpClient.Builder()
-                .addInterceptor(logger)
-                .build()
+    @GET(Constants.ANIME_SCHEDULE + "/{episodeUrl}")
+    suspend fun fetchEpisodeTimeRelease(
+        @Path("episodeUrl") episodeUrl: String
+    ): ResponseBody
 
-            return Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(AnimeService::class.java)
-        }
-    }
+
+//    companion object {
+//        fun create(): AnimeService {
+//            val logger =
+//                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+//            val client = OkHttpClient.Builder()
+//                .addInterceptor(logger)
+//                .build()
+//
+//            return Retrofit.Builder()
+//                .baseUrl(Constants.BASE_URL)
+//                .client(client)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(AnimeService::class.java)
+//        }
+//    }
 }

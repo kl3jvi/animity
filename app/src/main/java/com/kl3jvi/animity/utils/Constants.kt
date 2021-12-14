@@ -2,7 +2,9 @@ package com.kl3jvi.animity.utils
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
@@ -23,11 +25,12 @@ class Constants {
         const val ANIME_SCHEDULE="https://animeschedule.net/anime"
 
         // Model Type
-        private const val TYPE_RECENT_SUB = 1
+        const val TYPE_RECENT_SUB = 1
         const val TYPE_POPULAR_ANIME = 2
         const val TYPE_RECENT_DUB = 3
         const val TYPE_MOVIE = 4
         const val TYPE_NEW_SEASON = 5
+        const val TYPE_SEARCH = 6
 
         const val DOWNLOAD_CHANNEL_ID = "animity.channel.id"
         const val DOWNLOAD_CHANNEL_NAME = "Downloads"
@@ -94,5 +97,13 @@ class Constants {
         }
 
         fun getRandomId(): Int = System.currentTimeMillis().toInt()
+
+        fun showSnack(view: View, message: String?) {
+            val snack =
+                Snackbar.make(view, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
+            if (!snack.isShown) {
+                snack.show()
+            }
+        }
     }
 }

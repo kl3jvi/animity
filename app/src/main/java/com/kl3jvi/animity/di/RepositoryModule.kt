@@ -1,10 +1,11 @@
 package com.kl3jvi.animity.di
 
+import com.kl3jvi.animity.network.AnimeApiClient
 import com.kl3jvi.animity.network.AnimeService
-import com.kl3jvi.animity.repository.DetailsRepository
-import com.kl3jvi.animity.repository.HomeRepository
-import com.kl3jvi.animity.repository.PlayerRepository
-import com.kl3jvi.animity.repository.SearchRepository
+import com.kl3jvi.animity.repository.DetailsRepositoryImpl
+import com.kl3jvi.animity.repository.HomeRepositoryImpl
+import com.kl3jvi.animity.repository.PlayerRepositoryImpl
+import com.kl3jvi.animity.repository.SearchRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,33 +18,33 @@ object RepositoryModule {
     @Provides
     @ViewModelScoped
     fun provideDetailsRepository(
-        apiHelper: AnimeService
-    ): DetailsRepository {
-        return DetailsRepository(apiHelper)
+        apiClient: AnimeApiClient
+    ): DetailsRepositoryImpl {
+        return DetailsRepositoryImpl(apiClient)
     }
 
     @Provides
     @ViewModelScoped
     fun provideHomeRepository(
-        apiHelper: AnimeService
-    ): HomeRepository {
-        return HomeRepository(apiHelper)
+        apiClient: AnimeApiClient
+    ): HomeRepositoryImpl {
+        return HomeRepositoryImpl(apiClient)
     }
 
     @Provides
     @ViewModelScoped
     fun provideSearchRepository(
-        apiHelper: AnimeService
-    ): SearchRepository {
-        return SearchRepository(apiHelper)
+        apiClient: AnimeApiClient
+    ): SearchRepositoryImpl {
+        return SearchRepositoryImpl(apiClient)
     }
 
     @Provides
     @ViewModelScoped
     fun providePlayerRepository(
-        apiHelper: AnimeService
-    ): PlayerRepository {
-        return PlayerRepository(apiHelper)
+        apiClient: AnimeApiClient
+    ): PlayerRepositoryImpl {
+        return PlayerRepositoryImpl(apiClient)
     }
 
 }

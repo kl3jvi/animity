@@ -1,14 +1,13 @@
-package com.kl3jvi.animity.domain
+package com.kl3jvi.animity.domain.use_cases
 
 import com.kl3jvi.animity.model.AnimeInfoModel
 import com.kl3jvi.animity.model.EpisodeModel
 import com.kl3jvi.animity.model.EpisodeReleaseModel
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.repository.DetailsRepository
+import com.kl3jvi.animity.repository.DetailsRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,7 +19,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetAnimeDetailsUseCase @Inject constructor(
-    private val detailsRepository: DetailsRepository,
+    private val detailsRepository: DetailsRepositoryImpl,
     private val animeRepository: AnimeRepository,
     private val episodeDao: EpisodeDao,
     private val ioDispatcher: CoroutineDispatcher
@@ -28,13 +27,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                HtmlParser.parseAnimeInfo(
-                    detailsRepository.fetchAnimeInfo(
-                        Constants.getHeader(),
-                        url,
-                    ).string()
-                )
+            val response = detailsRepository.fetchAnimeInfo(Constants.getHeader(), url)
             emit(
                 Resource.Success(
                     data = response
@@ -62,16 +55,14 @@ class GetAnimeDetailsUseCase @Inject constructor(
     ): Flow<Resource<List<EpisodeModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                HtmlParser.fetchEpisodeList(
-                    detailsRepository.fetchEpisodeList(
-                        header = Constants.getHeader(),
-                        id = id ?: "",
-                        endEpisode = endEpisode ?: "0",
-                        alias = alias ?: ""
-                    ).string()
-                ).toList()
+            val response = detailsRepository.fetchEpisodeList(
+                header = Constants.getHeader(),
+                id = id ?: "",
+                endEpisode = endEpisode ?: "0",
+                alias = alias ?: ""
+            ).toList()
 
+            // TODO bej nje listener per databazen me flow ose livedata qe te listen ndryshimet!!!
             response.map {
                 if (episodeDao.isEpisodeOnDatabase(it.episodeUrl)) {
                     it.percentage =
@@ -103,12 +94,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
     fun fetchEpisodeReleaseTime(url: String): Flow<Resource<EpisodeReleaseModel>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                HtmlParser.fetchEpisodeReleaseTime(
-                    detailsRepository.fetchEpisodeTimeRelease(
-                        url,
-                    ).string()
-                )
+            val response = detailsRepository.fetchEpisodeTimeRelease(url)
             emit(
                 Resource.Success(
                     data = response

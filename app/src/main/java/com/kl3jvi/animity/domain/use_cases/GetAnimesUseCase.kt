@@ -1,7 +1,7 @@
-package com.kl3jvi.animity.domain
+package com.kl3jvi.animity.domain.use_cases
 
 import com.kl3jvi.animity.model.AnimeMetaModel
-import com.kl3jvi.animity.repository.HomeRepository
+import com.kl3jvi.animity.repository.HomeRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,22 +15,18 @@ import javax.inject.Singleton
 
 @Singleton
 class GetAnimesUseCase @Inject constructor(
-    private val homeRepository: HomeRepository,
+    private val homeRepository: HomeRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
     fun fetchRecentSubOrDub(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                Constants.parseList(
-                    homeRepository.fetchRecentSubOrDub(
-                        Constants.getHeader(),
-                        1,
-                        Constants.TYPE_RECENT_DUB
-                    ).string(),
-                    Constants.TYPE_RECENT_DUB
-                ).toList()
+            val response = homeRepository.fetchRecentSubOrDub(
+                Constants.getHeader(),
+                1,
+                Constants.TYPE_RECENT_DUB
+            ).toList()
             emit(
                 Resource.Success(
                     data = response
@@ -54,14 +50,7 @@ class GetAnimesUseCase @Inject constructor(
     fun fetchTodaySelectionAnime(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                Constants.parseList(
-                    homeRepository.fetchPopularFromAjax(
-                        Constants.getHeader(),
-                        1
-                    ).string(),
-                    Constants.TYPE_POPULAR_ANIME
-                ).toList()
+            val response = homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1).toList()
             emit(
                 Resource.Success(
                     data = response
@@ -85,14 +74,7 @@ class GetAnimesUseCase @Inject constructor(
     fun fetchNewSeason(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                Constants.parseList(
-                    homeRepository.fetchNewSeason(
-                        Constants.getHeader(),
-                        1
-                    ).string(),
-                    Constants.TYPE_NEW_SEASON
-                ).toList()
+            val response = homeRepository.fetchNewSeason(Constants.getHeader(), 1).toList()
             emit(
                 Resource.Success(
                     data = response
@@ -116,14 +98,7 @@ class GetAnimesUseCase @Inject constructor(
     fun fetchMovies(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response =
-                Constants.parseList(
-                    homeRepository.fetchMovies(
-                        Constants.getHeader(),
-                        1
-                    ).string(),
-                    Constants.TYPE_MOVIE
-                ).toList()
+            val response = homeRepository.fetchMovies(Constants.getHeader(), 1).toList()
             emit(
                 Resource.Success(
                     data = response
