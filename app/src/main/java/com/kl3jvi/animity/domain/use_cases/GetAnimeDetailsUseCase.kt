@@ -3,9 +3,9 @@ package com.kl3jvi.animity.domain.use_cases
 import com.kl3jvi.animity.data.model.AnimeInfoModel
 import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.data.model.EpisodeReleaseModel
+import com.kl3jvi.animity.data.repository.DetailsRepositoryImpl
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.data.repository.DetailsRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -63,12 +63,6 @@ class GetAnimeDetailsUseCase @Inject constructor(
             ).toList()
 
             // TODO bej nje listener per databazen me flow ose livedata qe te listen ndryshimet!!!
-            response.map {
-                if (episodeDao.isEpisodeOnDatabase(it.episodeUrl)) {
-                    it.percentage =
-                        episodeDao.getEpisodeContent(it.episodeUrl).getWatchedPercentage()
-                }
-            }
 
             emit(
                 Resource.Success(
