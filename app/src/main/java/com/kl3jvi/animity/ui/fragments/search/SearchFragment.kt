@@ -5,23 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
-import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomSearchAdapter
+import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -44,30 +42,28 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViews()
+    override fun observeViewModel() {
         getSearchData()
-        val sv = binding.mainSearch
-        sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextSubmit(query: String): Boolean {
-                // task HERE
-                viewModel.passQuery(query)
-                return false
-            }
-        })
     }
 
-    private fun initViews() {
-        binding.searchRecycler.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true)
-            searchAdapter = CustomSearchAdapter()
-            adapter = searchAdapter
+    override fun initViews() {
+        binding.apply{
+            searchRecycler.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                setHasFixedSize(true)
+                searchAdapter = CustomSearchAdapter()
+                adapter = searchAdapter
+            }
+            mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    viewModel.passQuery(query)
+                    return false
+                }
+            })
         }
     }
 
@@ -86,24 +82,9 @@ class SearchFragment : Fragment() {
                     binding.noSearchResult.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(binding.root, res.message)
                 }
             }
-        }
-    }
-
-    fun navigateToDetails(animeDetails: AnimeMetaModel) {
-        try {
-            findNavController().navigate(
-                SearchFragmentDirections.actionNavigationExploreToNavigationDetails(
-                    animeDetails
-                )
-            )
-            if (requireActivity() is MainActivity) {
-                (activity as MainActivity?)?.hideBottomNavBar()
-            }
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
         }
     }
 
@@ -119,10 +100,4 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showSnack(message: String?) {
-        val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
-        if (!snack.isShown) {
-            snack.show()
-        }
-    }
 }

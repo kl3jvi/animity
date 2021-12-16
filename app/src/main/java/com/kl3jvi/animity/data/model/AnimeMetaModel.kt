@@ -21,5 +21,5 @@ data class AnimeMetaModel(
     @ColumnInfo var genreList: List<GenreModel>? = null,
     @ColumnInfo var releasedDate: String? = null,
     @ColumnInfo(name = "favorite_anime") var favoriteAnime: Boolean = false,
-    @ColumnInfo var synopsis: String? = null
+    @ColumnInfo var synopsis: String? = null,
 ) : Parcelable

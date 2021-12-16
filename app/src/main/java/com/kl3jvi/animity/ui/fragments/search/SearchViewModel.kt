@@ -1,9 +1,13 @@
 package com.kl3jvi.animity.ui.fragments.search
 
 import androidx.lifecycle.*
+import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +20,8 @@ class SearchViewModel @Inject constructor(
     val searchResult = Transformations.switchMap(_query) { query ->
         getSearchResultUseCase(query).asLiveData(ioDispatcher + viewModelScope.coroutineContext)
     }
+
+
 
     fun passQuery(query: String) {
         _query.value = query

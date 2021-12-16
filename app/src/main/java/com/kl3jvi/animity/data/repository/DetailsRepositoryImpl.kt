@@ -1,10 +1,10 @@
 package com.kl3jvi.animity.data.repository
 
-import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.data.model.AnimeInfoModel
 import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.data.model.EpisodeReleaseModel
 import com.kl3jvi.animity.data.network.AnimeApiClient
+import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import javax.inject.Inject
 import javax.inject.Singleton

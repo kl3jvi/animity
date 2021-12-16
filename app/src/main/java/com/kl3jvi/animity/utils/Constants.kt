@@ -19,7 +19,7 @@ class Constants {
         const val SAVE_DIRECTORY = "Animity"
 
         // Base URLS
-        var BASE_URL = "https://www1.gogoanime.cm/"
+        var BASE_URL = "https://gogoanime.wiki"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
         const val ANIME_SCHEDULE="https://animeschedule.net/anime"

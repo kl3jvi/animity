@@ -61,7 +61,7 @@ class CustomHorizontalAdapter :
             oldItem: AnimeMetaModel,
             newItem: AnimeMetaModel
         ): Boolean {
-            return oldItem.imageUrl == newItem.imageUrl
+            return oldItem.toString() == newItem.toString()
         }
 
         override fun areContentsTheSame(

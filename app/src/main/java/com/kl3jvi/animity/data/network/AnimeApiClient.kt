@@ -5,21 +5,31 @@ import javax.inject.Inject
 class AnimeApiClient @Inject constructor(
     private val animeService: AnimeService
 ) {
+    suspend fun fetchRecentSubOrDub(
+        header: Map<String, String>,
+        page: Int,
+        type: Int
+    ) = animeService.fetchRecentSubOrDub(header, page, type)
 
-    suspend fun fetchRecentSubOrDub(header: Map<String, String>, page: Int, type: Int) =
-        animeService.fetchRecentSubOrDub(header, page, type)
+    suspend fun fetchPopularFromAjax(
+        header: Map<String, String>,
+        page: Int
+    ) = animeService.fetchPopularFromAjax(header, page)
 
-    suspend fun fetchPopularFromAjax(header: Map<String, String>, page: Int) =
-        animeService.fetchPopularFromAjax(header, page)
+    suspend fun fetchNewSeason(
+        header: Map<String, String>,
+        page: Int
+    ) = animeService.fetchNewestSeason(header, page)
 
-    suspend fun fetchNewSeason(header: Map<String, String>, page: Int) =
-        animeService.fetchNewestSeason(header, page)
+    suspend fun fetchMovies(
+        header: Map<String, String>,
+        page: Int
+    ) = animeService.fetchMovies(header, page)
 
-    suspend fun fetchMovies(header: Map<String, String>, page: Int) =
-        animeService.fetchMovies(header, page)
-
-    suspend fun fetchAnimeInfo(header: Map<String, String>, episodeUrl: String) =
-        animeService.fetchAnimeInfo(header, episodeUrl)
+    suspend fun fetchAnimeInfo(
+        header: Map<String, String>,
+        episodeUrl: String
+    ) = animeService.fetchAnimeInfo(header, episodeUrl)
 
     suspend fun fetchEpisodeList(
         header: Map<String, String>,

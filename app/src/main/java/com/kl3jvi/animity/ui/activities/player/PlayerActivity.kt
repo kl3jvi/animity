@@ -32,6 +32,7 @@ import com.kl3jvi.animity.data.model.Content
 import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -134,6 +135,7 @@ class PlayerActivity : AppCompatActivity() {
             when (res) {
                 is Resource.Success -> {
                     val videoM3U8Url = res.data.toString()
+                    Log.e("Anime Url",videoM3U8Url)
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())
@@ -198,7 +200,7 @@ class PlayerActivity : AppCompatActivity() {
                             }
                         })
                     } catch (e: ExoPlaybackException) {
-                        showSnack(e.localizedMessage)
+                        showSnack(viewBinding.root,e.localizedMessage)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -208,7 +210,7 @@ class PlayerActivity : AppCompatActivity() {
                     viewBinding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(viewBinding.root,res.message)
                 }
             }
         })
@@ -289,13 +291,7 @@ class PlayerActivity : AppCompatActivity() {
         viewBinding.videoView.keepScreenOn = isPlaying
     }
 
-    private fun showSnack(message: String?) {
-        val snack =
-            Snackbar.make(viewBinding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
-        if (!snack.isShown) {
-            snack.show()
-        }
-    }
+
 
     private fun showDialogForSpeedSelection() {
         val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)

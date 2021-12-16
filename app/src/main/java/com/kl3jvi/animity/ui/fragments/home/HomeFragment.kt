@@ -2,7 +2,6 @@ package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,19 +9,18 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
+import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -33,12 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var todayAdapter: CustomVerticalAdapter
     private lateinit var movieAdapter: CustomHorizontalAdapter
     private lateinit var snapHelper: SnapHelper
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firebaseAnalytics = Firebase.analytics
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,18 +41,14 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        apply {
-            initViews()
-            fetchRecentDub()
-            getNewSeason()
-            getMovies()
-            getTodaySelectionAnime()
-        }
+    override fun observeViewModel() {
+        fetchRecentDub()
+        getNewSeason()
+        getMovies()
+        getTodaySelectionAnime()
     }
 
-    private fun initViews() {
+    override fun initViews() {
         // recent sub adapter
         binding.recentSub.apply {
             layoutManager = LinearLayoutManager(
@@ -124,7 +112,7 @@ class HomeFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(binding.root,res.message)
                 }
             }
         })
@@ -143,7 +131,7 @@ class HomeFragment : Fragment() {
                     binding.newSeasonTv.visibility = View.GONE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(binding.root,res.message)
                 }
             }
         })
@@ -162,7 +150,7 @@ class HomeFragment : Fragment() {
                     binding.moviesTv.visibility = View.GONE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(binding.root,res.message)
                 }
             }
         })
@@ -182,7 +170,7 @@ class HomeFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(res.message)
+                    showSnack(binding.root,res.message)
                 }
             }
         })
@@ -195,7 +183,6 @@ class HomeFragment : Fragment() {
                     animeDetails
                 )
             )
-
             if (requireActivity() is MainActivity) {
                 (activity as MainActivity?)?.hideBottomNavBar()
             }
@@ -209,12 +196,6 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun showSnack(message: String?) {
-        val snack = Snackbar.make(binding.root, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
-        if (!snack.isShown) {
-            snack.show()
-        }
-    }
 
     override fun onResume() {
         super.onResume()

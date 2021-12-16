@@ -11,7 +11,9 @@ import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
 import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.Constants
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.withContext
 
 @ExperimentalCoroutinesApi
 class CustomEpisodeAdapter(
@@ -65,7 +67,7 @@ class CustomEpisodeAdapter(
             oldItem: EpisodeModel,
             newItem: EpisodeModel
         ): Boolean {
-            return oldItem.episodeUrl == newItem.episodeUrl
+            return oldItem.toString() == newItem.toString()
         }
 
         override fun areContentsTheSame(

@@ -7,32 +7,26 @@ import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService
+import com.google.android.exoplayer2.scheduler.PlatformScheduler
 import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.util.Util
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_DESCRIPTION
 import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
-import com.kl3jvi.animity.utils.Constants.Companion.getRandomId
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import com.google.android.exoplayer2.scheduler.PlatformScheduler
-
-import com.google.android.exoplayer2.util.Util
-
-
-
 
 @AndroidEntryPoint
-class VideoDownloadService :
-    DownloadService(
-        1,
-        DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
-        DOWNLOAD_CHANNEL_ID,
-        R.string.app_name,
-        R.string.title_home
-    ) {
+class VideoDownloadService : DownloadService(
+    1,
+    DEFAULT_FOREGROUND_NOTIFICATION_UPDATE_INTERVAL,
+    DOWNLOAD_CHANNEL_ID,
+    R.string.app_name,
+    R.string.title_home
+) {
     private lateinit var notificationHelper: DownloadNotificationHelper
     private lateinit var manager: DownloadManager
 
@@ -48,7 +42,6 @@ class VideoDownloadService :
     }
 
     override fun getDownloadManager(): DownloadManager {
-//        val appContainer = (applicationContext as AnimityApplication).appContainer
         manager = DownloadManager(
             this,
             exoDatabaseProvider,
