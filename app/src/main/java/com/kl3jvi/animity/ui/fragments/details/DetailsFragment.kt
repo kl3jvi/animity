@@ -40,13 +40,12 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class DetailsFragment : BaseFragment() {
+class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>() {
 
-    private var _binding: FragmentDetailsBinding? = null
-    private val binding get() = _binding!!
+
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
-    private val viewModel: DetailsViewModel by viewModels()
+    override val viewModel: DetailsViewModel by viewModels()
     private lateinit var episodeAdapter: CustomEpisodeAdapter
     private lateinit var menu: Menu
     private var title: String = ""
@@ -67,7 +66,6 @@ class DetailsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -296,6 +294,10 @@ class DetailsFragment : BaseFragment() {
             false
         )
     }
+
+    override fun getViewBinding(): FragmentDetailsBinding =
+        FragmentDetailsBinding.inflate(layoutInflater)
+
 
 }
 

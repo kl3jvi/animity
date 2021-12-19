@@ -13,18 +13,16 @@ import com.kl3jvi.animity.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoritesFragment : BaseFragment() {
-    private var _binding: FragmentFavoritesBinding? = null
-    private val binding get() = _binding!!
+class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBinding>() {
+
     private lateinit var favoriteAdapter: CustomFavoriteAdapter
-    private val viewModel: FavoritesViewModel by viewModels()
+    override val viewModel: FavoritesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -53,16 +51,13 @@ class FavoritesFragment : BaseFragment() {
         })
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
         }
     }
+
+    override fun getViewBinding(): FragmentFavoritesBinding =
+        FragmentFavoritesBinding.inflate(layoutInflater)
 }

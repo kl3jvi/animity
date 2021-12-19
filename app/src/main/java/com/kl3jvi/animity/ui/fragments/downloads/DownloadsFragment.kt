@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.offline.DownloadCursor
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.kl3jvi.animity.databinding.FragmentDownloadsBinding
@@ -12,27 +13,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DownloadsFragment : BaseFragment() {
-    private var _binding: FragmentDownloadsBinding? = null
-    private val binding get() = _binding!!
+class DownloadsFragment : BaseFragment<DownloadsViewModel, FragmentDownloadsBinding>() {
 
     @Inject
     lateinit var downloadManager: DownloadManager
-
-    override fun observeViewModel() {
-
-    }
-
-    override fun initViews() {
-
-    }
+    override val viewModel: DownloadsViewModel by viewModels()
+    override fun observeViewModel() {}
+    override fun initViews() {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDownloadsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,4 +42,7 @@ class DownloadsFragment : BaseFragment() {
         }
         return downloadedTracks
     }
+
+    override fun getViewBinding(): FragmentDownloadsBinding =
+        FragmentDownloadsBinding.inflate(layoutInflater)
 }

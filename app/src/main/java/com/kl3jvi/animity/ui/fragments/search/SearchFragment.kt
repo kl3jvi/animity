@@ -19,11 +19,10 @@ import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment() {
+class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: SearchViewModel by viewModels()
+
+    override val viewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: CustomSearchAdapter
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -37,8 +36,6 @@ class SearchFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -47,7 +44,7 @@ class SearchFragment : BaseFragment() {
     }
 
     override fun initViews() {
-        binding.apply{
+        binding.apply {
             searchRecycler.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
@@ -88,16 +85,14 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
         }
     }
+
+    override fun getViewBinding(): FragmentSearchBinding =
+        FragmentSearchBinding.inflate(layoutInflater)
 
 }

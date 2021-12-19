@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
@@ -20,11 +19,9 @@ import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by viewModels()
+    override val viewModel: HomeViewModel by viewModels()
 
     private lateinit var subAdapter: CustomHorizontalAdapter
     private lateinit var newSeasonAdapter: CustomHorizontalAdapter
@@ -37,7 +34,6 @@ class HomeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -58,7 +54,8 @@ class HomeFragment : BaseFragment() {
             subAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
             snapHelper = PagerSnapHelper()
-            snapHelper.attachToRecyclerView(this)
+            if (this.onFlingListener == null)
+                snapHelper.attachToRecyclerView(this);
             adapter = subAdapter
         }
 
@@ -71,7 +68,8 @@ class HomeFragment : BaseFragment() {
             newSeasonAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
             snapHelper = PagerSnapHelper()
-            snapHelper.attachToRecyclerView(this)
+            if (this.onFlingListener == null)
+                snapHelper.attachToRecyclerView(this);
             adapter = newSeasonAdapter
         }
 
@@ -84,7 +82,8 @@ class HomeFragment : BaseFragment() {
             movieAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
             snapHelper = PagerSnapHelper()
-            snapHelper.attachToRecyclerView(this)
+            if (this.onFlingListener == null)
+                snapHelper.attachToRecyclerView(this);
             adapter = movieAdapter
         }
 
@@ -112,7 +111,7 @@ class HomeFragment : BaseFragment() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(binding.root,res.message)
+                    showSnack(binding.root, res.message)
                 }
             }
         })
@@ -131,7 +130,7 @@ class HomeFragment : BaseFragment() {
                     binding.newSeasonTv.visibility = View.GONE
                 }
                 is Resource.Error -> {
-                    showSnack(binding.root,res.message)
+                    showSnack(binding.root, res.message)
                 }
             }
         })
@@ -150,7 +149,7 @@ class HomeFragment : BaseFragment() {
                     binding.moviesTv.visibility = View.GONE
                 }
                 is Resource.Error -> {
-                    showSnack(binding.root,res.message)
+                    showSnack(binding.root, res.message)
                 }
             }
         })
@@ -170,7 +169,7 @@ class HomeFragment : BaseFragment() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(binding.root,res.message)
+                    showSnack(binding.root, res.message)
                 }
             }
         })
@@ -191,16 +190,12 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
         }
     }
+
+    override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
 }
