@@ -69,7 +69,7 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         firebaseAnalytics = Firebase.analytics
-
+        savedInstanceState?.putString("test","12324")
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
             animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE).toString()
@@ -134,8 +134,8 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.videoUrlLiveData.observe(this, { res ->
             when (res) {
                 is Resource.Success -> {
-                    val videoM3U8Url = res.data.toString()
-                    Log.e("Anime Url",videoM3U8Url)
+                    val videoM3U8Url = "${res.data}"
+                    Log.e("Anime Url",res.data?:"akjdsfkadjsf")
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())

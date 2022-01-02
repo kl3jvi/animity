@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -273,9 +272,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 is Resource.Error -> {
                     showSnack(binding.root, "Downloading Error")
                 }
-                is Resource.Loading -> {
-                    Log.e("Episode Download", "Loading")
-                }
+                is Resource.Loading -> {}
             }
         }
     }

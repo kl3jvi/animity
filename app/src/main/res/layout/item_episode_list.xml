@@ -34,8 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_gravity="bottom"
-            android:progress="@{episodeInfo.percentage}"
             android:layout_marginBottom="-1.5dp"
+            android:progress="@{episodeInfo.percentage}"
             android:progressBackgroundTint="@color/colorPrimary"
             android:progressTint="@color/colorProgress"
             tools:progress="50" />
@@ -78,8 +78,8 @@
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="match_parent"-->
 <!--            android:layout_gravity="end"-->
-<!--            android:onClick="@{downloadClickListener}"-->
-<!--            android:background="?selectableItemBackground">-->
+<!--            android:background="?selectableItemBackground"-->
+<!--            android:onClick="@{downloadClickListener}">-->
 
 <!--            <androidx.core.widget.ContentLoadingProgressBar-->
 <!--                android:id="@+id/result_episode_progress_downloaded"-->
@@ -93,7 +93,7 @@
 <!--                android:background="@drawable/circle_shape"-->
 <!--                android:indeterminate="false"-->
 <!--                android:max="100"-->
-<!--                android:progress="0"-->
+<!--                android:progress="50"-->
 <!--                android:progressDrawable="@drawable/circular_progress_bar"-->
 <!--                android:visibility="visible" />-->
 
@@ -109,8 +109,8 @@
 <!--                android:nextFocusLeft="@id/episode_holder"-->
 <!--                android:nextFocusRight="@id/episode_holder"-->
 <!--                android:padding="2dp"-->
-<!--                android:src="@drawable/ic_outline_arrow_downward_24"-->
 <!--                android:visibility="visible"-->
+<!--                app:downloadStateImg="@{episodeInfo.isDownloaded}"-->
 <!--                app:tint="@color/white" />-->
 <!--        </FrameLayout>-->
 

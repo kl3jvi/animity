@@ -7,13 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
 import com.kl3jvi.animity.data.model.EpisodeModel
+import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
+import com.kl3jvi.animity.ui.fragments.details.DetailsFragment
 import com.kl3jvi.animity.utils.Constants
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.withContext
 
 @ExperimentalCoroutinesApi
 class CustomEpisodeAdapter(
@@ -37,8 +36,8 @@ class CustomEpisodeAdapter(
                 }
 
 //                setDownloadClickListener {
-//                    binding.episodeInfo?.let { element ->
-//                        if (fragment is DetailsFragment) fragment.getM3U8EpisodeUrl(element.episodeUrl)
+//                    binding.episodeInfo?.let { episodeModel->
+//                        if (fragment is DetailsFragment) fragment.getM3U8EpisodeUrl(episodeModel.episodeUrl)
 //                    }
 //                }
             }

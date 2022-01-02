@@ -73,4 +73,7 @@ interface AnimeService {
     suspend fun fetchEpisodeTimeRelease(
         @Path("episodeUrl") episodeUrl: String
     ): ResponseBody
+
+
 }
+

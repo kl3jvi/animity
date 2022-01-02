@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -8,97 +10,100 @@
         <variable
             name="vm"
             type="com.kl3jvi.animity.ui.fragments.details.DetailsViewModel" />
-        <!--        <variable-->
-        <!--            name="downloadClickListener"-->
-        <!--            type="android.view.View.OnClickListener" />-->
+
+        <variable
+            name="downloadClickListener"
+            type="android.view.View.OnClickListener" />
 
         <variable
             name="episodeInfo"
             type="com.kl3jvi.animity.data.model.EpisodeModel" />
     </data>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/episode_holder"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:foreground="@drawable/outline_drawable"
-    android:nextFocusLeft="@id/episode_poster"
-    app:cardBackgroundColor="@color/primaryGrayBackground"
-    app:cardCornerRadius="@dimen/roundedImageRadius">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/episode_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{clickListener}"
-        android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_marginBottom="10dp"
+        android:foreground="@drawable/outline_drawable"
+        android:nextFocusLeft="@id/episode_poster"
+        app:cardBackgroundColor="@color/primaryGrayBackground"
+        app:cardCornerRadius="@dimen/roundedImageRadius">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!--app:cardCornerRadius="@dimen/roundedImageRadius"-->
-            <androidx.cardview.widget.CardView
-                android:layout_width="126dp"
-                android:layout_height="72dp"
-                android:foreground="@drawable/outline_drawable">
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:onClick="@{clickListener}"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-                <ImageView
-                    android:id="@+id/episode_poster"
-                    android:nextFocusRight="@id/episode_holder"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:scaleType="centerCrop"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </ImageView>
-                <ImageView
-                    android:src="@drawable/ic_play_tv"
-                    android:layout_gravity="center"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp">
-                </ImageView>
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:layout_marginBottom="-1.5dp"
-                    android:id="@+id/episode_progress"
-                    android:progressTint="?attr/colorPrimary"
-                    android:progressBackgroundTint="?attr/colorPrimary"
-                    style="@android:style/Widget.Material.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:progress="@{episodeInfo.percentage}"
-                    tools:progress="50"
-                    android:layout_gravity="bottom"
-                    android:layout_height="5dp">
-                </androidx.core.widget.ContentLoadingProgressBar>
-            </androidx.cardview.widget.CardView>
             <LinearLayout
-                android:layout_marginStart="15dp"
-                android:orientation="vertical"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
-                android:layout_marginEnd="50dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/episode_text"
-                    tools:text="1. Jobless"
-                    android:text="@{episodeInfo.episodeNumber.replace(`EP`,`Episode`)}"
-                    android:textStyle="bold"
-                    android:textColor="@color/textColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/episode_rating"
-                    tools:text="Rated: 8.8"
-                    android:textColor="@color/grayTextColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="126dp"
+                    android:layout_height="72dp"
+                    android:foreground="@drawable/outline_drawable"
+                    app:cardCornerRadius="@dimen/roundedImageRadius">
+
+                    <ImageView
+                        android:id="@+id/episode_poster"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:nextFocusRight="@id/episode_holder"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_play_tv" />
+
+                    <androidx.core.widget.ContentLoadingProgressBar
+                        android:id="@+id/episode_progress"
+                        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="-1.5dp"
+                        android:progress="@{episodeInfo.percentage}"
+                        android:progressBackgroundTint="?attr/colorPrimary"
+                        android:progressTint="?attr/colorPrimary"
+                        tools:progress="50" />
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="50dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/episode_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{episodeInfo.episodeNumber.replace(`EP`,`Episode`)}"
+                        android:textColor="@color/textColor"
+                        android:textStyle="bold"
+                        tools:text="1. Jobless" />
+
+                    <TextView
+                        android:id="@+id/episode_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/grayTextColor"
+                        tools:text="Rated: 8.8" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>
