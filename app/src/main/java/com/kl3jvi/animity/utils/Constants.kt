@@ -5,8 +5,6 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
-import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.utils.parser.HtmlParser
 
 class Constants {
     companion object {
@@ -19,10 +17,10 @@ class Constants {
         const val SAVE_DIRECTORY = "Animity"
 
         // Base URLS
-        var BASE_URL = "https://gogoanime.wiki"
+        var BASE_URL = "https://gogoanime.film"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
-        const val ANIME_SCHEDULE="https://animeschedule.net/anime"
+        const val ANIME_SCHEDULE = "https://animeschedule.net/anime"
 
         // Model Type
         const val TYPE_RECENT_SUB = 1
@@ -43,8 +41,8 @@ class Constants {
         private const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
-        private const val ORIGIN = "https://gogoanime.wiki"
-        private const val  REFERER = "https://gogoanime.wiki/"
+        private const val ORIGIN = "https://gogoanime.film"
+        private const val REFERER = "https://gogoanime.film/"
 
         fun getHeader(): Map<String, String> {
             return mapOf(
@@ -69,16 +67,6 @@ class Constants {
             return ColorStateList.valueOf(color)
         }
 
-        fun parseList(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
-            return when (typeValue) {
-                TYPE_RECENT_DUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
-                TYPE_RECENT_SUB -> HtmlParser.parseRecentSubOrDub(response, typeValue)
-                TYPE_POPULAR_ANIME -> HtmlParser.parsePopular(response, typeValue)
-                TYPE_MOVIE -> HtmlParser.parseMovie(response, typeValue)
-                TYPE_NEW_SEASON -> HtmlParser.parseMovie(response, typeValue)
-                else -> ArrayList()
-            }
-        }
 
         fun getDataSourceFactory(): DefaultHttpDataSource.Factory {
             return DefaultHttpDataSource.Factory().apply {
@@ -95,8 +83,6 @@ class Constants {
                 setDefaultRequestProperties(headers)
             }
         }
-
-        fun getRandomId(): Int = System.currentTimeMillis().toInt()
 
         fun showSnack(view: View, message: String?) {
             val snack =

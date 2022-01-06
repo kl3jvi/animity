@@ -10,6 +10,8 @@
         android:name=".application.AnimityApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MySplash">

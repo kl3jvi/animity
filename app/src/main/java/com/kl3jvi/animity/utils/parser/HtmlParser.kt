@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.utils.parser
 
+import android.util.Log
 import com.kl3jvi.animity.data.model.*
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.pmap
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.util.regex.Pattern
@@ -205,24 +207,15 @@ object HtmlParser {
     }
 
     fun parseMediaUrl(response: String): EpisodeInfo {
-        val mediaUrl: String?
         val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
-        mediaUrl = info?.attr("data-video").toString()
-        val nextEpisodeUrl =
-            document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
-                ?.attr("href")
-        val previousEpisodeUrl =
-            document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()
-                ?.attr("href")
-        return EpisodeInfo(
-            nextEpisodeUrl = nextEpisodeUrl,
-            previousEpisodeUrl = previousEpisodeUrl,
-            vidCdnUrl = mediaUrl
-        )
+        val iframe = "https:" + document.selectFirst("div.play-video > iframe").attr("src")
+        val link = iframe.replace("streaming.php", "download")
+        return EpisodeInfo(vidCdnUrl = link)
     }
 
+
     fun parseM3U8Url(response: String): String? {
+        Log.e("Response e downloadit",response)
         var m3u8Url: String? = ""
         val document = Jsoup.parse(response)
         val info = document?.getElementsByClass("videocontent")
@@ -237,31 +230,63 @@ object HtmlParser {
                     break
                 }
             }
+            Log.e("url", m3u8Url.toString())
             m3u8Url
         } catch (npe: NullPointerException) {
+            Log.e("url", m3u8Url.toString())
+            npe.printStackTrace()
             m3u8Url
         }
     }
+}
 
-    private fun getCategoryUrl(url: String): String {
-        return try {
-            var categoryUrl = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
-            categoryUrl = "/category/$categoryUrl"
-            categoryUrl
-        } catch (exception: StringIndexOutOfBoundsException) {
-            exception.message
-        }.toString()
-    }
+data class ExtractorLink(
+    val url: String,
+    val isM3u8: Boolean = false,
+)
 
-    private fun filterGenreName(genreName: String): String {
-        return if (genreName.contains(',')) {
-            genreName.substring(genreName.indexOf(',') + 1)
+private fun extractVideos(response: String): List<ExtractorLink> {
+    val document = Jsoup.parse(response)
+
+    return document.select(".dowload > a").pmap {
+        if (it.hasAttr("download")) {
+            listOf(
+                ExtractorLink(
+                    it.attr("href"),
+                    it.attr("href").contains(".m3u8")
+                )
+            )
         } else {
-            genreName
+            listOf(
+                ExtractorLink(
+                    it.attr("href"),
+                    it.attr("href").contains(".m3u8")
+                )
+            )
         }
-    }
+    }.flatten()
+}
 
-    private fun formatInfoValues(infoValue: String): String {
-        return infoValue.substring(infoValue.indexOf(':') + 1, infoValue.length)
+
+private fun getCategoryUrl(url: String): String {
+    return try {
+        var categoryUrl = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
+        categoryUrl = "/category/$categoryUrl"
+        categoryUrl
+    } catch (exception: StringIndexOutOfBoundsException) {
+        exception.message
+    }.toString()
+}
+
+private fun filterGenreName(genreName: String): String {
+    return if (genreName.contains(',')) {
+        genreName.substring(genreName.indexOf(',') + 1)
+    } else {
+        genreName
     }
 }
+
+private fun formatInfoValues(infoValue: String): String {
+    return infoValue.substring(infoValue.indexOf(':') + 1, infoValue.length)
+}
+

@@ -22,6 +22,6 @@ class PlayerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchM3u8Url(header: Map<String, String>, url: String): String {
-        return parser.parseM3U8Url(apiClient.fetchM3u8Url(header, url).string()) ?: ""
+        return parser.parseM3U8Url(apiClient.fetchM3u8Url(header, url).string())?:""
     }
 }

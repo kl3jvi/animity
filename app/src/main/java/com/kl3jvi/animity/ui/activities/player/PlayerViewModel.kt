@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.ui.activities.player
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.Content
@@ -26,6 +27,7 @@ class PlayerViewModel @Inject constructor(
 
     fun updateEpisodeUrl(vidUrl: String) {
         _vidUrl.value = vidUrl
+        Log.e("videoUrl",vidUrl)
     }
 
     @ExperimentalCoroutinesApi
