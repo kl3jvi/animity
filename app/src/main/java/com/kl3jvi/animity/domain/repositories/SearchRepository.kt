@@ -9,5 +9,5 @@ interface SearchRepository {
         header: Map<String, String>,
         keyword: String,
         page: Int
-    ): ArrayList<AnimeMetaModel>
+    ): List<AnimeMetaModel>
 }

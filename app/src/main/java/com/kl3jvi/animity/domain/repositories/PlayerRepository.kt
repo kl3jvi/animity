@@ -7,4 +7,5 @@ interface PlayerRepository {
     val parser: HtmlParser
     suspend fun fetchEpisodeMediaUrl(header: Map<String, String>, url: String): EpisodeInfo
     suspend fun fetchM3u8Url(header: Map<String, String>, url: String):String
+    suspend fun fetchEncryptedAjaxUrl(header: Map<String, String>, url: String):String
 }

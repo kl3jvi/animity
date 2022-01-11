@@ -9,13 +9,13 @@ interface HomeRepository {
         header: Map<String, String>,
         page: Int,
         type: Int
-    ): ArrayList<AnimeMetaModel>
+    ): List<AnimeMetaModel>
 
     suspend fun fetchPopularFromAjax(
         header: Map<String, String>,
         page: Int
-    ): ArrayList<AnimeMetaModel>
+    ): List<AnimeMetaModel>
 
-    suspend fun fetchNewSeason(header: Map<String, String>, page: Int): ArrayList<AnimeMetaModel>
-    suspend fun fetchMovies(header: Map<String, String>, page: Int): ArrayList<AnimeMetaModel>
+    suspend fun fetchNewSeason(header: Map<String, String>, page: Int): List<AnimeMetaModel>
+    suspend fun fetchMovies(header: Map<String, String>, page: Int): List<AnimeMetaModel>
 }

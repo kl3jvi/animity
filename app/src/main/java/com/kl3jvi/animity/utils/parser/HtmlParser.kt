@@ -1,12 +1,20 @@
 package com.kl3jvi.animity.utils.parser
 
+import android.os.Build
 import android.util.Log
 import com.kl3jvi.animity.data.model.*
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.pmap
+import com.kl3jvi.animity.utils.Constants.Companion.M3U8_REGEX_PATTERN
+import org.apache.commons.lang3.RandomStringUtils
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
+import java.net.URLDecoder
+import java.util.*
 import java.util.regex.Pattern
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+import kotlin.collections.ArrayList
 
 /**
  *  This File gets response in String format and parses it
@@ -206,20 +214,114 @@ object HtmlParser {
         )
     }
 
-    fun parseMediaUrl(response: String): EpisodeInfo {
+    private fun decryptAES(encrypted: String, key: String, iv: String): String {
+        val ix = IvParameterSpec(iv.toByteArray())
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val secretKey = SecretKeySpec(key.toByteArray(Charsets.UTF_8), "AES")
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, ix)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String(cipher.doFinal(Base64.getDecoder().decode(encrypted)))
+        } else {
+            String(
+                cipher.doFinal(
+                    android.util.Base64.decode(
+                        encrypted,
+                        android.util.Base64.DEFAULT
+                    )
+                )
+            )
+        }
+    }
+
+    private fun encryptAes(text: String, key: String, iv: String): String {
+        val ix = IvParameterSpec(iv.toByteArray())
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val secretKey = SecretKeySpec(key.toByteArray(), "AES")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ix)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Base64.getEncoder().encodeToString(cipher.doFinal(text.toByteArray()))
+        } else {
+            android.util.Base64.encodeToString(
+                cipher.doFinal(text.toByteArray()),
+                android.util.Base64.DEFAULT
+            )
+        }
+    }
+
+
+    fun parseEncryptAjax(response: String): String {
         val document = Jsoup.parse(response)
-        val iframe = "https:" + document.selectFirst("div.play-video > iframe").attr("src")
-        val link = iframe.replace("streaming.php", "download")
-        return EpisodeInfo(vidCdnUrl = link)
+        val value6 = document.getElementsByAttributeValue("data-name", "ts").attr("data-value")
+        val value5 = document.getElementsByAttributeValue("name", "crypto").attr("content")
+        val value1 = decryptAES(
+            document.getElementsByAttributeValue("data-name", "crypto").attr("data-value"),
+            URLDecoder.decode(value6 + value6, Charsets.UTF_8.name()),
+            URLDecoder.decode(value6, Charsets.UTF_8.name())
+        )
+        val value4 = decryptAES(
+            value5,
+            URLDecoder.decode(value1, Charsets.UTF_8.name()),
+            URLDecoder.decode(value6, Charsets.UTF_8.name())
+        )
+        val value2 = RandomStringUtils.randomAlphanumeric(16)
+        val value3 = URLDecoder.decode(value4, Charsets.UTF_8.name()).toString()
+        val encrypted = encryptAes(
+            value4.removeRange(value4.indexOf("&"), value4.length),
+            URLDecoder.decode(value1, Charsets.UTF_8.name()),
+            URLDecoder.decode(value2, Charsets.UTF_8.name())
+        )
+        return "id=" + encrypted + "&time=" + "00" + value2 + "00" + value3.substring(
+            value3.indexOf(
+                "&"
+            )
+        )
+    }
+
+    fun parseMediaUrl(response: String): EpisodeInfo {
+        val mediaUrl: String?
+        val document = Jsoup.parse(response)
+        val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
+        mediaUrl = info?.attr("data-video").toString()
+        val nextEpisodeUrl =
+            document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
+                ?.attr("href")
+        val previousEpisodeUrl =
+            document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()
+                ?.attr("href")
+
+        return EpisodeInfo(
+            nextEpisodeUrl = nextEpisodeUrl,
+            previousEpisodeUrl = previousEpisodeUrl,
+            vidCdnUrl = mediaUrl
+        )
+    }
+
+    fun parseMirrorLink(response: String): String? {
+        var m3u8Url: String? = ""
+        val document = Jsoup.parse(response)
+        val info = document?.getElementsByClass("mirror_link")
+        val pattern = Pattern.compile(M3U8_REGEX_PATTERN)
+        val matcher = pattern.matcher(info.toString())
+        return try {
+            while (matcher.find()) {
+                if (matcher.group(0)!!.contains("mp4")) {
+                    m3u8Url = matcher.group(0)
+                }
+                break
+            }
+            m3u8Url
+        } catch (npe: NullPointerException) {
+            m3u8Url
+        }
     }
 
 
     fun parseM3U8Url(response: String): String? {
-        Log.e("Response e downloadit",response)
+        Log.e("Response e downloadit", response)
         var m3u8Url: String? = ""
         val document = Jsoup.parse(response)
         val info = document?.getElementsByClass("videocontent")
-        val pattern = Pattern.compile(Constants.M3U8_REGEX_PATTERN)
+        val pattern = Pattern.compile(M3U8_REGEX_PATTERN)
         val matcher = pattern.matcher(info.toString())
         return try {
             while (matcher.find()) {
@@ -239,34 +341,6 @@ object HtmlParser {
         }
     }
 }
-
-data class ExtractorLink(
-    val url: String,
-    val isM3u8: Boolean = false,
-)
-
-private fun extractVideos(response: String): List<ExtractorLink> {
-    val document = Jsoup.parse(response)
-
-    return document.select(".dowload > a").pmap {
-        if (it.hasAttr("download")) {
-            listOf(
-                ExtractorLink(
-                    it.attr("href"),
-                    it.attr("href").contains(".m3u8")
-                )
-            )
-        } else {
-            listOf(
-                ExtractorLink(
-                    it.attr("href"),
-                    it.attr("href").contains(".m3u8")
-                )
-            )
-        }
-    }.flatten()
-}
-
 
 private fun getCategoryUrl(url: String): String {
     return try {

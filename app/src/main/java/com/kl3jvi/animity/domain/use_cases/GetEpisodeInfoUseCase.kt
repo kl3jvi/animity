@@ -27,7 +27,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
     fun fetchM3U8(url: String?) = flow {
         emit(Resource.Loading())
         try {
-            val response = playerRepository.fetchM3u8Url(Constants.getHeader(), url ?: "")
+            val response = playerRepository.fetchEncryptedAjaxUrl(Constants.getHeader(), url ?: "")
             emit(Resource.Success(data = response))
         } catch (e: Exception) {
             emit(Resource.Error("Couldn't find a Stream for this Anime"))

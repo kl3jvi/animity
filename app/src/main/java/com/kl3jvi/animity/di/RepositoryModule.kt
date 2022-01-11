@@ -14,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -21,33 +22,37 @@ object RepositoryModule {
     @Provides
     @ViewModelScoped
     fun provideDetailsRepository(
-        apiClient: AnimeApiClient
+        apiClient: AnimeApiClient,
+        ioDispatcher: CoroutineDispatcher
     ): DetailsRepository {
-        return DetailsRepositoryImpl(apiClient)
+        return DetailsRepositoryImpl(apiClient, ioDispatcher)
     }
 
     @Provides
     @ViewModelScoped
     fun provideHomeRepository(
-        apiClient: AnimeApiClient
+        apiClient: AnimeApiClient,
+        ioDispatcher: CoroutineDispatcher
     ): HomeRepository {
-        return HomeRepositoryImpl(apiClient)
+        return HomeRepositoryImpl(apiClient, ioDispatcher)
     }
 
     @Provides
     @ViewModelScoped
     fun provideSearchRepository(
-        apiClient: AnimeApiClient
+        apiClient: AnimeApiClient,
+        ioDispatcher: CoroutineDispatcher
     ): SearchRepository {
-        return SearchRepositoryImpl(apiClient)
+        return SearchRepositoryImpl(apiClient, ioDispatcher)
     }
 
     @Provides
     @ViewModelScoped
     fun providePlayerRepository(
-        apiClient: AnimeApiClient
+        apiClient: AnimeApiClient,
+        ioDispatcher: CoroutineDispatcher
     ): PlayerRepository {
-        return PlayerRepositoryImpl(apiClient)
+        return PlayerRepositoryImpl(apiClient, ioDispatcher)
     }
 
 }

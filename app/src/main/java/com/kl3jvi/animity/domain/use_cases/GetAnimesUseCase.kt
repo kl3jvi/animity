@@ -26,7 +26,7 @@ class GetAnimesUseCase @Inject constructor(
                 Constants.getHeader(),
                 1,
                 Constants.TYPE_RECENT_DUB
-            ).toList()
+            )
             emit(
                 Resource.Success(
                     data = response
@@ -50,7 +50,7 @@ class GetAnimesUseCase @Inject constructor(
     fun fetchTodaySelectionAnime(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response = homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1).toList()
+            val response = homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1)
             emit(
                 Resource.Success(
                     data = response
@@ -74,7 +74,7 @@ class GetAnimesUseCase @Inject constructor(
     fun fetchNewSeason(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response = homeRepository.fetchNewSeason(Constants.getHeader(), 1).toList()
+            val response = homeRepository.fetchNewSeason(Constants.getHeader(), 1)
             emit(
                 Resource.Success(
                     data = response
@@ -98,7 +98,7 @@ class GetAnimesUseCase @Inject constructor(
     fun fetchMovies(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
             emit(Resource.Loading())
-            val response = homeRepository.fetchMovies(Constants.getHeader(), 1).toList()
+            val response = homeRepository.fetchMovies(Constants.getHeader(), 1)
             emit(
                 Resource.Success(
                     data = response

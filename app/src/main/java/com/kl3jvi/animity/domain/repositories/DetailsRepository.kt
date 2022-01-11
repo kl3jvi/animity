@@ -14,7 +14,7 @@ interface DetailsRepository {
         id: String,
         endEpisode: String,
         alias: String
-    ): ArrayList<EpisodeModel>
+    ): List<EpisodeModel>
 
     suspend fun fetchEpisodeTimeRelease(episodeUrl: String): EpisodeReleaseModel
 }

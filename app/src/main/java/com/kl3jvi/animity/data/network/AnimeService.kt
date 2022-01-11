@@ -52,6 +52,13 @@ interface AnimeService {
         @Url url: String
     ): ResponseBody
 
+    @GET
+    @Headers("X-Requested-With:XMLHttpRequest")
+    suspend fun fetchM3u8PreProcessor(
+        @HeaderMap header: Map<String, String>,
+        @Url url: String
+    ): ResponseBody
+
     @GET(Constants.EPISODE_LOAD_URL)
     suspend fun fetchEpisodeList(
         @HeaderMap header: Map<String, String>,

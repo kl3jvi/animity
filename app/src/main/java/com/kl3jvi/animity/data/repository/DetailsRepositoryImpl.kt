@@ -6,12 +6,16 @@ import com.kl3jvi.animity.data.model.EpisodeReleaseModel
 import com.kl3jvi.animity.data.network.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.utils.parser.HtmlParser
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@Suppress("BlockingMethodInNonBlockingContext")
 class DetailsRepositoryImpl @Inject constructor(
-    private val apiClient: AnimeApiClient
+    private val apiClient: AnimeApiClient,
+    private val ioDispatcher: CoroutineDispatcher
 ) : DetailsRepository {
     override val parser: HtmlParser
         get() = HtmlParser
@@ -19,8 +23,10 @@ class DetailsRepositoryImpl @Inject constructor(
     override suspend fun fetchAnimeInfo(
         header: Map<String, String>,
         episodeUrl: String
-    ): AnimeInfoModel {
-        return parser.parseAnimeInfo(apiClient.fetchAnimeInfo(header, episodeUrl).string())
+    ): AnimeInfoModel = withContext(ioDispatcher) {
+        parser.parseAnimeInfo(
+            apiClient.fetchAnimeInfo(header = header, episodeUrl = episodeUrl).string()
+        )
     }
 
     override suspend fun fetchEpisodeList(
@@ -28,8 +34,8 @@ class DetailsRepositoryImpl @Inject constructor(
         id: String,
         endEpisode: String,
         alias: String
-    ): ArrayList<EpisodeModel> {
-        return parser.fetchEpisodeList(
+    ): List<EpisodeModel> = withContext(ioDispatcher) {
+        parser.fetchEpisodeList(
             apiClient.fetchEpisodeList(
                 header = header,
                 id = id,
@@ -40,6 +46,9 @@ class DetailsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchEpisodeTimeRelease(episodeUrl: String): EpisodeReleaseModel =
-        parser.fetchEpisodeReleaseTime(apiClient.fetchEpisodeTimeRelease(episodeUrl).string())
-
+        withContext(ioDispatcher) {
+            parser.fetchEpisodeReleaseTime(
+                apiClient.fetchEpisodeTimeRelease(episodeUrl = episodeUrl).string()
+            )
+        }
 }
