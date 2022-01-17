@@ -15,6 +15,7 @@ class Constants {
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
         const val SAVE_DIRECTORY = "Animity"
+        const val STARTING_PAGE_INDEX =1
 
         // Base URLS
         var BASE_URL = "https://gogoanime.film"
@@ -90,6 +91,11 @@ class Constants {
             if (!snack.isShown) {
                 snack.show()
             }
+        }
+
+
+        fun getNetworkHeader(): Map<String, String>{
+            return mapOf("referer" to REFERER, "origin" to ORIGIN, "user-agent" to USER_AGENT)
         }
     }
 }

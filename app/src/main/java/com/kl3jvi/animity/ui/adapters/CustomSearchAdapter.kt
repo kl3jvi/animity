@@ -4,16 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.ui.fragments.search.SearchFragmentDirections
 
-class CustomSearchAdapter(
-
-) : ListAdapter<AnimeMetaModel, CustomSearchAdapter.ViewHolder>(
+class CustomSearchAdapter : PagingDataAdapter<AnimeMetaModel, CustomSearchAdapter.ViewHolder>(
     AnimeDiffCallback()
 ) {
 
@@ -51,10 +49,12 @@ class CustomSearchAdapter(
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bindAnimeInfo(getItem(position))
-
-    override fun getItemCount(): Int = currentList.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val animeInfo = getItem(position)
+        if (animeInfo != null) {
+            holder.bindAnimeInfo(animeInfo)
+        }
+    }
 
     private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
 

@@ -7,8 +7,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.Content
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Constants.Companion.REFERER
+import com.kl3jvi.animity.utils.parser.HtmlParser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,24 +19,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class PlayerViewModel @Inject constructor(
     private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
     private val episodeDao: EpisodeDao,
 ) : ViewModel() {
 
-    private var _vidUrl = MutableLiveData<String>()
+    private var _episodeUrl = MutableLiveData<String>()
     private var _playBackPosition = MutableLiveData<Long>()
 
     fun updateEpisodeUrl(vidUrl: String) {
-        _vidUrl.value = vidUrl
-        Log.e("videoUrl",vidUrl)
-    }
-
-    @ExperimentalCoroutinesApi
-    val videoUrlLiveData = Transformations.switchMap(_vidUrl) { url ->
-        getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
-            getEpisodeInfoUseCase.fetchM3U8("${REFERER}/encrypt-ajax.php?${episodeInfo.data?.vidCdnUrl}")
-        }.asLiveData()
+        _episodeUrl.value = vidUrl
     }
 
     fun audioProgress(exoPlayer: ExoPlayer?) = flow {
@@ -48,6 +40,15 @@ class PlayerViewModel @Inject constructor(
             }
         }
     }.flowOn(Dispatchers.Main).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+
+    val videoUrlLiveData = Transformations.switchMap(_episodeUrl) { url ->
+        getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
+            getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl)
+        }.flatMapLatest {
+            Log.e("parsed url ->" , it.data.toString())
+            getEpisodeInfoUseCase.fetchM3U8(it.data)
+        }.asLiveData()
+    }
 
     fun insertOrUpdate(content: Content) {
         viewModelScope.launch {

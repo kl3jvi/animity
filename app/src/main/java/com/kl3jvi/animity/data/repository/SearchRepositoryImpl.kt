@@ -1,12 +1,15 @@
 package com.kl3jvi.animity.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.kl3jvi.animity.data.paging.SearchPagingSource
 import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.data.network.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.SearchRepository
-import com.kl3jvi.animity.utils.Constants.Companion.TYPE_SEARCH
-import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,21 +19,19 @@ class SearchRepositoryImpl @Inject constructor(
     private val apiClient: AnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : SearchRepository {
-    override val parser: HtmlParser
-        get() = HtmlParser
 
-    override suspend fun fetchSearchData(
+    override fun fetchSearchData(
         header: Map<String, String>,
         keyword: String,
-        page: Int
-    ): List<AnimeMetaModel> = withContext(ioDispatcher) {
-        parser.parseMovie(
-            apiClient.fetchSearchData(
-                header = header,
-                keyword = keyword,
-                page = page
-            ).string(),
-            TYPE_SEARCH
-        )
+    ): Flow<PagingData<AnimeMetaModel>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = false, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { SearchPagingSource(apiClient, keyword) }
+        ).flow.flowOn(ioDispatcher)
     }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 20
+    }
+
 }

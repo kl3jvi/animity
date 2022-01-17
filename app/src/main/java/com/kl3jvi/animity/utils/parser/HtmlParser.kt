@@ -3,14 +3,12 @@ package com.kl3jvi.animity.utils.parser
 import android.os.Build
 import android.util.Log
 import com.kl3jvi.animity.data.model.*
-import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Constants.Companion.M3U8_REGEX_PATTERN
 import org.apache.commons.lang3.RandomStringUtils
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.net.URLDecoder
 import java.util.*
-import java.util.regex.Pattern
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -296,48 +294,23 @@ object HtmlParser {
         )
     }
 
-    fun parseMirrorLink(response: String): String? {
-        var m3u8Url: String? = ""
-        val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("mirror_link")
-        val pattern = Pattern.compile(M3U8_REGEX_PATTERN)
-        val matcher = pattern.matcher(info.toString())
+    fun parseEncryptedUrls(response: String): Pair<ArrayList<String>, ArrayList<String>> {
+        val urls: ArrayList<String> = ArrayList()
+        val qualities: ArrayList<String> = ArrayList()
+        var i = 0
+        val res = JSONObject(response).getJSONArray("source")
+        Log.e("resu,", res.toString())
         return try {
-            while (matcher.find()) {
-                if (matcher.group(0)!!.contains("mp4")) {
-                    m3u8Url = matcher.group(0)
-                }
-                break
+            while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
+                urls.add(res.getJSONObject(i).getString("file"))
+                qualities.add(
+                    res.getJSONObject(i).getString("label").lowercase(Locale.getDefault())
+                        .filterNot { it.isWhitespace() })
+                i++
             }
-            m3u8Url
-        } catch (npe: NullPointerException) {
-            m3u8Url
-        }
-    }
-
-
-    fun parseM3U8Url(response: String): String? {
-        Log.e("Response e downloadit", response)
-        var m3u8Url: String? = ""
-        val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("videocontent")
-        val pattern = Pattern.compile(M3U8_REGEX_PATTERN)
-        val matcher = pattern.matcher(info.toString())
-        return try {
-            while (matcher.find()) {
-                if (matcher.group(0)!!.contains("m3u8") || matcher.group(0)!!
-                        .contains("googlevideo")
-                ) {
-                    m3u8Url = matcher.group(0)
-                    break
-                }
-            }
-            Log.e("url", m3u8Url.toString())
-            m3u8Url
-        } catch (npe: NullPointerException) {
-            Log.e("url", m3u8Url.toString())
-            npe.printStackTrace()
-            m3u8Url
+            Pair(urls, qualities)
+        } catch (exp: java.lang.NullPointerException) {
+            Pair(urls, qualities)
         }
     }
 }

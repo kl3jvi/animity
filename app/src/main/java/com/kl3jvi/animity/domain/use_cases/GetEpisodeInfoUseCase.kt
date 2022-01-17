@@ -1,7 +1,10 @@
 package com.kl3jvi.animity.domain.use_cases
 
+import android.util.Log
 import com.kl3jvi.animity.data.repository.PlayerRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.REFERER
+import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
@@ -27,10 +30,26 @@ class GetEpisodeInfoUseCase @Inject constructor(
     fun fetchM3U8(url: String?) = flow {
         emit(Resource.Loading())
         try {
-            val response = playerRepository.fetchEncryptedAjaxUrl(Constants.getHeader(), url ?: "")
-            emit(Resource.Success(data = response))
+            val response = playerRepository.fetchM3u8Url(getNetworkHeader(), url ?: "")
+            Log.e("respons'ua", response.toString())
+            emit(Resource.Success(data = response.first.first()))
         } catch (e: Exception) {
+            e.printStackTrace()
             emit(Resource.Error("Couldn't find a Stream for this Anime"))
         }
     }.flowOn(ioDispatcher)
+
+    fun fetchEncryptedAjaxUrl(url: String?) = flow {
+        emit(Resource.Loading())
+        try {
+            val response = playerRepository.fetchEncryptedAjaxUrl(Constants.getHeader(), url ?: "")
+            val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
+            Log.e("Stream Url", streamUrl)
+            emit(Resource.Success(data = streamUrl))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emit(Resource.Error("Couldn't find a Stream for this Anime"))
+        }
+    }.flowOn(ioDispatcher)
+
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -14,9 +15,12 @@ import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomSearchAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.ViewUtils.hide
+import com.kl3jvi.animity.utils.ViewUtils.show
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
@@ -25,6 +29,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     override val viewModel: SearchViewModel by viewModels()
     private lateinit var searchAdapter: CustomSearchAdapter
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private var searchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +44,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         return binding.root
     }
 
-    override fun observeViewModel() {
-        getSearchData()
-    }
+    override fun observeViewModel() {}
 
     override fun initViews() {
         binding.apply {
@@ -57,33 +60,13 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    viewModel.passQuery(query)
+                    search(query)
                     return false
                 }
             })
         }
     }
 
-    private fun getSearchData() {
-        viewModel.searchResult.observe(viewLifecycleOwner) { res ->
-            when (res) {
-                is Resource.Success -> {
-                    binding.searchLoadingBar.visibility = View.GONE
-                    binding.noSearchResult.visibility = View.GONE
-                    binding.searchRecycler.visibility = View.VISIBLE
-                    res.data?.let { searchAdapter.submitList(it) }
-                }
-                is Resource.Loading -> {
-                    binding.searchRecycler.visibility = View.GONE
-                    binding.searchLoadingBar.visibility = View.VISIBLE
-                    binding.noSearchResult.visibility = View.VISIBLE
-                }
-                is Resource.Error -> {
-                    showSnack(binding.root, res.message)
-                }
-            }
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -94,5 +77,17 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)
+
+    private fun search(query: String) {
+        // Make sure we cancel the previous job before creating a new one
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            viewModel.searchAnimes(query).collectLatest { animeData ->
+                binding.searchRecycler.show()
+                searchAdapter.submitData(animeData)
+                binding.noSearchResult.hide()
+            }
+        }
+    }
 
 }

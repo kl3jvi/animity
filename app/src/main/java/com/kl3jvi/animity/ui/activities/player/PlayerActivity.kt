@@ -21,7 +21,6 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -291,13 +290,12 @@ class PlayerActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                     viewBinding.loadingOverlay.visibility = View.GONE
-
-                }
-                is Resource.Error -> {
-
                 }
                 is Resource.Loading -> {
-
+                    viewBinding.loadingOverlay.visibility = View.VISIBLE
+                }
+                is Resource.Error -> {
+                    showSnack(viewBinding.root, res.message)
                 }
             }
         }
