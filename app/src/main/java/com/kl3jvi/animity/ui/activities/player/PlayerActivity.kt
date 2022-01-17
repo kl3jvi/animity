@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
@@ -237,7 +238,7 @@ class PlayerActivity : AppCompatActivity() {
                                 viewBinding.videoView.player = exoPlayer
                                 val mdItem = MediaItem.fromUri(videoM3U8Url)
                                 val videoSource: MediaSource =
-                                    buildMediaSource(mdItem)
+                                    buildMediaSource(mdItem,videoM3U8Url)
 
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
@@ -357,10 +358,18 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun buildMediaSource(mediaItem: MediaItem): HlsMediaSource {
+//    private fun buildMediaSource(mediaItem: MediaItem): HlsMediaSource {
+//        val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
+//        return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+//    }
+
+    private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
         val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
-        return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+        return if (url.contains("m3u8"))
+            HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+        else ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
     }
+
 
     private fun releasePlayer() {
         player?.run {

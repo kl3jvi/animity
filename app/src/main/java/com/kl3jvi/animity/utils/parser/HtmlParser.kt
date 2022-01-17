@@ -294,23 +294,19 @@ object HtmlParser {
         )
     }
 
-    fun parseEncryptedUrls(response: String): Pair<ArrayList<String>, ArrayList<String>> {
+    fun parseEncryptedUrls(response: String): ArrayList<String> {
         val urls: ArrayList<String> = ArrayList()
-        val qualities: ArrayList<String> = ArrayList()
         var i = 0
         val res = JSONObject(response).getJSONArray("source")
         Log.e("resu,", res.toString())
         return try {
             while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
                 urls.add(res.getJSONObject(i).getString("file"))
-                qualities.add(
-                    res.getJSONObject(i).getString("label").lowercase(Locale.getDefault())
-                        .filterNot { it.isWhitespace() })
                 i++
             }
-            Pair(urls, qualities)
+            urls
         } catch (exp: java.lang.NullPointerException) {
-            Pair(urls, qualities)
+            urls
         }
     }
 }

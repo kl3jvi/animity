@@ -3,7 +3,6 @@ package com.kl3jvi.animity.data.repository
 import com.kl3jvi.animity.data.model.EpisodeInfo
 import com.kl3jvi.animity.data.network.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
-import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -29,9 +28,11 @@ class PlayerRepositoryImpl @Inject constructor(
     override suspend fun fetchM3u8Url(
         header: Map<String, String>,
         url: String
-    ): Pair<ArrayList<String>, ArrayList<String>> =
+    ): ArrayList<String> =
         withContext(ioDispatcher) {
-            parser.parseEncryptedUrls(apiClient.fetchM3u8PreProcessor(header = header, url = url).string())
+            parser.parseEncryptedUrls(
+                apiClient.fetchM3u8PreProcessor(header = header, url = url).string()
+            )
         }
 
     override suspend fun fetchEncryptedAjaxUrl(header: Map<String, String>, url: String): String =

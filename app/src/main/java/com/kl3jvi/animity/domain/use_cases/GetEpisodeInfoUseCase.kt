@@ -31,8 +31,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
         emit(Resource.Loading())
         try {
             val response = playerRepository.fetchM3u8Url(getNetworkHeader(), url ?: "")
-            Log.e("respons'ua", response.toString())
-            emit(Resource.Success(data = response.first.first()))
+            emit(Resource.Success(data = response.last()))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(Resource.Error("Couldn't find a Stream for this Anime"))
