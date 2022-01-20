@@ -12,7 +12,6 @@ import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import kotlin.collections.ArrayList
 
 /**
  *  This File gets response in String format and parses it
@@ -178,6 +177,7 @@ object HtmlParser {
     fun fetchEpisodeList(response: String): ArrayList<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
+        val animeName = document.select("anime_info_body_bg")
         val lists = document?.select("li")
         lists?.forEach {
             val episodeUrl = it.select("a").first().attr("href").trim()
@@ -187,7 +187,7 @@ object HtmlParser {
                 EpisodeModel(
                     episodeNumber = episodeNumber,
                     episodeType = episodeType,
-                    episodeUrl = episodeUrl
+                    episodeUrl = episodeUrl,
                 )
             )
         }
