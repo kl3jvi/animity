@@ -74,82 +74,108 @@ android {
 
 }
 
-
 dependencies {
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
-    implementation 'androidx.navigation:navigation-runtime-ktx:2.4.0-beta02'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-beta02'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0-beta02'
+    def coordinatorlayoutVersion = "1.0.0"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion"
+    def androidCoreVersion = "1.7.0"
+    implementation "androidx.core:core-ktx:$androidCoreVersion"
+
+    def appCompatVersion = "1.4.1"
+    def materialVersion = "1.5.0"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+
+    def constraintLayoutVersion = "2.1.3"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+    def livedataVersion = "2.4.0"
+    def viewModelVersion = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
+
+    def navigationComponentVersion = "2.4.0-rc01"
+    implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
+
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    def coroutinesVersion = "1.6.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
-    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.2'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.6'
-    implementation 'androidx.test.ext:junit-ktx:1.1.3'
-    androidTestImplementation 'junit:junit:4.13.2'
 
-    //dependency injection
-    kapt "com.google.dagger:hilt-android-compiler:2.38.1"
-    implementation "com.google.dagger:hilt-android:2.40.5"
+    def lifecycle_version = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+    def analyticsVersion = "20.0.2"
+    def remoteConfigVersion = "21.0.1"
+    implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
+    implementation "com.google.firebase:firebase-config-ktx:$remoteConfigVersion"
+
+
+    def crashlyticsVersion = "18.2.6"
+    implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
+
+    // Hilt DI
+    def hiltVersion = "2.40.5"
+    def hiltAnnotationProcessor = "2.38.1"
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltAnnotationProcessor"
+
+// Retrofit
+    def retrofitVersion = "2.9.0"
+    def interceptor_version = "5.0.0-alpha.2"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
     //Html Parsing
-    implementation 'org.jsoup:jsoup:1.13.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    def jsoupVersion ="1.13.1"
+    implementation "org.jsoup:jsoup:$jsoupVersion"
 
     //Room Library
-    def room_version = '2.4.1'
+    def room_version = "2.4.1"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     //Video Player
-    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
-    implementation 'com.google.android.exoplayer:extension-cast:2.16.1'
-    implementation "com.google.android.exoplayer:extension-mediasession:2.16.1"
+    def exoplayerVersion = "2.16.1"
+    implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
+    implementation "com.google.android.exoplayer:extension-cast:$exoplayerVersion"
+    implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
+
     //Bottom bar
-    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.8'
+    def bottomBarVersion = "1.7.8"
+    implementation "com.github.ibrahimsn98:SmoothBottomBar:$bottomBarVersion"
 
     //Expandable TextView
-    implementation 'com.ms-square:expandableTextView:0.1.4'
+    def expandableTextViewVersion = "0.1.4"
+    implementation "com.ms-square:expandableTextView:$expandableTextViewVersion"
 
     //animation lib
-    def lottieVersion = '4.2.2'
+    def lottieVersion = "4.2.2"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // image library
-    implementation "io.coil-kt:coil:1.4.0"
-
-    implementation "androidx.core:core-ktx:1.7.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    def coilVersion = "1.4.0"
+    implementation "io.coil-kt:coil:$coilVersion"
 
     //splash screen
-    implementation "androidx.core:core-splashscreen:1.0.0-beta01"
+    def splashVersion = "1.0.0-beta01"
+    implementation "androidx.core:core-splashscreen:$splashVersion"
 
-    implementation 'com.onesignal:OneSignal:4.6.2'
+    def onesignalVersion = "4.6.2"
+    implementation "com.onesignal:OneSignal:$onesignalVersion"
 
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-    implementation 'org.apache.commons:commons-text:1.7'
+    def textUtilsVersion = "1.7"
+    implementation "org.apache.commons:commons-text:$textUtilsVersion"
 
     def paginationVersion = "3.1.0"
     implementation "androidx.paging:paging-runtime-ktx:$paginationVersion"
-    implementation 'com.maxkeppeler.sheets:options:2.2.6'
+
 
 
 }

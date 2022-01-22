@@ -43,7 +43,6 @@ class GetEpisodeInfoUseCase @Inject constructor(
         try {
             val response = playerRepository.fetchEncryptedAjaxUrl(Constants.getHeader(), url ?: "")
             val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
-            Log.e("Stream Url", streamUrl)
             emit(Resource.Success(data = streamUrl))
         } catch (e: Exception) {
             e.printStackTrace()

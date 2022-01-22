@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.ui.adapters
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -10,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.databinding.ItemEpisodeListBinding
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.fragments.details.DetailsFragment
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.launchActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -28,10 +27,10 @@ class CustomEpisodeAdapter(
                 setClickListener {
                     binding.episodeInfo?.let { element ->
                         val context = fragment.requireContext()
-                        val intent = Intent(context, PlayerActivity::class.java)
-                        intent.putExtra(Constants.EPISODE_DETAILS, element)
-                        intent.putExtra(Constants.ANIME_TITLE, animeTitle)
-                        context.startActivity(intent)
+                        context.launchActivity<PlayerActivity> {
+                            putExtra(Constants.EPISODE_DETAILS, element)
+                            putExtra(Constants.ANIME_TITLE, animeTitle)
+                        }
                     }
                 }
 

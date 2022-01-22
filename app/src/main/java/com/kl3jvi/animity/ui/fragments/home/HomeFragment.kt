@@ -1,9 +1,10 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,8 @@ import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.navigateToDestination
+import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -97,7 +100,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun fetchRecentDub() {
-        viewModel.recentSubDub.observe(viewLifecycleOwner, { res ->
+        observeLiveData(viewModel.recentSubDub, viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     binding.recentSub.visibility = View.VISIBLE
@@ -114,11 +117,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                     showSnack(binding.root, res.message)
                 }
             }
-        })
+
+        }
     }
 
     private fun getNewSeason() {
-        viewModel.newSeason.observe(viewLifecycleOwner, { res ->
+        observeLiveData(viewModel.newSeason, viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { animeList -> newSeasonAdapter.submitList(animeList) }
@@ -133,11 +137,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                     showSnack(binding.root, res.message)
                 }
             }
-        })
+
+        }
     }
 
     private fun getMovies() {
-        viewModel.movies.observe(viewLifecycleOwner, { res ->
+        observeLiveData(viewModel.movies, viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { animeList -> movieAdapter.submitList(animeList) }
@@ -152,11 +157,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                     showSnack(binding.root, res.message)
                 }
             }
-        })
+
+        }
     }
 
     private fun getTodaySelectionAnime() {
-        viewModel.todaySelection.observe(viewLifecycleOwner, { res ->
+        observeLiveData(viewModel.todaySelection, viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
@@ -172,12 +178,13 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                     showSnack(binding.root, res.message)
                 }
             }
-        })
+
+        }
     }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
         try {
-            findNavController().navigate(
+            navigateToDestination<HomeFragmentDirections>(
                 HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
                     animeDetails
                 )

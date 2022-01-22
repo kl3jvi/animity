@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.details
 
 import android.app.NotificationManager
-import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -33,6 +32,8 @@ import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -99,7 +100,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
 
     private fun fetchAnimeInfo() {
-        viewModel.animeInfo.observe(viewLifecycleOwner) { res ->
+        observeLiveData(viewModel.animeInfo, viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { info ->
@@ -219,10 +220,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 }
                 if (episodeList.isNotEmpty()) {
                     binding.resultPlayMovie.setOnClickListener {
-                        val intent = Intent(requireActivity(), PlayerActivity::class.java)
-                        intent.putExtra(Constants.EPISODE_DETAILS, episodeList.first())
-                        intent.putExtra(Constants.ANIME_TITLE, title)
-                        requireContext().startActivity(intent)
+                        requireActivity().launchActivity<PlayerActivity> {
+                            putExtra(
+                                Constants.EPISODE_DETAILS,
+                                episodeList.first()
+                            )
+                            putExtra(Constants.ANIME_TITLE, title)
+                        }
                         binding.resultPlayMovie.visibility = VISIBLE
                     }
                 } else {
@@ -238,7 +242,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             (activity as MainActivity?)?.hideBottomNavBar()
         }
     }
-
 
     private fun showLatestEpisodeReleaseTime() {
         viewModel.lastEpisodeReleaseTime.observe(viewLifecycleOwner) { res ->
@@ -272,7 +275,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 is Resource.Error -> {
                     showSnack(binding.root, "Downloading Error")
                 }
-                is Resource.Loading -> {}
+                is Resource.Loading -> {
+                }
             }
         }
     }
@@ -294,7 +298,5 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
     override fun getViewBinding(): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater)
-
-
 }
 

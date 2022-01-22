@@ -76,6 +76,7 @@
         <entry key="app/src/main/res/menu/favorite_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/filter_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.3140625" />
+        <entry key="app/src/main/res/xml/remote_config_defaults.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.25" />
       </map>
     </option>

@@ -27,17 +27,9 @@ class GetAnimesUseCase @Inject constructor(
                 1,
                 Constants.TYPE_RECENT_DUB
             )
-            emit(
-                Resource.Success(
-                    data = response
-                )
-            )
+            emit(Resource.Success(data = response))
         } catch (e: Exception) {
-            emit(
-                Resource.Error(
-                    message = e.localizedMessage ?: "An unexpected error occurred",
-                )
-            )
+            emit(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))
         } catch (e: IOException) {
             emit(
                 Resource.Error(

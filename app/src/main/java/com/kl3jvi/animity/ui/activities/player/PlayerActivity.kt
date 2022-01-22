@@ -34,6 +34,8 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.getSafeString
+import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -131,94 +133,10 @@ class PlayerActivity : AppCompatActivity() {
 
     @ExperimentalCoroutinesApi
     private fun initializePlayer() {
-//        viewModel.videoUrlLiveData.observe(this, { res ->
-//            when (res) {
-//                is Resource.Success -> {
-//                    val videoM3U8Url = "${res.data}"
-//                    Log.e("Anime Url",res.data?:"akjdsfkadjsf")
-//                    try {
-//                        trackSelector = DefaultTrackSelector(this).apply {
-//                            setParameters(buildUponParameters().setMaxVideoSizeSd())
-//                        }
-//                        val audioAttributes: AudioAttributes = AudioAttributes.Builder()
-//                            .setUsage(C.USAGE_MEDIA)
-//                            .setContentType(C.CONTENT_TYPE_MOVIE)
-//                            .build()
-//
-//                        player = ExoPlayer.Builder(this)
-//                            .setAudioAttributes(audioAttributes, true)
-//                            .setTrackSelector(trackSelector!!)
-//                            .setSeekBackIncrementMs(seekForwardSeconds)
-//                            .setSeekForwardIncrementMs(seekForwardSeconds)
-//                            .build()
-//                            .also { exoPlayer ->
-//                                viewBinding.videoView.player = exoPlayer
-//                                val mdItem = MediaItem.fromUri(videoM3U8Url)
-//                                val videoSource: MediaSource =
-//                                    buildMediaSource(mdItem)
-//                                exoPlayer.setMediaSource(videoSource)
-//                                exoPlayer.playWhenReady = playWhenReady
-//                                exoPlayer.prepare()
-//                            }
-//                        viewModel.getPlaybackPosition(episodeUrlLocal).observe(this@PlayerActivity,{
-//                            player?.seekTo(it)
-//                        })
-//
-//
-//                        player!!.addListener(object : Player.Listener {
-//                            override fun onPlayerStateChanged(
-//                                playWhenReady: Boolean,
-//                                playbackState: Int
-//                            ) {
-//                                if (playbackState == ExoPlayer.STATE_READY) {
-//                                    val realDurationMillis: Long = player!!.duration
-//                                    content = Content().apply {
-//                                        episodeUrl = episodeUrlLocal
-//                                        animeName = animeTitlePassed
-//                                        episodeNumber = episodeNumberLocal
-//                                        watchedDuration = 0
-//                                        duration = realDurationMillis
-//                                    }
-//                                }
-//                            }
-//                        })
-//
-//
-//                        val skipIntro =
-//                            viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-//                        viewModel.audioProgress(player).observe(this, { currentProgress ->
-//                            currentProgress?.let {
-//                                currentTime = it
-//                                if (currentTime < 300000) {
-//                                    skipIntro.setOnClickListener {
-//                                        player?.seekTo(currentTime + Constants.INTRO_SKIP_TIME)
-//                                        skipIntro.visibility = View.GONE
-//                                    }
-//                                } else {
-//                                    skipIntro.visibility = View.GONE
-//                                }
-//                            }
-//                        })
-//                    } catch (e: ExoPlaybackException) {
-//                        showSnack(viewBinding.root,e.localizedMessage)
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                    viewBinding.loadingOverlay.visibility = View.GONE
-//                }
-//                is Resource.Loading -> {
-//                    viewBinding.loadingOverlay.visibility = View.VISIBLE
-//                }
-//                is Resource.Error -> {
-//                    showSnack(viewBinding.root,res.message)
-//                }
-//            }
-//        })
-
-        viewModel.videoUrlLiveData.observe(this) { res ->
+        observeLiveData(viewModel.videoUrlLiveData, this) { res ->
             when (res) {
                 is Resource.Success -> {
-                    val videoM3U8Url = res.data.toString()
+                    val videoM3U8Url = getSafeString(res.data)
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())
@@ -238,16 +156,16 @@ class PlayerActivity : AppCompatActivity() {
                                 viewBinding.videoView.player = exoPlayer
                                 val mdItem = MediaItem.fromUri(videoM3U8Url)
                                 val videoSource: MediaSource =
-                                    buildMediaSource(mdItem,videoM3U8Url)
+                                    buildMediaSource(mdItem, videoM3U8Url)
 
                                 exoPlayer.setMediaSource(videoSource)
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.prepare()
                             }
                         viewModel.getPlaybackPosition(episodeUrlLocal)
-                            .observe(this@PlayerActivity, {
+                            .observe(this@PlayerActivity) {
                                 player?.seekTo(it)
-                            })
+                            }
 
 
                         player!!.addListener(object : Player.Listener {
@@ -299,6 +217,7 @@ class PlayerActivity : AppCompatActivity() {
                     showSnack(viewBinding.root, res.message)
                 }
             }
+
         }
     }
 
