@@ -25,7 +25,7 @@ class SearchRepositoryImpl @Inject constructor(
         keyword: String,
     ): Flow<PagingData<AnimeMetaModel>> {
         return Pager(
-            config = PagingConfig(enablePlaceholders = false, pageSize = NETWORK_PAGE_SIZE),
+            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { SearchPagingSource(apiClient, keyword) }
         ).flow.flowOn(ioDispatcher)
     }

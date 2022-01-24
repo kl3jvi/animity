@@ -8,6 +8,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.secrets_gradle_plugin' version("0.4")
 }
 
 android {
@@ -75,6 +76,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.annotation:annotation:1.2.0'
     def coordinatorlayoutVersion = "1.0.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion"
     def androidCoreVersion = "1.7.0"
@@ -110,9 +112,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     def analyticsVersion = "20.0.2"
-    def remoteConfigVersion = "21.0.1"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
-    implementation "com.google.firebase:firebase-config-ktx:$remoteConfigVersion"
 
 
     def crashlyticsVersion = "18.2.6"
@@ -132,7 +132,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
     //Html Parsing
-    def jsoupVersion ="1.13.1"
+    def jsoupVersion = "1.13.1"
     implementation "org.jsoup:jsoup:$jsoupVersion"
 
     //Room Library
@@ -176,6 +176,12 @@ dependencies {
     def paginationVersion = "3.1.0"
     implementation "androidx.paging:paging-runtime-ktx:$paginationVersion"
 
+    def inAppBrowserVersion = "1.4.0"
+    implementation "androidx.browser:browser:$inAppBrowserVersion"
+
+    // DataStore
+    def dataStore_version = "1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$dataStore_version"
 
 
 }

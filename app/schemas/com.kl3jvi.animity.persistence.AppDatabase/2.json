@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "84f0cdf9c7daeb173763b5ccbc546f5c",
+    "identityHash": "e14ae7ed9db23bba57c4b49534b8b321",
     "entities": [
       {
         "tableName": "anime_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `typeValue` INTEGER, `imageUrl` TEXT NOT NULL, `categoryUrl` TEXT, `episodeUrl` TEXT, `title` TEXT NOT NULL, `episodeNumber` TEXT, `timestamp` INTEGER NOT NULL, `insertionOrder` INTEGER NOT NULL, `genreList` TEXT, `releasedDate` TEXT, `favorite_anime` INTEGER NOT NULL, `synopsis` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `typeValue` INTEGER, `imageUrl` TEXT NOT NULL, `categoryUrl` TEXT, `episodeUrl` TEXT, `title` TEXT NOT NULL, `episodeNumber` TEXT, `timestamp` INTEGER NOT NULL, `insertionOrder` INTEGER NOT NULL, `genreList` TEXT, `releasedDate` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -73,18 +73,6 @@
             "columnName": "releasedDate",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "favoriteAnime",
-            "columnName": "favorite_anime",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "synopsis",
-            "columnName": "synopsis",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -144,7 +132,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84f0cdf9c7daeb173763b5ccbc546f5c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e14ae7ed9db23bba57c4b49534b8b321')"
     ]
   }
 }

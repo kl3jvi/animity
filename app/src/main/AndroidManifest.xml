@@ -5,20 +5,44 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:name=".application.AnimityApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
-        tools:ignore="UnusedAttribute"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MySplash">
+        android:theme="@style/Theme.MySplash"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
+        <activity
+            android:name=".ui.activities.login.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Animity">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="login"
+                    android:scheme="animity" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".services.VideoDownloadService"
             android:enabled="true"
             android:exported="true" />
+
         <activity
             android:name=".ui.activities.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -28,18 +52,12 @@
             android:theme="@style/VideoPlayer"
             tools:ignore="LockedOrientationActivity"
             tools:targetApi="n" />
-
         <activity
             android:name=".ui.activities.main.MainActivity"
             android:configChanges="orientation"
             android:exported="true"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

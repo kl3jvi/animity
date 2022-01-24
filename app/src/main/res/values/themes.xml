@@ -36,7 +36,7 @@
     <style name="VideoPlayer" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -80,7 +80,7 @@
         <item name="iconSize">20dp</item>
         <item name="cornerRadius">4dp</item>
         <item name="android:textSize">15sp</item>
-
+        <item name="backgroundTint">@color/colorPrimaryLight</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:foreground">@drawable/outline_drawable</item>
@@ -103,5 +103,4 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <color name="colorAccent">#FFFFFF</color>
 </resources>
