@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_explore">Explore</string>
-    <string name="title_downloads">Downloads</string>
+    <string name="title_profile">Profile</string>
     <string name="anime_details">Anime Details</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -71,4 +71,8 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="sign_in_with_github">Sign In to AniList</string>
+    <string name="terms_of_use"><![CDATA[Terms & Privacy]]></string>
+    <string name="sign_in_as_guest">Sign In as Guest</string>
+    <string name="intro_slogan">Watch ON-THE-GO</string>
+
 </resources>

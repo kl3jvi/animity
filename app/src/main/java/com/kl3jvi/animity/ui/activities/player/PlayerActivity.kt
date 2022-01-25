@@ -32,9 +32,9 @@ import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
+import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.getSafeString
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi

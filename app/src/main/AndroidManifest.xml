@@ -17,31 +17,23 @@
         <activity
             android:name=".ui.activities.login.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.Animity">
-
+            android:theme="@style/Theme.Animity.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="login"
-                    android:scheme="animity" />
+                    android:host="animity"
+                    android:scheme="login" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".services.VideoDownloadService"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity
             android:name=".ui.activities.player.PlayerActivity"

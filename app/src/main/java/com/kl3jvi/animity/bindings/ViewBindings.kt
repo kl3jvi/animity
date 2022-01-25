@@ -20,14 +20,14 @@ object ViewBindings {
         }
     }
 
-//    @JvmStatic
-//    @BindingAdapter("downloadStateImg")
-//    fun setDownloadStateImage(image: ImageView, state: Boolean) {
-//        image.load(if (state) R.drawable.ic_baseline_file_download_done_24 else R.drawable.ic_outline_arrow_downward_24) {
-//            crossfade(true)
-//            diskCachePolicy(CachePolicy.ENABLED)
-//        }
-//    }
+    @JvmStatic
+    @BindingAdapter("downloadStateImg")
+    fun setDownloadStateImage(image: ImageView, state: Boolean) {
+        image.load(if (state) R.drawable.ic_baseline_file_download_done_24 else R.drawable.ic_outline_arrow_downward_24) {
+            crossfade(true)
+            diskCachePolicy(CachePolicy.ENABLED)
+        }
+    }
 
     @JvmStatic
     @BindingAdapter("android:visibility")

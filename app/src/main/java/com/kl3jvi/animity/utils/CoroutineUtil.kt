@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.utils
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.*
+import kotlinx.coroutines.flow.Flow
 
 
 fun <T> observeLiveData(
@@ -14,4 +14,12 @@ fun <T> observeLiveData(
     }
 }
 
-fun getSafeString(string: String?) = string.toString()
+fun <T> LifecycleOwner.collectFlow(flow: Flow<T>, collector: suspend (T) -> Unit) {
+    lifecycleScope.launchWhenStarted {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.collect {
+                collector(it)
+            }
+        }
+    }
+}

@@ -8,4 +8,5 @@
     <dimen name="result_padding">15dp</dimen>
     <dimen name="dp_40">40dp</dimen>
     <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
 </resources>

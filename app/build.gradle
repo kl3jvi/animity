@@ -161,6 +161,8 @@ dependencies {
     // image library
     def coilVersion = "1.4.0"
     implementation "io.coil-kt:coil:$coilVersion"
+    implementation "io.coil-kt:coil-gif:$coilVersion"
+
 
     //splash screen
     def splashVersion = "1.0.0-beta01"

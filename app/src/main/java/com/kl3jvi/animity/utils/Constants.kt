@@ -15,13 +15,15 @@ class Constants {
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
         const val SAVE_DIRECTORY = "Animity"
-        const val STARTING_PAGE_INDEX =1
+        const val STARTING_PAGE_INDEX = 1
 
         // Base URLS
         var BASE_URL = "https://gogoanime.film"
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
         const val ANIME_SCHEDULE = "https://animeschedule.net/anime"
+        const val GRANT_TYPE = "authorization_code"
+        const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
 
         // Model Type
         const val TYPE_RECENT_SUB = 1
@@ -35,8 +37,8 @@ class Constants {
         const val DOWNLOAD_CHANNEL_NAME = "Downloads"
         const val DOWNLOAD_CHANNEL_DESCRIPTION = "The download notification channel"
 
-        const val M3U8_REGEX_PATTERN =
-            "(http|https)://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?"
+        const val GUEST_LOGIN_TYPE = "guest"
+        const val AUTHENTICATED_LOGIN_TYPE = "authenticated"
 
         // Network Requests Header
         private const val USER_AGENT =
@@ -52,6 +54,8 @@ class Constants {
                 "user-agent" to USER_AGENT
             )
         }
+
+        fun getSafeString(string: String?) = string.toString()
 
         fun getColor(): ColorStateList {
             val color: Int = Color.argb(255, 4, 138, 129)
@@ -94,7 +98,7 @@ class Constants {
         }
 
 
-        fun getNetworkHeader(): Map<String, String>{
+        fun getNetworkHeader(): Map<String, String> {
             return mapOf("referer" to REFERER, "origin" to ORIGIN, "user-agent" to USER_AGENT)
         }
     }

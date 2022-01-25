@@ -13,7 +13,6 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class LoginRepositoryImpl @Inject constructor(
     private val dataStoreManager: DataStoreManager,
-    private val aniListClient: AniListClient
 ) : LoginRepository {
 
     override fun getAccessToken(
@@ -32,9 +31,8 @@ class LoginRepositoryImpl @Inject constructor(
 
 
             override suspend fun fetchFromRemote(): Response<String> {
-//                aniListClient
+                return Response.success("")
             }
-
         }.asFlow()
     }
 }

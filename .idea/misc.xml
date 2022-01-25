@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.14114583333333333" />
         <entry key="app/src/main/res/drawable/circular_progress_bar.xml" value="0.14114583333333333" />
         <entry key="app/src/main/res/drawable/dialog_rounded_corner.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/drawable/ic_anilist.xml" value="0.338" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.14479166666666668" />
@@ -77,6 +78,7 @@
         <entry key="app/src/main/res/menu/favorite_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/filter_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.3140625" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.338" />
         <entry key="app/src/main/res/xml/remote_config_defaults.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.25" />
       </map>
