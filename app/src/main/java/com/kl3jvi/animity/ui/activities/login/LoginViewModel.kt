@@ -18,7 +18,9 @@ class LoginViewModel @Inject constructor(
         anilistSecret: String,
         redirectUri: String,
         authorizationToken: String
-    ) = flow<String> { }
+    ) = flow<String> {
+
+    }
 
     fun saveLoginType(loginType: String) = viewModelScope.launch {
         dataStore.saveLoginTypeToPreferencesStore(loginType)

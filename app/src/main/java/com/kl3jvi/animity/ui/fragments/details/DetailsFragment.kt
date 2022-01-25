@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.ui.fragments.details
 
-import android.app.NotificationManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -31,7 +30,6 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -47,8 +45,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private var check = false
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    @Inject
-    lateinit var notificationManager: NotificationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

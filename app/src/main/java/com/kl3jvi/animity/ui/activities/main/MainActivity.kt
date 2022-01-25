@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navController: NavController
-    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -41,21 +41,14 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val appBarConfiguration =
-            if (intent.extras != null) AppBarConfiguration(
-                setOf(
-                    R.id.navigation_home,
-                    R.id.navigation_favorites,
-                    R.id.navigation_explore,
-                )
-            ) else AppBarConfiguration(
-                setOf(
-                    R.id.navigation_home,
-                    R.id.navigation_favorites,
-                    R.id.navigation_explore,
-                    R.id.navigation_profile
-                )
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home,
+                R.id.navigation_favorites,
+                R.id.navigation_explore,
+                R.id.navigation_profile
             )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(menu, navController)
     }

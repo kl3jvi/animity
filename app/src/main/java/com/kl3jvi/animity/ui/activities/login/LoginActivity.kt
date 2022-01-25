@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import com.kl3jvi.animity.BuildConfig.ANILIST_ID
-import com.kl3jvi.animity.BuildConfig.REDIRECT_URI
+import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
+import com.kl3jvi.animity.utils.Constants.Companion.GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
+import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,7 +45,10 @@ class LoginActivity : AppCompatActivity(), Authentication {
     }
 
     override fun getAuthorizationUrl(): Uri {
-        //https://anilist.co/api/v2/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=token
+        /**
+         * https://anilist.co/api/v2/oauth/authorize?client_id={client_id}->
+         * -> &redirect_uri={redirect_uri}&response_type=token
+         */
         return Uri.Builder().scheme("https")
             .authority("anilist.co")
             .appendPath("api")
@@ -60,20 +65,21 @@ class LoginActivity : AppCompatActivity(), Authentication {
         if (intent != null && intent.data != null) {
             val uri = intent.data
             if (uri.toString().startsWith(REDIRECT_URI)) {
+                Log.e("Uri", uri.toString())
                 val authorizationToken = uri?.getQueryParameter("code")
-//                if (!authorizationToken.isNullOrEmpty()) {
-//                    lifecycleScope.launch {
-//                        viewModel.getAccessToken(
-//                            GRANT_TYPE,
-//                            ANILIST_ID,
-//                            ANILIST_SECRET,
-//                            REDIRECT_URI,
-//                            authorizationToken
-//                        ).collect { state ->
-//
-//                        }
-//                    }
-//                }
+                if (!authorizationToken.isNullOrEmpty()) {
+                    collectFlow(
+                        viewModel.getAccessToken(
+                            GRANT_TYPE,
+                            ANILIST_ID,
+                            ANILIST_SECRET,
+                            REDIRECT_URI,
+                            authorizationToken
+                        )
+                    ) {
+
+                    }
+                }
             }
         }
     }
