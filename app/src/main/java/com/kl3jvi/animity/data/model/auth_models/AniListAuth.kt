@@ -1,12 +1,13 @@
 package com.kl3jvi.animity.data.model.auth_models
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-
+@JsonClass(generateAdapter = true)
 data class AniListAuth(
-    @SerializedName("grant_type") val grantType: String,
-    @SerializedName("client_id") val clientId: Int,
-    @SerializedName("client_secret") val clientSecret: String,
-    @SerializedName("redirect_uri") val redirectUrl: String,
-    @SerializedName("code") val code: String
+    @field:Json(name = "grant_type") val grantType: String,
+    @field:Json(name = "client_id") val clientId: Int,
+    @field:Json(name = "client_secret") val clientSecret: String,
+    @field:Json(name = "redirect_uri") val redirectUrl: String,
+    @field:Json(name = "code") val code: String
 )

@@ -9,6 +9,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.secrets_gradle_plugin' version("0.4")
+    id "com.apollographql.apollo3" version("3.0.0")
 }
 
 android {
@@ -72,13 +73,15 @@ android {
 
         }
     }
+    apollo {
+        packageName.set("com.kl3jvi.animity")
+    }
 
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.2.0'
-    def coordinatorlayoutVersion = "1.0.0"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion"
+    def coordinatorLayoutVersion = "1.2.0"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     def androidCoreVersion = "1.7.0"
     implementation "androidx.core:core-ktx:$androidCoreVersion"
 
@@ -100,20 +103,17 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
 
-
     // Coroutines
     def coroutinesVersion = "1.6.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-
     def lifecycle_version = "2.4.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     def analyticsVersion = "20.0.2"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
-
 
     def crashlyticsVersion = "18.2.6"
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
@@ -124,11 +124,11 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltAnnotationProcessor"
 
-// Retrofit
+    // Retrofit
     def retrofitVersion = "2.9.0"
     def interceptor_version = "5.0.0-alpha.2"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
 
@@ -182,9 +182,9 @@ dependencies {
     def inAppBrowserVersion = "1.4.0"
     implementation "androidx.browser:browser:$inAppBrowserVersion"
 
-    // DataStore
-    def dataStore_version = "1.0.0"
-    implementation "androidx.datastore:datastore-preferences:$dataStore_version"
+    // Apollo GraphQl
+    def apolloVersion = "3.0.0"
+    implementation "com.apollographql.apollo3:apollo-runtime:$apolloVersion"
 
 
 }

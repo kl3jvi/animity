@@ -5,6 +5,7 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListService
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.AnimeService
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -35,7 +36,14 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
             .build()
     }
 

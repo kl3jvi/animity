@@ -95,7 +95,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         if (response != null) {
             val token: String = response
             if (token.isNotEmpty()) {
-//                viewModel.saveToken(token) // TODO(save token to shared preferences)
+                viewModel.saveToken(token)
                 return
             }
         }
