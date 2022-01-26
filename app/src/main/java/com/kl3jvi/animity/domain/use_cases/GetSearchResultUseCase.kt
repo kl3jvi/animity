@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.domain.use_cases
 
 import androidx.paging.PagingData
-import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.repository.SearchRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import kotlinx.coroutines.flow.Flow

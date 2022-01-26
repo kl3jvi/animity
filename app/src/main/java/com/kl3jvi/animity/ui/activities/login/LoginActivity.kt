@@ -72,7 +72,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                     collectFlow(
                         viewModel.getAccessToken(
                             grantType = AUTH_GRANT_TYPE,
-                            clientId = ANILIST_ID,
+                            clientId = ANILIST_ID.toInt(),
                             clientSecret = ANILIST_SECRET,
                             redirectUri = REDIRECT_URI,
                             authorizationToken = authorizationToken
@@ -82,7 +82,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                             is State.Error -> {}
                             is State.Loading -> {}
                             is State.Success -> {
-                                Log.e("Auth token", state.data)
+                                Log.e("Auth token", state.data.accessToken)
                             }
                         }
                     }

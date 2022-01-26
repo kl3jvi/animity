@@ -1,8 +1,8 @@
 package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
-import com.kl3jvi.animity.data.model.AnimeInfoModel
-import com.kl3jvi.animity.data.model.EpisodeModel
-import com.kl3jvi.animity.data.model.EpisodeReleaseModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
+import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
+import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
 interface DetailsRepository {

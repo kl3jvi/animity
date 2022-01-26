@@ -1,9 +1,9 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
-import com.kl3jvi.animity.data.model.AniListAuth
+import com.kl3jvi.animity.data.model.auth_models.AniListAuth
+import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
@@ -14,7 +14,7 @@ interface AniListService {
         "Accept: application/json"
     )
     @POST("https://anilist.co/api/v2/oauth/token")
-    suspend fun getAccessToken(@Body aniListAuth: AniListAuth): Response<String>
+    suspend fun getAccessToken(@Body aniListAuth: AniListAuth): Response<AuthResponse>
 
 
 }

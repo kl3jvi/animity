@@ -10,7 +10,7 @@ class GetAccessTokenUseCase @Inject constructor(
 ) {
     operator fun invoke(
         grantType: String,
-        clientId: String,
+        clientId: Int,
         clientSecret: String,
         redirectUri: String,
         code: String

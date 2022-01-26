@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.data.repository
 
-import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_MOVIE

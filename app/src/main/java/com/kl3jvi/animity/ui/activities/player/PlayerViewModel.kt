@@ -1,13 +1,11 @@
 package com.kl3jvi.animity.ui.activities.player
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.ExoPlayer
 
-import com.kl3jvi.animity.data.model.Content
+import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.utils.parser.HtmlParser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

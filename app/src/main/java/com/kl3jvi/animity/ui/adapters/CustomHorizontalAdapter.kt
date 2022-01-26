@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
-import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 
 class CustomHorizontalAdapter :

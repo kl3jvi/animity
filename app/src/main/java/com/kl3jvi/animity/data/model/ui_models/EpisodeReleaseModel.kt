@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.model
+package com.kl3jvi.animity.data.model.ui_models
 
 data class EpisodeReleaseModel(
     val episodeTitle: String = "",

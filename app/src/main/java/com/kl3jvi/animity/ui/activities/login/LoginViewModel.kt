@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.activities.login
 
 import androidx.lifecycle.ViewModel
+import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.domain.use_cases.GetAccessTokenUseCase
 import com.kl3jvi.animity.utils.State
 import com.kl3jvi.animity.utils.mapToState
@@ -16,11 +17,11 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
     fun getAccessToken(
         grantType: String,
-        clientId: String,
+        clientId: Int,
         clientSecret: String,
         redirectUri: String,
         authorizationToken: String
-    ): Flow<State<String>> {
+    ): Flow<State<AuthResponse>> {
         return getAccessTokenUseCase(
             grantType,
             clientId,

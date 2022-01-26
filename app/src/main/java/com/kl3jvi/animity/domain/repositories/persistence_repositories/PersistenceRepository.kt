@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.domain.repositories.persistence_repositories
 
-import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.data.model.Content
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.Content
 import kotlinx.coroutines.flow.Flow
 
 interface PersistenceRepository {

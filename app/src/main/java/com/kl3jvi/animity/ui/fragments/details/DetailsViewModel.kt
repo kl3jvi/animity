@@ -2,7 +2,7 @@ package com.kl3jvi.animity.ui.fragments.details
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository

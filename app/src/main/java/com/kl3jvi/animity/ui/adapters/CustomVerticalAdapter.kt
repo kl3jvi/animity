@@ -10,7 +10,7 @@ import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
-import com.kl3jvi.animity.data.model.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor
 import com.kl3jvi.animity.ui.fragments.home.HomeFragment
 

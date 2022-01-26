@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.persistence
 
 import androidx.room.*
-import com.kl3jvi.animity.data.model.Content
+import com.kl3jvi.animity.data.model.ui_models.Content
 
 @Dao
 interface EpisodeDao {

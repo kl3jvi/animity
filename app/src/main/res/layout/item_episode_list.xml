@@ -13,7 +13,7 @@
 
         <variable
             name="episodeInfo"
-            type="com.kl3jvi.animity.data.model.EpisodeModel" />
+            type="com.kl3jvi.animity.data.model.ui_models.EpisodeModel" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

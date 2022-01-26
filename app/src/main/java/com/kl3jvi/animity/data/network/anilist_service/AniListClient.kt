@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
-import com.kl3jvi.animity.data.model.AniListAuth
+import com.kl3jvi.animity.data.model.auth_models.AniListAuth
 import javax.inject.Inject
 
 class AniListClient @Inject constructor(
@@ -8,7 +8,7 @@ class AniListClient @Inject constructor(
 ) {
     suspend fun getAccessToken(
         grantType: String,
-        clientId: String,
+        clientId: Int,
         clientSecret: String,
         redirectUri: String,
         code: String
