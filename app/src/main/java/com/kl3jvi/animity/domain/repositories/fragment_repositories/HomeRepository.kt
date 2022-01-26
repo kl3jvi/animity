@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories
+package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
 import com.kl3jvi.animity.data.model.AnimeMetaModel
 import com.kl3jvi.animity.utils.parser.HtmlParser

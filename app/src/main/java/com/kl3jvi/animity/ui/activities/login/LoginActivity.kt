@@ -6,42 +6,52 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import com.kl3jvi.animity.BuildConfig.*
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
+import com.kl3jvi.animity.ui.base.BindingActivity
 import com.kl3jvi.animity.utils.Constants.Companion.GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.NetworkUtils
+import com.kl3jvi.animity.utils.State
+import com.kl3jvi.animity.utils.ViewUtils.show
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity(), Authentication {
+class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login),
+    Authentication {
 
-    private lateinit var binding: ActivityLoginBinding
     private lateinit var customTabsIntent: CustomTabsIntent
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         initViews()
-
     }
 
-    override fun onResume() {
-        super.onResume()
-        onHandleAuthIntent(intent)
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        onHandleAuthIntent(intent)
+    /**
+     * Moves to main activity and also returns logged in state to check it
+     * when reopening app and not transitioning 2 times to home page after login
+     */
+    private fun checkIfUserLoggedIn(): Boolean {
+        var isLoggedIn = false
+        collectFlow(viewModel.getToken()) { token ->
+            isLoggedIn = token.isNotEmpty()
+            if (isLoggedIn) {
+                binding.progressBar.show()
+                launchActivity<MainActivity> {}
+                finish()
+            }
+        }
+        return isLoggedIn
     }
 
     override fun getAuthorizationUrl(): Uri {
@@ -65,8 +75,8 @@ class LoginActivity : AppCompatActivity(), Authentication {
         if (intent != null && intent.data != null) {
             val uri = intent.data
             if (uri.toString().startsWith(REDIRECT_URI)) {
-                Log.e("Uri", uri.toString())
                 val authorizationToken = uri?.getQueryParameter("code")
+                Log.e("AUTH TOKEN", authorizationToken.toString())
                 if (!authorizationToken.isNullOrEmpty()) {
                     collectFlow(
                         viewModel.getAccessToken(
@@ -76,12 +86,29 @@ class LoginActivity : AppCompatActivity(), Authentication {
                             REDIRECT_URI,
                             authorizationToken
                         )
-                    ) {
-
+                    ) { state ->
+                        when (state) {
+                            is State.Error -> {}
+                            is State.Loading -> {}
+                            is State.Success -> {
+                                Log.e("Auth token", state.data)
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    override fun onTokenResponse(response: String?) {
+        if (response != null) {
+            val token: String = response
+            if (token.isNotEmpty()) {
+                viewModel.saveToken(token)
+                return
+            }
+        }
+        showSnack(binding.root, "Couldn't Login!!")
     }
 
 
@@ -109,5 +136,28 @@ class LoginActivity : AppCompatActivity(), Authentication {
     private fun openInAppBrowser(context: Context, uri: Uri) {
         customTabsIntent = CustomTabsIntent.Builder().build()
         customTabsIntent.launchUrl(context, uri)
+    }
+
+    private fun handleNetworkChanges() {
+        NetworkUtils.getNetworkLiveData(applicationContext).observe(this) { isConnected ->
+            if (!isConnected) showSnack(binding.root, "No Internet Connection!")
+            binding.aniListLogin.isEnabled = isConnected
+            binding.guestLogin.isEnabled = isConnected
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onHandleAuthIntent(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        onHandleAuthIntent(intent)
     }
 }

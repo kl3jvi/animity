@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.kl3jvi.animity.data.repository.DataStoreManagerImpl
-import com.kl3jvi.animity.domain.repositories.DataStoreManager
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.DataStoreManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

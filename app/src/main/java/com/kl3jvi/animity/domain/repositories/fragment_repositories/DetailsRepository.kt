@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories
+package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
 import com.kl3jvi.animity.data.model.AnimeInfoModel
 import com.kl3jvi.animity.data.model.EpisodeModel

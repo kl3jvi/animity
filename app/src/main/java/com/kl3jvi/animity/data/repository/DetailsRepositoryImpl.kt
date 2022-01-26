@@ -4,7 +4,7 @@ import com.kl3jvi.animity.data.model.AnimeInfoModel
 import com.kl3jvi.animity.data.model.EpisodeModel
 import com.kl3jvi.animity.data.model.EpisodeReleaseModel
 import com.kl3jvi.animity.data.network.AnimeApiClient
-import com.kl3jvi.animity.domain.repositories.DetailsRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

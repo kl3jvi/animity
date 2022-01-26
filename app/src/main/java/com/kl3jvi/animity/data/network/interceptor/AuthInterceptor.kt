@@ -7,8 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthenticationInterceptor @Inject constructor(
-) : Interceptor {
+class AuthenticationInterceptor @Inject constructor() : Interceptor {
 
     var token: String? = null
 

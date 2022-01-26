@@ -12,17 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MySplash"
-        android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".ui.activities.login.LoginActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Animity.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
 
                 <data
                     android:host="animity"

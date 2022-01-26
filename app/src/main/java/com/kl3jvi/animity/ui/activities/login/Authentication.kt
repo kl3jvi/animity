@@ -6,5 +6,5 @@ import android.net.Uri
 interface Authentication {
     fun getAuthorizationUrl(): Uri
     fun onHandleAuthIntent(intent: Intent?)
-//    fun onTokenResponse(response: AccessTokenModel?)
+    fun onTokenResponse(response: String?)
 }

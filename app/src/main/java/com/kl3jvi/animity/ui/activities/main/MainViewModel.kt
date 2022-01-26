@@ -9,6 +9,5 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val dataStore: DataStoreManagerImpl
 ) : ViewModel() {
-    fun getLoginType() = dataStore.getLoginTypeFromPreferencesStore()
 
 }
