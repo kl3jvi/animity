@@ -1,0 +1,42 @@
+query MediaListScoreCollectionQuery(
+    $userId: Int,
+    $otherUserId: Int,
+    $type: MediaType
+) {
+    currentUser: MediaListCollection(
+        userId: $userId,
+        type: $type,
+        forceSingleCompletedList: true,
+        sort: [SCORE_DESC]
+    ) {
+        ... mediaListScoreCollection
+    }
+
+    otherUser: MediaListCollection(
+        userId: $otherUserId,
+        type: $type,
+        forceSingleCompletedList: true,
+        sort: [SCORE_DESC]
+    ) {
+        ... mediaListScoreCollection
+    }
+}
+
+fragment mediaListScoreCollection on MediaListCollection {
+    user {
+        id
+        name
+    }
+    lists {
+        entries {
+            id
+            score
+            media {
+                id
+                title {
+                    userPreferred
+                }
+            }
+        }
+    }
+}

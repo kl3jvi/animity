@@ -1,0 +1,27 @@
+query MediaImageQuery(
+    $page: Int,
+    $id_in: [Int]
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            id_in: $id_in,
+            sort: [POPULARITY_DESC]
+        ) {
+            id
+            title {
+                userPreferred
+            }
+            coverImage {
+                large
+            }
+            type
+        }
+    }
+}

@@ -1,0 +1,16 @@
+mutation ToggleFollowMutation(
+    $userId: Int
+) {
+    ToggleFollow(
+        userId: $userId,
+    ) {
+        id
+        name
+        avatar {
+            large
+        }
+        isFollower
+        isFollowing
+        siteUrl
+    }
+}

@@ -1,0 +1,40 @@
+query UserReviewsQuery(
+    $page: Int,
+    $userId: Int
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        reviews(
+            userId: $userId,
+            sort: [CREATED_AT_DESC]
+        ) {
+            id
+            userId
+            mediaId
+            mediaType
+            summary
+            rating
+            ratingAmount
+            userRating
+            score
+            siteUrl
+            createdAt
+            updatedAt
+            media {
+                id
+                title {
+                    userPreferred
+                }
+                coverImage {
+                    large
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+query MediaStatusQuery(
+    $userId: Int,
+    $mediaId: Int
+) {
+    MediaList(
+        userId: $userId,
+        mediaId: $mediaId
+    ) {
+        id
+        mediaId
+        status
+    }
+}

@@ -1,0 +1,23 @@
+query UserStatisticsStudiosQuery(
+    $id: Int,
+    $sort: [UserStatisticsSort]
+) {
+    User(id: $id) {
+        id
+        name
+        statistics {
+            anime {
+                studios(sort: $sort) {
+                    count
+                    meanScore
+                    minutesWatched
+                    mediaIds
+                    studio {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
+}

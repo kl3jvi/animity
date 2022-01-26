@@ -14,6 +14,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BindingActivity
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
+import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils
@@ -28,7 +29,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login),
     Authentication {
 
-    private lateinit var customTabsIntent: CustomTabsIntent
     private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,11 +105,16 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     private fun initViews() {
         val aniListLogin = binding.aniListLogin
+        val aniListRegister = binding.aniListSignUp
         val guestLogin = binding.guestLogin
         val privacy = binding.privacy
 
         aniListLogin.setOnClickListener {
-            openInAppBrowser(this@LoginActivity, getAuthorizationUrl())
+            launchBrowser(this@LoginActivity, getAuthorizationUrl())
+        }
+
+        aniListRegister.setOnClickListener {
+            launchBrowser(this@LoginActivity, Uri.parse(SIGNUP_URL))
         }
 
         guestLogin.setOnClickListener {
@@ -120,18 +125,20 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }
 
         privacy.setOnClickListener {
-            openInAppBrowser(this@LoginActivity, Uri.parse(TERMS_AND_PRIVACY_LINK))
+            launchBrowser(this@LoginActivity, Uri.parse(TERMS_AND_PRIVACY_LINK))
         }
     }
 
-    private fun openInAppBrowser(context: Context, uri: Uri) {
-        customTabsIntent = CustomTabsIntent.Builder().build()
-        customTabsIntent.launchUrl(context, uri)
+    private fun launchBrowser(context: Context, uri: Uri) {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(context, uri)
     }
 
     private fun handleNetworkChanges() {
         NetworkUtils.getNetworkLiveData(applicationContext).observe(this) { isConnected ->
             if (!isConnected) showSnack(binding.root, "No Internet Connection!")
+            binding.aniListSignUp.isEnabled = isConnected
             binding.aniListLogin.isEnabled = isConnected
             binding.guestLogin.isEnabled = isConnected
         }

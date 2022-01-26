@@ -1,0 +1,50 @@
+query ReviewsQuery(
+    $page: Int,
+    $perPage: Int,
+    $mediaType: MediaType,
+    $sort: [ReviewSort]
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        reviews(
+            mediaType: $mediaType,
+            sort: $sort
+        ) {
+            id
+            userId
+            mediaId
+            mediaType
+            summary
+            rating
+            ratingAmount
+            userRating
+            score
+            siteUrl
+            createdAt
+            updatedAt
+            user {
+                id
+                name
+                avatar {
+                    medium
+                }
+            }
+            media {
+                id
+                title {
+                    userPreferred
+                }
+                coverImage {
+                    medium
+                }
+                bannerImage
+            }
+        }
+    }
+}

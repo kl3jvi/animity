@@ -1,0 +1,26 @@
+query CharacterImageQuery(
+    $page: Int,
+    $id_in: [Int]
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        characters(
+            id_in: $id_in,
+            sort: [FAVOURITES_DESC]
+        ) {
+            id
+            name {
+                full
+            }
+            image {
+                large
+            }
+        }
+    }
+}

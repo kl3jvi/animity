@@ -1,0 +1,29 @@
+query UserStatisticsStatusesQuery(
+    $id: Int,
+    $sort: [UserStatisticsSort]
+) {
+    User(id: $id) {
+        id
+        name
+        statistics {
+            anime {
+                statuses(sort: $sort) {
+                    count
+                    meanScore
+                    minutesWatched
+                    mediaIds
+                    status
+                }
+            }
+            manga {
+                statuses(sort: $sort) {
+                    count
+                    meanScore
+                    chaptersRead
+                    mediaIds
+                    status
+                }
+            }
+        }
+    }
+}

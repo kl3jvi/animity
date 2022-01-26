@@ -1,0 +1,29 @@
+query SearchCharactersQuery(
+    $page: Int,
+    $search: String,
+    $sort: [CharacterSort]
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        characters(
+            search: $search,
+            sort: $sort
+        ) {
+            id
+            name {
+                full
+                native
+            }
+            image {
+                large
+            }
+            favourites
+        }
+    }
+}

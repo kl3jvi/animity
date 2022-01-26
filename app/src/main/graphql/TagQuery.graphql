@@ -1,0 +1,8 @@
+query TagQuery {
+    MediaTagCollection {
+        id
+        name
+        description
+        category
+    }
+}

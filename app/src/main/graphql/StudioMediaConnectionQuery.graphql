@@ -1,0 +1,32 @@
+query StudioMediaConnectionQuery(
+    $id: Int,
+    $sort: MediaSort,
+    $page: Int
+) {
+    Studio(id: $id) {
+        id
+        name
+        media(sort: [$sort], page: $page) {
+            edges {
+                node {
+                    id
+                    title {
+                        userPreferred
+                    }
+                    coverImage {
+                        large
+                    }
+                    type
+                    format
+                }
+            }
+            pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+            }
+        }
+    }
+}

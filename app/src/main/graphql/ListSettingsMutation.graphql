@@ -1,0 +1,34 @@
+mutation ListSettingsMutation(
+    $scoreFormat: ScoreFormat,
+    $rowOrder: String,
+    $animeListOptions: MediaListOptionsInput,
+    $mangaListOptions: MediaListOptionsInput
+) {
+    UpdateUser(
+        scoreFormat: $scoreFormat,
+        rowOrder: $rowOrder,
+        animeListOptions: $animeListOptions,
+        mangaListOptions: $mangaListOptions
+    ) {
+        id
+        name
+        mediaListOptions {
+            scoreFormat
+            rowOrder
+            animeList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+            mangaList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+        }
+    }
+}

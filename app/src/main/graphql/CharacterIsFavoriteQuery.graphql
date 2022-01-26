@@ -1,0 +1,9 @@
+query CharacterIsFavoriteQuery($id: Int) {
+    Character(id: $id) {
+        id
+        name {
+            full
+        }
+        isFavourite
+    }
+}

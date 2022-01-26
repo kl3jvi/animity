@@ -1,0 +1,29 @@
+query UserStatisticsReleaseYearsQuery(
+    $id: Int,
+    $sort: [UserStatisticsSort]
+) {
+    User(id: $id) {
+        id
+        name
+        statistics {
+            anime {
+                releaseYears(sort: $sort) {
+                    count
+                    meanScore
+                    minutesWatched
+                    mediaIds
+                    releaseYear
+                }
+            }
+            manga {
+                releaseYears(sort: $sort) {
+                    count
+                    meanScore
+                    chaptersRead
+                    mediaIds
+                    releaseYear
+                }
+            }
+        }
+    }
+}

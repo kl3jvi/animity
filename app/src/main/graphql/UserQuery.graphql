@@ -1,0 +1,56 @@
+query UserQuery($id: Int) {
+    User(id: $id) {
+        id
+        name
+        about(asHtml: false)
+        avatar {
+            large
+            medium
+        }
+        bannerImage
+        mediaListOptions {
+            scoreFormat
+            rowOrder
+            animeList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+            mangaList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+        }
+        statistics {
+            anime {
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                chaptersRead
+                volumesRead
+            }
+            manga {
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                chaptersRead
+                volumesRead
+            }
+        }
+        isFollowing
+        isFollower
+        donatorTier
+        donatorBadge
+        moderatorStatus
+        siteUrl
+    }
+}

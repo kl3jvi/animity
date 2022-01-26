@@ -1,0 +1,45 @@
+query UserStatisticsStaffsQuery(
+    $id: Int,
+    $sort: [UserStatisticsSort]
+) {
+    User(id: $id) {
+        id
+        name
+        statistics {
+            anime {
+                staff(sort: $sort) {
+                    count
+                    meanScore
+                    minutesWatched
+                    mediaIds
+                    staff {
+                        id
+                        name {
+                            full
+                        }
+                        image {
+                            large
+                        }
+                    }
+                }
+            }
+            manga {
+                staff(sort: $sort) {
+                    count
+                    meanScore
+                    chaptersRead
+                    mediaIds
+                    staff {
+                        id
+                        name {
+                            full
+                        }
+                        image {
+                            large
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

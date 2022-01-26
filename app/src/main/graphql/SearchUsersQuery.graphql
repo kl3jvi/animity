@@ -1,0 +1,22 @@
+query SearchUsersQuery(
+    $page: Int,
+    $search: String,
+    $sort: [UserSort]
+) {
+    Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        users(search: $search, sort: $sort) {
+            id
+            name
+            avatar {
+                large
+            }
+        }
+    }
+}

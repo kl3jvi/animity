@@ -1,0 +1,34 @@
+query MediaStatsQuery(
+    $id: Int
+) {
+    Media(id: $id) {
+        id
+        title {
+            userPreferred
+        }
+        averageScore
+        meanScore
+        popularity
+        favourites
+        rankings {
+            id
+            rank
+            type
+            format
+            year
+            season
+            allTime
+            context
+        }
+        stats {
+            scoreDistribution {
+                score
+                amount
+            }
+            statusDistribution {
+                status
+                amount
+            }
+        }
+    }
+}

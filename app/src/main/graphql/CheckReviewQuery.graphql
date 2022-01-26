@@ -1,0 +1,14 @@
+query CheckReviewQuery(
+    $mediaId: Int,
+    $userId: Int
+) {
+    Review(mediaId: $mediaId, userId: $userId) {
+        id
+        userId
+        mediaId
+        summary
+        body
+        score
+        private
+    }
+}

@@ -1,0 +1,15 @@
+mutation ToggleLikeMutation(
+    $id: Int,
+    $type: LikeableType
+) {
+    ToggleLike(
+        id: $id,
+        type: $type
+    ) {
+        id
+        name
+        avatar {
+            medium
+        }
+    }
+}

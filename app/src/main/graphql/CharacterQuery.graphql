@@ -1,0 +1,19 @@
+query CharacterQuery($id: Int) {
+    Character(id: $id) {
+        id
+        name {
+            first
+            last
+            full
+            native
+            alternative
+        }
+        image {
+            large
+        }
+        description(asHtml: true)
+        isFavourite
+        siteUrl
+        favourites
+    }
+}

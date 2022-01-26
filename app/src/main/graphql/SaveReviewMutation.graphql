@@ -1,0 +1,19 @@
+mutation SaveReviewMutation(
+    $id: Int,
+    $mediaId: Int,
+    $body: String,
+    $summary: String,
+    $score: Int,
+    $private: Boolean
+) {
+    SaveReview(
+        id: $id,
+        mediaId: $mediaId,
+        body: $body,
+        summary: $summary,
+        score: $score,
+        private: $private
+    ) {
+        id
+    }
+}

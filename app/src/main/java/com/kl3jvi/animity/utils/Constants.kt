@@ -25,6 +25,7 @@ class Constants {
         const val AUTH_GRANT_TYPE = "authorization_code"
         const val REFRESH_GRANT_TYPE = "refresh_token"
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
+        const val SIGNUP_URL = "https://anilist.co/signup"
 
 
         // Model Type

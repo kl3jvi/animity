@@ -1,0 +1,20 @@
+query MediaActivityQuery(
+    $mediaId: Int,
+    $page: Int
+) {
+    Page(page: $page, perPage: 10) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        activities(
+            mediaId: $mediaId,
+            sort: [ID_DESC]
+        ) {
+            ... onListActivity
+        }
+    }
+}

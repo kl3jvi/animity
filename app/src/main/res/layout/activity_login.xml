@@ -32,31 +32,69 @@
             tools:context=".presentation.activities.login.LoginActivity">
 
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="32dp"
-                android:src="@mipmap/ic_launcher"
-                app:layout_constraintBottom_toTopOf="@+id/aniListLogin"
+            <com.google.android.material.textview.MaterialTextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:shadowColor="#191818"
+                android:shadowRadius="5"
+                android:text="@string/important_to_know"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@id/loginExplanationText"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginExplanationText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:shadowColor="#191818"
+                android:shadowRadius="5"
+                android:text="@string/login_info"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/aniListSignUp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aniListSignUp"
+                style="@style/OutlineButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/sign_up"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_anilist"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/dp_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/aniListLogin"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/aniListLogin"
                 style="@style/NiceButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="@string/sign_in_with_github"
+                android:text="@string/sign_in"
                 android:textStyle="bold"
                 app:icon="@drawable/ic_anilist"
                 app:iconGravity="textStart"
                 app:iconPadding="@dimen/dp_16"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/aniListSignUp"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/guestLogin"
@@ -73,7 +111,7 @@
                 app:iconPadding="@dimen/dp_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/aniListLogin" />
+                app:layout_constraintTop_toBottomOf="@+id/aniListSignUp" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
