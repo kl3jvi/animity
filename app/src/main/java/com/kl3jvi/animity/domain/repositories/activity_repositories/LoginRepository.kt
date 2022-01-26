@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
     fun getAccessToken(
-        authenticationCode: String,
+        grantType: String,
         clientId: String,
         clientSecret: String,
         redirectUri: String,

@@ -1,30 +1,19 @@
 package com.kl3jvi.animity.data.network.interceptor
 
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AuthenticationInterceptor @Inject constructor() : Interceptor {
 
-    var token: String? = null
+class HeaderInterceptor(private val localStorage: LocalStorage) : Interceptor {
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
-        val builder = original.newBuilder()
-        val authToken = token
-
-        if (!authToken.isNullOrBlank()) {
-            builder.header(
-                "Authorization",
-                if (authToken.startsWith("Basic")) authToken else "token $authToken"
-            )
-        }
-
-        val request = builder.build()
-        return chain.proceed(request)
+    override fun intercept(chain: Interceptor.Chain): Response = chain.run {
+        proceed(
+            request().newBuilder()
+                .addHeader("Authorization", "Bearer ${localStorage.bearerToken}")
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .build()
+        )
     }
 }

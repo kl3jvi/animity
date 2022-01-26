@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.kl3jvi.animity.data.paging.SearchPagingSource
 import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.data.network.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.SearchRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

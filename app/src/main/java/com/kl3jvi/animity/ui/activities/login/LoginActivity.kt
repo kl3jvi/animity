@@ -12,13 +12,12 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BindingActivity
-import com.kl3jvi.animity.utils.Constants.Companion.GRANT_TYPE
+import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils
 import com.kl3jvi.animity.utils.State
-import com.kl3jvi.animity.utils.ViewUtils.show
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,14 +42,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
      */
     private fun checkIfUserLoggedIn(): Boolean {
         var isLoggedIn = false
-        collectFlow(viewModel.getToken()) { token ->
-            isLoggedIn = token.isNotEmpty()
-            if (isLoggedIn) {
-                binding.progressBar.show()
-                launchActivity<MainActivity> {}
-                finish()
-            }
-        }
         return isLoggedIn
     }
 
@@ -80,11 +71,11 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                 if (!authorizationToken.isNullOrEmpty()) {
                     collectFlow(
                         viewModel.getAccessToken(
-                            GRANT_TYPE,
-                            ANILIST_ID,
-                            ANILIST_SECRET,
-                            REDIRECT_URI,
-                            authorizationToken
+                            grantType = AUTH_GRANT_TYPE,
+                            clientId = ANILIST_ID,
+                            clientSecret = ANILIST_SECRET,
+                            redirectUri = REDIRECT_URI,
+                            authorizationToken = authorizationToken
                         )
                     ) { state ->
                         when (state) {
@@ -104,7 +95,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         if (response != null) {
             val token: String = response
             if (token.isNotEmpty()) {
-                viewModel.saveToken(token)
+//                viewModel.saveToken(token) // TODO(save token to shared preferences)
                 return
             }
         }

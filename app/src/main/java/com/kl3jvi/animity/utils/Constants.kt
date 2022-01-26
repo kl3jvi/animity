@@ -14,7 +14,7 @@ class Constants {
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
-        const val SAVE_DIRECTORY = "Animity"
+        const val TOKEN_PREFERENCES = "Animity_Token_Preferences"
         const val STARTING_PAGE_INDEX = 1
 
         // Base URLS
@@ -22,8 +22,10 @@ class Constants {
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
         const val ANIME_SCHEDULE = "https://animeschedule.net/anime"
-        const val GRANT_TYPE = "authorization_code"
+        const val AUTH_GRANT_TYPE = "authorization_code"
+        const val REFRESH_GRANT_TYPE = "refresh_token"
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
+
 
         // Model Type
         const val TYPE_RECENT_SUB = 1

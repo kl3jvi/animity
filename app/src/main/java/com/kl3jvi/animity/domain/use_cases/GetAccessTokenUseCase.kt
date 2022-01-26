@@ -9,13 +9,13 @@ class GetAccessTokenUseCase @Inject constructor(
     private val repository: LoginRepositoryImpl
 ) {
     operator fun invoke(
-        authenticationCode: String,
+        grantType: String,
         clientId: String,
         clientSecret: String,
         redirectUri: String,
         code: String
     ) = repository.getAccessToken(
-        authenticationCode,
+        grantType,
         clientId,
         clientSecret,
         redirectUri,

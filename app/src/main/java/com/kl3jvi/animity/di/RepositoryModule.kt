@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.data.network.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.data.repository.DetailsRepositoryImpl
 import com.kl3jvi.animity.data.repository.HomeRepositoryImpl
 import com.kl3jvi.animity.data.repository.PlayerRepositoryImpl

@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.data.repository
 
-import com.kl3jvi.animity.data.network.AniListClient
+import com.kl3jvi.animity.data.network.anilist_service.AniListClient
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.network_repositories.NetworkBoundRepository
 import com.kl3jvi.animity.utils.NetworkResource
@@ -15,7 +15,7 @@ class LoginRepositoryImpl @Inject constructor(
 ) : LoginRepository {
 
     override fun getAccessToken(
-        authenticationCode: String,
+        grantType: String,
         clientId: String,
         clientSecret: String,
         redirectUri: String,
@@ -24,7 +24,7 @@ class LoginRepositoryImpl @Inject constructor(
         return object : NetworkBoundRepository<String>() {
             override suspend fun fetchFromRemote(): Response<String> {
                 return aniListClient.getAccessToken(
-                    authenticationCode,
+                    grantType,
                     clientId,
                     clientSecret,
                     redirectUri,

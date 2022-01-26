@@ -2,20 +2,19 @@ package com.kl3jvi.animity.di
 
 import android.app.Application
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.preferencesDataStore
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.kl3jvi.animity.persistence.AnimeDao
 import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants.Companion.DATABASE_NAME
+import com.kl3jvi.animity.utils.Constants.Companion.TOKEN_PREFERENCES
 import com.kl3jvi.animity.utils.Converters
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.util.prefs.Preferences
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -44,4 +43,9 @@ object PersistenceModule {
     fun providesEpisodeDao(appDatabase: AppDatabase): EpisodeDao = appDatabase.episodeDao()
 
 
+    @Singleton
+    @Provides
+    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences(TOKEN_PREFERENCES, Context.MODE_PRIVATE)
+    }
 }

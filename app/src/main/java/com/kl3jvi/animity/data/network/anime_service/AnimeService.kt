@@ -1,7 +1,6 @@
-package com.kl3jvi.animity.data.network
+package com.kl3jvi.animity.data.network.anime_service
 
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
 import okhttp3.ResponseBody
 import retrofit2.http.*
 

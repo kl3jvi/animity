@@ -25,7 +25,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-
                 <data
                     android:host="animity"
                     android:scheme="login" />
@@ -35,6 +34,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
@@ -46,13 +46,12 @@
             android:theme="@style/VideoPlayer"
             tools:ignore="LockedOrientationActivity"
             tools:targetApi="n" />
+
         <activity
             android:name=".ui.activities.main.MainActivity"
             android:configChanges="orientation"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
     </application>
 
 </manifest>
