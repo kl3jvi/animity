@@ -189,7 +189,7 @@ class PlayerActivity : AppCompatActivity() {
 
                         val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-                        viewModel.audioProgress(player).observe(this, { currentProgress ->
+                        viewModel.audioProgress(player).observe(this) { currentProgress ->
                             currentProgress?.let {
                                 currentTime = it
                                 if (currentTime < 300000) {
@@ -201,9 +201,10 @@ class PlayerActivity : AppCompatActivity() {
                                     skipIntro.visibility = View.GONE
                                 }
                             }
-                        })
+                        }
 
                     } catch (e: ExoPlaybackException) {
+                        e.printStackTrace()
                         showSnack(viewBinding.root, e.localizedMessage)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -214,7 +215,7 @@ class PlayerActivity : AppCompatActivity() {
                     viewBinding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(viewBinding.root, res.message)
+                    /*viewBinding.loadingOverlay.visibility = View.VISIBLE*/
                 }
             }
 

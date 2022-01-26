@@ -45,7 +45,6 @@ class PlayerViewModel @Inject constructor(
         getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
             getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl)
         }.flatMapLatest {
-            Log.e("parsed url ->" , it.data.toString())
             getEpisodeInfoUseCase.fetchM3U8(it.data)
         }.asLiveData()
     }

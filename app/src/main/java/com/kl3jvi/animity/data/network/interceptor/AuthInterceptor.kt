@@ -3,10 +3,15 @@ package com.kl3jvi.animity.data.network.interceptor
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthenticationInterceptor(
-    private var token: String? = null
+@Singleton
+class AuthenticationInterceptor @Inject constructor(
 ) : Interceptor {
+
+    var token: String? = null
+
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
