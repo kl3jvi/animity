@@ -1,5 +1,7 @@
 package com.kl3jvi.animity.utils
 
+import com.apollographql.apollo3.api.ApolloResponse
+
 sealed class State<T> {
     class Loading<T> : State<T>()
     data class Success<T>(val data: T) : State<T>()
@@ -35,5 +37,7 @@ sealed class State<T> {
             is NetworkResource.Failed -> error(resource.message)
 
         }
+
+//        fun <T> fromApolloResource(resource: ApolloResponse<T.data>){}
     }
 }

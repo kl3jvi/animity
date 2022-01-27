@@ -292,6 +292,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "isLicensed",
+                  "description": "If the media is officially licensed or a self-published doujin release",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "search",
                   "description": "Filter by search query",
                   "type": {
@@ -1309,6 +1319,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "isBirthday",
+                  "description": "Filter by character by if its their birthday today",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "search",
                   "description": "Filter by search query",
                   "type": {
@@ -1389,6 +1409,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "isBirthday",
+                  "description": "Filter by staff by if its their birthday today",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -2054,6 +2084,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "isModerator",
+                  "description": "Filter to moderators only if true",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "search",
                   "description": "Filter by search query",
                   "type": {
@@ -2256,7 +2296,7 @@
                 },
                 {
                   "name": "userId",
-                  "description": "Filter by media id",
+                  "description": "Filter by user id",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -3160,6 +3200,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "isModerator",
+                  "description": "Filter to moderators only if true",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "search",
                   "description": "Filter by search query",
                   "type": {
@@ -3436,6 +3486,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "CountryCode",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "isLicensed",
+                  "description": "If the media is officially licensed or a self-published doujin release",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -3956,6 +4016,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "isBirthday",
+                  "description": "Filter by character by if its their birthday today",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "search",
                   "description": "Filter by search query",
                   "type": {
@@ -4040,6 +4110,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "isBirthday",
+                  "description": "Filter by staff by if its their birthday today",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -5724,7 +5804,7 @@
                 },
                 {
                   "name": "userId",
-                  "description": "Filter by media id",
+                  "description": "Filter by user id",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -5930,7 +6010,7 @@
           "fields": [
             {
               "name": "total",
-              "description": "The total number of items",
+              "description": "The total number of items. Note: This value is not guaranteed to be accurate, do not rely on this for logic",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -6319,12 +6399,28 @@
               "deprecationReason": null
             },
             {
-              "name": "moderatorStatus",
-              "description": "If the user is a moderator or data moderator",
+              "name": "moderatorRoles",
+              "description": "The user's moderator roles if they are a site moderator",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "ModRole",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": "When the user's account was created. (Does not exist for accounts created before 2020)",
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6353,6 +6449,34 @@
               },
               "isDeprecated": true,
               "deprecationReason": "Deprecated. Replaced with statistics field."
+            },
+            {
+              "name": "moderatorStatus",
+              "description": "If the user is a moderator or data moderator",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Deprecated. Replaced with moderatorRoles field."
+            },
+            {
+              "name": "previousNames",
+              "description": "The user's previously used names.",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "UserPreviousName",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -6470,6 +6594,42 @@
                   "name": "NotificationOption",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "timezone",
+              "description": "The user's timezone offset (Auth user only)",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "activityMergeTime",
+              "description": "Minutes between activity for them to be merged together. 0 is Never, Above 2 weeks (20160 mins) is Always.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "staffNameLanguage",
+              "description": "The language the user wants to see staff and character names in",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "UserStaffNameLanguage",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -6653,6 +6813,53 @@
               "description": "A new anime or manga has been added to the site where its related media is on the user's list",
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "MEDIA_DATA_CHANGE",
+              "description": "An anime or manga has had a data change that affects how a user may track it in their lists",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MEDIA_MERGE",
+              "description": "Anime or manga entries on the user's list have been merged into a single entry",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MEDIA_DELETION",
+              "description": "An anime or manga on the user's list has been deleted from the site",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "UserStaffNameLanguage",
+          "description": "The language the user wants to see staff and character names in",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "ROMAJI_WESTERN",
+              "description": "The romanization of the staff or character's native name, with western name ordering",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ROMAJI",
+              "description": "The romanization of the staff or character's native name",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "NATIVE",
+              "description": "The staff or character's name in their native language",
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -6688,15 +6895,15 @@
             },
             {
               "name": "useLegacyLists",
-              "description": "(Site only) If the user should be using legacy css-supporting list versions",
+              "description": null,
               "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
                 "ofType": null
               },
-              "isDeprecated": false,
-              "deprecationReason": null
+              "isDeprecated": true,
+              "deprecationReason": "No longer used"
             },
             {
               "name": "animeList",
@@ -7216,6 +7423,42 @@
               "deprecationReason": null
             },
             {
+              "name": "characterName",
+              "description": "Media specific character name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "roleNotes",
+              "description": "Notes regarding the VA's role for the character",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dubGroup",
+              "description": "Used for grouping roles where multiple dubs exist for the same language. Either dubbing company name or language variant.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "staffRole",
               "description": "The role of the staff member in the production of the media",
               "args": [],
@@ -7262,6 +7505,47 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "Staff",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "voiceActorRoles",
+              "description": "The voice actors of the character with role date",
+              "args": [
+                {
+                  "name": "language",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "StaffLanguage",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "StaffSort",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "StaffRoleType",
                   "ofType": null
                 }
               },
@@ -7539,7 +7823,7 @@
               "args": [
                 {
                   "name": "version",
-                  "description": "Provide 2 to use new version 2 of sources enum",
+                  "description": "Provide 2 or 3 to use new version 2 or 3 of sources enum",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -7892,6 +8176,22 @@
             {
               "name": "isFavourite",
               "description": "If the media is marked as favourite by the current authenticated user",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isFavouriteBlocked",
+              "description": "If the media is blocked from being added to favourites",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -8624,19 +8924,55 @@
             },
             {
               "name": "NOVEL",
-              "description": "Version 2 only. Written works not published in volumes",
+              "description": "Version 2+ only. Written works not published in volumes",
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
               "name": "DOUJINSHI",
-              "description": "Version 2 only. Self-published works",
+              "description": "Version 2+ only. Self-published works",
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
               "name": "ANIME",
-              "description": "Version 2 only. Japanese Anime",
+              "description": "Version 2+ only. Japanese Anime",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "WEB_NOVEL",
+              "description": "Version 3 only. Written works published online",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LIVE_ACTION",
+              "description": "Version 3 only. Live action media such as movies or TV show",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "GAME",
+              "description": "Version 3 only. Games excluding video games",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "COMIC",
+              "description": "Version 3 only. Comics excluding manga",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MULTIMEDIA_PROJECT",
+              "description": "Version 3 only. Multimedia project",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PICTURE_BOOK",
+              "description": "Version 3 only. Picture book",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -8857,6 +9193,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "userId",
+              "description": "The user who submitted the tag",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -8911,6 +9259,12 @@
             {
               "name": "FAVOURITES_DESC",
               "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RELEVANCE",
+              "description": "Order manually decided by moderators",
               "isDeprecated": false,
               "deprecationReason": null
             }
@@ -9043,6 +9397,18 @@
               "deprecationReason": null
             },
             {
+              "name": "name",
+              "description": "Media specific character name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "voiceActors",
               "description": "The voice actors of the character",
               "args": [
@@ -9077,6 +9443,47 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "Staff",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "voiceActorRoles",
+              "description": "The voice actors of the character with role date",
+              "args": [
+                {
+                  "name": "language",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "StaffLanguage",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sort",
+                  "description": null,
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "ENUM",
+                      "name": "StaffSort",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "StaffRoleType",
                   "ofType": null
                 }
               },
@@ -9186,8 +9593,72 @@
               "deprecationReason": null
             },
             {
+              "name": "gender",
+              "description": "The character's gender. Usually Male, Female, or Non-binary but can be any string.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dateOfBirth",
+              "description": "The character's birth date",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FuzzyDate",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "age",
+              "description": "The character's age. Note this is a string, not an int, it may contain further text and additional ages.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "bloodType",
+              "description": "The characters blood type",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "isFavourite",
               "description": "If the character is marked as favourite by the currently authenticated user",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isFavouriteBlocked",
+              "description": "If the character is blocked from being added to favourites",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -9340,6 +9811,18 @@
               "deprecationReason": null
             },
             {
+              "name": "middle",
+              "description": "The character's middle name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "last",
               "description": "The character's surname",
               "args": [],
@@ -9353,7 +9836,7 @@
             },
             {
               "name": "full",
-              "description": "The character's full name",
+              "description": "The character's first and last name",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -9387,6 +9870,34 @@
                   "name": "String",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "alternativeSpoiler",
+              "description": "Other names the character might be referred to as but are spoilers",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userPreferred",
+              "description": "The currently authenticated users preferred name language. Default romaji for non-authenticated",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -9797,6 +10308,12 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "RELEVANCE",
+              "description": "Order manually decided by moderators",
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -9836,11 +10353,23 @@
             },
             {
               "name": "language",
-              "description": "The primary language of the staff member",
+              "description": "The primary language the staff member dub's in",
               "args": [],
               "type": {
                 "kind": "ENUM",
                 "name": "StaffLanguage",
+                "ofType": null
+              },
+              "isDeprecated": true,
+              "deprecationReason": "Replaced with languageV2"
+            },
+            {
+              "name": "languageV2",
+              "description": "The primary language of the staff member. Current values: Japanese, English, Korean, Italian, Spanish, Portuguese, French, German, Hebrew, Hungarian, Chinese, Arabic, Filipino, Catalan",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -9882,8 +10411,128 @@
               "deprecationReason": null
             },
             {
+              "name": "primaryOccupations",
+              "description": "The person's primary occupations",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "gender",
+              "description": "The staff's gender. Usually Male, Female, or Non-binary but can be any string.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dateOfBirth",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FuzzyDate",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dateOfDeath",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "FuzzyDate",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "age",
+              "description": "The person's age in years",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "yearsActive",
+              "description": "[startYear, endYear] (If the 2nd value is not present staff is still active)",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "homeTown",
+              "description": "The persons birthplace or hometown",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "bloodType",
+              "description": "The persons blood type",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "isFavourite",
               "description": "If the staff member is marked as favourite by the currently authenticated user",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "isFavouriteBlocked",
+              "description": "If the staff member is blocked from being added to favourites",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -10188,6 +10837,18 @@
               "deprecationReason": null
             },
             {
+              "name": "middle",
+              "description": "The person's middle name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "last",
               "description": "The person's surname",
               "args": [],
@@ -10201,7 +10862,7 @@
             },
             {
               "name": "full",
-              "description": "The person's full name",
+              "description": "The person's first and last name",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -10238,6 +10899,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "userPreferred",
+              "description": "The currently authenticated users preferred name language. Default romaji for non-authenticated",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -10265,6 +10938,53 @@
             {
               "name": "medium",
               "description": "The person's image of media at medium size",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "StaffRoleType",
+          "description": "Voice actor role for a character",
+          "fields": [
+            {
+              "name": "voiceActor",
+              "description": "The voice actors of the character",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Staff",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "roleNotes",
+              "description": "Notes regarding the VA's role for the character",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dubGroup",
+              "description": "Used for grouping roles where multiple dubs exist for the same language. Either dubbing company name or language variant.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -10734,7 +11454,7 @@
         {
           "kind": "OBJECT",
           "name": "AiringSchedule",
-          "description": "Media Airing Schedule",
+          "description": "Media Airing Schedule. NOTE: We only aim to guarantee that FUTURE airing data is present and accurate.",
           "fields": [
             {
               "name": "id",
@@ -14762,6 +15482,95 @@
           "possibleTypes": null
         },
         {
+          "kind": "ENUM",
+          "name": "ModRole",
+          "description": "Mod role enums",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "ADMIN",
+              "description": "An AniList administrator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEAD_DEVELOPER",
+              "description": "A head developer of AniList",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DEVELOPER",
+              "description": "An AniList developer",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEAD_COMMUNITY",
+              "description": "A lead community moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "COMMUNITY",
+              "description": "A community moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DISCORD_COMMUNITY",
+              "description": "A discord community moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEAD_ANIME_DATA",
+              "description": "A lead anime data moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "ANIME_DATA",
+              "description": "An anime data moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEAD_MANGA_DATA",
+              "description": "A lead manga data moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "MANGA_DATA",
+              "description": "A manga data moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "LEAD_SOCIAL_MEDIA",
+              "description": "A lead social media moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SOCIAL_MEDIA",
+              "description": "A social media moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "RETIRED",
+              "description": "A retired moderator",
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
           "kind": "OBJECT",
           "name": "UserStats",
           "description": "A user's statistics",
@@ -15429,6 +16238,53 @@
           "possibleTypes": null
         },
         {
+          "kind": "OBJECT",
+          "name": "UserPreviousName",
+          "description": "A user's previous name",
+          "fields": [
+            {
+              "name": "name",
+              "description": "A previous name of the user.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": "When the user first changed from this name.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "updatedAt",
+              "description": "When the user most recently changed from this name.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
           "kind": "SCALAR",
           "name": "FuzzyDateInt",
           "description": "8 digit long date integer (YYYYMMDD). Unknown dates represented by 0. E.g. 2016: 20160000, May 1976: 19760500",
@@ -15765,6 +16621,21 @@
             {
               "kind": "OBJECT",
               "name": "RelatedMediaAdditionNotification",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "MediaDataChangeNotification",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "MediaMergeNotification",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "MediaDeletionNotification",
               "ofType": null
             }
           ]
@@ -18272,6 +19143,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "isLocked",
+              "description": "If the comment tree is locked and may not receive replies or edits",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -18883,6 +19766,315 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "Media",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MediaDataChangeNotification",
+          "description": "Notification for when a media entry's data was changed in a significant way impacting users' list tracking",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The id of the Notification",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": "The type of notification",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "NotificationType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "mediaId",
+              "description": "The id of the media that received data changes",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "context",
+              "description": "The reason for the media data change",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reason",
+              "description": "The reason for the media data change",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": "The time the notification was created at",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "media",
+              "description": "The media that received data changes",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Media",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MediaMergeNotification",
+          "description": "Notification for when a media entry is merged into another for a user who had it on their list",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The id of the Notification",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": "The type of notification",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "NotificationType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "mediaId",
+              "description": "The id of the media that was merged into",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "deletedMediaTitles",
+              "description": "The title of the deleted media",
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "context",
+              "description": "The reason for the media data change",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reason",
+              "description": "The reason for the media merge",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": "The time the notification was created at",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "media",
+              "description": "The media that was merged into",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Media",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "MediaDeletionNotification",
+          "description": "Notification for when a media tracked in a user's list is deleted from the site",
+          "fields": [
+            {
+              "name": "id",
+              "description": "The id of the Notification",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": "The type of notification",
+              "args": [],
+              "type": {
+                "kind": "ENUM",
+                "name": "NotificationType",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "deletedMediaTitle",
+              "description": "The title of the deleted media",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "context",
+              "description": "The reason for the media deletion",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reason",
+              "description": "The reason for the media deletion",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "createdAt",
+              "description": "The time the notification was created at",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -19968,6 +21160,26 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "timezone",
+                  "description": "Timezone offset format: -?HH:MM",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "activityMergeTime",
+                  "description": "Minutes between activity for them to be merged together. 0 is Never, Above 2 weeks (20160 mins) is Always.",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "animeListOptions",
                   "description": "The user's anime list options",
                   "type": {
@@ -19983,6 +21195,16 @@
                   "type": {
                     "kind": "INPUT_OBJECT",
                     "name": "MediaListOptionsInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "staffNameLanguage",
+                  "description": "The language the user wants to see staff and character names in",
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "UserStaffNameLanguage",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -21350,6 +22572,16 @@
                     "ofType": null
                   },
                   "defaultValue": null
+                },
+                {
+                  "name": "locked",
+                  "description": "If the comment tree should be locked. (Mod Only)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
                 }
               ],
               "type": {
@@ -21759,6 +22991,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "assigneeId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "status",
                   "description": null,
                   "type": {
@@ -21830,6 +23072,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "assigneeId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "status",
                   "description": "Filter by the status of the submission",
                   "type": {
@@ -21883,6 +23135,16 @@
                 {
                   "name": "userId",
                   "description": "Filter by the submitter of the submission",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "assigneeId",
+                  "description": null,
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -21997,7 +23259,28 @@
             {
               "name": "reports",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "reporterId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "reportedId",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -22048,6 +23331,33 @@
               "deprecationReason": null
             },
             {
+              "name": "userBlockSearch",
+              "description": null,
+              "args": [
+                {
+                  "name": "search",
+                  "description": "Filter by search query",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "pageInfo",
               "description": "The pagination information",
               "args": [],
@@ -22079,6 +23389,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "isModerator",
+                  "description": "Filter to moderators only if true",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -22360,6 +23680,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "CountryCode",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "isLicensed",
+                  "description": "If the media is officially licensed or a self-published doujin release",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -22880,6 +24210,16 @@
                   "defaultValue": null
                 },
                 {
+                  "name": "isBirthday",
+                  "description": "Filter by character by if its their birthday today",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
                   "name": "search",
                   "description": "Filter by search query",
                   "type": {
@@ -22964,6 +24304,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "isBirthday",
+                  "description": "Filter by staff by if its their birthday today",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -24648,7 +25998,7 @@
                 },
                 {
                   "name": "userId",
-                  "description": "Filter by media id",
+                  "description": "Filter by user id",
                   "type": {
                     "kind": "SCALAR",
                     "name": "Int",
@@ -24939,6 +26289,18 @@
               "deprecationReason": null
             },
             {
+              "name": "assignee",
+              "description": "Data Mod assigned to handle the submission",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "status",
               "description": "Status of the submission",
               "args": [],
@@ -24998,6 +26360,18 @@
                   "name": "String",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "locked",
+              "description": "Whether the submission is locked",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -25225,6 +26599,42 @@
               "deprecationReason": null
             },
             {
+              "name": "roleNotes",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dubGroup",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "characterName",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "isMain",
               "description": null,
               "args": [],
@@ -25368,6 +26778,42 @@
               "deprecationReason": null
             },
             {
+              "name": "roleNotes",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "dubGroup",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "characterName",
+              "description": "Media specific character name",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "character",
               "description": "The characters in the media voiced by the parent actor",
               "args": [],
@@ -25455,6 +26901,18 @@
               "deprecationReason": null
             },
             {
+              "name": "assignee",
+              "description": "Data Mod assigned to handle the submission",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "status",
               "description": "Status of the submission",
               "args": [],
@@ -25485,6 +26943,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "locked",
+              "description": "Whether the submission is locked",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -25566,6 +27036,18 @@
               "deprecationReason": null
             },
             {
+              "name": "assignee",
+              "description": "Data Mod assigned to handle the submission",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "status",
               "description": "Status of the submission",
               "args": [],
@@ -25596,6 +27078,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "locked",
+              "description": "Whether the submission is locked",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -25829,6 +27323,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cleared",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -26166,6 +27672,16 @@
               "defaultValue": null
             },
             {
+              "name": "middle",
+              "description": "The character's middle name",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "last",
               "description": "The character's surname",
               "type": {
@@ -26188,6 +27704,20 @@
             {
               "name": "alternative",
               "description": "Other names the character might be referred by",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "alternativeSpoiler",
+              "description": "Other names the character might be referred to as but are spoilers",
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -26343,6 +27873,16 @@
               "defaultValue": null
             },
             {
+              "name": "middle",
+              "description": "The person's middle name",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "last",
               "description": "The person's surname",
               "type": {
@@ -26433,6 +27973,30 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Json",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "privacy",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "email",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,

@@ -15,7 +15,10 @@ fun <T> observeLiveData(
     }
 }
 
-fun <T> LifecycleOwner.collectFlow(flow: Flow<T>, collector: suspend (T) -> Unit) {
+inline fun <T> LifecycleOwner.collectFlow(
+    flow: Flow<T>,
+    crossinline collector: suspend (T) -> Unit
+) {
     lifecycleScope.launchWhenStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.collect {
@@ -28,3 +31,4 @@ fun <T> LifecycleOwner.collectFlow(flow: Flow<T>, collector: suspend (T) -> Unit
 fun <T> Flow<NetworkResource<T>>.mapToState(): Flow<State<T>> = map { resource ->
     State.fromResource(resource)
 }
+

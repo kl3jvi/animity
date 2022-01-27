@@ -37,4 +37,8 @@ class LoginViewModel @Inject constructor(
         localStorage.bearerToken = token
     }
 
+    fun getToken(): String? {
+        return localStorage.bearerToken
+    }
+
 }

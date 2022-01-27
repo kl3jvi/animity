@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +23,13 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         savedInstanceState: Bundle?
     ): View {
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeLiveData(viewModel.userData, viewLifecycleOwner) {
+            println("$it --------------")
+        }
     }
 
     override fun getViewBinding(): FragmentProfileBinding =

@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.di
 
+
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
@@ -60,7 +61,6 @@ object NetworkModule {
             .okHttpClient(okHttpClient)
             .build()
     }
-
 
     @Provides
     @Singleton

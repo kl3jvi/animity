@@ -77,11 +77,9 @@ android {
 }
 
 apollo {
-    srcDir("src/main/graphql")
     packageName.set("com.kl3jvi.animity")
     generateKotlinModels.set(true)
     excludes.add("**/schema.json.graphql")
-
 }
 
 dependencies {
@@ -103,7 +101,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.4.0-rc01"
+    def navigationComponentVersion = "2.4.0-alpha01"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
@@ -120,7 +118,7 @@ dependencies {
     def analyticsVersion = "20.0.2"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
 
-    def crashlyticsVersion = "18.2.6"
+    def crashlyticsVersion = "18.2.7"
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
 
     // Hilt DI
