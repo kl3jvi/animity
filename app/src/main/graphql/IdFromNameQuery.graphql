@@ -1,6 +1,0 @@
-query IdFromNameQuery($name: String) {
-    User(name: $name) {
-        id
-        name
-    }
-}

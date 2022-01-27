@@ -1,6 +1,0 @@
-query SessionQuery {
-    Viewer {
-        id
-        name
-    }
-}

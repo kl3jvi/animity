@@ -70,12 +70,17 @@ android {
 
             // Specifies that we do not want to also generate a universal APK that includes all ABIs.
             universalApk true
-
         }
     }
-    apollo {
-        packageName.set("com.kl3jvi.animity")
-    }
+
+
+}
+
+apollo {
+    srcDir("src/main/graphql")
+    packageName.set("com.kl3jvi.animity")
+    generateKotlinModels.set(true)
+    excludes.add("**/schema.json.graphql")
 
 }
 

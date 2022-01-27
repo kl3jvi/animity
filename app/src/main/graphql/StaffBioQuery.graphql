@@ -1,9 +1,0 @@
-query StaffBioQuery($id: Int) {
-    Staff(id: $id) {
-        id
-        name {
-            alternative
-        }
-        description(asHtml: true)
-    }
-}

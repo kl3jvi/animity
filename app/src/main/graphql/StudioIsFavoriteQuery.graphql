@@ -1,7 +1,0 @@
-query StudioIsFavoriteQuery($id: Int) {
-    Studio(id: $id) {
-        id
-        name
-        isFavourite
-    }
-}

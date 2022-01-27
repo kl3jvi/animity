@@ -1,6 +1,9 @@
 package com.kl3jvi.animity.data.network.anime_service
 
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.ANIME_SCHEDULE
+import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_LOAD_URL
+import com.kl3jvi.animity.utils.Constants.Companion.SEARCH_URL
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -59,7 +62,7 @@ interface AnimeService {
         @Url url: String
     ): ResponseBody
 
-    @GET(Constants.EPISODE_LOAD_URL)
+    @GET(EPISODE_LOAD_URL)
     suspend fun fetchEpisodeList(
         @HeaderMap header: Map<String, String>,
         @Query("ep_start") startEpisode: Int = 0,
@@ -69,14 +72,14 @@ interface AnimeService {
         @Query("alias") alias: String
     ): ResponseBody
 
-    @GET(Constants.SEARCH_URL)
+    @GET(SEARCH_URL)
     suspend fun fetchSearchData(
         @HeaderMap header: Map<String, String>,
         @Query("keyword") keyword: String,
         @Query("page") page: Int
     ): ResponseBody
 
-    @GET(Constants.ANIME_SCHEDULE + "/{episodeUrl}")
+    @GET("$ANIME_SCHEDULE/{episodeUrl}")
     suspend fun fetchEpisodeTimeRelease(
         @Path("episodeUrl") episodeUrl: String
     ): ResponseBody

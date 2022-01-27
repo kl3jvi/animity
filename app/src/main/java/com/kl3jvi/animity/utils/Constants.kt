@@ -16,9 +16,12 @@ class Constants {
         const val DATABASE_NAME = "anime_database"
         const val TOKEN_PREFERENCES = "Animity_Token_Preferences"
         const val STARTING_PAGE_INDEX = 1
+        const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
-        var BASE_URL = "https://gogoanime.film"
+        const val BASE_URL = "https://gogoanime.film"
+        const val ANILIST_API_URL = "https://graphql.anilist.co"
+
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
         const val ANIME_SCHEDULE = "https://animeschedule.net/anime"
@@ -106,3 +109,4 @@ class Constants {
         }
     }
 }
+

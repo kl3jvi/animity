@@ -50,7 +50,6 @@
         <activity
             android:name=".ui.activities.main.MainActivity"
             android:configChanges="orientation"
-            android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
     </application>
 

@@ -1,9 +1,14 @@
 package com.kl3jvi.animity.di
 
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.network.okHttpClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListService
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.AnimeService
+import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
+import com.kl3jvi.animity.data.repository.LocalStorageImpl
+import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -14,6 +19,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -22,11 +28,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        localStorage: LocalStorageImpl
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(HeaderInterceptor(localStorage))
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
             .build()
     }
 
@@ -39,6 +51,16 @@ object NetworkModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl(ANILIST_API_URL)
+            .okHttpClient(okHttpClient)
+            .build()
+    }
+
 
     @Provides
     @Singleton

@@ -1,9 +1,0 @@
-query StaffIsFavoriteQuery($id: Int) {
-    Staff(id: $id) {
-        id
-        name {
-            full
-        }
-        isFavourite
-    }
-}

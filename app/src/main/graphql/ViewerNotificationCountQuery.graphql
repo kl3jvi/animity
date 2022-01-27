@@ -1,7 +1,0 @@
-query ViewerNotificationCountQuery {
-    Viewer {
-        id
-        name
-        unreadNotificationCount
-    }
-}
