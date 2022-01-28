@@ -25,7 +25,10 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/login"
             tools:visibility="visible" />
-
+        <View
+            android:background="@drawable/dark_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -63,7 +66,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/aniListSignUp"
-                style="@style/OutlineButton"
+                style="@style/GreenButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

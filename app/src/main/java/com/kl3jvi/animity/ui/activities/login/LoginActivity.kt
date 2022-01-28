@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.browser.customtabs.CustomTabsIntent
-import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BindingActivity
+import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
@@ -47,7 +47,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     private fun checkIfUserLoggedIn(): Boolean {
         val isLoggedIn: Boolean
         val token = viewModel.getToken()
-        Log.e("Token", token.toString())
         isLoggedIn = !token.isNullOrEmpty()
         if (isLoggedIn) {
             binding.progressBar.show()
@@ -69,7 +68,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             .appendPath("v2")
             .appendPath("oauth")
             .appendPath("authorize")
-            .appendQueryParameter("client_id", BuildConfig.ANILIST_ID)
+            .appendQueryParameter("client_id", ANILIST_ID)
             .appendQueryParameter("redirect_uri", REDIRECT_URI)
             .appendQueryParameter("response_type", "code")
             .build()
@@ -91,12 +90,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                             authorizationToken = authorizationToken
                         )
                     ) { state ->
-                        when (state) {
-                            is State.Error -> {}
-                            is State.Loading -> {}
-                            is State.Success -> {
-                                onTokenResponse(state.data)
-                            }
+                        if (state is State.Success) {
+                            onTokenResponse(state.data)
                         }
                     }
                 }
@@ -106,15 +101,17 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     override fun onTokenResponse(response: AuthResponse) {
         val token: String = response.accessToken
+        Log.e("Token", token)
         if (token.isNotEmpty()) {
             viewModel.saveToken(token)
+            launchActivity<MainActivity> {
+                putExtra("loginType", AUTHENTICATED_LOGIN_TYPE)
+            }
+            finish()
             return
         }
         showSnack(binding.root, "Couldn't Login!!")
     }
-
-
-
 
     private fun initViews() {
         val aniListLogin = binding.aniListLogin
@@ -132,7 +129,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
         guestLogin.setOnClickListener {
             launchActivity<MainActivity> {
-                putExtra("GUEST_LOGIN_TYPE", GUEST_LOGIN_TYPE)
+                putExtra("loginType", GUEST_LOGIN_TYPE)
             }
             finish()
         }
@@ -159,7 +156,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     override fun onResume() {
         super.onResume()
-        if (!checkIfUserLoggedIn()) onHandleAuthIntent(intent)
+        onHandleAuthIntent(intent)
     }
 
     override fun onStart() {

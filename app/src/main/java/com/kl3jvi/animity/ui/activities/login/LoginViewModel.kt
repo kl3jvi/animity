@@ -2,7 +2,7 @@ package com.kl3jvi.animity.ui.activities.login
 
 import androidx.lifecycle.ViewModel
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
-import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
+import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryImpl
 import com.kl3jvi.animity.domain.use_cases.GetAccessTokenUseCase
 import com.kl3jvi.animity.utils.State
 import com.kl3jvi.animity.utils.mapToState
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
-    private val localStorage: LocalStorageImpl
+    private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
     fun getAccessToken(
         grantType: String,
@@ -34,11 +34,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun saveToken(token: String) {
-        localStorage.bearerToken = token
+        userRepository.setBearerToken(token)
     }
 
     fun getToken(): String? {
-        return localStorage.bearerToken
+        return userRepository.bearerToken
     }
 
 }

@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/bottom_gradient.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.14114583333333333" />
         <entry key="app/src/main/res/drawable/circular_progress_bar.xml" value="0.14114583333333333" />
+        <entry key="app/src/main/res/drawable/dark_bg.xml" value="0.1985" />
         <entry key="app/src/main/res/drawable/dialog_rounded_corner.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/drawable/ic_anilist.xml" value="0.338" />
         <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.334375" />
@@ -63,7 +64,7 @@
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.3140625" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/fragment_video_player_placeholder.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/item_big_card_layout.xml" value="0.335" />

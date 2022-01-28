@@ -3,10 +3,8 @@ package com.kl3jvi.animity.ui.activities.main
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,9 +14,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
-import com.kl3jvi.animity.ui.activities.login.LoginActivity
-import com.kl3jvi.animity.ui.activities.login.LoginViewModel
-import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
+import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
 
@@ -28,11 +25,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navController: NavController
-    private val viewModel: LoginViewModel by viewModels()
+    private var isGuestLogin: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        checkIfUserLoggedIn()
+        with(intent) {
+            when (getStringExtra("loginType")) {
+                GUEST_LOGIN_TYPE -> isGuestLogin = true
+                AUTHENTICATED_LOGIN_TYPE -> isGuestLogin = false
+            }
+        }
+        if (intent.extras == null) {
+            isGuestLogin = false
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
@@ -71,16 +76,5 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    private fun checkIfUserLoggedIn(): Boolean {
-        var isLoggedIn = false
-        lifecycleScope.launchWhenStarted {
-            val token = viewModel.getToken()
-            isLoggedIn = !token.isNullOrEmpty()
-            if (!isLoggedIn) {
-                launchActivity<LoginActivity> {}
-                finish()
-            }
-        }
-        return isLoggedIn
-    }
+
 }
