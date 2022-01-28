@@ -8,7 +8,7 @@ import com.kl3jvi.animity.persistence.AnimeDao
 import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants.Companion.DATABASE_NAME
-import com.kl3jvi.animity.utils.Constants.Companion.TOKEN_PREFERENCES
+import com.kl3jvi.animity.utils.Constants.Companion.SHARED_PREFERENCES_NAME
 import com.kl3jvi.animity.utils.Converters
 import dagger.Module
 import dagger.Provides
@@ -46,6 +46,6 @@ object PersistenceModule {
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(TOKEN_PREFERENCES, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 }

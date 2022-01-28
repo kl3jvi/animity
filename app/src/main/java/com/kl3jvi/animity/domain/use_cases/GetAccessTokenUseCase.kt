@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.domain.use_cases
 
-import com.kl3jvi.animity.data.repository.LoginRepositoryImpl
+import com.kl3jvi.animity.data.repository.activity_repositories.LoginRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 

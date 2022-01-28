@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.repository
+package com.kl3jvi.animity.data.repository.fragment_repositories
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

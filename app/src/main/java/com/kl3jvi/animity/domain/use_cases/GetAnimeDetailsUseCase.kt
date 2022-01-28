@@ -3,7 +3,7 @@ package com.kl3jvi.animity.domain.use_cases
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
-import com.kl3jvi.animity.data.repository.DetailsRepositoryImpl
+import com.kl3jvi.animity.data.repository.fragment_repositories.DetailsRepositoryImpl
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants

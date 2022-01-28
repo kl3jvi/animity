@@ -45,7 +45,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
      * when reopening app and not transitioning 2 times to home page after login
      */
     private fun checkIfUserLoggedIn(): Boolean {
-        var isLoggedIn = false
+        val isLoggedIn: Boolean
         val token = viewModel.getToken()
         Log.e("Token", token.toString())
         isLoggedIn = !token.isNullOrEmpty()
@@ -112,6 +112,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }
         showSnack(binding.root, "Couldn't Login!!")
     }
+
+
 
 
     private fun initViews() {

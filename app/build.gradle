@@ -101,7 +101,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.4.0-alpha01"
+    def navigationComponentVersion = "2.5.0-alpha01"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
@@ -131,7 +131,7 @@ dependencies {
     def retrofitVersion = "2.9.0"
     def interceptor_version = "5.0.0-alpha.2"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
 
@@ -188,6 +188,10 @@ dependencies {
     // Apollo GraphQl
     def apolloVersion = "3.0.0"
     implementation "com.apollographql.apollo3:apollo-runtime:$apolloVersion"
+
+    // DataStore
+    def dataStore_version = "1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$dataStore_version"
 
 
 }

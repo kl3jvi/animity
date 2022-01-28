@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
+import com.kl3jvi.animity.BuildConfig
 
 class Constants {
     companion object {
@@ -14,7 +15,7 @@ class Constants {
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
-        const val TOKEN_PREFERENCES = "Animity_Token_Preferences"
+        const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
         const val STARTING_PAGE_INDEX = 1
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 

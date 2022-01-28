@@ -1,9 +1,0 @@
-query CharacterIsFavoriteQuery($id: Int) {
-    character:Character(id: $id) {
-        id
-        name {
-            full
-        }
-        isFavourite
-    }
-}

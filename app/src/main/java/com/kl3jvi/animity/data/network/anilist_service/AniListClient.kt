@@ -14,10 +14,10 @@ class AniListClient @Inject constructor(
         code: String
     ) = aniListService.getAccessToken(
         AniListAuth(
-            grantType = grantType,
-            clientId = clientId,
-            clientSecret = clientSecret,
-            redirectUrl = redirectUri,
+            grant_type = grantType,
+            client_id = clientId,
+            client_secret = clientSecret,
+            redirect_uri = redirectUri,
             code = code
         )
     )

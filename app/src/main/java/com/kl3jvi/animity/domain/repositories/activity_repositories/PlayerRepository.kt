@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories.fragment_repositories
+package com.kl3jvi.animity.domain.repositories.activity_repositories
 
 import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.utils.parser.HtmlParser

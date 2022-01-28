@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.repository
+package com.kl3jvi.animity.data.repository.activity_repositories
 
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient

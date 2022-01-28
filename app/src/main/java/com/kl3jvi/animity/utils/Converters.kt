@@ -2,29 +2,25 @@ package com.kl3jvi.animity.utils
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.kl3jvi.animity.data.model.ui_models.GenreModel
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
+import java.lang.reflect.Type
 import javax.inject.Inject
 
 
 @ProvidedTypeConverter
-class Converters @Inject constructor(
-    private val moshi: Moshi
-) {
+class Converters @Inject constructor() {
 
     @TypeConverter
-    fun fromString(value: String): List<GenreModel>? {
-        val listType = Types.newParameterizedType(List::class.java, GenreModel::class.java)
-        val adapter: JsonAdapter<List<GenreModel>> = moshi.adapter(listType)
-        return adapter.fromJson(value)
+    fun toInfoType(value: String): List<GenreModel>? {
+        val listType: Type = object : TypeToken<ArrayList<GenreModel?>?>() {}.type
+        return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromInfoType(type: List<GenreModel>?): String {
-        val listType = Types.newParameterizedType(List::class.java, GenreModel::class.java)
-        val adapter: JsonAdapter<List<GenreModel>> = moshi.adapter(listType)
-        return adapter.toJson(type)
+    fun fromInfoType(list: List<GenreModel>?): String {
+        val gson = Gson()
+        return gson.toJson(list)
     }
 }

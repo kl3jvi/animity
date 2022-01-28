@@ -1,6 +1,8 @@
-package com.kl3jvi.animity.data.repository
+package com.kl3jvi.animity.data.repository.persistence_repository
 
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import javax.inject.Inject
 
@@ -26,4 +28,12 @@ class LocalStorageImpl @Inject constructor(
     private fun setData(key: String, value: String?) {
         sharedPreferences.edit().putString(key, value).apply()
     }
+
+    override fun clearStorage(): LiveData<Boolean> {
+        val dataCleared: MutableLiveData<Boolean> = MutableLiveData()
+        sharedPreferences.edit().clear().apply()
+        dataCleared.postValue(true)
+        return dataCleared
+    }
+
 }

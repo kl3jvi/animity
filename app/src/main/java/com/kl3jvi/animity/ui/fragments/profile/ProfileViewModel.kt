@@ -16,6 +16,9 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     private val _userData = MutableLiveData<SessionQuery.Data?>()
     val userData: LiveData<SessionQuery.Data?> = _userData
+    init {
+        getUserSession()
+    }
     fun getUserSession() {
         viewModelScope.launch {
             userSession().also { _userData.value = it }

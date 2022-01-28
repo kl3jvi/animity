@@ -2,7 +2,7 @@ package com.kl3jvi.animity.ui.activities.login
 
 import androidx.lifecycle.ViewModel
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
-import com.kl3jvi.animity.data.repository.LocalStorageImpl
+import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.use_cases.GetAccessTokenUseCase
 import com.kl3jvi.animity.utils.State
 import com.kl3jvi.animity.utils.mapToState

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.repository
+package com.kl3jvi.animity.data.repository.persistence_repository
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.Content
