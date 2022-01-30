@@ -1,15 +1,18 @@
 package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import coil.load
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
+import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
+import com.kl3jvi.animity.ui.activities.login.LoginActivity
+import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -18,31 +21,68 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
     override val viewModel: ProfileViewModel by viewModels()
+    private val guestBinding: FragmentProfileGuestBinding get() = guestView()
     override fun observeViewModel() {}
     override fun initViews() {}
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (!isGuestLogin()) setHasOptionsMenu(true)
+        else setHasOptionsMenu(false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return binding.root
+        return if (!isGuestLogin()) binding.root else guestView().root
+    }
+
+    private fun isGuestLogin(): Boolean {
+        return (activity as MainActivity).isGuestLogin
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        collectFlow(viewModel.profileData) {
-            binding.bgImage.load(
-                if (it.data?.user?.bannerImage.isNullOrEmpty())
-                    DEFAULT_COVER
-                else
-                    it.data?.user?.bannerImage
-            )
-            binding.userData = it.data
+        if (!isGuestLogin()) {
+            observeLiveData(viewModel.profileData, viewLifecycleOwner) {
+                binding.bgImage.load(
+                    if (it.data?.user?.bannerImage.isNullOrEmpty())
+                        DEFAULT_COVER
+                    else
+                        it.data?.user?.bannerImage
+                )
+                binding.userData = it.data
+            }
+        } else {
+            guestBinding.button2.cornerRadius = 10
         }
     }
 
     override fun getViewBinding(): FragmentProfileBinding =
         FragmentProfileBinding.inflate(layoutInflater)
+
+    private fun guestView(): FragmentProfileGuestBinding =
+        FragmentProfileGuestBinding.inflate(layoutInflater)
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.profile_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_log_out -> {
+                viewModel.clearStorage()
+                requireActivity().launchActivity<LoginActivity> { }
+                requireActivity().finish()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
 }

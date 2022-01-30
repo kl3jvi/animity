@@ -25,10 +25,12 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/login"
             tools:visibility="visible" />
+
         <View
-            android:background="@drawable/dark_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@drawable/dark_bg" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

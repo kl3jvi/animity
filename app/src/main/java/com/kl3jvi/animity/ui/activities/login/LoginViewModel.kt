@@ -17,6 +17,7 @@ class LoginViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
     private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
+
     fun getAccessToken(
         grantType: String,
         clientId: Int,
@@ -41,4 +42,11 @@ class LoginViewModel @Inject constructor(
         return userRepository.bearerToken
     }
 
+    fun saveGuestToken(token: String) {
+        userRepository.setGuestToken(token = token)
+    }
+
+    fun getGuestToken(): String? {
+        return userRepository.guestToken
+    }
 }

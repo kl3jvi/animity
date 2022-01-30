@@ -14,121 +14,128 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_16"
-            app:cardCornerRadius="@dimen/dp_20"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/bgImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars[5]" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/dark_bg" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_10">
+                    android:layout_margin="@dimen/dp_16"
+                    app:cardCornerRadius="@dimen/dp_20">
 
-                    <io.getstream.avatarview.AvatarView
-                        android:id="@+id/avatarView"
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
-                        android:padding="10dp"
-                        app:avatarImage="@{userData.user.avatar.large}"
-                        app:avatarViewBorderColor="@color/green_theme"
-                        app:avatarViewBorderWidth="3dp"
-                        app:avatarViewIndicatorBorderColor="@color/white"
-                        app:avatarViewIndicatorBorderSizeCriteria="10"
-                        app:avatarViewIndicatorEnabled="false"
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        app:avatarViewIndicatorPosition="bottomRight"
-                        app:avatarViewIndicatorSizeCriteria="9"
-                        app:avatarViewShape="circle"
-                        app:layout_constraintEnd_toStartOf="@+id/username"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <ImageView
+                            android:id="@+id/bgImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:srcCompat="@tools:sample/avatars[1]" />
 
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:background="@drawable/outline"
-                        android:padding="@dimen/dp_10"
-                        android:text="@{userData.user.name}"
-                        android:textColor="@color/textColor"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@+id/avatarView"
-                        app:layout_constraintTop_toTopOf="@+id/avatarView"
-                        tools:text="Kevin Dukkon" />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/dark_bg" />
 
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/about"-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_marginStart="@dimen/dp_16"-->
-                    <!--                        android:layout_marginTop="@dimen/dp_10"-->
-                    <!--                        android:layout_marginEnd="@dimen/dp_16"-->
-                    <!--                        android:text="@{userData.user.about}"-->
-                    <!--                        android:textColor="@color/textColor"-->
-                    <!--                        android:textStyle="italic"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintStart_toEndOf="@+id/avatarView"-->
-                    <!--                        app:layout_constraintTop_toBottomOf="@+id/username"-->
-                    <!--                        tools:text="Kevin Dukkon" />-->
-
-                    <com.ms.square.android.expandabletextview.ExpandableTextView
-                        android:id="@+id/expand_text_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_16"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginEnd="@dimen/dp_16"
-                        android:text="@{userData.user.about}"
-                        app:animDuration="200"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/avatarView"
-                        app:layout_constraintTop_toBottomOf="@+id/username"
-                        app:maxCollapsedLines="4">
-
-                        <TextView
-                            android:id="@id/expandable_text"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:textSize="13sp" />
+                            android:padding="@dimen/dp_10">
 
-                        <ImageButton
-                            android:id="@id/expand_collapse"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:padding="3dp" />
-                    </com.ms.square.android.expandabletextview.ExpandableTextView>
+                            <io.getstream.avatarview.AvatarView
+                                android:id="@+id/avatarView"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:padding="10dp"
+                                app:avatarImage="@{userData.user.avatar.large}"
+                                app:avatarViewBorderColor="@color/green_theme"
+                                app:avatarViewBorderWidth="3dp"
+                                app:avatarViewShape="circle"
+                                app:layout_constraintEnd_toStartOf="@+id/username"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/username"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:background="@drawable/outline"
+                                android:padding="@dimen/dp_10"
+                                android:text="@{userData.user.name}"
+                                android:textColor="@color/textColor"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/avatarView"
+                                app:layout_constraintTop_toTopOf="@+id/avatarView"
+                                tools:text="Kevin Dukkon" />
+
+                            <!--                    <TextView-->
+                            <!--                        android:id="@+id/about"-->
+                            <!--                        android:layout_width="0dp"-->
+                            <!--                        android:layout_height="wrap_content"-->
+                            <!--                        android:layout_marginStart="@dimen/dp_16"-->
+                            <!--                        android:layout_marginTop="@dimen/dp_10"-->
+                            <!--                        android:layout_marginEnd="@dimen/dp_16"-->
+                            <!--                        android:text="@{userData.user.about}"-->
+                            <!--                        android:textColor="@color/textColor"-->
+                            <!--                        android:textStyle="italic"-->
+                            <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                            <!--                        app:layout_constraintStart_toEndOf="@+id/avatarView"-->
+                            <!--                        app:layout_constraintTop_toBottomOf="@+id/username"-->
+                            <!--                        tools:text="Kevin Dukkon" />-->
+
+                            <com.ms.square.android.expandabletextview.ExpandableTextView
+                                android:id="@+id/expand_text_view"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_16"
+                                android:layout_marginTop="@dimen/dp_10"
+                                android:layout_marginEnd="@dimen/dp_16"
+                                android:text="@{userData.user.about}"
+                                app:animDuration="200"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/avatarView"
+                                app:layout_constraintTop_toBottomOf="@+id/username"
+                                app:maxCollapsedLines="4">
+
+                                <TextView
+                                    android:id="@id/expandable_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp" />
+
+                                <ImageButton
+                                    android:id="@id/expand_collapse"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@android:color/transparent"
+                                    android:padding="3dp" />
+                            </com.ms.square.android.expandabletextview.ExpandableTextView>
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </FrameLayout>
-        </androidx.cardview.widget.CardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

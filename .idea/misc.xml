@@ -64,7 +64,8 @@
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.3140625" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.15743243243243243" />
+        <entry key="app/src/main/res/layout/fragment_profile_guest.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/fragment_video_player_placeholder.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/item_big_card_layout.xml" value="0.335" />
@@ -79,6 +80,7 @@
         <entry key="app/src/main/res/menu/exo_player_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/favorite_menu.xml" value="0.25" />
         <entry key="app/src/main/res/menu/filter_menu.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/profile_menu.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.3140625" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.338" />
         <entry key="app/src/main/res/xml/remote_config_defaults.xml" value="0.24270833333333333" />

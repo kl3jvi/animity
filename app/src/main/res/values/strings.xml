@@ -70,12 +70,15 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in_anilist">Sign In with AniList</string>
     <string name="sign_up">Register</string>
     <string name="terms_of_use"><![CDATA[Terms & Privacy]]></string>
     <string name="sign_in_as_guest">Continue as Guest</string>
     <string name="intro_slogan">Watch ON-THE-GO</string>
     <string name="important_to_know">Important to Know</string>
     <string name="login_info">You’ll be redirected to anilist.co to login/register. Make sure the URL is anilist.co before entering your email and password.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="guest_message">Want to track your favorite Anime?</string>
+    <string name="log_out">Log Out</string>
 
 </resources>

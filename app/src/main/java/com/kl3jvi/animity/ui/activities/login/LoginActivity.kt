@@ -44,16 +44,24 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
      * Moves to main activity and also returns logged in state to check it
      * when reopening app and not transitioning 2 times to home page after login
      */
-    private fun checkIfUserLoggedIn(): Boolean {
-        val isLoggedIn: Boolean
-        val token = viewModel.getToken()
-        isLoggedIn = !token.isNullOrEmpty()
-        if (isLoggedIn) {
+    override fun checkIfUserLoggedIn(): Boolean {
+        val isLoggedInWithAuth: Boolean
+        val isGuestLoggedIn: Boolean
+        val authToken = viewModel.getToken()
+        val guestToken = viewModel.getGuestToken()
+        isLoggedInWithAuth = !authToken.isNullOrEmpty()
+        isGuestLoggedIn = !guestToken.isNullOrEmpty()
+        if (isLoggedInWithAuth) {
             binding.progressBar.show()
             launchActivity<MainActivity> {}
             finish()
+        } else if (isGuestLoggedIn) {
+            launchActivity<MainActivity> {
+                putExtra("loginType", GUEST_LOGIN_TYPE)
+            }
+            finish()
         }
-        return isLoggedIn
+        return isLoggedInWithAuth || isGuestLoggedIn
     }
 
 
@@ -128,6 +136,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }
 
         guestLogin.setOnClickListener {
+            viewModel.saveGuestToken(GUEST_LOGIN_TYPE)
             launchActivity<MainActivity> {
                 putExtra("loginType", GUEST_LOGIN_TYPE)
             }
