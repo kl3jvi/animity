@@ -8,6 +8,10 @@
         <variable
             name="userData"
             type="com.kl3jvi.animity.UserQuery.Data" />
+
+        <variable
+            name="animeData"
+            type="com.kl3jvi.animity.AnimeListCollectionQuery.Data" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

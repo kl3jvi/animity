@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAnimeListForProfileUseCase @Inject constructor(
     private val userRepositoryImpl: UserRepositoryImpl
 ) {
-    operator fun invoke(userId: Int): Flow<ApolloResponse<AnimeListCollectionQuery.Data>> {
+    operator fun invoke(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>> {
         return userRepositoryImpl.getAnimeListData(userId = userId)
     }
 }

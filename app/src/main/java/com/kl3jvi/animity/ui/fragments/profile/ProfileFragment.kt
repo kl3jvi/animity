@@ -46,17 +46,29 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isGuestLogin()) {
-            observeLiveData(viewModel.profileData, viewLifecycleOwner) {
-                binding.bgImage.load(
-                    if (it.data?.user?.bannerImage.isNullOrEmpty())
-                        DEFAULT_COVER
-                    else
-                        it.data?.user?.bannerImage
-                )
-                binding.userData = it.data
-            }
+            getProfileData()
+            getAnimeListProfileData()
         } else {
             guestBinding.button2.cornerRadius = 10
+        }
+    }
+
+
+    private fun getProfileData() {
+        observeLiveData(viewModel.profileData, viewLifecycleOwner) {
+            binding.bgImage.load(
+                if (it.data?.user?.bannerImage.isNullOrEmpty())
+                    DEFAULT_COVER
+                else
+                    it.data?.user?.bannerImage
+            )
+            binding.userData = it.data
+        }
+    }
+
+    private fun getAnimeListProfileData() {
+        observeLiveData(viewModel.animeList, viewLifecycleOwner) {
+            binding.animeData = it.data
         }
     }
 
