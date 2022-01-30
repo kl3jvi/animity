@@ -36,7 +36,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return if (!isGuestLogin()) binding.root else guestView().root
+        return if (!isGuestLogin()) binding.root else guestBinding.root
     }
 
     private fun isGuestLogin(): Boolean {
@@ -80,7 +80,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
                 requireActivity().finish()
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
