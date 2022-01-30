@@ -31,6 +31,8 @@ class Constants {
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
         const val SIGNUP_URL = "https://anilist.co/signup"
 
+        const val DEFAULT_COVER="https://kitsu.io/images/default_cover-22e5f56b17aeced6dc7f69c8d422a1ab.png"
+
 
         // Model Type
         const val TYPE_RECENT_SUB = 1

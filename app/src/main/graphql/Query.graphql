@@ -1,0 +1,149 @@
+query SessionQuery {
+    viewer:Viewer {
+        id
+        name
+    }
+}
+
+query UserQuery($id: Int) {
+    user:User(id: $id) {
+        id
+        name
+        about(asHtml: false)
+        avatar {
+            large
+            medium
+        }
+        bannerImage
+        mediaListOptions {
+            scoreFormat
+            rowOrder
+            animeList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+            mangaList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+        }
+        statistics {
+            anime {
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                chaptersRead
+                volumesRead
+            }
+            manga {
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                chaptersRead
+                volumesRead
+            }
+        }
+        isFollowing
+        isFollower
+        donatorTier
+        donatorBadge
+        moderatorStatus
+        siteUrl
+    }
+}
+
+query AnimeListCollectionQuery(
+    $userId: Int
+) {
+    media:MediaListCollection(
+        userId: $userId,
+        type: ANIME
+    ) {
+        lists {
+            entries {
+                id
+                status
+                score
+                progress
+                repeat
+                priority
+                private
+                notes
+                hiddenFromStatusLists
+                customLists
+                advancedScores
+                startedAt {
+                    year
+                    month
+                    day
+                }
+                completedAt {
+                    year
+                    month
+                    day
+                }
+                updatedAt
+                createdAt
+                media {
+                    id
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    type
+                    format
+                    status(version: 2)
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                    season
+                    seasonYear
+                    episodes
+                    duration
+                    countryOfOrigin
+                    source
+                    isFavourite
+                    coverImage {
+                        large
+                    }
+                    genres
+                    synonyms
+                    averageScore
+                    popularity
+                    tags {
+                        name
+                    }
+                    isAdult
+                    nextAiringEpisode {
+                        id
+                        airingAt
+                        timeUntilAiring
+                        episode
+                        mediaId
+                    }
+                    externalLinks {
+                        site
+                    }
+                }
+            }
+            name
+            isCustomList
+            isSplitCompletedList
+            status
+        }
+    }
+}

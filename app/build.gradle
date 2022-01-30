@@ -193,5 +193,5 @@ dependencies {
     def dataStore_version = "1.0.0"
     implementation "androidx.datastore:datastore-preferences:$dataStore_version"
 
-
+    implementation "io.getstream:avatarview-coil:1.0.2"
 }

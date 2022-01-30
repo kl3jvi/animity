@@ -5,6 +5,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.request.CachePolicy
+import coil.transform.CircleCropTransformation
 import com.kl3jvi.animity.R
 
 object ViewBindings {
@@ -21,11 +22,14 @@ object ViewBindings {
     }
 
     @JvmStatic
-    @BindingAdapter("downloadStateImg")
-    fun setDownloadStateImage(image: ImageView, state: Boolean) {
-        image.load(if (state) R.drawable.ic_baseline_file_download_done_24 else R.drawable.ic_outline_arrow_downward_24) {
-            crossfade(true)
-            diskCachePolicy(CachePolicy.ENABLED)
+    @BindingAdapter("avatarImage")
+    fun setAvatarImage(image: ImageView, url: String?) {
+        if (!url.isNullOrEmpty()) {
+            image.load(url) {
+                crossfade(true)
+                diskCachePolicy(CachePolicy.ENABLED)
+                transformations(CircleCropTransformation())
+            }
         }
     }
 
