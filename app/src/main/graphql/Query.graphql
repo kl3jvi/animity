@@ -201,6 +201,7 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
                     node {
                         id
                         title {
+                            romaji
                             userPreferred
                         }
                         coverImage {
