@@ -9,6 +9,7 @@ import com.kl3jvi.animity.UserQuery
 import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -42,14 +43,30 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>> {
-        return apolloClient.query(SessionQuery()).toFlow()
+        return try {
+            apolloClient.query(SessionQuery()).toFlow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyFlow<ApolloResponse<SessionQuery.Data>>()
+        }
+
     }
 
     override fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>> {
-        return apolloClient.query(UserQuery(Optional.Present(id))).toFlow()
+        return try {
+            apolloClient.query(UserQuery(Optional.Present(id))).toFlow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyFlow<ApolloResponse<UserQuery.Data>>()
+        }
     }
 
     override fun getAnimeListData(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>> {
-        return apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow()
+        return try {
+            apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyFlow<ApolloResponse<AnimeListCollectionQuery.Data>>()
+        }
     }
 }

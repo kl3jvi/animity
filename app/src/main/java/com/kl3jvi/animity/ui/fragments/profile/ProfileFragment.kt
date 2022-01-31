@@ -2,19 +2,29 @@ package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
+import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
+import com.kl3jvi.animity.utils.NetworkUtils
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -22,6 +32,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override val viewModel: ProfileViewModel by viewModels()
     private val guestBinding: FragmentProfileGuestBinding get() = guestView()
+    private lateinit var adapter: CustomHorizontalAdapter
     override fun observeViewModel() {}
     override fun initViews() {}
 
@@ -46,16 +57,18 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isGuestLogin()) {
-            getProfileData()
-            getAnimeListProfileData()
+//            getProfileData()
+//            getAnimeListProfileData()
+            adapter = CustomHorizontalAdapter(playButtonFlag = false)
         } else {
-            guestBinding.button2.cornerRadius = 10
+
         }
     }
 
 
     private fun getProfileData() {
         observeLiveData(viewModel.profileData, viewLifecycleOwner) {
+
             binding.bgImage.load(
                 if (it.data?.user?.bannerImage.isNullOrEmpty())
                     DEFAULT_COVER
@@ -67,9 +80,75 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     }
 
     private fun getAnimeListProfileData() {
-        observeLiveData(viewModel.animeList, viewLifecycleOwner) {
-            binding.animeData = it.data
+        observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
+            binding.animeData = animeCollectionResponse.data
+            val animeRecyclerView = binding.watchedAnime
+            animeRecyclerView.layoutManager = LinearLayoutManager(
+                requireContext(),
+                RecyclerView.HORIZONTAL, false
+            )
+
+            addSpinnerItems(animeCollectionResponse.data?.media?.lists?.toList())
+
+            when (binding.spinner.selectedItem.toString()) {
+                "Watching" -> {
+                    adapter.submitList(
+                        animeCollectionResponse.data?.media?.lists?.first()?.entries?.map { animeWatchedData ->
+                            val regex = Regex("[^A-Za-z]")
+                            AnimeMetaModel(
+                                title = animeWatchedData?.media?.title?.romaji.toString(),
+                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
+                                categoryUrl = "category/${
+                                    animeWatchedData?.media?.title?.romaji
+                                        .toString()
+                                        .replace(" ", "-")
+                                        .replace(":", "")
+                                        .replace(";", "")
+                                        .replace(".", "")
+                                        .replace("//", "")
+                                        .replace("/", "")
+                                        .lowercase(Locale.getDefault())
+                                }"
+                            )
+                        }
+                    )
+                    animeRecyclerView.adapter = adapter
+                }
+                "Planning" -> {
+                    adapter.submitList(
+                        animeCollectionResponse.data?.media?.lists?.last()?.entries?.map { animeWatchedData ->
+                            AnimeMetaModel(
+                                title = animeWatchedData?.media?.title?.romaji.toString(),
+                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
+                                categoryUrl = "category/${
+                                    animeWatchedData?.media?.title?.romaji
+                                        .toString()
+                                        .replace(" ", "-")
+                                        .replace(":", "")
+                                        .lowercase(Locale.getDefault())
+                                }"
+                            )
+                        }
+                    )
+                    animeRecyclerView.adapter = adapter
+                }
+            }
+
         }
+    }
+
+    private fun addSpinnerItems(passedArray: List<AnimeListCollectionQuery.List?>?) {
+        val list = passedArray?.map { it?.name } ?: emptyList()
+        val spinner = binding.spinner
+        val spinnerArrayAdapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(
+                requireContext(), R.layout.spinner_item,
+                R.id.textView2,
+                list
+            ) //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item)
+        spinner.adapter = spinnerArrayAdapter
+
     }
 
     override fun getViewBinding(): FragmentProfileBinding =
@@ -95,5 +174,25 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (requireActivity() is MainActivity) {
+            (activity as MainActivity?)?.showBottomNavBar()
+        }
+    }
 
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
+
+    private fun handleNetworkChanges() {
+        NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
+            if (!isConnected) Constants.showSnack(binding.root, "No Internet Connection!")
+            else {
+                getProfileData()
+                getAnimeListProfileData()
+            }
+        }
+    }
 }

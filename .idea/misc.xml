@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.21382636655948553" />
+        <entry key="../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1828125" />
+        <entry key="../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/bottom_gradient.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.14114583333333333" />
@@ -75,6 +77,7 @@
         <entry key="app/src/main/res/layout/item_favorite_anime.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/search_layout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/video_ripple.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3140625" />
         <entry key="app/src/main/res/menu/exo_player_menu.xml" value="0.25" />

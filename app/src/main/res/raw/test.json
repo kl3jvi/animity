@@ -1,0 +1,877 @@
+{
+  "data": {
+    "media": {
+      "lists": [
+        {
+          "entries": [
+            {
+              "id": 250102301,
+              "status": "CURRENT",
+              "score": 0,
+              "progress": 9,
+              "repeat": 0,
+              "priority": 5,
+              "private": false,
+              "notes": null,
+              "hiddenFromStatusLists": false,
+              "customLists": null,
+              "advancedScores": {
+                "Story": 0,
+                "Characters": 0,
+                "Visuals": 0,
+                "Audio": 0,
+                "Enjoyment": 0
+              },
+              "startedAt": {
+                "year": 2022,
+                "month": 1,
+                "day": 28
+              },
+              "completedAt": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "updatedAt": 1643387635,
+              "createdAt": 1643373743,
+              "media": {
+                "id": 20,
+                "title": {
+                  "romaji": "NARUTO",
+                  "english": "Naruto",
+                  "native": "NARUTO -\u30ca\u30eb\u30c8-",
+                  "userPreferred": "Naruto"
+                },
+                "type": "ANIME",
+                "format": "TV",
+                "status": "FINISHED",
+                "startDate": {
+                  "year": 2002,
+                  "month": 10,
+                  "day": 3
+                },
+                "season": "FALL",
+                "seasonYear": 2002,
+                "episodes": 220,
+                "duration": 23,
+                "countryOfOrigin": "JP",
+                "source": "MANGA",
+                "isFavourite": true,
+                "coverImage": {
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx20-E3YH5W6sz6H7.jpg"
+                },
+                "genres": [
+                  "Action",
+                  "Comedy"
+                ],
+                "synonyms": [
+                  "\u05e0\u05d0\u05e8\u05d5\u05d8\u05d5",
+                  "\u0646\u0627\u0631\u0648\u062a\u0648",
+                  "\u706b\u5f71\u5fcd\u8005"
+                ],
+                "averageScore": 80,
+                "popularity": 368980,
+                "tags": [
+                  {
+                    "name": "Ninja"
+                  },
+                  {
+                    "name": "Shounen"
+                  },
+                  {
+                    "name": "Male Protagonist"
+                  },
+                  {
+                    "name": "Super Power"
+                  },
+                  {
+                    "name": "Cultivation"
+                  },
+                  {
+                    "name": "Revenge"
+                  },
+                  {
+                    "name": "Martial Arts"
+                  },
+                  {
+                    "name": "Primarily Child Cast"
+                  },
+                  {
+                    "name": "Tragedy"
+                  },
+                  {
+                    "name": "Anachronism"
+                  },
+                  {
+                    "name": "Heterosexual"
+                  }
+                ],
+                "isAdult": false,
+                "nextAiringEpisode": null,
+                "externalLinks": [
+                  {
+                    "site": "Crunchyroll"
+                  },
+                  {
+                    "site": "Hulu"
+                  },
+                  {
+                    "site": "Netflix"
+                  },
+                  {
+                    "site": "Tubi TV"
+                  },
+                  {
+                    "site": "VRV"
+                  },
+                  {
+                    "site": "Funimation"
+                  },
+                  {
+                    "site": "Official Site"
+                  },
+                  {
+                    "site": "Official Site"
+                  }
+                ]
+              }
+            },
+            {
+              "id": 250645177,
+              "status": "CURRENT",
+              "score": 0,
+              "progress": 0,
+              "repeat": 0,
+              "priority": 5,
+              "private": false,
+              "notes": null,
+              "hiddenFromStatusLists": false,
+              "customLists": null,
+              "advancedScores": {
+                "Story": 0,
+                "Characters": 0,
+                "Visuals": 0,
+                "Audio": 0,
+                "Enjoyment": 0
+              },
+              "startedAt": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "completedAt": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "updatedAt": 1643619800,
+              "createdAt": 1643619800,
+              "media": {
+                "id": 131681,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: The Final Season Part 2",
+                  "english": "Attack on Titan Final Season Part 2",
+                  "native": "\u9032\u6483\u306e\u5de8\u4eba The Final Season Part 2",
+                  "userPreferred": "Attack on Titan Final Season Part 2"
+                },
+                "type": "ANIME",
+                "format": "TV",
+                "status": "RELEASING",
+                "startDate": {
+                  "year": 2022,
+                  "month": 1,
+                  "day": 10
+                },
+                "season": "WINTER",
+                "seasonYear": 2022,
+                "episodes": null,
+                "duration": 24,
+                "countryOfOrigin": "JP",
+                "source": "MANGA",
+                "isFavourite": false,
+                "coverImage": {
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx131681-ODIRpBIbR5Eu.jpg"
+                },
+                "genres": [
+                  "Action",
+                  "Drama",
+                  "Fantasy",
+                  "Mystery",
+                  "Psychological"
+                ],
+                "synonyms": [
+                  "SnK 4",
+                  "AoT 4",
+                  " \u0e1c\u0e48\u0e32\u0e1e\u0e34\u0e20\u0e1e\u0e44\u0e17\u0e17\u0e31\u0e19 \u0e44\u0e1f\u0e19\u0e2d\u0e25 \u0e0b\u0e35\u0e0b\u0e31\u0e48\u0e19 Part 2",
+                  "L'attaque des titans Saison Finale Partie 2",
+                  "Shingeki no Kyojin: The Final Season (2022)"
+                ],
+                "averageScore": 88,
+                "popularity": 131700,
+                "tags": [
+                  {
+                    "name": "War"
+                  },
+                  {
+                    "name": "Tragedy"
+                  },
+                  {
+                    "name": "Revenge"
+                  },
+                  {
+                    "name": "Anti-Hero"
+                  },
+                  {
+                    "name": "Military"
+                  },
+                  {
+                    "name": "Survival"
+                  },
+                  {
+                    "name": "Memory Manipulation"
+                  },
+                  {
+                    "name": "Philosophy"
+                  },
+                  {
+                    "name": "Terrorism"
+                  },
+                  {
+                    "name": "Politics"
+                  },
+                  {
+                    "name": "Kaiju"
+                  },
+                  {
+                    "name": "Male Protagonist"
+                  },
+                  {
+                    "name": "Time Manipulation"
+                  },
+                  {
+                    "name": "Alternate Universe"
+                  },
+                  {
+                    "name": "Cosmic Horror"
+                  },
+                  {
+                    "name": "Body Horror"
+                  },
+                  {
+                    "name": "Gore"
+                  },
+                  {
+                    "name": "Primarily Adult Cast"
+                  },
+                  {
+                    "name": "Slavery"
+                  },
+                  {
+                    "name": "Vore"
+                  },
+                  {
+                    "name": "Guns"
+                  },
+                  {
+                    "name": "Ensemble Cast"
+                  },
+                  {
+                    "name": "Shounen"
+                  },
+                  {
+                    "name": "Time Skip"
+                  },
+                  {
+                    "name": "CGI"
+                  },
+                  {
+                    "name": "Amnesia"
+                  },
+                  {
+                    "name": "Cannibalism"
+                  },
+                  {
+                    "name": "Afterlife"
+                  }
+                ],
+                "isAdult": false,
+                "nextAiringEpisode": {
+                  "id": 315106,
+                  "airingAt": 1644159900,
+                  "timeUntilAiring": 535570,
+                  "episode": 5,
+                  "mediaId": 131681
+                },
+                "externalLinks": [
+                  {
+                    "site": "Official Site"
+                  },
+                  {
+                    "site": "Twitter"
+                  },
+                  {
+                    "site": "Crunchyroll"
+                  },
+                  {
+                    "site": "Hulu"
+                  },
+                  {
+                    "site": "Funimation"
+                  },
+                  {
+                    "site": "VRV"
+                  }
+                ]
+              }
+            },
+            {
+              "id": 250651599,
+              "status": "CURRENT",
+              "score": 0,
+              "progress": 0,
+              "repeat": 0,
+              "priority": 0,
+              "private": false,
+              "notes": null,
+              "hiddenFromStatusLists": false,
+              "customLists": null,
+              "advancedScores": {
+                "Story": 0,
+                "Characters": 0,
+                "Visuals": 0,
+                "Audio": 0,
+                "Enjoyment": 0
+              },
+              "startedAt": {
+                "year": 2022,
+                "month": 1,
+                "day": 31
+              },
+              "completedAt": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "updatedAt": 1643623534,
+              "createdAt": 1643623534,
+              "media": {
+                "id": 132405,
+                "title": {
+                  "romaji": "Sono Bisque Doll wa Koi wo Suru",
+                  "english": "My Dress-Up Darling",
+                  "native": "\u305d\u306e\u7740\u305b\u66ff\u3048\u4eba\u5f62\u306f\u604b\u3092\u3059\u308b",
+                  "userPreferred": "My Dress-Up Darling"
+                },
+                "type": "ANIME",
+                "format": "TV",
+                "status": "RELEASING",
+                "startDate": {
+                  "year": 2022,
+                  "month": 1,
+                  "day": 9
+                },
+                "season": "WINTER",
+                "seasonYear": 2022,
+                "episodes": 12,
+                "duration": 24,
+                "countryOfOrigin": "JP",
+                "source": "MANGA",
+                "isFavourite": false,
+                "coverImage": {
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx132405-Iy6Lze5SOme8.jpg"
+                },
+                "genres": [
+                  "Comedy",
+                  "Ecchi",
+                  "Romance",
+                  "Slice of Life"
+                ],
+                "synonyms": [
+                  "Sono Kisekae Ningyou wa Koi wo suru",
+                  "\u0e2b\u0e19\u0e38\u0e48\u0e21\u0e40\u0e22\u0e47\u0e1a\u0e1c\u0e49\u0e32\u0e01\u0e31\u0e1a\u0e2a\u0e32\u0e27\u0e19\u0e31\u0e01\u0e04\u0e2d\u0e2a\u0e40\u0e1e\u0e25\u0e22\u0e4c",
+                  "\u305d\u306e\u7740\u305b\u66ff\u3048\u4eba\u5f62\uff08\u30d3\u30b9\u30af\u30fb\u30c9\u30fc\u30eb\uff09\u306f\u604b\u3092\u3059\u308b",
+                  "kisekoi"
+                ],
+                "averageScore": 80,
+                "popularity": 75216,
+                "tags": [
+                  {
+                    "name": "Cosplay"
+                  },
+                  {
+                    "name": "Otaku Culture"
+                  },
+                  {
+                    "name": "Fashion"
+                  },
+                  {
+                    "name": "Gyaru"
+                  },
+                  {
+                    "name": "Male Protagonist"
+                  },
+                  {
+                    "name": "Heterosexual"
+                  },
+                  {
+                    "name": "Makeup"
+                  },
+                  {
+                    "name": "Female Protagonist"
+                  },
+                  {
+                    "name": "Primarily Teen Cast"
+                  },
+                  {
+                    "name": "Nudity"
+                  },
+                  {
+                    "name": "Crossdressing"
+                  },
+                  {
+                    "name": "Seinen"
+                  },
+                  {
+                    "name": "Meta"
+                  },
+                  {
+                    "name": "Urban Fantasy"
+                  }
+                ],
+                "isAdult": false,
+                "nextAiringEpisode": {
+                  "id": 317181,
+                  "airingAt": 1644073200,
+                  "timeUntilAiring": 448870,
+                  "episode": 5,
+                  "mediaId": 132405
+                },
+                "externalLinks": [
+                  {
+                    "site": "Official Site"
+                  },
+                  {
+                    "site": "Twitter"
+                  },
+                  {
+                    "site": "Funimation"
+                  },
+                  {
+                    "site": "Crunchyroll"
+                  },
+                  {
+                    "site": "VRV"
+                  }
+                ]
+              }
+            },
+            {
+              "id": 250651618,
+              "status": "CURRENT",
+              "score": 0,
+              "progress": 0,
+              "repeat": 0,
+              "priority": 0,
+              "private": false,
+              "notes": null,
+              "hiddenFromStatusLists": false,
+              "customLists": null,
+              "advancedScores": {
+                "Story": 0,
+                "Characters": 0,
+                "Visuals": 0,
+                "Audio": 0,
+                "Enjoyment": 0
+              },
+              "startedAt": {
+                "year": 2022,
+                "month": 1,
+                "day": 31
+              },
+              "completedAt": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "updatedAt": 1643623554,
+              "createdAt": 1643623554,
+              "media": {
+                "id": 21,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "ONE PIECE",
+                  "native": "ONE PIECE",
+                  "userPreferred": "ONE PIECE"
+                },
+                "type": "ANIME",
+                "format": "TV",
+                "status": "RELEASING",
+                "startDate": {
+                  "year": 1999,
+                  "month": 10,
+                  "day": 20
+                },
+                "season": "FALL",
+                "seasonYear": 1999,
+                "episodes": null,
+                "duration": 24,
+                "countryOfOrigin": "JP",
+                "source": "MANGA",
+                "isFavourite": false,
+                "coverImage": {
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/nx21-tXMN3Y20PIL9.jpg"
+                },
+                "genres": [
+                  "Action",
+                  "Adventure",
+                  "Comedy",
+                  "Drama",
+                  "Fantasy"
+                ],
+                "synonyms": [
+                  "\u30ef\u30f3\u30d4\u30fc\u30b9",
+                  "\u6d77\u8d3c\u738b",
+                  "\u05d5\u05d5\u05d0\u05df \u05e4\u05d9\u05e1",
+                  "\u0648\u0646 \u0628\u064a\u0633"
+                ],
+                "averageScore": 86,
+                "popularity": 308245,
+                "tags": [
+                  {
+                    "name": "Pirates"
+                  },
+                  {
+                    "name": "Ensemble Cast"
+                  },
+                  {
+                    "name": "Shounen"
+                  },
+                  {
+                    "name": "Super Power"
+                  },
+                  {
+                    "name": "Ships"
+                  },
+                  {
+                    "name": "Male Protagonist"
+                  },
+                  {
+                    "name": "Conspiracy"
+                  },
+                  {
+                    "name": "Time Skip"
+                  },
+                  {
+                    "name": "War"
+                  },
+                  {
+                    "name": "Politics"
+                  },
+                  {
+                    "name": "Lost Civilization"
+                  },
+                  {
+                    "name": "Swordplay"
+                  },
+                  {
+                    "name": "Henshin"
+                  },
+                  {
+                    "name": "Shapeshifting"
+                  },
+                  {
+                    "name": "Animals"
+                  },
+                  {
+                    "name": "Primarily Adult Cast"
+                  },
+                  {
+                    "name": "Real Robot"
+                  },
+                  {
+                    "name": "Cyborg"
+                  },
+                  {
+                    "name": "Anti-Hero"
+                  },
+                  {
+                    "name": "Anachronism"
+                  },
+                  {
+                    "name": "Skeleton"
+                  },
+                  {
+                    "name": "Ninja"
+                  },
+                  {
+                    "name": "Primarily Male Cast"
+                  },
+                  {
+                    "name": "Espionage"
+                  },
+                  {
+                    "name": "Super Robot"
+                  },
+                  {
+                    "name": "Guns"
+                  },
+                  {
+                    "name": "Kuudere"
+                  },
+                  {
+                    "name": "Robots"
+                  },
+                  {
+                    "name": "Transgender"
+                  },
+                  {
+                    "name": "Mermaid"
+                  },
+                  {
+                    "name": "Nudity"
+                  },
+                  {
+                    "name": "Battle Royale"
+                  },
+                  {
+                    "name": "Dinosaurs"
+                  },
+                  {
+                    "name": "Drugs"
+                  },
+                  {
+                    "name": "Female Harem"
+                  },
+                  {
+                    "name": "Zombie"
+                  },
+                  {
+                    "name": "Time Manipulation"
+                  },
+                  {
+                    "name": "Body Swapping"
+                  },
+                  {
+                    "name": "Asexual"
+                  },
+                  {
+                    "name": "Assassins"
+                  },
+                  {
+                    "name": "CGI"
+                  },
+                  {
+                    "name": "Cult"
+                  },
+                  {
+                    "name": "Tanned Skin"
+                  },
+                  {
+                    "name": "Adoption"
+                  },
+                  {
+                    "name": "Age Regression"
+                  },
+                  {
+                    "name": "Dissociative Identities"
+                  }
+                ],
+                "isAdult": false,
+                "nextAiringEpisode": {
+                  "id": 320343,
+                  "airingAt": 1644107400,
+                  "timeUntilAiring": 483070,
+                  "episode": 1009,
+                  "mediaId": 21
+                },
+                "externalLinks": [
+                  {
+                    "site": "Crunchyroll"
+                  },
+                  {
+                    "site": "Funimation"
+                  },
+                  {
+                    "site": "Official Site"
+                  },
+                  {
+                    "site": "Hulu"
+                  },
+                  {
+                    "site": "VRV"
+                  },
+                  {
+                    "site": "Netflix"
+                  },
+                  {
+                    "site": "Tubi TV"
+                  },
+                  {
+                    "site": "Official Site"
+                  },
+                  {
+                    "site": "Official Site"
+                  }
+                ]
+              }
+            }
+          ],
+          "name": "Watching",
+          "isCustomList": false,
+          "isSplitCompletedList": false,
+          "status": "CURRENT"
+        },
+        {
+          "entries": [
+            {
+              "id": 250652070,
+              "status": "PLANNING",
+              "score": 0,
+              "progress": 0,
+              "repeat": 0,
+              "priority": 0,
+              "private": false,
+              "notes": null,
+              "hiddenFromStatusLists": false,
+              "customLists": null,
+              "advancedScores": {
+                "Story": 0,
+                "Characters": 0,
+                "Visuals": 0,
+                "Audio": 0,
+                "Enjoyment": 0
+              },
+              "startedAt": {
+                "year": 2022,
+                "month": 1,
+                "day": 31
+              },
+              "completedAt": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "updatedAt": 1643624275,
+              "createdAt": 1643624067,
+              "media": {
+                "id": 114129,
+                "title": {
+                  "romaji": "Gintama: THE FINAL",
+                  "english": "Gintama: THE VERY FINAL",
+                  "native": "\u9280\u9b42 THE FINAL",
+                  "userPreferred": "Gintama: THE VERY FINAL"
+                },
+                "type": "ANIME",
+                "format": "MOVIE",
+                "status": "FINISHED",
+                "startDate": {
+                  "year": 2021,
+                  "month": 1,
+                  "day": 8
+                },
+                "season": "WINTER",
+                "seasonYear": 2021,
+                "episodes": 1,
+                "duration": 104,
+                "countryOfOrigin": "JP",
+                "source": "MANGA",
+                "isFavourite": true,
+                "coverImage": {
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx114129-TI4mHjFNI0E0.png"
+                },
+                "genres": [
+                  "Action",
+                  "Comedy",
+                  "Drama",
+                  "Sci-Fi"
+                ],
+                "synonyms": [],
+                "averageScore": 92,
+                "popularity": 19109,
+                "tags": [
+                  {
+                    "name": "Samurai"
+                  },
+                  {
+                    "name": "Swordplay"
+                  },
+                  {
+                    "name": "Surreal Comedy"
+                  },
+                  {
+                    "name": "Meta"
+                  },
+                  {
+                    "name": "Shounen"
+                  },
+                  {
+                    "name": "Anachronism"
+                  },
+                  {
+                    "name": "Parody"
+                  },
+                  {
+                    "name": "Tragedy"
+                  },
+                  {
+                    "name": "War"
+                  },
+                  {
+                    "name": "Male Protagonist"
+                  },
+                  {
+                    "name": "Philosophy"
+                  },
+                  {
+                    "name": "Dissociative Identities"
+                  },
+                  {
+                    "name": "Aliens"
+                  },
+                  {
+                    "name": "Memory Manipulation"
+                  },
+                  {
+                    "name": "Gore"
+                  },
+                  {
+                    "name": "Ninja"
+                  },
+                  {
+                    "name": "Ensemble Cast"
+                  },
+                  {
+                    "name": "Kuudere"
+                  },
+                  {
+                    "name": "Robots"
+                  },
+                  {
+                    "name": "LGBTQ+ Themes"
+                  },
+                  {
+                    "name": "Afterlife"
+                  }
+                ],
+                "isAdult": false,
+                "nextAiringEpisode": null,
+                "externalLinks": [
+                  {
+                    "site": "Official Site"
+                  },
+                  {
+                    "site": "Twitter"
+                  }
+                ]
+              }
+            }
+          ],
+          "name": "Planning",
+          "isCustomList": false,
+          "isSplitCompletedList": false,
+          "status": "PLANNING"
+        }
+      ]
+    }
+  }
+}
