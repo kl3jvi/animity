@@ -76,12 +76,10 @@ class DetailsViewModel @Inject constructor(
         _animeId.value = id
     }
 
-    fun passDownloadEpisodeUrl(url: String) {
-        _downloadUrl.value = url
-    }
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
+
     }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {

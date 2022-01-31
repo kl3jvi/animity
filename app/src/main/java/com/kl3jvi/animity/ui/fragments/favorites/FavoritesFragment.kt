@@ -45,7 +45,12 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
             setHasFixedSize(true)
             adapter = favoriteAdapter
         }
-        binding.swipeLayout.setOnRefreshListener { if (!isGuestLogin()) observeAnilist() else showLoading(false) }
+        binding.swipeLayout.setOnRefreshListener {
+            if (!isGuestLogin())
+                observeAnilist()
+            else
+                showLoading(false)
+        }
     }
 
     private fun observeDatabase() {
@@ -87,8 +92,6 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
             } else {
                 binding.favoritesRecycler.visibility = View.GONE
                 binding.nothingSaved.visibility = View.VISIBLE
-
-
             }
         }
     }
