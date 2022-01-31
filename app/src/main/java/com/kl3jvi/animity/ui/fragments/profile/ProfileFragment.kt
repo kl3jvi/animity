@@ -18,7 +18,10 @@ import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils
+import com.kl3jvi.animity.utils.ViewUtils.hide
+import com.kl3jvi.animity.utils.ViewUtils.show
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,7 +97,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
                 "Watching" -> {
                     adapter.submitList(
                         animeCollectionResponse.data?.media?.lists?.first()?.entries?.map { animeWatchedData ->
-                            val regex = Regex("[^A-Za-z]")
                             AnimeMetaModel(
                                 title = animeWatchedData?.media?.title?.romaji.toString(),
                                 imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
@@ -188,10 +190,14 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     private fun handleNetworkChanges() {
         NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
-            if (!isConnected) Constants.showSnack(binding.root, "No Internet Connection!")
-            else {
+            if (!isGuestLogin() && isConnected) {
                 getProfileData()
                 getAnimeListProfileData()
+                binding.hasInternet.show()
+                binding.noInternet.hide()
+            } else {
+                binding.noInternet.show()
+                binding.hasInternet.hide()
             }
         }
     }

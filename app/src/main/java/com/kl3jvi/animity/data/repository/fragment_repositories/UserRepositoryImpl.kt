@@ -3,9 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
-import com.kl3jvi.animity.AnimeListCollectionQuery
-import com.kl3jvi.animity.SessionQuery
-import com.kl3jvi.animity.UserQuery
+import com.kl3jvi.animity.*
 import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +12,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val storage: LocalStorageImpl,
-    private val apolloClient: ApolloClient
+    private val apolloClient: ApolloClient,
 ) : UserRepository {
 
     override val bearerToken: String?
@@ -69,4 +67,31 @@ class UserRepositoryImpl @Inject constructor(
             emptyFlow<ApolloResponse<AnimeListCollectionQuery.Data>>()
         }
     }
+
+    override fun getFavoriteAnimes(
+        userId: Int?,
+        page: Int?
+    ): Flow<ApolloResponse<FavoritesAnimeQuery.Data>> {
+        return try {
+            apolloClient.query(
+                FavoritesAnimeQuery(
+                    Optional.Present(userId),
+                    Optional.Present(page)
+                )
+            ).toFlow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyFlow<ApolloResponse<FavoritesAnimeQuery.Data>>()
+        }
+    }
+
+    override fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>> {
+        return try {
+            apolloClient.query(TrendingMediaQuery()).toFlow()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyFlow<ApolloResponse<TrendingMediaQuery.Data>>()
+        }
+    }
+
 }

@@ -1,9 +1,7 @@
 package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
 import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.AnimeListCollectionQuery
-import com.kl3jvi.animity.SessionQuery
-import com.kl3jvi.animity.UserQuery
+import com.kl3jvi.animity.*
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
@@ -18,4 +16,6 @@ interface UserRepository {
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
     fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>>
     fun getAnimeListData(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>>
+    fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
+    fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>>
 }

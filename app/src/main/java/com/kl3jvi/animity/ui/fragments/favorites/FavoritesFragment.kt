@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomFavoriteAdapter
@@ -40,15 +41,21 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
     }
 
     private fun observeDatabase() {
-        viewModel.favoriteAnimesList.observe(viewLifecycleOwner, { animeList ->
-            if (animeList.isNotEmpty()) {
-                favoriteAdapter.submitList(animeList)
+        viewModel.favoriteAnimesList.observe(viewLifecycleOwner) { animeList ->
+            val list = animeList.data?.user?.favourites?.anime?.edges?.map {
+                AnimeMetaModel(
+                    title = it?.node?.title?.userPreferred.toString(),
+                    imageUrl = it?.node?.coverImage?.large.toString(),
+                )
+            }
+            if (!list.isNullOrEmpty()) {
+                favoriteAdapter.submitList(list)
                 binding.favoritesRecycler.visibility = View.VISIBLE
             } else {
                 binding.favoritesRecycler.visibility = View.GONE
                 binding.nothingSaved.visibility = View.VISIBLE
             }
-        })
+        }
     }
 
     override fun onResume() {
