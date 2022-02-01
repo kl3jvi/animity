@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_explore">Explore</string>
-    <string name="title_downloads">Downloads</string>
+    <string name="title_profile">Profile</string>
     <string name="anime_details">Anime Details</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -61,4 +61,25 @@
     <string name="app_describe">test</string>
     <string name="download">Download</string>
     <string name="next">Next: </string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="sign_in_anilist">Sign In with AniList</string>
+    <string name="sign_up">Register</string>
+    <string name="terms_of_use"><![CDATA[Terms & Privacy]]></string>
+    <string name="sign_in_as_guest">Continue as Guest</string>
+    <string name="intro_slogan">Watch ON-THE-GO</string>
+    <string name="important_to_know">Important to Know</string>
+    <string name="login_info">You’ll be redirected to anilist.co to login/register. Make sure the URL is anilist.co before entering your email and password.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="guest_message">Want to track your favorite Anime?</string>
+    <string name="log_out">Log Out</string>
+    <string name="animes">Animes</string>
+
 </resources>

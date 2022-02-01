@@ -2,13 +2,11 @@ package com.kl3jvi.animity.ui.fragments.details
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.data.model.EpisodeModel
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.utils.pmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +52,6 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-
     @ExperimentalCoroutinesApi
     val downloadEpisodeUrl = Transformations.switchMap(_downloadUrl) { url ->
         getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
@@ -79,12 +76,10 @@ class DetailsViewModel @Inject constructor(
         _animeId.value = id
     }
 
-    fun passDownloadEpisodeUrl(url: String) {
-        _downloadUrl.value = url
-    }
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
+
     }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {

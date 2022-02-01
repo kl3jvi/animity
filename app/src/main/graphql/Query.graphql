@@ -1,0 +1,337 @@
+query SessionQuery {
+    viewer:Viewer {
+        id
+        name
+    }
+}
+
+query UserQuery($id: Int) {
+    user:User(id: $id) {
+        id
+        name
+        about(asHtml: false)
+        avatar {
+            large
+            medium
+        }
+        bannerImage
+        mediaListOptions {
+            scoreFormat
+            rowOrder
+            animeList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+            mangaList {
+                sectionOrder
+                splitCompletedSectionByFormat
+                customLists
+                advancedScoring
+                advancedScoringEnabled
+            }
+        }
+        statistics {
+            anime {
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                chaptersRead
+                volumesRead
+            }
+            manga {
+                count
+                meanScore
+                standardDeviation
+                minutesWatched
+                episodesWatched
+                chaptersRead
+                volumesRead
+            }
+        }
+        isFollowing
+        isFollower
+        donatorTier
+        donatorBadge
+        moderatorStatus
+        siteUrl
+    }
+}
+
+query AnimeListCollectionQuery(
+    $userId: Int
+) {
+    media:MediaListCollection(
+        userId: $userId,
+        type: ANIME
+    ) {
+        lists {
+            entries {
+                id
+                status
+                score
+                progress
+                repeat
+                priority
+                private
+                notes
+                hiddenFromStatusLists
+                customLists
+                advancedScores
+                startedAt {
+                    year
+                    month
+                    day
+                }
+                completedAt {
+                    year
+                    month
+                    day
+                }
+                updatedAt
+                createdAt
+                media {
+                    id
+                    title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                    }
+                    type
+                    format
+                    status(version: 2)
+                    startDate {
+                        year
+                        month
+                        day
+                    }
+                    season
+                    seasonYear
+                    episodes
+                    duration
+                    countryOfOrigin
+                    source
+                    isFavourite
+                    coverImage {
+                        large
+                    }
+                    genres
+                    synonyms
+                    averageScore
+                    popularity
+                    tags {
+                        name
+                    }
+                    isAdult
+                    nextAiringEpisode {
+                        id
+                        airingAt
+                        timeUntilAiring
+                        episode
+                        mediaId
+                    }
+                    externalLinks {
+                        site
+                    }
+                }
+            }
+            name
+            isCustomList
+            isSplitCompletedList
+            status
+        }
+    }
+}
+
+query TrendingMediaQuery{
+    page:Page(
+        page: 1,
+        perPage: 10
+    ) {
+        media(type: ANIME, sort: [TRENDING_DESC]) {
+            id
+            title {
+                userPreferred
+            }
+            averageScore
+            favourites
+            coverImage {
+                large
+            }
+            bannerImage
+            description(asHtml: true)
+            genres
+            studios (isMain: true) {
+                edges {
+                    node {
+                        id
+                        name
+                    }
+                }
+            }
+            staff {
+                edges {
+                    node {
+                        id
+                        name {
+                            full
+                        }
+                    }
+                    role
+                }
+            }
+        }
+    }
+}
+
+#gets user favorite animes
+query FavoritesAnimeQuery($id: Int, $page: Int) {
+    user:User(id: $id) {
+        id
+        name
+        favourites {
+            anime(page: $page) {
+                edges {
+                    node {
+                        id
+                        title {
+                            romaji
+                            userPreferred
+                        }
+                        coverImage {
+                            large
+                        }
+                    }
+                    favouriteOrder
+                }
+                pageInfo {
+                    total
+                    perPage
+                    currentPage
+                    lastPage
+                    hasNextPage
+                }
+            }
+        }
+    }
+}
+
+#GetAnime data by searching
+query SearchAnimeQuery(
+    $page: Int,
+    $search: String,
+    $sort: [MediaSort],
+    $formatIn: [MediaFormat],
+    $statusIn: [MediaStatus],
+    $sourceIn: [MediaSource],
+    $countryOfOrigin: CountryCode,
+    $season: MediaSeason,
+    $startDateGreater: FuzzyDateInt,
+    $startDateLesser: FuzzyDateInt,
+    $isAdult: Boolean,
+    $onList: Boolean,
+    $genreIn: [String],
+    $genreNotIn: [String],
+    $minimumTagRank: Int,
+    $tagIn: [String],
+    $tagNotIn: [String],
+    $licensedByIn: [String],
+    $episodesGreater: Int,
+    $episodesLesser: Int,
+    $durationGreater: Int,
+    $durationLesser: Int,
+    $averageScoreGreater: Int,
+    $averageScoreLesser: Int,
+    $popularityGreater: Int,
+    $popularityLesser: Int
+) {
+    page:Page(page: $page) {
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        media(
+            type: ANIME,
+            search: $search,
+            sort: $sort,
+            format_in: $formatIn,
+            status_in: $statusIn,
+            source_in: $sourceIn,
+            countryOfOrigin: $countryOfOrigin,
+            season: $season,
+            startDate_greater: $startDateGreater,
+            startDate_lesser: $startDateLesser,
+            isAdult: $isAdult,
+            onList: $onList,
+            genre_in: $genreIn,
+            genre_not_in: $genreNotIn,
+            minimumTagRank: $minimumTagRank,
+            tag_in: $tagIn,
+            tag_not_in: $tagNotIn,
+            licensedBy_in: $licensedByIn,
+            episodes_greater: $episodesGreater,
+            episodes_lesser: $episodesLesser,
+            duration_greater: $durationGreater,
+            duration_lesser: $durationLesser,
+            averageScore_greater: $averageScoreGreater,
+            averageScore_lesser: $averageScoreLesser,
+            popularity_greater: $popularityGreater,
+            popularity_lesser: $popularityLesser
+        ) {
+            id
+            title {
+                userPreferred
+            }
+            coverImage {
+                large
+            }
+            bannerImage
+            type
+            format
+            status(version: 2)
+            episodes
+            averageScore
+            favourites
+            startDate {
+                year
+                month
+                day
+            }
+            genres
+            studios (isMain: true) {
+                edges {
+                    node {
+                        id
+                        name
+                    }
+                }
+            }
+            mediaListEntry {
+                id
+                status
+            }
+        }
+    }
+}
+#marks anime as favorite
+mutation ToggleFavouriteMutation(
+    $animeId: Int,
+) {
+    favorite:ToggleFavourite(
+        animeId: $animeId,
+    ) {
+        anime {
+            pageInfo {
+                total
+            }
+        }
+    }
+}

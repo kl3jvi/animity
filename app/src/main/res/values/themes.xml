@@ -17,6 +17,12 @@
         <item name="android:colorBackground">@color/primaryBlackBackground</item>
     </style>
 
+    <style name="Theme.Animity.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+    </style>
 
     <style name="Theme.Animity" parent="Base.Theme.Animity" />
 
@@ -36,7 +42,7 @@
     <style name="VideoPlayer" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -80,11 +86,12 @@
         <item name="iconSize">20dp</item>
         <item name="cornerRadius">4dp</item>
         <item name="android:textSize">15sp</item>
-
+        <item name="backgroundTint">@color/colorPrimaryLight</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:foreground">@drawable/outline_drawable</item>
     </style>
+
 
     <style name="WhiteButton" parent="NiceButton">
         <item name="strokeColor">@color/iconGrayBackground</item>
@@ -93,6 +100,15 @@
         <item name="android:textColor">@color/iconGrayBackground</item>
         <item name="rippleColor">@color/primaryBlackBackground</item>
     </style>
+
+    <style name="GreenButton" parent="NiceButton">
+        <item name="strokeColor">@color/textColor</item>
+        <item name="backgroundTint">@color/green_theme</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="rippleColor">@color/primaryBlackBackground</item>
+    </style>
+
 
 
     <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
@@ -103,5 +119,5 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <color name="colorAccent">#FFFFFF</color>
+    <dimen name="dp_1">1dp</dimen>
 </resources>

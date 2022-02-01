@@ -1,8 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.details
 
-import android.app.NotificationManager
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
@@ -13,21 +11,17 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
-import com.google.android.exoplayer2.offline.DownloadRequest
-import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.chip.Chip
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
-import com.kl3jvi.animity.services.VideoDownloadService
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Constants.Companion.DOWNLOAD_CHANNEL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -36,7 +30,6 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -52,8 +45,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private var check = false
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    @Inject
-    lateinit var notificationManager: NotificationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -264,37 +255,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         }
     }
 
-    @ExperimentalCoroutinesApi
-    fun getM3U8EpisodeUrl(episodeUrl: String) {
-        viewModel.passDownloadEpisodeUrl(episodeUrl)
-        viewModel.downloadEpisodeUrl.observe(viewLifecycleOwner) { res ->
-            when (res) {
-                is Resource.Success -> {
-                    downloadEpisode(res.data.toString())
-                }
-                is Resource.Error -> {
-                    showSnack(binding.root, "Downloading Error")
-                }
-                is Resource.Loading -> {
-                }
-            }
-        }
-    }
-
-    private fun downloadEpisode(videoM3U8Url: String) {
-        val downloadRequest: DownloadRequest =
-            DownloadRequest.Builder(
-                DOWNLOAD_CHANNEL_ID,
-                Uri.parse(videoM3U8Url)
-            ).build()
-
-        DownloadService.sendAddDownload(
-            requireContext(),
-            VideoDownloadService::class.java,
-            downloadRequest,
-            false
-        )
-    }
 
     override fun getViewBinding(): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater)

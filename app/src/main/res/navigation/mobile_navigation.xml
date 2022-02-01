@@ -61,16 +61,16 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="animeDetails"
-            app:argType="com.kl3jvi.animity.data.model.AnimeMetaModel" />
+            app:argType="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_downloads"
-        android:name="com.kl3jvi.animity.ui.fragments.downloads.DownloadsFragment"
-        android:label="@string/title_downloads"
-        tools:layout="@layout/fragment_downloads">
+        android:id="@+id/navigation_profile"
+        android:name="com.kl3jvi.animity.ui.fragments.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_navigation_downloads_to_navigation_details"
+            android:id="@+id/action_navigation_profile_to_navigation_details"
             app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

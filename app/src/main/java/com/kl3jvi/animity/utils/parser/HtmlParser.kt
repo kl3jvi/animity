@@ -2,7 +2,7 @@ package com.kl3jvi.animity.utils.parser
 
 import android.os.Build
 import android.util.Log
-import com.kl3jvi.animity.data.model.*
+import com.kl3jvi.animity.data.model.ui_models.*
 import org.apache.commons.lang3.RandomStringUtils
 import org.json.JSONObject
 import org.jsoup.Jsoup

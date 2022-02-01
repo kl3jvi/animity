@@ -27,14 +27,14 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.Content
-import com.kl3jvi.animity.data.model.EpisodeModel
+import com.kl3jvi.animity.data.model.ui_models.Content
+import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
+import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.getSafeString
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -189,7 +189,7 @@ class PlayerActivity : AppCompatActivity() {
 
                         val skipIntro =
                             viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-                        viewModel.audioProgress(player).observe(this, { currentProgress ->
+                        viewModel.audioProgress(player).observe(this) { currentProgress ->
                             currentProgress?.let {
                                 currentTime = it
                                 if (currentTime < 300000) {
@@ -201,9 +201,10 @@ class PlayerActivity : AppCompatActivity() {
                                     skipIntro.visibility = View.GONE
                                 }
                             }
-                        })
+                        }
 
                     } catch (e: ExoPlaybackException) {
+                        e.printStackTrace()
                         showSnack(viewBinding.root, e.localizedMessage)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -214,7 +215,7 @@ class PlayerActivity : AppCompatActivity() {
                     viewBinding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
-                    showSnack(viewBinding.root, res.message)
+                    /*viewBinding.loadingOverlay.visibility = View.VISIBLE*/
                 }
             }
 

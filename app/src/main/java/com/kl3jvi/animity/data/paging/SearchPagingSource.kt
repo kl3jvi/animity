@@ -2,8 +2,8 @@ package com.kl3jvi.animity.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.kl3jvi.animity.data.model.AnimeMetaModel
-import com.kl3jvi.animity.data.network.AnimeApiClient
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
 import com.kl3jvi.animity.utils.Constants.Companion.getHeader

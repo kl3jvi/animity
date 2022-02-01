@@ -6,4 +6,11 @@
     <dimen name="roundedImageRadius">5dp</dimen>
     <dimen name="navbarHeight">0dp</dimen>
     <dimen name="result_padding">15dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_30">30dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
 </resources>

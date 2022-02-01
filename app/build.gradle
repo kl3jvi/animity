@@ -8,6 +8,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.secrets_gradle_plugin' version("0.4")
+    id "com.apollographql.apollo3" version("3.0.0")
 }
 
 android {
@@ -68,15 +70,21 @@ android {
 
             // Specifies that we do not want to also generate a universal APK that includes all ABIs.
             universalApk true
-
         }
     }
 
+
+}
+
+apollo {
+    packageName.set("com.kl3jvi.animity")
+    generateKotlinModels.set(true)
+    excludes.add("**/schema.json.graphql")
 }
 
 dependencies {
-    def coordinatorlayoutVersion = "1.0.0"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion"
+    def coordinatorLayoutVersion = "1.2.0"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     def androidCoreVersion = "1.7.0"
     implementation "androidx.core:core-ktx:$androidCoreVersion"
 
@@ -93,11 +101,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.4.0-rc01"
+    def navigationComponentVersion = "2.5.0-alpha01"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
-
 
     // Coroutines
     def coroutinesVersion = "1.6.0"
@@ -105,17 +112,13 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-
     def lifecycle_version = "2.4.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     def analyticsVersion = "20.0.2"
-    def remoteConfigVersion = "21.0.1"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
-    implementation "com.google.firebase:firebase-config-ktx:$remoteConfigVersion"
 
-
-    def crashlyticsVersion = "18.2.6"
+    def crashlyticsVersion = "18.2.7"
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
 
     // Hilt DI
@@ -124,15 +127,16 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltAnnotationProcessor"
 
-// Retrofit
+    // Retrofit
     def retrofitVersion = "2.9.0"
     def interceptor_version = "5.0.0-alpha.2"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
+
     //Html Parsing
-    def jsoupVersion ="1.13.1"
+    def jsoupVersion = "1.13.1"
     implementation "org.jsoup:jsoup:$jsoupVersion"
 
     //Room Library
@@ -161,6 +165,8 @@ dependencies {
     // image library
     def coilVersion = "1.4.0"
     implementation "io.coil-kt:coil:$coilVersion"
+    implementation "io.coil-kt:coil-gif:$coilVersion"
+
 
     //splash screen
     def splashVersion = "1.0.0-beta01"
@@ -176,6 +182,16 @@ dependencies {
     def paginationVersion = "3.1.0"
     implementation "androidx.paging:paging-runtime-ktx:$paginationVersion"
 
+    def inAppBrowserVersion = "1.4.0"
+    implementation "androidx.browser:browser:$inAppBrowserVersion"
 
+    // Apollo GraphQl
+    def apolloVersion = "3.0.0"
+    implementation "com.apollographql.apollo3:apollo-runtime:$apolloVersion"
 
+    // DataStore
+    def dataStore_version = "1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$dataStore_version"
+
+    implementation "io.getstream:avatarview-coil:1.0.2"
 }

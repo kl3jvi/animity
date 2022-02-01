@@ -7,7 +7,7 @@
 
        <variable
            name="animeInfo"
-           type="com.kl3jvi.animity.data.model.AnimeMetaModel" />
+           type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
 
         <variable
             name="isVisible"

@@ -14,6 +14,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
+import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
+import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
 
@@ -22,11 +24,20 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private lateinit var navController:NavController
+    private lateinit var navController: NavController
+    var isGuestLogin: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        with(intent) {
+            when (getStringExtra("loginType")) {
+                GUEST_LOGIN_TYPE -> isGuestLogin = true
+                AUTHENTICATED_LOGIN_TYPE -> isGuestLogin = false
+            }
+        }
+        if (intent.extras == null) {
+            isGuestLogin = false
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
@@ -44,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home,
                 R.id.navigation_favorites,
                 R.id.navigation_explore,
-                R.id.navigation_downloads
+                R.id.navigation_profile
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -64,4 +75,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+
 }
