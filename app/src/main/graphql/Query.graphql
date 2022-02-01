@@ -321,6 +321,8 @@ query SearchAnimeQuery(
         }
     }
 }
+
+
 #marks anime as favorite
 mutation ToggleFavouriteMutation(
     $animeId: Int,

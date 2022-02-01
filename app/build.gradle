@@ -83,6 +83,7 @@ apollo {
 }
 
 dependencies {
+    implementation 'androidx.preference:preference:1.2.0'
     def coordinatorLayoutVersion = "1.2.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     def androidCoreVersion = "1.7.0"

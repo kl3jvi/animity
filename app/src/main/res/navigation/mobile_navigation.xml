@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_home">
+
+    <!--Global action-->
+    <action
+        android:id="@+id/open_settings_fragment"
+        app:destination="@id/settingsFragment" />
 
     <fragment
         android:id="@+id/navigation_home"
@@ -77,4 +82,9 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

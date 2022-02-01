@@ -160,7 +160,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             check = it
             if (!check) {
                 menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-
             } else {
                 menu[0].setIcon(R.drawable.ic_favorite_complete)
             }

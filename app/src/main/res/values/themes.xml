@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/animity</item>
         <item name="android:textColorHint">@color/grayTextColor</item>
+        <item name="android:textColor">@color/textColor</item>
         <item name="android:colorBackground">@color/primaryBlackBackground</item>
     </style>
 
@@ -110,7 +111,6 @@
     </style>
 
 
-
     <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">8dp</item>
@@ -120,4 +120,9 @@
     </style>
 
     <dimen name="dp_1">1dp</dimen>
+
+    <style name="PreferenceScreen" parent="Theme.Animity">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
 </resources>

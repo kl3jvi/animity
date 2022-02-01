@@ -1,11 +1,14 @@
 package com.kl3jvi.animity.ui.activities.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,6 +21,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import dagger.hilt.android.AndroidEntryPoint
 import me.ibrahimsn.lib.SmoothBottomBar
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -74,6 +78,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.settings_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.action_settings) {
+            findNavController(this, R.id.nav_host_fragment_activity_main).navigate(R.id.settingsFragment)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
