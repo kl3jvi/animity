@@ -2,15 +2,21 @@ package com.kl3jvi.animity.ui.fragments.details
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.apollographql.apollo3.api.ApolloResponse
+import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
+import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,16 +26,24 @@ class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
     private val animeRepository: AnimeRepository,
     private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
+    private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
+    private val getAnimeDetailsFromAnilistUseCase: GetAnimeDetailsFromAnilistUseCase,
     private val episodeDao: EpisodeDao
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
     private val _animeId = MutableLiveData<Int>()
-    private val _downloadUrl = MutableLiveData<String>()
 
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
     }
+
+//    val animeId = Transformations.switchMap(_url) { string ->
+//        getAnimeDetailsUseCase.fetchAnimeInfo(string).flatMapLatest {
+//            getAnimeDetailsFromAnilistUseCase(1,it.data.)
+//        }.asLiveData()
+//    }
+
 
     @ExperimentalCoroutinesApi
     val episodeList = Transformations.switchMap(_url) { list ->
@@ -52,13 +66,6 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    @ExperimentalCoroutinesApi
-    val downloadEpisodeUrl = Transformations.switchMap(_downloadUrl) { url ->
-        getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
-            getEpisodeInfoUseCase.fetchM3U8(episodeInfo.data?.vidCdnUrl)
-        }.asLiveData()
-    }
-
     val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
         getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData()
     }
@@ -80,6 +87,38 @@ class DetailsViewModel @Inject constructor(
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
 
+        markAnimeAsFavoriteUseCase(_animeId.value)
+    }
+
+    fun data(anime: AnimeMetaModel): Flow<ApolloResponse<SearchAnimeQuery.Data>> {
+        return getAnimeDetailsFromAnilistUseCase(
+            1,
+            anime.title,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+        )
     }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {

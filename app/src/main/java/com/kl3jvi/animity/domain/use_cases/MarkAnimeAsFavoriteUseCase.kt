@@ -9,7 +9,7 @@ class MarkAnimeAsFavoriteUseCase @Inject constructor(
     private val userRepositoryImpl: UserRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke() {
-//        userRepositoryImpl.markAnimeAsFavorite().flowOn(ioDispatcher)
+    operator fun invoke(animeId:Int?) {
+        userRepositoryImpl.markAnimeAsFavorite(animeId = animeId).flowOn(ioDispatcher)
     }
 }

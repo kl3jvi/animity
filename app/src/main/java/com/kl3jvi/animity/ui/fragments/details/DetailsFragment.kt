@@ -21,13 +21,10 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.launchActivity
-import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -66,6 +63,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         showLatestEpisodeReleaseTime()
 
         animeDetails.let { animeInfo ->
+            collectFlow(viewModel.data(animeInfo)){}
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
                     crossfade(true)

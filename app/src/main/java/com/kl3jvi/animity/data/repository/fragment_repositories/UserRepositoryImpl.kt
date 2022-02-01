@@ -134,35 +134,25 @@ class UserRepositoryImpl @Inject constructor(
         popularityGreater: Int?,
         popularityLesser: Int?
     ): Flow<ApolloResponse<SearchAnimeQuery.Data>> {
-        val checkSearch = if (search.isNullOrBlank()) null else search
-        val checkSort = if (sort.isNullOrEmpty()) listOf(MediaSort.POPULARITY_DESC) else sort
-        val checkFormatIn = if (formatIn.isNullOrEmpty()) null else formatIn
-        val checkStatusIn = if (statusIn.isNullOrEmpty()) null else statusIn
-        val checkSourceIn = if (sourceIn.isNullOrEmpty()) null else sourceIn
-        val checkGenreIn = if (genreIn.isNullOrEmpty()) null else genreIn
-        val checkGenreNotIn = if (genreNotIn.isNullOrEmpty()) null else genreNotIn
-        val checkTagIn = if (tagIn.isNullOrEmpty()) null else tagIn
-        val checkTagNotIn = if (tagNotIn.isNullOrEmpty()) null else tagNotIn
-        val checkLicensedByIn = if (licensedByIn.isNullOrEmpty()) null else licensedByIn
         val query = SearchAnimeQuery(
             page = Optional.Present(page),
-            search = Optional.Present(checkSearch),
-            sort = Optional.Present(checkSort),
-            formatIn = Optional.Present(checkFormatIn),
-            statusIn = Optional.Present(checkStatusIn),
-            sourceIn = Optional.Present(checkSourceIn),
+            search = Optional.presentIfNotNull(search),
+            sort = Optional.presentIfNotNull(sort),
+            formatIn = Optional.presentIfNotNull(formatIn),
+            statusIn = Optional.presentIfNotNull(statusIn),
+            sourceIn = Optional.presentIfNotNull(sourceIn),
             countryOfOrigin = Optional.Present(countryOfOrigin),
             season = Optional.Present(season),
             startDateGreater = Optional.Present(startDateGreater),
             startDateLesser = Optional.Present(startDateLesser),
             isAdult = Optional.Present(isAdult),
             onList = Optional.Present(onList),
-            genreIn = Optional.Present(checkGenreIn),
-            genreNotIn = Optional.Present(checkGenreNotIn),
+            genreIn = Optional.presentIfNotNull(genreIn),
+            genreNotIn = Optional.presentIfNotNull(genreNotIn),
             minimumTagRank = Optional.Present(minimumTagRank),
-            tagIn = Optional.Present(checkTagIn),
-            tagNotIn = Optional.Present(checkTagNotIn),
-            licensedByIn = Optional.Present(checkLicensedByIn),
+            tagIn = Optional.presentIfNotNull(tagIn),
+            tagNotIn = Optional.presentIfNotNull(tagNotIn),
+            licensedByIn = Optional.presentIfNotNull(licensedByIn),
             episodesGreater = Optional.Present(episodesGreater),
             episodesLesser = Optional.Present(episodesLesser),
             durationGreater = Optional.Present(durationGreater),
@@ -174,6 +164,4 @@ class UserRepositoryImpl @Inject constructor(
         )
         return apolloClient.query(query).toFlow()
     }
-
-
 }
