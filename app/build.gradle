@@ -13,7 +13,7 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
     defaultConfig {
         applicationId "com.kl3jvi.animity"
         minSdk 21
