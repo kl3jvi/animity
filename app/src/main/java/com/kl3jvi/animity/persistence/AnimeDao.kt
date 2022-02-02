@@ -1,10 +1,6 @@
 package com.kl3jvi.animity.persistence
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import kotlinx.coroutines.flow.Flow
 
@@ -14,12 +10,15 @@ interface AnimeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAnime(animeMetaModel: AnimeMetaModel)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAnimeList(list: List<AnimeMetaModel>)
+
     @Delete
     suspend fun deleteAnime(anime: AnimeMetaModel)
 
     @Query("SELECT * FROM ANIME_TABLE ORDER BY ID")
     fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>>
 
-    @Query("SELECT EXISTS(SELECT * FROM ANIME_TABLE WHERE id = :userId)")
-    suspend fun isAnimeOnDatabase(userId: Int): Boolean
+    @Query("SELECT EXISTS(SELECT * FROM ANIME_TABLE WHERE title = :title)")
+    suspend fun isAnimeOnDatabase(title: String): Boolean
 }

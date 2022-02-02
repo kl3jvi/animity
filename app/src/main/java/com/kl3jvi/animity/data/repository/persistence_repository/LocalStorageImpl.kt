@@ -12,6 +12,7 @@ class LocalStorageImpl @Inject constructor(
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
         private const val GUEST_TOKEN = "guestToken"
+        private const val FIRST_REMOTE_DATA_SAVE = "saveToDb"
     }
 
     override var bearerToken: String?
@@ -24,6 +25,11 @@ class LocalStorageImpl @Inject constructor(
         get() = getData(GUEST_TOKEN)
         set(value) {
             setData(GUEST_TOKEN, value)
+        }
+    override var isDataSynced: String?
+        get() = getData(FIRST_REMOTE_DATA_SAVE)
+        set(value) {
+            setData(FIRST_REMOTE_DATA_SAVE, value)
         }
 
     private fun getData(key: String): String? {

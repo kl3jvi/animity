@@ -32,7 +32,7 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
-    private val _animeId = MutableLiveData<Int>()
+    private val _animeId = MutableLiveData<String>()
 
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
@@ -70,8 +70,8 @@ class DetailsViewModel @Inject constructor(
         getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData()
     }
 
-    val isOnDatabase = Transformations.switchMap(_animeId) { id ->
-        getAnimeDetailsUseCase.checkIfExists(id).asLiveData()
+    val isOnDatabase = Transformations.switchMap(_animeId) { title ->
+        getAnimeDetailsUseCase.checkIfExists(title).asLiveData()
     }
 
     fun passUrl(url: String) {
@@ -79,8 +79,8 @@ class DetailsViewModel @Inject constructor(
         Log.e("Category URL", url)
     }
 
-    fun passId(id: Int) {
-        _animeId.value = id
+    fun passAnimeTitle(title: String) {
+        _animeId.value = title
     }
 
 

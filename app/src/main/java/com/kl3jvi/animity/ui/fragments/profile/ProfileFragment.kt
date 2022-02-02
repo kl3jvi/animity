@@ -16,9 +16,7 @@ import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
-import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils
 import com.kl3jvi.animity.utils.ViewUtils.hide
 import com.kl3jvi.animity.utils.ViewUtils.show
@@ -60,11 +58,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (!isGuestLogin()) {
-//            getProfileData()
-//            getAnimeListProfileData()
             adapter = CustomHorizontalAdapter(playButtonFlag = false)
-        } else {
-
         }
     }
 
@@ -92,48 +86,48 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
             addSpinnerItems(animeCollectionResponse.data?.media?.lists?.toList())
 
-            when (binding.spinner.selectedItem.toString()) {
-                "Watching" -> {
-                    adapter.submitList(
-                        animeCollectionResponse.data?.media?.lists?.first()?.entries?.map { animeWatchedData ->
-                            AnimeMetaModel(
-                                title = animeWatchedData?.media?.title?.romaji.toString(),
-                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
-                                categoryUrl = "category/${
-                                    animeWatchedData?.media?.title?.romaji
-                                        .toString()
-                                        .replace(" ", "-")
-                                        .replace(":", "")
-                                        .replace(";", "")
-                                        .replace(".", "")
-                                        .replace("//", "")
-                                        .replace("/", "")
-                                        .lowercase(Locale.getDefault())
-                                }"
-                            )
-                        }
-                    )
-                    animeRecyclerView.adapter = adapter
-                }
-                "Planning" -> {
-                    adapter.submitList(
-                        animeCollectionResponse.data?.media?.lists?.last()?.entries?.map { animeWatchedData ->
-                            AnimeMetaModel(
-                                title = animeWatchedData?.media?.title?.romaji.toString(),
-                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
-                                categoryUrl = "category/${
-                                    animeWatchedData?.media?.title?.romaji
-                                        .toString()
-                                        .replace(" ", "-")
-                                        .replace(":", "")
-                                        .lowercase(Locale.getDefault())
-                                }"
-                            )
-                        }
-                    )
-                    animeRecyclerView.adapter = adapter
-                }
-            }
+//            when (binding.spinner.selectedItem.toString()) {
+//                "Watching" -> {
+//                    adapter.submitList(
+//                        animeCollectionResponse.data?.media?.lists?.first()?.entries?.map { animeWatchedData ->
+//                            AnimeMetaModel(
+//                                title = animeWatchedData?.media?.title?.romaji.toString(),
+//                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
+//                                categoryUrl = "category/${
+//                                    animeWatchedData?.media?.title?.romaji
+//                                        .toString()
+//                                        .replace(" ", "-")
+//                                        .replace(":", "")
+//                                        .replace(";", "")
+//                                        .replace(".", "")
+//                                        .replace("//", "")
+//                                        .replace("/", "")
+//                                        .lowercase(Locale.getDefault())
+//                                }"
+//                            )
+//                        }
+//                    )
+//                    animeRecyclerView.adapter = adapter
+//                }
+//                "Planning" -> {
+//                    adapter.submitList(
+//                        animeCollectionResponse.data?.media?.lists?.last()?.entries?.map { animeWatchedData ->
+//                            AnimeMetaModel(
+//                                title = animeWatchedData?.media?.title?.romaji.toString(),
+//                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
+//                                categoryUrl = "category/${
+//                                    animeWatchedData?.media?.title?.romaji
+//                                        .toString()
+//                                        .replace(" ", "-")
+//                                        .replace(":", "")
+//                                        .lowercase(Locale.getDefault())
+//                                }"
+//                            )
+//                        }
+//                    )
+//                    animeRecyclerView.adapter = adapter
+//                }
+//            }
 
         }
     }

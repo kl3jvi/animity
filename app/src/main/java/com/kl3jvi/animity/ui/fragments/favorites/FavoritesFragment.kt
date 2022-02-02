@@ -11,9 +11,12 @@ import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomFavoriteAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBinding>() {
 
@@ -45,6 +48,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
             setHasFixedSize(true)
             adapter = favoriteAdapter
         }
+
         binding.swipeLayout.setOnRefreshListener {
             if (!isGuestLogin())
                 observeAnilist()
@@ -67,7 +71,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
 
 
     private fun observeAnilist() {
-        viewModel.favoriteAnimesList.observe(viewLifecycleOwner) { animeList ->
+        collectFlow(viewModel.favoriteAnimesList) { animeList ->
             val list = animeList.data?.user?.favourites?.anime?.edges?.map {
                 AnimeMetaModel(
                     title = it?.node?.title?.userPreferred.toString(),
@@ -78,15 +82,15 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
                             .replace(" ", "-")
                             .replace(":", "")
                             .replace(";", "")
-                            .replace(".", "")
-                            .replace("//", "")
-                            .replace("/", "")
+                            .replace(".", "").replace("//", "").replace("/", "")
                             .lowercase(Locale.getDefault())
                     }"
                 )
             }
             if (!list.isNullOrEmpty()) {
                 favoriteAdapter.submitList(list)
+                if (!viewModel.isDataSynced()) // Save favorites do local db for not making more requests
+                    viewModel.insertRemoteToLocalDb(list)
                 binding.favoritesRecycler.visibility = View.VISIBLE
                 showLoading(false)
             } else {

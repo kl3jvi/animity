@@ -9,6 +9,8 @@ interface UserRepository {
     val guestToken: String?
     val isAuthenticated: Boolean
     val isGuest: Boolean
+    val isFavoritesSynced:Boolean
+
     fun setBearerToken(token: String?)
     fun setGuestToken(token: String?)
     fun clearStorage()

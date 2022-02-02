@@ -34,7 +34,11 @@ class PersistenceRepositoryImpl @Inject constructor(
     override fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>> =
         animeDao.getFavoriteAnimesList()
 
-    override suspend fun isAnimeOnDatabase(id: Int): Boolean =
-        animeDao.isAnimeOnDatabase(id)
+    override suspend fun isAnimeOnDatabase(title: String): Boolean =
+        animeDao.isAnimeOnDatabase(title)
+
+    override suspend fun insertAnimeList(list: List<AnimeMetaModel>) {
+        animeDao.insertAnimeList(list)
+    }
 
 }

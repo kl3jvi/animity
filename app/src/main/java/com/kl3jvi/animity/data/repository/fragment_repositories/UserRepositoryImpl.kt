@@ -27,6 +27,9 @@ class UserRepositoryImpl @Inject constructor(
     override val isGuest: Boolean
         get() = storage.guestToken != null
 
+    override val isFavoritesSynced: Boolean
+        get() = storage.isDataSynced != null
+
 
     override fun setBearerToken(token: String?) {
         storage.bearerToken = token

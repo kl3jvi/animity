@@ -5,24 +5,41 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryImpl
+import com.kl3jvi.animity.data.repository.persistence_repository.PersistenceRepositoryImpl
 import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     animeRepository: AnimeRepository,
     private val getFavoriteAnimesUseCase: GetFavoriteAnimesUseCase,
     private val getUserSessionUseCase: GetUserSessionUseCase,
+    private val persistenceRepository: PersistenceRepositoryImpl,
+    private val userRepo: UserRepositoryImpl,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     val favoriteFromDatabase: LiveData<List<AnimeMetaModel>> =
-        animeRepository.getFavoriteAnimes.asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        animeRepository.getFavoriteAnimes.asLiveData(ioDispatcher + viewModelScope.coroutineContext)
 
     val favoriteAnimesList = getUserSessionUseCase().flatMapLatest {
         getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
-    }.asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+    }.flowOn(ioDispatcher)
+
+    fun insertRemoteToLocalDb(list: List<AnimeMetaModel>) = viewModelScope.launch {
+        persistenceRepository.insertAnimeList(list)
+    }
+
+    fun isDataSynced(): Boolean {
+        return userRepo.isFavoritesSynced
+    }
 }

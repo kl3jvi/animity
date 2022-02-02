@@ -29,7 +29,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>() {
 
@@ -80,7 +80,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
             }
-            viewModel.passId(animeInfo.id)
+            viewModel.passAnimeTitle(animeInfo.title)
         }
     }
 
@@ -156,10 +156,11 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
     private fun observeDatabase() {
         viewModel.isOnDatabase.observe(viewLifecycleOwner) {
+            if (it) Log.e("Exists", "on Database")
+            else Log.e("Does Not", "on Database")
             check = it
             if (!check) {
                 menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-
             } else {
                 menu[1].setIcon(R.drawable.ic_favorite_complete)
             }
@@ -172,20 +173,18 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 check = if (!check) {
                     menu[1].setIcon(R.drawable.ic_favorite_complete)
                     viewModel.insert(anime = args.animeDetails)
-                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) {
-                        collectFlow(viewModel.updateAnimeFavorite(it.data?.media?.id)) {
-                            Log.e("test", it.data.toString())
-                        }
+                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
+                        val id = idData.data?.media?.id
+                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
                     }
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
                     menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
                     viewModel.delete(anime = args.animeDetails)
-                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) {
-                        collectFlow(viewModel.updateAnimeFavorite(it.data?.media?.id)) {
-                            Log.e("test", it.data.toString())
-                        }
+                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
+                        val id = idData.data?.media?.id
+                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
                     }
                     showSnack(binding.root, "Anime removed from Favorites")
                     false
