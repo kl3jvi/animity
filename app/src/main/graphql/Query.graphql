@@ -298,7 +298,7 @@ query MediaIdFromName($search: String){
 mutation ToggleFavouriteMutation(
     $animeId: Int,
 ) {
-    favorite:ToggleFavourite(
+    toggle:ToggleFavourite(
         animeId: $animeId,
     ) {
         anime {

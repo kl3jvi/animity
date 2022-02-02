@@ -97,7 +97,9 @@ class UserRepositoryImpl @Inject constructor(
     override fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
         return try {
             apolloClient.mutation(
-                ToggleFavouriteMutation(Optional.Present(animeId))
+                ToggleFavouriteMutation(
+                    Optional.Present(animeId)
+                )
             ).toFlow()
         } catch (e: Exception) {
             e.printStackTrace()

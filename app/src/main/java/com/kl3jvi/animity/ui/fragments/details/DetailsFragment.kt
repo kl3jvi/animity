@@ -2,6 +2,7 @@ package com.kl3jvi.animity.ui.fragments.details
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -169,16 +170,22 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 check = if (!check) {
+                    menu[1].setIcon(R.drawable.ic_favorite_complete)
+                    viewModel.insert(anime = args.animeDetails)
                     collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) {
-                        viewModel.insert(anime = args.animeDetails, it.data?.media?.id)
-                        menu[1].setIcon(R.drawable.ic_favorite_complete)
+                        collectFlow(viewModel.updateAnimeFavorite(it.data?.media?.id)) {
+                            Log.e("test", it.data.toString())
+                        }
                     }
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
+                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    viewModel.delete(anime = args.animeDetails)
                     collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) {
-                        viewModel.delete(anime = args.animeDetails, it.data?.media?.id)
-                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                        collectFlow(viewModel.updateAnimeFavorite(it.data?.media?.id)) {
+                            Log.e("test", it.data.toString())
+                        }
                     }
                     showSnack(binding.root, "Anime removed from Favorites")
                     false
@@ -257,6 +264,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         }
     }
 
+    private fun isGuestLogin(): Boolean {
+        return (activity as MainActivity).isGuestLogin
+    }
 
     override fun getViewBinding(): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater)

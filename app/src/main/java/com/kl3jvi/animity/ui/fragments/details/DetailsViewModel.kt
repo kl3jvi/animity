@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.MediaIdFromNameQuery
+import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
@@ -83,18 +84,20 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    fun insert(anime: AnimeMetaModel, id: Int?) = viewModelScope.launch {
+    fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
-        markAnimeAsFavoriteUseCase(id)
+    }
+
+    fun updateAnimeFavorite(id: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
+        return markAnimeAsFavoriteUseCase(id)
     }
 
     fun getAnilistId(anime: AnimeMetaModel?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
         return getAnimeDetailsFromAnilistUseCase(anime?.title.toString())
     }
 
-    fun delete(anime: AnimeMetaModel, id: Int?) = viewModelScope.launch {
+    fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.deleteAnime(anime)
-        markAnimeAsFavoriteUseCase(id)
     }
 
 }

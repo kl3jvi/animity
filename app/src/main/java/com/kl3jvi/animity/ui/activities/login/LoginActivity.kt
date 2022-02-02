@@ -65,6 +65,9 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
 
+    /**
+     * Builds the uri for the authentication url for anilist.co
+     */
     override fun getAuthorizationUrl(): Uri {
         /**
          * https://anilist.co/api/v2/oauth/authorize?client_id={client_id}->
