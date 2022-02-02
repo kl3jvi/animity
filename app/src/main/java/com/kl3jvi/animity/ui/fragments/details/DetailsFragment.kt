@@ -63,7 +63,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         showLatestEpisodeReleaseTime()
 
         animeDetails.let { animeInfo ->
-            collectFlow(viewModel.data(animeInfo)){}
+
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
                     crossfade(true)
@@ -157,9 +157,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         viewModel.isOnDatabase.observe(viewLifecycleOwner) {
             check = it
             if (!check) {
-                menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+                menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+
             } else {
-                menu[0].setIcon(R.drawable.ic_favorite_complete)
+                menu[1].setIcon(R.drawable.ic_favorite_complete)
             }
         }
     }
@@ -168,13 +169,17 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 check = if (!check) {
-                    menu[0].setIcon(R.drawable.ic_favorite_complete)
-                    viewModel.insert(anime = args.animeDetails)
+                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) {
+                        viewModel.insert(anime = args.animeDetails, it.data?.media?.id)
+                        menu[1].setIcon(R.drawable.ic_favorite_complete)
+                    }
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
-                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-                    viewModel.delete(args.animeDetails)
+                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) {
+                        viewModel.delete(anime = args.animeDetails, it.data?.media?.id)
+                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    }
                     showSnack(binding.root, "Anime removed from Favorites")
                     false
                 }

@@ -71,7 +71,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     private fun getProfileData() {
         observeLiveData(viewModel.profileData, viewLifecycleOwner) {
-
             binding.bgImage.load(
                 if (it.data?.user?.bannerImage.isNullOrEmpty())
                     DEFAULT_COVER

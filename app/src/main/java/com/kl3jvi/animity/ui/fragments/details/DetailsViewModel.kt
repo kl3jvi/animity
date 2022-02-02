@@ -3,7 +3,7 @@ package com.kl3jvi.animity.ui.fragments.details
 import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.SearchAnimeQuery
+import com.kl3jvi.animity.MediaIdFromNameQuery
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
@@ -16,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -84,44 +83,18 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
+    fun insert(anime: AnimeMetaModel, id: Int?) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)
-
-        markAnimeAsFavoriteUseCase(_animeId.value)
+        markAnimeAsFavoriteUseCase(id)
     }
 
-    fun data(anime: AnimeMetaModel): Flow<ApolloResponse<SearchAnimeQuery.Data>> {
-        return getAnimeDetailsFromAnilistUseCase(
-            1,
-            anime.title,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-        )
+    fun getAnilistId(anime: AnimeMetaModel?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
+        return getAnimeDetailsFromAnilistUseCase(anime?.title.toString())
     }
 
-    fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
+    fun delete(anime: AnimeMetaModel, id: Int?) = viewModelScope.launch {
         animeRepository.deleteAnime(anime)
+        markAnimeAsFavoriteUseCase(id)
     }
+
 }

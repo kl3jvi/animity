@@ -18,6 +18,7 @@ class Constants {
         const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
         const val STARTING_PAGE_INDEX = 1
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
+        const val JIKAN_URL = "https://api.jikan.moe/v3/"
 
         // Base URLS
         const val BASE_URL = "https://gogoanime.film"
@@ -31,7 +32,8 @@ class Constants {
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
         const val SIGNUP_URL = "https://anilist.co/signup"
 
-        const val DEFAULT_COVER="https://kitsu.io/images/default_cover-22e5f56b17aeced6dc7f69c8d422a1ab.png"
+        const val DEFAULT_COVER =
+            "https://kitsu.io/images/default_cover-22e5f56b17aeced6dc7f69c8d422a1ab.png"
 
 
         // Model Type

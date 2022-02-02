@@ -2,6 +2,7 @@ package com.kl3jvi.animity.utils
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
 
@@ -10,9 +11,14 @@ fun <T> observeLiveData(
     owner: LifecycleOwner,
     observer: (T) -> Unit
 ) {
-    liveData.observe(owner) {
-        observer(it)
+    liveData.runCatching {
+        observe(owner) {
+            observer(it)
+        }
+    }.onFailure {
+        it.printStackTrace()
     }
+
 }
 
 inline fun <T> LifecycleOwner.collectFlow(
@@ -21,9 +27,10 @@ inline fun <T> LifecycleOwner.collectFlow(
 ) {
     lifecycleScope.launchWhenStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.collect {
-                collector(it)
-            }
+            flow.catch { e -> e.printStackTrace() }
+                .collect {
+                    collector(it)
+                }
         }
     }
 }

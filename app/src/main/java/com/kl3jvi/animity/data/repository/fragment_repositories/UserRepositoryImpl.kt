@@ -6,7 +6,6 @@ import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
 import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.type.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
@@ -106,62 +105,12 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun searchAnime(
-        page: Int,
-        search: String?,
-        sort: List<MediaSort>?,
-        formatIn: List<MediaFormat>?,
-        statusIn: List<MediaStatus>?,
-        sourceIn: List<MediaSource>?,
-        countryOfOrigin: String?,
-        season: MediaSeason?,
-        startDateGreater: Int?,
-        startDateLesser: Int?,
-        isAdult: Boolean?,
-        onList: Boolean?,
-        genreIn: List<String>?,
-        genreNotIn: List<String>?,
-        minimumTagRank: Int?,
-        tagIn: List<String>?,
-        tagNotIn: List<String>?,
-        licensedByIn: List<String>?,
-        episodesGreater: Int?,
-        episodesLesser: Int?,
-        durationGreater: Int?,
-        durationLesser: Int?,
-        averageScoreGreater: Int?,
-        averageScoreLesser: Int?,
-        popularityGreater: Int?,
-        popularityLesser: Int?
-    ): Flow<ApolloResponse<SearchAnimeQuery.Data>> {
-        val query = SearchAnimeQuery(
-            page = Optional.Present(page),
-            search = Optional.presentIfNotNull(search),
-            sort = Optional.presentIfNotNull(sort),
-            formatIn = Optional.presentIfNotNull(formatIn),
-            statusIn = Optional.presentIfNotNull(statusIn),
-            sourceIn = Optional.presentIfNotNull(sourceIn),
-            countryOfOrigin = Optional.Present(countryOfOrigin),
-            season = Optional.Present(season),
-            startDateGreater = Optional.Present(startDateGreater),
-            startDateLesser = Optional.Present(startDateLesser),
-            isAdult = Optional.Present(isAdult),
-            onList = Optional.Present(onList),
-            genreIn = Optional.presentIfNotNull(genreIn),
-            genreNotIn = Optional.presentIfNotNull(genreNotIn),
-            minimumTagRank = Optional.Present(minimumTagRank),
-            tagIn = Optional.presentIfNotNull(tagIn),
-            tagNotIn = Optional.presentIfNotNull(tagNotIn),
-            licensedByIn = Optional.presentIfNotNull(licensedByIn),
-            episodesGreater = Optional.Present(episodesGreater),
-            episodesLesser = Optional.Present(episodesLesser),
-            durationGreater = Optional.Present(durationGreater),
-            durationLesser = Optional.Present(durationLesser),
-            averageScoreGreater = Optional.Present(averageScoreGreater),
-            averageScoreLesser = Optional.Present(averageScoreLesser),
-            popularityGreater = Optional.Present(popularityGreater),
-            popularityLesser = Optional.Present(popularityLesser)
+    override fun getMediaId(
+        query: String?
+    ): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
+        val queryForApollo = MediaIdFromNameQuery(
+            search = Optional.Present(query),
         )
-        return apolloClient.query(query).toFlow()
+        return apolloClient.query(queryForApollo).toFlow()
     }
 }
