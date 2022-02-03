@@ -22,7 +22,7 @@ interface PersistenceRepository {
 
     fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>>
 
-    suspend fun isAnimeOnDatabase(title: String): Boolean
+    suspend fun isAnimeOnDatabase(url:String): Boolean
 
     suspend fun insertAnimeList(list: List<AnimeMetaModel>)
 }

@@ -1,12 +1,15 @@
 package com.kl3jvi.animity.data.network.interceptor
 
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 
-class HeaderInterceptor @Inject constructor(private val localStorage: LocalStorage) : Interceptor {
+class HeaderInterceptor @Inject constructor(
+    private val localStorage: LocalStorageImpl
+) : Interceptor {
+
 
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         proceed(
@@ -16,5 +19,6 @@ class HeaderInterceptor @Inject constructor(private val localStorage: LocalStora
                 .addHeader("Content-Type", "application/json")
                 .build()
         )
+
     }
 }

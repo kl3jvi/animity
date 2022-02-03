@@ -80,7 +80,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
             }
-            viewModel.passAnimeTitle(animeInfo.title)
+//            viewModel.passCategoryUrl(animeInfo.categoryUrl)
         }
     }
 

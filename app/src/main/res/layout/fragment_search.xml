@@ -28,8 +28,8 @@
                 android:layout_gravity="center_vertical"
                 android:iconifiedByDefault="false"
                 android:paddingStart="-10dp"
-                app:closeIcon="@drawable/ic_baseline_clear_24"
                 android:theme="@style/ThemeOverlay.SearchView"
+                app:closeIcon="@drawable/ic_baseline_clear_24"
                 app:iconifiedByDefault="false"
                 app:queryBackground="@color/transparent"
                 app:queryHint="@string/search_hint"
@@ -66,16 +66,16 @@
         android:visibility="visible"
         tools:listitem="@layout/search_layout" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/noSearchResult"
+
+    <TextView
+        android:id="@+id/no_search_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_search_result"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/search" />
+        app:layout_constraintTop_toTopOf="parent" />
 </LinearLayout>

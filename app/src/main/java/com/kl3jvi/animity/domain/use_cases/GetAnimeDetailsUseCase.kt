@@ -109,7 +109,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    fun checkIfExists(title: String) = flow {
-        emit(animeRepository.checkIfAnimeIsOnDatabase(title))
+    fun checkIfExists(url: String) = flow {
+        emit(animeRepository.checkIfAnimeIsOnDatabase(url))
     }.flowOn(ioDispatcher)
 }

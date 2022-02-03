@@ -42,4 +42,8 @@ class FavoritesViewModel @Inject constructor(
     fun isDataSynced(): Boolean {
         return userRepo.isFavoritesSynced
     }
+
+    fun syncData(sync: String?) {
+        userRepo.setSyncData(sync)
+    }
 }

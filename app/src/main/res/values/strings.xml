@@ -81,5 +81,6 @@
     <string name="guest_message">Want to track your favorite Anime?</string>
     <string name="log_out">Log Out</string>
     <string name="animes">Animes</string>
+    <string name="no_search_result">Sorry, Couldn\'t find anime with this keyword!</string>
 
 </resources>

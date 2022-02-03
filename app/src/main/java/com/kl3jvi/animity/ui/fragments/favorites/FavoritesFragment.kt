@@ -74,6 +74,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
         collectFlow(viewModel.favoriteAnimesList) { animeList ->
             val list = animeList.data?.user?.favourites?.anime?.edges?.map {
                 AnimeMetaModel(
+                    id = it?.node?.title?.userPreferred.hashCode(),
                     title = it?.node?.title?.userPreferred.toString(),
                     imageUrl = it?.node?.coverImage?.large.toString(),
                     categoryUrl = "category/${
@@ -89,8 +90,10 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
             }
             if (!list.isNullOrEmpty()) {
                 favoriteAdapter.submitList(list)
-                if (!viewModel.isDataSynced()) // Save favorites do local db for not making more requests
+                if (!viewModel.isDataSynced()) { // Save favorites do local db for not making more requests
                     viewModel.insertRemoteToLocalDb(list)
+                    viewModel.syncData("remote data synced")
+                }
                 binding.favoritesRecycler.visibility = View.VISIBLE
                 showLoading(false)
             } else {

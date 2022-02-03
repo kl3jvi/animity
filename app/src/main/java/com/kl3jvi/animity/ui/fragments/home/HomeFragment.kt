@@ -16,7 +16,10 @@ import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.NetworkUtils
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.ViewUtils.hide
+import com.kl3jvi.animity.utils.ViewUtils.show
 import com.kl3jvi.animity.utils.navigateToDestination
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
@@ -205,4 +208,29 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
+
+    private fun handleNetworkChanges() {
+        NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
+            if (!isGuestLogin() && isConnected) {
+                binding.apply {
+                    mainScroll.show()
+                    noInternet.hide()
+                }
+            } else {
+                binding.apply {
+                    noInternet.show()
+                    mainScroll.hide()
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
+
+    private fun isGuestLogin(): Boolean {
+        return (activity as MainActivity).isGuestLogin
+    }
 }

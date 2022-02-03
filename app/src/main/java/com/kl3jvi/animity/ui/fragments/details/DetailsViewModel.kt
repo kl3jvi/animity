@@ -32,7 +32,7 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
-    private val _animeId = MutableLiveData<String>()
+    private val _animeId = MutableLiveData<Int>()
 
     val animeInfo = Transformations.switchMap(_url) { string ->
         getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
@@ -70,19 +70,14 @@ class DetailsViewModel @Inject constructor(
         getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData()
     }
 
-    val isOnDatabase = Transformations.switchMap(_animeId) { title ->
-        getAnimeDetailsUseCase.checkIfExists(title).asLiveData()
+    val isOnDatabase = Transformations.switchMap(_url) { url ->
+        getAnimeDetailsUseCase.checkIfExists(url).asLiveData()
     }
 
     fun passUrl(url: String) {
         _url.value = url
         Log.e("Category URL", url)
     }
-
-    fun passAnimeTitle(title: String) {
-        _animeId.value = title
-    }
-
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
         animeRepository.insertFavoriteAnime(anime)

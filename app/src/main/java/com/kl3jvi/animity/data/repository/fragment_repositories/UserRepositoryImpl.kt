@@ -39,6 +39,10 @@ class UserRepositoryImpl @Inject constructor(
         storage.guestToken = token
     }
 
+    override fun setSyncData(sync: String?) {
+        storage.isDataSynced = sync
+    }
+
     override fun clearStorage() {
         storage.clearStorage()
     }

@@ -13,6 +13,7 @@ interface UserRepository {
 
     fun setBearerToken(token: String?)
     fun setGuestToken(token: String?)
+    fun setSyncData(sync:String?)
     fun clearStorage()
 
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>

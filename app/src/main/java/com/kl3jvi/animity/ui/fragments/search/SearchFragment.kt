@@ -17,9 +17,9 @@ import com.kl3jvi.animity.ui.adapters.CustomSearchAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.ViewUtils.hide
 import com.kl3jvi.animity.utils.ViewUtils.show
+import com.kl3jvi.animity.utils.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -82,12 +82,22 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
-            viewModel.searchAnimes(query).collectLatest { animeData ->
-                binding.searchRecycler.show()
+            collectLatestFlow(viewModel.searchAnimes(query)) { animeData ->
                 searchAdapter.submitData(animeData)
-                binding.noSearchResult.hide()
+                binding.searchRecycler.adapter = searchAdapter
+                searchAdapter.addLoadStateListener { loadState ->
+                    if (loadState.append.endOfPaginationReached) {
+                        if (searchAdapter.itemCount < 1) {
+                            binding.searchRecycler.hide()
+                            binding.noSearchResult.show()
+                        } else {
+                            binding.noSearchResult.hide()
+                        }
+                    } else {
+                        binding.searchRecycler.show()
+                    }
+                }
             }
         }
     }
-
 }
