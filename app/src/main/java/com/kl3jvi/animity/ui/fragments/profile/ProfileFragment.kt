@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
@@ -24,7 +23,6 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
 
 
 @ExperimentalCoroutinesApi

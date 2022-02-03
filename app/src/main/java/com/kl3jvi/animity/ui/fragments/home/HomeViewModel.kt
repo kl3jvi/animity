@@ -32,7 +32,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchRecentSubOrDub() {
-        getAnimesUseCase.fetchRecentSubOrDub().onEach {
+        getAnimesUseCase.fetchRecentSubOrDub()
+            .onEach {
             _recentSubDub.value = it
         }.launchIn(viewModelScope)
     }

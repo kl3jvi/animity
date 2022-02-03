@@ -173,7 +173,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     override fun onStart() {
         super.onStart()
-        handleNetworkChanges()
+//        handleNetworkChanges()
     }
 
     override fun onNewIntent(intent: Intent?) {

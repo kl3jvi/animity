@@ -53,26 +53,36 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override fun initViews() {
         // recent sub adapter
         binding.recentSub.apply {
-            layoutManager = LinearLayoutManager(
+            val lManager = LinearLayoutManager(
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
+            lManager.initialPrefetchItemCount = 4
+            layoutManager = lManager
             subAdapter = CustomHorizontalAdapter()
             setHasFixedSize(true)
+            val viewPool = RecyclerView.RecycledViewPool()
+            setRecycledViewPool(viewPool)
             snapHelper = PagerSnapHelper()
             if (this.onFlingListener == null)
                 snapHelper.attachToRecyclerView(this);
+            isNestedScrollingEnabled = false
             adapter = subAdapter
         }
 
         // new season adapter
         binding.newSeasonRv.apply {
-            layoutManager = LinearLayoutManager(
+            val lManager = LinearLayoutManager(
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
+            lManager.initialPrefetchItemCount = 4
+            layoutManager = lManager
             newSeasonAdapter = CustomHorizontalAdapter()
+            isNestedScrollingEnabled = false
             setHasFixedSize(true)
+            val viewPool = RecyclerView.RecycledViewPool()
+            setRecycledViewPool(viewPool)
             snapHelper = PagerSnapHelper()
             if (this.onFlingListener == null)
                 snapHelper.attachToRecyclerView(this);
@@ -81,12 +91,17 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
         // movies adapter
         binding.moviesRv.apply {
-            layoutManager = LinearLayoutManager(
+            val lManager = LinearLayoutManager(
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
+            lManager.initialPrefetchItemCount = 4
+            layoutManager = lManager
             movieAdapter = CustomHorizontalAdapter()
+            isNestedScrollingEnabled = false
             setHasFixedSize(true)
+            val viewPool = RecyclerView.RecycledViewPool()
+            setRecycledViewPool(viewPool)
             snapHelper = PagerSnapHelper()
             if (this.onFlingListener == null)
                 snapHelper.attachToRecyclerView(this);
@@ -97,8 +112,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         binding.todaySelection.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
+            isNestedScrollingEnabled = false
+            val viewPool = RecyclerView.RecycledViewPool()
+            setRecycledViewPool(viewPool)
             todayAdapter = CustomVerticalAdapter(this@HomeFragment, arrayListOf())
             adapter = todayAdapter
+
         }
     }
 

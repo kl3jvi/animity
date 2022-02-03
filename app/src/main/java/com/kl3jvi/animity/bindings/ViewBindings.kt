@@ -5,6 +5,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.request.CachePolicy
+import coil.size.Precision
+import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.kl3jvi.animity.R
 
@@ -17,6 +19,8 @@ object ViewBindings {
             image.load(url) {
                 crossfade(true)
                 diskCachePolicy(CachePolicy.ENABLED)
+                precision(Precision.EXACT)
+                scale(Scale.FILL)
             }
         }
     }
