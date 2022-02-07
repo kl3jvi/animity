@@ -21,3 +21,7 @@ data class AnimeMetaModel(
     @ColumnInfo var genreList: List<GenreModel>? = null,
     @ColumnInfo var releasedDate: String? = null,
 ) : Parcelable
+
+
+
+

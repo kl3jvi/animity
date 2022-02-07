@@ -3,8 +3,6 @@ package com.kl3jvi.animity.ui.activities.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -12,6 +10,8 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -19,8 +19,9 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
+import com.kl3jvi.animity.utils.hide
+import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
-import me.ibrahimsn.lib.SmoothBottomBar
 
 
 @AndroidEntryPoint
@@ -46,12 +47,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
 
+        turnOnStrictMode()
 
-        val navView: SmoothBottomBar = binding.navView
-        val popupMenu = PopupMenu(this, null)
-        popupMenu.inflate(R.menu.bottom_nav_menu)
-        val menu = popupMenu.menu
-
+        val navView: BottomNavigationView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         val appBarConfiguration = AppBarConfiguration(
@@ -63,17 +61,17 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(menu, navController)
+        navView.setupWithNavController(navController)
     }
 
     fun hideBottomNavBar() {
-        binding.navView.animate().translationY(binding.navView.height.toFloat()).duration = 300
-        binding.navView.visibility = View.GONE
+        binding.navView.animate().translationY(binding.navView.height.toFloat()).duration = 500
+        binding.navView.hide()
     }
 
     fun showBottomNavBar() {
-        binding.navView.visibility = View.VISIBLE
-        binding.navView.animate().translationY(0f).duration = 300
+        binding.navView.show()
+        binding.navView.animate().translationY(0f).duration = 500
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -89,10 +87,24 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_settings) {
-            findNavController(this, R.id.nav_host_fragment_activity_main).navigate(R.id.settingsFragment)
+            findNavController(
+                this,
+                R.id.nav_host_fragment_activity_main
+            ).navigate(R.id.settingsFragment)
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun turnOnStrictMode() {
+//        StrictMode.setThreadPolicy(
+//            StrictMode.ThreadPolicy.Builder().detectAll()
+//                .penaltyLog().penaltyFlashScreen().build()
+//        )
+//        StrictMode.setVmPolicy(
+//            StrictMode.VmPolicy.Builder().detectAll()
+//                .penaltyLog().build()
+//        )
+
+    }
 
 }

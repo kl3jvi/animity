@@ -80,4 +80,9 @@ class CustomVerticalAdapter(
             notifyDataSetChanged()
         }
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+
+    }
 }

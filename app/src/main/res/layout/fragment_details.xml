@@ -306,7 +306,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 tools:listitem="@layout/item_episode_list"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
             <ProgressBar
                 android:id="@+id/details_progress"

@@ -11,7 +11,10 @@ import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomFavoriteAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.hide
+import com.kl3jvi.animity.utils.show
 import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.isGuestLogin
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
@@ -31,14 +34,10 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
         return binding.root
     }
 
-    private fun isGuestLogin(): Boolean {
-        return (activity as MainActivity).isGuestLogin
-    }
-
     override fun observeViewModel() {
         if (isGuestLogin())
             observeDatabase()
-        else observeAnilist()
+        else observeAniList()
     }
 
     override fun initViews() {
@@ -51,7 +50,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
 
         binding.swipeLayout.setOnRefreshListener {
             if (!isGuestLogin())
-                observeAnilist()
+                observeAniList()
             else
                 showLoading(false)
         }
@@ -61,20 +60,22 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
         viewModel.favoriteFromDatabase.observe(viewLifecycleOwner) { animeList ->
             if (animeList.isNotEmpty()) {
                 favoriteAdapter.submitList(animeList)
-                binding.favoritesRecycler.visibility = View.VISIBLE
+                binding.favoritesRecycler.show()
             } else {
-                binding.favoritesRecycler.visibility = View.GONE
-                binding.nothingSaved.visibility = View.VISIBLE
+                binding.apply {
+                    favoritesRecycler.hide()
+                    nothingSaved.show()
+                }
             }
         }
     }
 
 
-    private fun observeAnilist() {
+    private fun observeAniList() {
         collectFlow(viewModel.favoriteAnimesList) { animeList ->
             val list = animeList.data?.user?.favourites?.anime?.edges?.map {
                 AnimeMetaModel(
-                    id = it?.node?.title?.userPreferred.hashCode(),
+                    id = it?.node?.title?.romaji.hashCode(),
                     title = it?.node?.title?.userPreferred.toString(),
                     imageUrl = it?.node?.coverImage?.large.toString(),
                     categoryUrl = "category/${
@@ -94,11 +95,11 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
                     viewModel.insertRemoteToLocalDb(list)
                     viewModel.syncData("remote data synced")
                 }
-                binding.favoritesRecycler.visibility = View.VISIBLE
+                binding.favoritesRecycler.show()
                 showLoading(false)
             } else {
-                binding.favoritesRecycler.visibility = View.GONE
-                binding.nothingSaved.visibility = View.VISIBLE
+                binding.favoritesRecycler.hide()
+                binding.nothingSaved.show()
             }
         }
     }

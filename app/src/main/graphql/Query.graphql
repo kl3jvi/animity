@@ -57,7 +57,7 @@ query UserQuery($id: Int) {
         isFollower
         donatorTier
         donatorBadge
-        moderatorStatus
+        moderatorRoles
         siteUrl
     }
 }

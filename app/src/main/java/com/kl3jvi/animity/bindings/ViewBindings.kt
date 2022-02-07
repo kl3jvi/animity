@@ -8,7 +8,8 @@ import coil.request.CachePolicy
 import coil.size.Precision
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
-import com.kl3jvi.animity.R
+import com.kl3jvi.animity.utils.hide
+import com.kl3jvi.animity.utils.show
 
 object ViewBindings {
 
@@ -40,6 +41,8 @@ object ViewBindings {
     @JvmStatic
     @BindingAdapter("android:visibility")
     fun setVisibility(view: View, value: Boolean) {
-        view.visibility = if (value) View.VISIBLE else View.GONE
+        if (value)
+            view.show()
+        else view.hide()
     }
 }

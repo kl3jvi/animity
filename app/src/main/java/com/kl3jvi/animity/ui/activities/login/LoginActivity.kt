@@ -21,7 +21,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils
 import com.kl3jvi.animity.utils.State
-import com.kl3jvi.animity.utils.ViewUtils.show
+import com.kl3jvi.animity.utils.show
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint

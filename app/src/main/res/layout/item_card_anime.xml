@@ -1,121 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
+        <variable
+            name="animeInfo"
+            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"/>
-
-       <variable
-           name="animeInfo"
-           type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+            type="android.view.View.OnClickListener" />
 
         <variable
             name="isVisible"
             type="boolean" />
     </data>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_marginBottom="20dp"
-        android:clipToPadding="false"
-        android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/animeCardView"
+        android:layout_width="115dp"
+        android:layout_height="180dp"
+        android:layout_margin="@dimen/dp_5"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/animeImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackgroundBorderless"
+            android:scaleType="centerCrop"
+            app:image="@{animeInfo.imageUrl}"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{clickListener}"
+            android:src="#33000000"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/play_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:padding="2dp"
+            android:src="@drawable/ic_play_tv" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/animeCardView"
-            android:layout_width="115dp"
-            android:layout_height="180dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp">
-
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/animeImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?selectableItemBackgroundBorderless"
-                android:scaleType="centerCrop"
-                app:image="@{animeInfo.imageUrl}"
-                tools:src="@tools:sample/avatars" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/backgroundImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:onClick="@{clickListener}"
-                android:src="#33000000"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/play_logo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:padding="2dp"
-                android:src="@drawable/ic_play_tv" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/episodeCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="-10dp"
-                android:alpha="0.8"
-                android:visibility="@{isVisible}"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="8dp">
-
-                <TextView
-                    android:id="@+id/episodeNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:padding="3dp"
-                    android:text="@{animeInfo.episodeNumber}"
-                    android:textColor="#FFFFFF"
-                    android:textSize="11sp" />
-
-
-            </androidx.cardview.widget.CardView>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:clickable="false"
-                android:focusable="false"
-                android:src="@drawable/title_shadow"
-                tools:ignore="ContentDescription" />
+            android:id="@+id/episodeCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="-10dp"
+            android:alpha="0.8"
+            android:visibility="@{isVisible}"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="8dp">
 
             <TextView
-                android:id="@+id/animeTitle"
-                android:layout_width="match_parent"
+                android:id="@+id/episodeNumber"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="4dp"
-                android:background="?selectableItemBackgroundBorderless"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif"
-                android:gravity="center"
-                android:maxLines="2"
-                android:minLines="2"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                android:paddingBottom="5dp"
-                android:text="@{animeInfo.title}"
-                android:textColor="@color/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="One Piece" />
+                android:layout_marginEnd="10dp"
+                android:padding="3dp"
+                android:text="@{animeInfo.episodeNumber}"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp" />
+
 
         </androidx.cardview.widget.CardView>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/title_shadow"
+            tools:ignore="ContentDescription" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/animeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="4dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{animeInfo.title}"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="One Piece" />
+
+    </androidx.cardview.widget.CardView>
 </layout>

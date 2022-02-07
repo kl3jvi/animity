@@ -13,12 +13,12 @@ import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
 import com.kl3jvi.animity.utils.NetworkUtils
-import com.kl3jvi.animity.utils.ViewUtils.hide
-import com.kl3jvi.animity.utils.ViewUtils.show
+import com.kl3jvi.animity.utils.hide
+import com.kl3jvi.animity.utils.show
+import com.kl3jvi.animity.utils.isGuestLogin
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,8 +31,15 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override val viewModel: ProfileViewModel by viewModels()
     private val guestBinding: FragmentProfileGuestBinding get() = guestView()
-    private lateinit var adapter: CustomHorizontalAdapter
-    override fun observeViewModel() {}
+//    private val adapter by lazy { CustomHorizontalAdapter(playButtonFlag = false) }
+
+    override fun observeViewModel() {
+        if (!isGuestLogin()) {
+            getProfileData()
+            getAnimeListProfileData()
+        }
+    }
+
     override fun initViews() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,15 +56,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         return if (!isGuestLogin()) binding.root else guestBinding.root
     }
 
-    private fun isGuestLogin(): Boolean {
-        return (activity as MainActivity).isGuestLogin
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!isGuestLogin()) {
-            adapter = CustomHorizontalAdapter(playButtonFlag = false)
-        }
     }
 
 
@@ -182,8 +183,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private fun handleNetworkChanges() {
         NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
             if (!isGuestLogin() && isConnected) {
-                getProfileData()
-                getAnimeListProfileData()
+
                 binding.hasInternet.show()
                 binding.noInternet.hide()
             } else {

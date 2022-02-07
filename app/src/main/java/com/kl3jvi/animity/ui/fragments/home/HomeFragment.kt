@@ -7,21 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.CustomHorizontalAdapter
 import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
+import com.kl3jvi.animity.ui.adapters.newAdapter.ParentAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.NetworkUtils
-import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.ViewUtils.hide
-import com.kl3jvi.animity.utils.ViewUtils.show
-import com.kl3jvi.animity.utils.navigateToDestination
-import com.kl3jvi.animity.utils.observeLiveData
+import com.kl3jvi.animity.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,11 +21,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override val viewModel: HomeViewModel by viewModels()
 
-    private lateinit var subAdapter: CustomHorizontalAdapter
-    private lateinit var newSeasonAdapter: CustomHorizontalAdapter
-    private lateinit var todayAdapter: CustomVerticalAdapter
-    private lateinit var movieAdapter: CustomHorizontalAdapter
-    private lateinit var snapHelper: SnapHelper
+    //    private val subAdapter by lazy { CustomHorizontalAdapter() }
+//    private val newSeasonAdapter by lazy { CustomHorizontalAdapter() }
+    private val todayAdapter by lazy { CustomVerticalAdapter(this@HomeFragment, arrayListOf()) }
+
+    //    private val movieAdapter by lazy { CustomHorizontalAdapter() }
+    private val snapHelper by lazy { PagerSnapHelper() }
+    private val mainAdapter by lazy { ParentAdapter() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,164 +40,39 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun observeViewModel() {
         fetchRecentDub()
-        getNewSeason()
-        getMovies()
-        getTodaySelectionAnime()
     }
 
     override fun initViews() {
         // recent sub adapter
-        binding.recentSub.apply {
-            val lManager = LinearLayoutManager(
-                requireContext(),
-                RecyclerView.HORIZONTAL, false
-            )
-            lManager.initialPrefetchItemCount = 4
-            layoutManager = lManager
-            subAdapter = CustomHorizontalAdapter()
-            setHasFixedSize(true)
-            val viewPool = RecyclerView.RecycledViewPool()
-            setRecycledViewPool(viewPool)
-            snapHelper = PagerSnapHelper()
-            if (this.onFlingListener == null)
-                snapHelper.attachToRecyclerView(this);
-            isNestedScrollingEnabled = false
-            adapter = subAdapter
-        }
+        val recyclerView = binding.mainRv
 
-        // new season adapter
-        binding.newSeasonRv.apply {
-            val lManager = LinearLayoutManager(
-                requireContext(),
-                RecyclerView.HORIZONTAL, false
-            )
-            lManager.initialPrefetchItemCount = 4
-            layoutManager = lManager
-            newSeasonAdapter = CustomHorizontalAdapter()
-            isNestedScrollingEnabled = false
-            setHasFixedSize(true)
-            val viewPool = RecyclerView.RecycledViewPool()
-            setRecycledViewPool(viewPool)
-            snapHelper = PagerSnapHelper()
-            if (this.onFlingListener == null)
-                snapHelper.attachToRecyclerView(this);
-            adapter = newSeasonAdapter
-        }
-
-        // movies adapter
-        binding.moviesRv.apply {
-            val lManager = LinearLayoutManager(
-                requireContext(),
-                RecyclerView.HORIZONTAL, false
-            )
-            lManager.initialPrefetchItemCount = 4
-            layoutManager = lManager
-            movieAdapter = CustomHorizontalAdapter()
-            isNestedScrollingEnabled = false
-            setHasFixedSize(true)
-            val viewPool = RecyclerView.RecycledViewPool()
-            setRecycledViewPool(viewPool)
-            snapHelper = PagerSnapHelper()
-            if (this.onFlingListener == null)
-                snapHelper.attachToRecyclerView(this);
-            adapter = movieAdapter
-        }
-
-        // today selection adapter
-        binding.todaySelection.apply {
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true)
             isNestedScrollingEnabled = false
-            val viewPool = RecyclerView.RecycledViewPool()
-            setRecycledViewPool(viewPool)
-            todayAdapter = CustomVerticalAdapter(this@HomeFragment, arrayListOf())
-            adapter = todayAdapter
-
+            adapter = mainAdapter
         }
+
     }
 
     private fun fetchRecentDub() {
-        observeLiveData(viewModel.recentSubDub, viewLifecycleOwner) { res ->
+        observeLiveData(viewModel.homeData, viewLifecycleOwner) { res ->
             when (res) {
-                is Resource.Success -> {
-                    binding.recentSub.visibility = View.VISIBLE
-                    binding.recentSubTv.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.GONE
-                    res.data?.let { subAdapter.submitList(it) }
+                is Resource.Error -> {
+                    binding.mainRv.hide()
                 }
                 is Resource.Loading -> {
-                    binding.recentSub.visibility = View.GONE
-                    binding.recentSubTv.visibility = View.GONE
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.mainRv.hide()
+                    binding.loadingIndicator.show()
                 }
-                is Resource.Error -> {
-                    showSnack(binding.root, res.message)
+                is Resource.Success -> {
+                    binding.loadingIndicator.hide()
+                    binding.mainRv.show()
+                    mainAdapter.submitList(res.data)
                 }
             }
-
         }
     }
 
-    private fun getNewSeason() {
-        observeLiveData(viewModel.newSeason, viewLifecycleOwner) { res ->
-            when (res) {
-                is Resource.Success -> {
-                    res.data?.let { animeList -> newSeasonAdapter.submitList(animeList) }
-                    binding.newSeasonRv.visibility = View.VISIBLE
-                    binding.newSeasonTv.visibility = View.VISIBLE
-                }
-                is Resource.Loading -> {
-                    binding.newSeasonRv.visibility = View.GONE
-                    binding.newSeasonTv.visibility = View.GONE
-                }
-                is Resource.Error -> {
-                    showSnack(binding.root, res.message)
-                }
-            }
-
-        }
-    }
-
-    private fun getMovies() {
-        observeLiveData(viewModel.movies, viewLifecycleOwner) { res ->
-            when (res) {
-                is Resource.Success -> {
-                    res.data?.let { animeList -> movieAdapter.submitList(animeList) }
-                    binding.moviesRv.visibility = View.VISIBLE
-                    binding.moviesTv.visibility = View.VISIBLE
-                }
-                is Resource.Loading -> {
-                    binding.moviesRv.visibility = View.GONE
-                    binding.moviesTv.visibility = View.GONE
-                }
-                is Resource.Error -> {
-                    showSnack(binding.root, res.message)
-                }
-            }
-
-        }
-    }
-
-    private fun getTodaySelectionAnime() {
-        observeLiveData(viewModel.todaySelection, viewLifecycleOwner) { res ->
-            when (res) {
-                is Resource.Success -> {
-                    res.data?.let { entry -> todayAdapter.getSelectedAnime(entry) }
-                    binding.todaySelection.visibility = View.VISIBLE
-                    binding.todSelectionTv.visibility = View.VISIBLE
-                }
-                is Resource.Loading -> {
-                    binding.todaySelection.visibility = View.GONE
-                    binding.todSelectionTv.visibility = View.GONE
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is Resource.Error -> {
-                    showSnack(binding.root, res.message)
-                }
-            }
-
-        }
-    }
 
     fun navigateToDetails(animeDetails: AnimeMetaModel) {
         try {
@@ -230,15 +100,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleNetworkChanges() {
         NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
-            if (!isGuestLogin() && isConnected) {
+            if (isConnected) {
                 binding.apply {
-                    mainScroll.show()
+                    mainRv.show()
                     noInternet.hide()
                 }
             } else {
                 binding.apply {
                     noInternet.show()
-                    mainScroll.hide()
+                    mainRv.hide()
                 }
             }
         }
@@ -249,7 +119,5 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         handleNetworkChanges()
     }
 
-    private fun isGuestLogin(): Boolean {
-        return (activity as MainActivity).isGuestLogin
-    }
+
 }

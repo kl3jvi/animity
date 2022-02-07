@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 
 fun <T> observeLiveData(
@@ -19,7 +20,17 @@ fun <T> observeLiveData(
     }.onFailure {
         it.printStackTrace()
     }
+}
 
+fun <T> LifecycleOwner.collectPagingLiveData(
+    liveData: LiveData<T>,
+    observer: suspend (T) -> Unit
+) {
+    liveData.observe(this) {
+        lifecycleScope.launch {
+            observer(it)
+        }
+    }
 }
 
 inline fun <T> LifecycleOwner.collectFlow(

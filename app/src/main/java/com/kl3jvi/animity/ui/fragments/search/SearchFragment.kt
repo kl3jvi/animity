@@ -15,8 +15,8 @@ import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomSearchAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.ViewUtils.hide
-import com.kl3jvi.animity.utils.ViewUtils.show
+import com.kl3jvi.animity.utils.hide
+import com.kl3jvi.animity.utils.show
 import com.kl3jvi.animity.utils.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job

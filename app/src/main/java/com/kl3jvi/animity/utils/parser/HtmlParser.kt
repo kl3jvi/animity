@@ -177,7 +177,6 @@ object HtmlParser {
     fun fetchEpisodeList(response: String): ArrayList<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
-        val animeName = document.select("anime_info_body_bg")
         val lists = document?.select("li")
         lists?.forEach {
             val episodeUrl = it.select("a").first().attr("href").trim()

@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:theme="@style/Base.Theme.Animity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Base.Theme.Animity">
 
-    <me.ibrahimsn.lib.SmoothBottomBar
+    <!--    <me.ibrahimsn.lib.SmoothBottomBar-->
+    <!--        android:id="@+id/nav_view"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="@dimen/bottom_bar_size"-->
+    <!--        android:background="?android:attr/windowBackground"-->
+    <!--        android:elevation="100dp"-->
+    <!--        android:fitsSystemWindows="true"-->
+    <!--        app:backgroundColor="@color/darkBackground"-->
+    <!--        app:iconSize="23dp"-->
+    <!--        app:indicatorRadius="8dp"-->
+    <!--        app:itemPadding="7dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:menu="@menu/bottom_nav_menu"-->
+    <!--        app:sideMargins="15dp"-->
+    <!--        app:textSize="14sp"-->
+    <!--        tools:ignore="SpeakableTextPresentCheck" />-->
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
-        android:layout_height="@dimen/bottom_bar_size"
-        android:background="?android:attr/windowBackground"
-        android:elevation="100dp"
-        android:fitsSystemWindows="true"
-        app:backgroundColor="@color/darkBackground"
-        app:iconSize="23dp"
-        app:indicatorRadius="8dp"
-        app:itemPadding="7dp"
+        android:elevation="@dimen/dp_8"
+        android:layout_height="wrap_content"
+        android:background="@color/darkBackground"
+        app:itemIconTint="@color/item_text_color"
+        app:itemTextColor="@color/item_text_color"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        app:sideMargins="15dp"
-        app:textSize="14sp"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:menu="@menu/bottom_nav_menu" />
 
 
     <fragment

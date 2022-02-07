@@ -13,9 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
@@ -34,20 +31,19 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>() {
 
 
+    override val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
-    override val viewModel: DetailsViewModel by viewModels()
-    private lateinit var episodeAdapter: CustomEpisodeAdapter
+    private val episodeAdapter by lazy { CustomEpisodeAdapter(this, animeDetails.title) }
     private lateinit var menu: Menu
-    private var title: String = ""
+    private lateinit var title: String
     private var check = false
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        firebaseAnalytics = Firebase.analytics
+
     }
 
     override fun onCreateView(
@@ -71,7 +67,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     diskCachePolicy(CachePolicy.ENABLED)
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
-                episodeAdapter = CustomEpisodeAdapter(this@DetailsFragment, animeInfo.title)
                 resultTitle.text = animeInfo.title
 
                 title = animeInfo.title
@@ -261,10 +256,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 }
             }
         }
-    }
-
-    private fun isGuestLogin(): Boolean {
-        return (activity as MainActivity).isGuestLogin
     }
 
     override fun getViewBinding(): FragmentDetailsBinding =

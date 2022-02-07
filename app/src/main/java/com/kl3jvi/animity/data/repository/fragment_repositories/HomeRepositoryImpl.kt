@@ -4,6 +4,7 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_MOVIE
+import com.kl3jvi.animity.utils.Constants.Companion.TYPE_NEW_SEASON
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_POPULAR_ANIME
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_RECENT_SUB
 import com.kl3jvi.animity.utils.parser.HtmlParser
@@ -48,7 +49,7 @@ class HomeRepositoryImpl @Inject constructor(
     ): List<AnimeMetaModel> = withContext(ioDispatcher) {
         parser.parseMovie(
             apiClient.fetchNewSeason(header = header, page = page).string(),
-            TYPE_MOVIE
+            TYPE_NEW_SEASON
         )
     }
 

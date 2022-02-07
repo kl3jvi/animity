@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.domain.use_cases
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.HomeRecycleViewItemData
 import com.kl3jvi.animity.data.repository.fragment_repositories.HomeRepositoryImpl
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Resource
@@ -18,6 +19,35 @@ class GetAnimesUseCase @Inject constructor(
     private val homeRepository: HomeRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
+    operator fun invoke(): Flow<Resource<List<HomeRecycleViewItemData>>> = flow {
+        try {
+            val mutableListOfAnimeMetaModel = mutableListOf<HomeRecycleViewItemData>()
+            emit(Resource.Loading())
+            val recentSubDub = homeRepository.fetchRecentSubOrDub(
+                Constants.getHeader(),
+                1,
+                Constants.TYPE_RECENT_DUB
+            )
+            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Recent Sub", recentSubDub))
+            val popular = homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1)
+            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("PopularAnimes", popular))
+            val newSeason = homeRepository.fetchNewSeason(Constants.getHeader(), 1)
+            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("New Season", newSeason))
+            val movies = homeRepository.fetchMovies(Constants.getHeader(), 1)
+            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Movies", movies))
+
+            emit(Resource.Success(data = mutableListOfAnimeMetaModel))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
+                )
+            )
+        }
+    }
+
 
     fun fetchRecentSubOrDub(): Flow<Resource<List<AnimeMetaModel>>> = flow {
         try {
