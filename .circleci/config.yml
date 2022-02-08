@@ -5,17 +5,31 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  release-build:
-    executor:
-      name: android/android-machine
-      resource-class: xlarge
+  build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-25-alpha
+    environment:
+      JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - android/restore-gradle-cache
-      - android/restore-build-cache
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+#      - run:
+#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this. 
+#         command: sudo chmod +x ./gradlew
       - run:
-          name: Assemble release build
-          command: |
-            ./gradlew assembleRelease
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run Tests
+          command: ./gradlew lint test
       - store_artifacts:
-          path: app/build/outputs/apk/release
+          path: app/build/reports
+          destination: reports
+      - store_test_results:
+          path: app/build/test-results
