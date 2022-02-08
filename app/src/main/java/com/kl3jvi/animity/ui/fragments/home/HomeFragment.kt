@@ -1,57 +1,49 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.ui.adapters.newAdapter.ParentAdapter
-import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.*
+import com.kl3jvi.animity.ui.base.viewBinding
+import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
+import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.hide
+import com.kl3jvi.animity.utils.observeLiveData
+import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    override val viewModel: HomeViewModel by viewModels()
+    val viewModel: HomeViewModel by viewModels()
+    val binding: FragmentHomeBinding by viewBinding()
 
-    //    private val subAdapter by lazy { CustomHorizontalAdapter() }
-//    private val newSeasonAdapter by lazy { CustomHorizontalAdapter() }
-    private val todayAdapter by lazy { CustomVerticalAdapter(this@HomeFragment, arrayListOf()) }
+    private val mainAdapter by lazy { ParentAdapter(playButtonFlag = false) }
 
-    //    private val movieAdapter by lazy { CustomHorizontalAdapter() }
-    private val snapHelper by lazy { PagerSnapHelper() }
-    private val mainAdapter by lazy { ParentAdapter() }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+        initViews()
     }
 
-    override fun observeViewModel() {
+    private fun observeViewModel() {
         fetchRecentDub()
     }
 
-    override fun initViews() {
+    private fun initViews() {
         // recent sub adapter
         val recyclerView = binding.mainRv
-
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             isNestedScrollingEnabled = false
+            setHasFixedSize(true)
             adapter = mainAdapter
         }
-
     }
 
     private fun fetchRecentDub() {
@@ -74,21 +66,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
 
-    fun navigateToDetails(animeDetails: AnimeMetaModel) {
-        try {
-            navigateToDestination<HomeFragmentDirections>(
-                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
-                    animeDetails
-                )
-            )
-            if (requireActivity() is MainActivity) {
-                (activity as MainActivity?)?.hideBottomNavBar()
-            }
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
@@ -96,10 +73,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
-
     private fun handleNetworkChanges() {
-        NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
+        requireActivity().isConnectedToInternet().observe(viewLifecycleOwner) { isConnected ->
             if (isConnected) {
                 binding.apply {
                     mainRv.show()
@@ -118,6 +93,4 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         super.onStart()
         handleNetworkChanges()
     }
-
-
 }

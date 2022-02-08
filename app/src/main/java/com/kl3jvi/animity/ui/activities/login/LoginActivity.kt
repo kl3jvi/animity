@@ -19,11 +19,11 @@ import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.NetworkUtils
+import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.State
-import com.kl3jvi.animity.utils.show
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -158,13 +158,14 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     private fun handleNetworkChanges() {
-        NetworkUtils.getNetworkLiveData(applicationContext).observe(this) { isConnected ->
+        isConnectedToInternet().observe(this) { isConnected ->
             if (!isConnected) showSnack(binding.root, "No Internet Connection!")
             binding.aniListSignUp.isEnabled = isConnected
             binding.aniListLogin.isEnabled = isConnected
             binding.guestLogin.isEnabled = isConnected
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -173,7 +174,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     override fun onStart() {
         super.onStart()
-//        handleNetworkChanges()
+        handleNetworkChanges()
     }
 
     override fun onNewIntent(intent: Intent?) {

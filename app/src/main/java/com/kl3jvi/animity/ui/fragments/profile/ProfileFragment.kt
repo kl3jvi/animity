@@ -13,14 +13,15 @@ import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
+import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
-import com.kl3jvi.animity.utils.NetworkUtils
+import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.hide
-import com.kl3jvi.animity.utils.show
-import com.kl3jvi.animity.utils.isGuestLogin
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
+import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -31,7 +32,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override val viewModel: ProfileViewModel by viewModels()
     private val guestBinding: FragmentProfileGuestBinding get() = guestView()
-//    private val adapter by lazy { CustomHorizontalAdapter(playButtonFlag = false) }
+    private val adapter by lazy { CustomVerticalAdapter(playButtonFlag = false) }
 
     override fun observeViewModel() {
         if (!isGuestLogin()) {
@@ -181,9 +182,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     }
 
     private fun handleNetworkChanges() {
-        NetworkUtils.getNetworkLiveData(requireContext()).observe(this) { isConnected ->
+        requireActivity().isConnectedToInternet().observe(viewLifecycleOwner) { isConnected ->
             if (!isGuestLogin() && isConnected) {
-
                 binding.hasInternet.show()
                 binding.noInternet.hide()
             } else {

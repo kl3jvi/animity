@@ -29,12 +29,13 @@ class GetAnimesUseCase @Inject constructor(
                 Constants.TYPE_RECENT_DUB
             )
             mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Recent Sub", recentSubDub))
-            val popular = homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1)
-            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("PopularAnimes", popular))
-            val newSeason = homeRepository.fetchNewSeason(Constants.getHeader(), 1)
-            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("New Season", newSeason))
-            val movies = homeRepository.fetchMovies(Constants.getHeader(), 1)
-            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Movies", movies))
+//            val newSeason = homeRepository.fetchNewSeason(Constants.getHeader(), 1)
+//            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("New Season", newSeason))
+//            val movies = homeRepository.fetchMovies(Constants.getHeader(), 1)
+//            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Movies", movies,))
+//            val popular = homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1)
+//            mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("PopularAnimes", popular))
+
 
             emit(Resource.Success(data = mutableListOfAnimeMetaModel))
         } catch (e: Exception) {

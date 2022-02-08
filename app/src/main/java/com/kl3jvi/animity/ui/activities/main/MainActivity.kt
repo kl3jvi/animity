@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.activities.main
 
 import android.os.Bundle
+import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
+import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navController: NavController
     var isGuestLogin: Boolean = true
+    var isConnected: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -78,6 +81,11 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
@@ -96,15 +104,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun turnOnStrictMode() {
-//        StrictMode.setThreadPolicy(
-//            StrictMode.ThreadPolicy.Builder().detectAll()
-//                .penaltyLog().penaltyFlashScreen().build()
-//        )
-//        StrictMode.setVmPolicy(
-//            StrictMode.VmPolicy.Builder().detectAll()
-//                .penaltyLog().build()
-//        )
-
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder().detectAll()
+                .penaltyLog().penaltyFlashScreen().build()
+        )
+        StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder().detectAll()
+                .penaltyLog().build()
+        )
     }
 
+    private fun handleNetworkChanges() {
+        isConnectedToInternet().observe(this) { isConnected = it }
+    }
 }

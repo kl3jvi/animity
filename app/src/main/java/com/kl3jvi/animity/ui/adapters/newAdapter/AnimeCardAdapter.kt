@@ -12,8 +12,8 @@ import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
 
-class AnimeCardAdapter(val playButtonFlag: Boolean = true) :
-    ListAdapter<AnimeMetaModel, AnimeCardAdapter.AnimeViewHolder>(MainDiffUtil()) {
+class AnimeCardAdapter(var playButtonFlag: Boolean = false) :
+    ListAdapter<AnimeMetaModel, AnimeCardAdapter.AnimeViewHolder>(MainDiffUtil<AnimeMetaModel>()) {
 
     class AnimeViewHolder(
         private val binding: ItemCardAnimeBinding,

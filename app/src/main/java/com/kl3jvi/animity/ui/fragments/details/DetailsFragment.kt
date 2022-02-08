@@ -71,6 +71,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
                 title = animeInfo.title
                 binding.episodeListRecycler.adapter = episodeAdapter
+                binding.episodeListRecycler.isNestedScrollingEnabled = false
             }
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)

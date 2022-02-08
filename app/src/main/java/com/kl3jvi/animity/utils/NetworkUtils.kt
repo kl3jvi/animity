@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.utils
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -20,7 +21,7 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
     /**
      * Returns instance of [LiveData] which can be observed for network changes.
      */
-    fun getNetworkLiveData(context: Context): LiveData<Boolean> {
+    private fun getNetworkLiveData(context: Context): LiveData<Boolean> {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -50,11 +51,16 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
         return networkLiveData
     }
 
+
     override fun onAvailable(network: Network) {
         networkLiveData.postValue(true)
     }
 
     override fun onLost(network: Network) {
         networkLiveData.postValue(false)
+    }
+
+    fun Activity.isConnectedToInternet(): LiveData<Boolean> {
+        return getNetworkLiveData(this)
     }
 }

@@ -30,8 +30,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/animeImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="115dp"
+            android:layout_height="180dp"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerCrop"
             app:image="@{animeInfo.imageUrl}"
