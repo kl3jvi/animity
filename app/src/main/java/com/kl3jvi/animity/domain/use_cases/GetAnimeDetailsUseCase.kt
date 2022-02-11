@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -110,6 +111,6 @@ class GetAnimeDetailsUseCase @Inject constructor(
     }.flowOn(ioDispatcher)
 
     fun checkIfExists(url: String) = flow {
-        emit(animeRepository.checkIfAnimeIsOnDatabase(url))
+            emit(animeRepository.checkIfAnimeIsOnDatabase(url))
     }.flowOn(ioDispatcher)
 }

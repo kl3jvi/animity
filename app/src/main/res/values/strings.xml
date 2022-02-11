@@ -39,10 +39,10 @@
     <string name="video_skip_op">Skip Intro</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="donation">Donation</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
+    <string name="signature_title">Skip Intro Time</string>
     <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
@@ -80,5 +80,7 @@
     <string name="no_search_result">Sorry, Couldn\'t find anime with this keyword!</string>
     <string name="shared_anime_title">shared_anime_title</string>
     <string name="shared_anime_image">shared_anime_image</string>
+    <string name="player_settings">Player Settings</string>
+    <string name="donate_creator">Donate Creator</string>
 
 </resources>

@@ -18,7 +18,6 @@ class Constants {
         const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
         const val STARTING_PAGE_INDEX = 1
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
-        const val JIKAN_URL = "https://api.jikan.moe/v3/"
 
         // Base URLS
         const val BASE_URL = "https://gogoanime.film"
@@ -44,9 +43,6 @@ class Constants {
         const val TYPE_NEW_SEASON = 5
         const val TYPE_SEARCH = 6
 
-        const val DOWNLOAD_CHANNEL_ID = "animity.channel.id"
-        const val DOWNLOAD_CHANNEL_NAME = "Downloads"
-        const val DOWNLOAD_CHANNEL_DESCRIPTION = "The download notification channel"
 
         const val GUEST_LOGIN_TYPE = "guest"
         const val AUTHENTICATED_LOGIN_TYPE = "authenticated"

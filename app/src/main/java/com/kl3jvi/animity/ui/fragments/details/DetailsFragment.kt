@@ -64,7 +64,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) {
                     crossfade(true)
-                    diskCachePolicy(CachePolicy.ENABLED)
                 }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
@@ -137,7 +136,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     binding.type.visibility = GONE
                 }
                 is Resource.Error -> {
-                    showSnack(binding.root, res.message)
+//                    showSnack(binding.root, res.message)
                 }
             }
         }
@@ -168,21 +167,21 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             R.id.add_to_favorites -> {
                 check = if (!check) {
                     menu[1].setIcon(R.drawable.ic_favorite_complete)
-                    viewModel.insert(anime = args.animeDetails)
-                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
-                        val id = idData.data?.media?.id
-                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
-                    }
-                    showSnack(binding.root, "Anime added to Favorites")
+//                    viewModel.insert(anime = args.animeDetails)
+//                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
+//                        val id = idData.data?.media?.id
+//                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
+//                    }
+//                    showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
                     menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-                    viewModel.delete(anime = args.animeDetails)
-                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
-                        val id = idData.data?.media?.id
-                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
-                    }
-                    showSnack(binding.root, "Anime removed from Favorites")
+//                    viewModel.delete(anime = args.animeDetails)
+//                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
+//                        val id = idData.data?.media?.id
+//                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
+//                    }
+//                    showSnack(binding.root, "Anime removed from Favorites")
                     false
                 }
             }

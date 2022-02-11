@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
 
-        turnOnStrictMode()
 
         val navView: BottomNavigationView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -103,18 +102,9 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun turnOnStrictMode() {
-        StrictMode.setThreadPolicy(
-            StrictMode.ThreadPolicy.Builder().detectAll()
-                .penaltyLog().penaltyFlashScreen().build()
-        )
-        StrictMode.setVmPolicy(
-            StrictMode.VmPolicy.Builder().detectAll()
-                .penaltyLog().build()
-        )
-    }
+
 
     private fun handleNetworkChanges() {
-        isConnectedToInternet().observe(this) { isConnected = it }
+        isConnectedToInternet(this) { isConnected = it }
     }
 }

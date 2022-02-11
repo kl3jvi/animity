@@ -1,13 +1,14 @@
 package com.kl3jvi.animity.bindings
 
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.load
-import coil.request.CachePolicy
-import coil.size.Precision
-import coil.size.Scale
 import coil.transform.CircleCropTransformation
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.kl3jvi.animity.R
+import com.kl3jvi.animity.di.GlideApp
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.show
 
@@ -17,12 +18,21 @@ object ViewBindings {
     @BindingAdapter("image")
     fun setImage(image: ImageView, url: String?) {
         if (!url.isNullOrEmpty()) {
-            image.load(url) {
-                crossfade(true)
-                diskCachePolicy(CachePolicy.ENABLED)
-                precision(Precision.EXACT)
-                scale(Scale.FILL)
-            }
+            GlideApp.with(image.context)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .into(image)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("drawable")
+    fun setImageDrawable(image: ImageView, drawable: Drawable?) {
+        if (drawable != null) {
+            GlideApp.with(image.context)
+                .load(R.drawable.ic_play_tv)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .into(image)
         }
     }
 
@@ -32,7 +42,6 @@ object ViewBindings {
         if (!url.isNullOrEmpty()) {
             image.load(url) {
                 crossfade(true)
-                diskCachePolicy(CachePolicy.ENABLED)
                 transformations(CircleCropTransformation())
             }
         }
@@ -41,8 +50,7 @@ object ViewBindings {
     @JvmStatic
     @BindingAdapter("android:visibility")
     fun setVisibility(view: View, value: Boolean) {
-        if (value)
-            view.show()
+        if (value) view.show()
         else view.hide()
     }
 }

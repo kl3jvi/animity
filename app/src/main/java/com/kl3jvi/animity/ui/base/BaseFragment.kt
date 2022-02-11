@@ -38,4 +38,5 @@ abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : Fragment() {
     abstract fun getViewBinding(): VB
     fun isConnected(): Boolean = (activity as MainActivity).isConnected
     fun isGuestLogin(): Boolean = (activity as MainActivity).isGuestLogin
+
 }

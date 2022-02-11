@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
-import com.kl3jvi.animity.ui.adapters.newAdapter.MainDiffUtil
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
 import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor

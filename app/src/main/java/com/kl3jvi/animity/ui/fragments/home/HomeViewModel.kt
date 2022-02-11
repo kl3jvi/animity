@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.HomeRecycleViewItemData
 import com.kl3jvi.animity.domain.use_cases.GetAnimesUseCase
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHomePageData() {
-        getAnimesUseCase().onEach {
+        getAnimesUseCase().flowOn(Dispatchers.IO).onEach {
             _homeData.value = it
         }.launchIn(viewModelScope)
     }

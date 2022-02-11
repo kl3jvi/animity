@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.newAdapter.ParentAdapter
+import com.kl3jvi.animity.ui.adapters.ParentAdapter
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.Resource
@@ -23,7 +23,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     val viewModel: HomeViewModel by viewModels()
     val binding: FragmentHomeBinding by viewBinding()
 
-    private val mainAdapter by lazy { ParentAdapter(playButtonFlag = false) }
+    private val mainAdapter by lazy { ParentAdapter(isHomeFragment = true) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,7 +32,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun observeViewModel() {
-        fetchRecentDub()
+        fetchHomeData()
     }
 
     private fun initViews() {
@@ -46,7 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun fetchRecentDub() {
+    private fun fetchHomeData() {
         observeLiveData(viewModel.homeData, viewLifecycleOwner) { res ->
             when (res) {
                 is Resource.Error -> {
@@ -74,7 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun handleNetworkChanges() {
-        requireActivity().isConnectedToInternet().observe(viewLifecycleOwner) { isConnected ->
+        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
             if (isConnected) {
                 binding.apply {
                     mainRv.show()
@@ -93,4 +93,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onStart()
         handleNetworkChanges()
     }
+
+
 }

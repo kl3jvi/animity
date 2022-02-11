@@ -1,9 +1,8 @@
-package com.kl3jvi.animity.ui.adapters.newAdapter
+package com.kl3jvi.animity.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +11,11 @@ import com.kl3jvi.animity.databinding.ItemCardAnimeBinding
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
 
-class AnimeCardAdapter(var playButtonFlag: Boolean = false) :
+open class AnimeCardAdapter(var isHomeFragment: Boolean) :
     ListAdapter<AnimeMetaModel, AnimeCardAdapter.AnimeViewHolder>(MainDiffUtil<AnimeMetaModel>()) {
 
-    class AnimeViewHolder(
+
+    inner class AnimeViewHolder(
         private val binding: ItemCardAnimeBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -36,7 +36,7 @@ class AnimeCardAdapter(var playButtonFlag: Boolean = false) :
                  * playButtonFlag = shows little play button on top of anime card view layout
                  * If playButtonFlag is false we are at profile else we are at home!
                  */
-                val direction = if (true)
+                val direction = if (isHomeFragment)
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
                 else ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
                     animeDetails
@@ -50,7 +50,7 @@ class AnimeCardAdapter(var playButtonFlag: Boolean = false) :
         fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
             binding.animeInfo = animeInfo
             binding.isVisible = !animeInfo.episodeNumber.isNullOrEmpty()
-            binding.playLogo.isVisible = true
+//            binding.playLogo.isVisible = true
             binding.executePendingBindings()
         }
     }

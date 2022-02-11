@@ -182,7 +182,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     }
 
     private fun handleNetworkChanges() {
-        requireActivity().isConnectedToInternet().observe(viewLifecycleOwner) { isConnected ->
+        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
             if (!isGuestLogin() && isConnected) {
                 binding.hasInternet.show()
                 binding.noInternet.hide()

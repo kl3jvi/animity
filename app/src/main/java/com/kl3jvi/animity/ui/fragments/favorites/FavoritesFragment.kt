@@ -50,12 +50,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             adapter = favoriteAdapter
         }
 
-        binding.swipeLayout.setOnRefreshListener {
-            if (!isGuestLogin())
-                observeAniList()
-            else
-                showLoading(false)
-        }
+//        binding.swipeLayout.setOnRefreshListener {
+//            if (!isGuestLogin())
+//                observeAniList()
+//            else
+//                showLoading(false)
+//        }
     }
 
     private fun observeDatabase() {

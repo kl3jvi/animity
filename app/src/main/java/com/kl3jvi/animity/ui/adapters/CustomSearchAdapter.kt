@@ -5,14 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.SearchLayoutBinding
 import com.kl3jvi.animity.ui.fragments.search.SearchFragmentDirections
 
 class CustomSearchAdapter : PagingDataAdapter<AnimeMetaModel, CustomSearchAdapter.ViewHolder>(
-    AnimeDiffCallback()
+    MainDiffUtil()
 ) {
 
     inner class ViewHolder(private val binding: SearchLayoutBinding) :
@@ -55,21 +54,5 @@ class CustomSearchAdapter : PagingDataAdapter<AnimeMetaModel, CustomSearchAdapte
             holder.bindAnimeInfo(animeInfo)
         }
     }
-
-    private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
-
-        override fun areItemsTheSame(
-            oldItem: AnimeMetaModel,
-            newItem: AnimeMetaModel
-        ): Boolean {
-            return oldItem.toString() == newItem.toString()
-        }
-
-        override fun areContentsTheSame(
-            oldItem: AnimeMetaModel,
-            newItem: AnimeMetaModel
-        ): Boolean {
-            return oldItem == newItem
-        }
-    }
 }
+

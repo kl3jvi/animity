@@ -4,15 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.databinding.ItemFavoriteAnimeBinding
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragmentDirections
 
 class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.ViewHolder>(
-    AnimeDiffCallback()
+    MainDiffUtil()
 ) {
 //    RecyclerView.Adapter<CustomFavoriteAdapter.ViewHolder>() {
 
@@ -61,20 +60,5 @@ class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.
 
 }
 
-private class AnimeDiffCallback : DiffUtil.ItemCallback<AnimeMetaModel>() {
 
-    override fun areItemsTheSame(
-        oldItem: AnimeMetaModel,
-        newItem: AnimeMetaModel
-    ): Boolean {
-        return oldItem.toString() == newItem.toString()
-    }
-
-    override fun areContentsTheSame(
-        oldItem: AnimeMetaModel,
-        newItem: AnimeMetaModel
-    ): Boolean {
-        return oldItem == newItem
-    }
-}
 

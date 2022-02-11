@@ -49,13 +49,13 @@
             android:src="#33000000"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/play_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:padding="2dp"
-            android:src="@drawable/ic_play_tv" />
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/play_logo"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:padding="2dp"-->
+<!--            app:drawable="@drawable/ic_play_tv" />-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/episodeCard"

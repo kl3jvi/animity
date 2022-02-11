@@ -121,7 +121,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             finish()
             return
         }
-        showSnack(binding.root, "Couldn't Login!!")
+//        showSnack(binding.root, "Couldn't Login!!")
     }
 
     private fun initViews() {
@@ -158,7 +158,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     private fun handleNetworkChanges() {
-        isConnectedToInternet().observe(this) { isConnected ->
+        isConnectedToInternet(this) { isConnected ->
             if (!isConnected) showSnack(binding.root, "No Internet Connection!")
             binding.aniListSignUp.isEnabled = isConnected
             binding.aniListLogin.isEnabled = isConnected

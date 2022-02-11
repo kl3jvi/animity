@@ -17,8 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,17 +52,9 @@ class DetailsViewModel @Inject constructor(
                 info.data?.id,
                 info.data?.endEpisode,
                 info.data?.alias
-            ).onEach {
-                val response = it.data
-                response?.map { episodeModel ->
-                    if (episodeDao.isEpisodeOnDatabase(episodeModel.episodeUrl)) {
-                        episodeModel.percentage =
-                            episodeDao.getEpisodeContent(episodeModel.episodeUrl)
-                                .getWatchedPercentage()
-                    }
-                }
-            }
-        }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
+            )
+
+        }.asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
 
@@ -80,7 +72,9 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
-        animeRepository.insertFavoriteAnime(anime)
+        withContext(Dispatchers.IO) {                        // Dispatchers.IO (main-safety block)
+            animeRepository.insertFavoriteAnime(anime)      // Dispatchers.IO (main-safety block)
+        }
     }
 
     fun updateAnimeFavorite(id: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
@@ -92,7 +86,9 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
-        animeRepository.deleteAnime(anime)
+        withContext(Dispatchers.IO) {              // Dispatchers.IO (main-safety block)
+            animeRepository.deleteAnime(anime)         // Dispatchers.IO (main-safety block)
+        }
     }
 
 }

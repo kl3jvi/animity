@@ -1,5 +1,5 @@
 plugins {
-    id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
@@ -11,8 +11,15 @@ plugins {
     id 'com.google.secrets_gradle_plugin' version("0.4")
     id "com.apollographql.apollo3" version("3.0.0")
 }
-
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/kl3jvi/StudioProjects/animity/animity')
+            storePassword 'klejvi123'
+            keyPassword 'klejvi123'
+            keyAlias 'key0'
+        }
+    }
     compileSdk 32
     defaultConfig {
         applicationId "com.kl3jvi.animity"
@@ -26,9 +33,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable false
+            debuggable true
+            signingConfig signingConfigs.release
         }
     }
     kapt {
@@ -42,7 +51,7 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     buildFeatures {
         viewBinding true
@@ -61,10 +70,7 @@ android {
             universalApk true
         }
     }
-
-    kapt {
-        correctErrorTypes = true
-    }
+    
 }
 
 apollo {
@@ -80,6 +86,10 @@ dependencies {
     def androidCoreVersion = "1.7.0"
     implementation "androidx.core:core-ktx:$androidCoreVersion"
 
+    def swipeVersion = "1.1.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeVersion"
+
+
     def appCompatVersion = "1.4.1"
     def materialVersion = "1.5.0"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
@@ -88,12 +98,12 @@ dependencies {
     def constraintLayoutVersion = "2.1.3"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
-    def livedataVersion = "2.4.0"
-    def viewModelVersion = "2.4.0"
+    def livedataVersion = "2.4.1"
+    def viewModelVersion = "2.5.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.5.0-alpha01"
+    def navigationComponentVersion = "2.5.0-alpha02"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
@@ -104,7 +114,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.4.0"
+    def lifecycle_version = "2.5.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     def analyticsVersion = "20.0.2"
@@ -125,7 +135,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
-
 
     //Html Parsing
     def jsoupVersion = "1.13.1"
@@ -155,25 +164,25 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // image library
-    def coilVersion = "1.4.0"
-    implementation "io.coil-kt:coil:$coilVersion"
-    implementation "io.coil-kt:coil-gif:$coilVersion"
-
+    def glideVersion = "4.13.0"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     //splash screen
     def splashVersion = "1.0.0-beta01"
     implementation "androidx.core:core-splashscreen:$splashVersion"
 
     def onesignalVersion = "4.6.2"
-    implementation "com.onesignal:OneSignal:$onesignalVersion"
-
+//    implementation "com.onesignal:OneSignal:$onesignalVersion"
 
     def textUtilsVersion = "1.7"
     implementation "org.apache.commons:commons-text:$textUtilsVersion"
 
+    // paging 3
     def paginationVersion = "3.1.0"
     implementation "androidx.paging:paging-runtime-ktx:$paginationVersion"
 
+    // browser
     def inAppBrowserVersion = "1.4.0"
     implementation "androidx.browser:browser:$inAppBrowserVersion"
 
@@ -188,5 +197,7 @@ dependencies {
     def avatarView = "1.0.2"
     implementation "io.getstream:avatarview-coil:$avatarView"
 
+//    def brainTree = "6.0.2"
+//    implementation "com.braintreepayments.api:drop-in:$brainTree"
 
 }

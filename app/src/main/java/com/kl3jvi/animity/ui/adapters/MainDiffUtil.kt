@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.adapters.newAdapter
+package com.kl3jvi.animity.ui.adapters
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.utils
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -47,11 +48,11 @@ inline fun <T> LifecycleOwner.collectFlow(
     }
 }
 
-inline fun <T> LifecycleOwner.collectLatestFlow(
+inline fun <T> Fragment.collectLatestFlow(
     flow: Flow<T>,
     crossinline collector: suspend (T) -> Unit
 ) {
-    lifecycleScope.launchWhenStarted {
+    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.catch { e -> e.printStackTrace() }
                 .collectLatest {

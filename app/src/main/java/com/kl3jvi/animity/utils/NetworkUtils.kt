@@ -7,6 +7,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -60,7 +61,9 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
         networkLiveData.postValue(false)
     }
 
-    fun Activity.isConnectedToInternet(): LiveData<Boolean> {
-        return getNetworkLiveData(this)
+    fun Context.isConnectedToInternet(owner: LifecycleOwner, observer: (Boolean) -> Unit) {
+        getNetworkLiveData(context = this).observe(owner) {
+            observer(it)
+        }
     }
 }
