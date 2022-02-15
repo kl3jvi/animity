@@ -7,7 +7,7 @@
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+            type="com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem.Anime" />
 
         <variable
             name="clickListener"
@@ -34,6 +34,7 @@
             android:layout_height="180dp"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerCrop"
+            android:onClick="@{clickListener}"
             app:image="@{animeInfo.imageUrl}"
             tools:src="@tools:sample/avatars" />
 
@@ -48,6 +49,8 @@
             android:onClick="@{clickListener}"
             android:src="#33000000"
             tools:ignore="SpeakableTextPresentCheck" />
+
+
 
 <!--        <androidx.appcompat.widget.AppCompatImageView-->
 <!--            android:id="@+id/play_logo"-->

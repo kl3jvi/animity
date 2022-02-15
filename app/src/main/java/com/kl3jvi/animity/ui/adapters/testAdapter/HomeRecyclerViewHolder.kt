@@ -1,38 +1,62 @@
-package com.kl3jvi.animity.ui.adapters
+package com.kl3jvi.animity.ui.adapters.testAdapter
 
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.chip.Chip
+import com.kl3jvi.animity.databinding.ItemHorizontalRecyclerBinding
+import com.kl3jvi.animity.databinding.ItemTitleBinding
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
+import com.kl3jvi.animity.ui.adapters.TestAdapter
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
-import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor
+import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.getColor
 
-class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
-    ListAdapter<HomeRecyclerViewItem.AnimeVertical, CustomVerticalAdapter.ViewHolder>(MainDiffUtil<HomeRecyclerViewItem.AnimeVertical>()) {
 
-    inner class ViewHolder(val binding: ItemTodaySelectionBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    class TitleViewHolder(private val binding: ItemTitleBinding) : HomeRecyclerViewHolder(binding) {
+        fun bind(title: HomeRecyclerViewItem.Title) {
+            binding.contentTitle.text = title.title
+        }
+    }
+
+    class HorizontalViewHolder(
+        private val binding: ItemHorizontalRecyclerBinding
+    ) : HomeRecyclerViewHolder(binding) {
+        private val horizontalAdapter = TestAdapter()
+
+        init {
+            val linearLayoutManager =
+                LinearLayoutManager(binding.root.context, RecyclerView.HORIZONTAL, false)
+            binding.root.layoutManager = linearLayoutManager
+            binding.root.adapter = horizontalAdapter
+        }
+
+        fun bind(animeData: List<HomeRecyclerViewItem.Anime>) {
+            horizontalAdapter.submitList(animeData)
+        }
+    }
+
+    class VerticalViewHolder(val binding: ItemTodaySelectionBinding) :
+        HomeRecyclerViewHolder(binding) {
         init {
             binding.setClickListener { view ->
                 binding.animeInfo?.let { animeDetails ->
                     navigateToDetails(
                         animeDetails,
-                        view = view
+                        view
                     )
                 }
             }
         }
 
         private fun navigateToDetails(
-            animeDetails: HomeRecyclerViewItem.AnimeVertical? = null,
+            animeDetails: HomeRecyclerViewItem.AnimeVertical,
             view: View
         ) {
             try {
@@ -40,7 +64,7 @@ class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
                  * playButtonFlag = shows little play button on top of anime card view layout
                  * If playButtonFlag is false we are at profile else we are at home!
                  */
-                val direction = if (playButtonFlag)
+                val direction = if (true)
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
                 else ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
                     animeDetails
@@ -54,7 +78,6 @@ class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
         fun bindAnimeItem(animeMetaModel: HomeRecyclerViewItem.AnimeVertical) {
             binding.animeInfo = animeMetaModel
 
-
             binding.chipGroup.removeAllViews()
             val arrayOfGenres = animeMetaModel.genreList
             arrayOfGenres?.let { genres ->
@@ -66,7 +89,7 @@ class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
                             setTextColor(Color.WHITE)
                             chipStrokeColor = getColor()
                             chipStrokeWidth = 3f
-                            chipBackgroundColor = getVerticalAdapterBackgroundColor()
+                            chipBackgroundColor = Constants.getVerticalAdapterBackgroundColor()
                         }
                         binding.chipGroup.addView(chip)
                     } else
@@ -75,26 +98,5 @@ class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
             }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemTodaySelectionBinding =
-            ItemTodaySelectionBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-        holder.bindAnimeItem(getItem(position))
-
-
-    private fun getColor(): ColorStateList {
-        val color: Int = Color.argb(255, 4, 138, 129)
-        return ColorStateList.valueOf(color)
-    }
-
-    override fun getItemCount() = currentList.size
 
 }

@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import coil.request.CachePolicy
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
@@ -22,7 +21,6 @@ import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
-import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -38,7 +36,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private lateinit var menu: Menu
     private lateinit var title: String
     private var check = false
-
+    private var anilistId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,19 +56,14 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         fetchAnimeInfo()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
-
+        getAnilistId()
         animeDetails.let { animeInfo ->
-
             binding.apply {
-                detailsPoster.load(animeInfo.imageUrl) {
-                    crossfade(true)
-                }
+                detailsPoster.load(animeInfo.imageUrl) { crossfade(true) }
                 episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
-
                 title = animeInfo.title
-                binding.episodeListRecycler.adapter = episodeAdapter
-                binding.episodeListRecycler.isNestedScrollingEnabled = false
+                episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
@@ -81,6 +74,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
     override fun initViews() {
 
+    }
+
+    private fun getAnilistId() {
+//        collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
+//            anilistId = idData.data?.media?.id
+//        }
     }
 
 
@@ -167,7 +166,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             R.id.add_to_favorites -> {
                 check = if (!check) {
                     menu[1].setIcon(R.drawable.ic_favorite_complete)
-//                    viewModel.insert(anime = args.animeDetails)
+                    if (isGuestLogin()) {
+//                        viewModel.insert(anime = args.animeDetails)
+                    } else {
+                        collectFlow(viewModel.updateAnimeFavorite(anilistId)) {}
+                    }
+
 //                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
 //                        val id = idData.data?.media?.id
 //                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
@@ -176,6 +180,11 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     true
                 } else {
                     menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    if (isGuestLogin()) {
+//                        viewModel.delete(anime = args.animeDetails)
+                    } else {
+                        collectFlow(viewModel.updateAnimeFavorite(anilistId)) {}
+                    }
 //                    viewModel.delete(anime = args.animeDetails)
 //                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
 //                        val id = idData.data?.media?.id

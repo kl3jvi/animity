@@ -25,10 +25,12 @@
 
     <TextView
         android:id="@+id/episodeName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
         android:fontFamily="sans-serif"
+        android:gravity="start"
         android:maxWidth="450dp"
         android:maxLines="2"
         android:textColor="@android:color/white"
@@ -42,14 +44,17 @@
 
     <TextView
         android:id="@+id/episodeNum"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="episode 2"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:gravity="start"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
         app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
         app:layout_constraintStart_toEndOf="@+id/back"
-        app:layout_constraintTop_toBottomOf="@+id/episodeName" />
+        app:layout_constraintTop_toBottomOf="@+id/episodeName"
+        tools:text="episode 2" />
 
     <ImageButton
         android:id="@+id/exo_play"
@@ -136,7 +141,7 @@
         android:id="@+id/exo_full_Screen"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="24dp"
         android:background="?selectableItemBackgroundBorderless"
         android:minWidth="48dp"
         android:minHeight="48dp"
@@ -164,10 +169,11 @@
     <LinearLayout
         android:id="@+id/skipLayout"
         android:layout_width="wrap_content"
+
         android:layout_height="0dp"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/outline_drawable"
+        android:background="@drawable/outline"
         android:orientation="horizontal"
         android:padding="5dp"
         android:paddingStart="10dp"

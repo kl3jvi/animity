@@ -293,19 +293,13 @@ query MediaIdFromName($search: String){
 #    }
 #}
 
-
 #marks anime as favorite
-mutation ToggleFavouriteMutation(
-    $animeId: Int,
-) {
-    toggle:ToggleFavourite(
-        animeId: $animeId,
-    ) {
+mutation ToggleFavouriteMutation($animeId: Int) {
+    toggle:ToggleFavourite(animeId: $animeId) {
         anime {
             pageInfo {
                 total
             }
         }
-
     }
 }

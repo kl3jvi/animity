@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
 interface HomeRepository {
@@ -9,13 +10,13 @@ interface HomeRepository {
         header: Map<String, String>,
         page: Int,
         type: Int
-    ): List<AnimeMetaModel>
+    ): List<HomeRecyclerViewItem.Anime>
 
     suspend fun fetchPopularFromAjax(
         header: Map<String, String>,
         page: Int
-    ): List<AnimeMetaModel>
+    ): List<HomeRecyclerViewItem.Anime>
 
-    suspend fun fetchNewSeason(header: Map<String, String>, page: Int): List<AnimeMetaModel>
-    suspend fun fetchMovies(header: Map<String, String>, page: Int): List<AnimeMetaModel>
+    suspend fun fetchNewSeason(header: Map<String, String>, page: Int): List<HomeRecyclerViewItem.Anime>
+    suspend fun fetchMovies(header: Map<String, String>, page: Int): List<HomeRecyclerViewItem.Anime>
 }

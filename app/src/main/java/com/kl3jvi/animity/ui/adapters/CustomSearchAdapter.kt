@@ -17,23 +17,23 @@ class CustomSearchAdapter : PagingDataAdapter<AnimeMetaModel, CustomSearchAdapte
     inner class ViewHolder(private val binding: SearchLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        init {
-            binding.setClickListener { view ->
-                binding.animeInfo?.let {
-                    navigateToDetails(it, view)
-                }
-            }
-        }
-
-        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
-            try {
-                val direction =
-                    SearchFragmentDirections.actionNavigationExploreToNavigationDetails(animeDetails)
-                view.findNavController().navigate(direction)
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-            }
-        }
+//        init {
+//            binding.setClickListener { view ->
+//                binding.animeInfo?.let {
+//                    navigateToDetails(it, view)
+//                }
+//            }
+//        }
+//
+//        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
+//            try {
+//                val direction =
+//                    SearchFragmentDirections.actionNavigationExploreToNavigationDetails(animeDetails)
+//                view.findNavController().navigate(direction)
+//            } catch (e: IllegalArgumentException) {
+//                e.printStackTrace()
+//            }
+//        }
 
         fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
             binding.animeInfo = animeInfo

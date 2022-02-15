@@ -200,4 +200,7 @@ dependencies {
 //    def brainTree = "6.0.2"
 //    implementation "com.braintreepayments.api:drop-in:$brainTree"
 
+    implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
+
+
 }

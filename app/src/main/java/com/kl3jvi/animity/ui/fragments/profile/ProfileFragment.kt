@@ -2,20 +2,22 @@ package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.hide
@@ -24,12 +26,15 @@ import com.kl3jvi.animity.utils.observeLiveData
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
+class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>(),
+    AdapterView.OnItemSelectedListener {
 
+    private lateinit var animeCollectionResponseGlobal: ApolloResponse<AnimeListCollectionQuery.Data>
     override val viewModel: ProfileViewModel by viewModels()
     private val guestBinding: FragmentProfileGuestBinding get() = guestView()
     private val adapter by lazy { CustomVerticalAdapter(playButtonFlag = false) }
@@ -60,6 +65,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.spinner.onItemSelectedListener = this
     }
 
 
@@ -78,52 +84,27 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private fun getAnimeListProfileData() {
         observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
             binding.animeData = animeCollectionResponse.data
+            animeCollectionResponseGlobal = animeCollectionResponse
             val animeRecyclerView = binding.watchedAnime
             animeRecyclerView.layoutManager = LinearLayoutManager(
                 requireContext(),
                 RecyclerView.HORIZONTAL, false
             )
 
-            addSpinnerItems(animeCollectionResponse.data?.media?.lists?.toList())
+            animeCollectionResponse.data?.media?.lists?.toList()?.let { addSpinnerItems(it) }
 
 //            when (binding.spinner.selectedItem.toString()) {
 //                "Watching" -> {
 //                    adapter.submitList(
-//                        animeCollectionResponse.data?.media?.lists?.first()?.entries?.map { animeWatchedData ->
-//                            AnimeMetaModel(
-//                                title = animeWatchedData?.media?.title?.romaji.toString(),
-//                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
-//                                categoryUrl = "category/${
-//                                    animeWatchedData?.media?.title?.romaji
-//                                        .toString()
-//                                        .replace(" ", "-")
-//                                        .replace(":", "")
-//                                        .replace(";", "")
-//                                        .replace(".", "")
-//                                        .replace("//", "")
-//                                        .replace("/", "")
-//                                        .lowercase(Locale.getDefault())
-//                                }"
-//                            )
-//                        }
+//                        animeCollectionResponse.data?.media?.lists?.first()
+//                            ?.entries?.mapToAnimeMetaModel()
 //                    )
 //                    animeRecyclerView.adapter = adapter
 //                }
 //                "Planning" -> {
 //                    adapter.submitList(
-//                        animeCollectionResponse.data?.media?.lists?.last()?.entries?.map { animeWatchedData ->
-//                            AnimeMetaModel(
-//                                title = animeWatchedData?.media?.title?.romaji.toString(),
-//                                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
-//                                categoryUrl = "category/${
-//                                    animeWatchedData?.media?.title?.romaji
-//                                        .toString()
-//                                        .replace(" ", "-")
-//                                        .replace(":", "")
-//                                        .lowercase(Locale.getDefault())
-//                                }"
-//                            )
-//                        }
+//                        animeCollectionResponse.data?.media?.lists?.last()
+//                            ?.entries?.mapToAnimeMetaModel()
 //                    )
 //                    animeRecyclerView.adapter = adapter
 //                }
@@ -132,8 +113,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         }
     }
 
-    private fun addSpinnerItems(passedArray: List<AnimeListCollectionQuery.List?>?) {
-        val list = passedArray?.map { it?.name } ?: emptyList()
+
+    private fun addSpinnerItems(passedArray: List<AnimeListCollectionQuery.List?>) {
+        val list = passedArray.map { it?.name }
         val spinner = binding.spinner
         val spinnerArrayAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(
@@ -143,6 +125,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
             ) //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item)
         spinner.adapter = spinnerArrayAdapter
+
 
     }
 
@@ -192,4 +175,33 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
             }
         }
     }
+
+
+    private fun List<AnimeListCollectionQuery.Entry?>.mapToAnimeMetaModel(): List<AnimeMetaModel> {
+        return map { animeWatchedData ->
+            AnimeMetaModel(
+                title = animeWatchedData?.media?.title?.romaji.toString(),
+                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
+                categoryUrl = "category/${
+                    animeWatchedData?.media?.title?.romaji
+                        .toString()
+                        .replace(" ", "-")
+                        .replace(":", "")
+                        .lowercase(Locale.getDefault())
+                }"
+            )
+        }
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+//        adapter.submitList(
+//            animeCollectionResponseGlobal.data
+//                ?.media?.lists?.first()?.entries?.mapToAnimeMetaModel()
+//        )
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
+
 }

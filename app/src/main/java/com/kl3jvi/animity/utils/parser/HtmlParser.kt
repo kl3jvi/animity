@@ -26,6 +26,7 @@ object HtmlParser {
         lists?.forEach { anime ->
             val animeInfo = anime.getElementsByClass("name").first().select("a")
             val title = animeInfo.attr("title")
+            Log.e("HASHED FROM PARSER", title.lowercase(Locale.getDefault()).hashCode().toString())
             val episodeUrl = animeInfo.attr("href")
             val episodeNumber = anime.getElementsByClass("episode").first().text()
             val animeImageInfo = anime.selectFirst("a")
@@ -33,7 +34,7 @@ object HtmlParser {
 
             animeMetaModelList.add(
                 AnimeMetaModel(
-                    id = title.hashCode(),
+                    id = title.lowercase(Locale.getDefault()).hashCode(),
                     title = title,
                     episodeNumber = episodeNumber,
                     episodeUrl = episodeUrl,

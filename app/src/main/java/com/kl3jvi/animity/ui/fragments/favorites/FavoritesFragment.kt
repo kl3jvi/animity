@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,12 +51,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             adapter = favoriteAdapter
         }
 
-//        binding.swipeLayout.setOnRefreshListener {
-//            if (!isGuestLogin())
-//                observeAniList()
-//            else
-//                showLoading(false)
-//        }
+        binding.swipeLayout.setOnRefreshListener {
+            if (!isGuestLogin())
+                observeAniList()
+            else
+                showLoading(false)
+        }
     }
 
     private fun observeDatabase() {
@@ -76,8 +77,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private fun observeAniList() {
         collectFlow(viewModel.favoriteAnimesList) { animeList ->
             val list = animeList.data?.user?.favourites?.anime?.edges?.map {
+                Log.e("HASHED",
+                    it?.node?.title?.romaji?.lowercase(Locale.getDefault()).hashCode().toString()
+                )
                 AnimeMetaModel(
-                    id = it?.node?.title?.romaji.hashCode(),
+                    id = it?.node?.title?.romaji?.lowercase(Locale.getDefault()).hashCode(),
                     title = it?.node?.title?.userPreferred.toString(),
                     imageUrl = it?.node?.coverImage?.large.toString(),
                     categoryUrl = "category/${

@@ -86,7 +86,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {              // Dispatchers.IO (main-safety block)
+        withContext(Dispatchers.IO) {                   // Dispatchers.IO (main-safety block)
             animeRepository.deleteAnime(anime)         // Dispatchers.IO (main-safety block)
         }
     }

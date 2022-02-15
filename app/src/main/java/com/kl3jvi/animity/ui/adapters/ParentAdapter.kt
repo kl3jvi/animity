@@ -15,12 +15,12 @@ open class ParentAdapter(var isHomeFragment: Boolean = true) :
 
     inner class ParentViewHolder(private val binding: ItemListWithHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val horizontalChildAdapter by lazy { AnimeCardAdapter(isHomeFragment = isHomeFragment) }
+//        private val horizontalChildAdapter by lazy { AnimeCardAdapter(isHomeFragment = isHomeFragment) }
 
         fun bind(data: HomeRecycleViewItemData) {
-            binding.contentTitle.text = data.headerTitle
-            binding.childRecyclerView.adapter = horizontalChildAdapter
-            horizontalChildAdapter.submitList(data.listOfAnimeMetaModel)
+//            binding.contentTitle.text = data.headerTitle
+//            binding.childRecyclerView.adapter = horizontalChildAdapter
+//            horizontalChildAdapter.submitList(data.listOfAnimeMetaModel)
 //            verticalChildAdapter.submitList(if (!data.isHorizontalScrollView) data.listOfAnimeMetaModel else emptyList())
         }
     }
@@ -28,12 +28,16 @@ open class ParentAdapter(var isHomeFragment: Boolean = true) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
         val binding: ItemListWithHeaderBinding =
-            ItemListWithHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemListWithHeaderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         binding.childRecyclerView.setRecycledViewPool(sharedPool)
         binding.childRecyclerView.layoutManager =
             LinearLayoutManager(parent.context, RecyclerView.HORIZONTAL, false)
-        return ParentViewHolder(binding)
 
+        return ParentViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ParentViewHolder, position: Int) =

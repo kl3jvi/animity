@@ -16,6 +16,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
     private val playerRepository: PlayerRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
+
     operator fun invoke(url: String) = flow {
         emit(Resource.Loading())
         try {
@@ -25,7 +26,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
             emit(Resource.Error("Oops an error occurred, try again!"))
         }
     }.flowOn(ioDispatcher)
-
+//
     fun fetchM3U8(url: String?) = flow {
         emit(Resource.Loading())
         try {
@@ -36,7 +37,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
             emit(Resource.Error("Couldn't find a Stream for this Anime"))
         }
     }.flowOn(ioDispatcher)
-
+//
     fun fetchEncryptedAjaxUrl(url: String?) = flow {
         emit(Resource.Loading())
         try {

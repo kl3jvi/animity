@@ -1,14 +1,18 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.metrics.performance.JankStats
+import androidx.metrics.performance.PerformanceMetricsState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.ParentAdapter
+import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewAdapter
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.Resource
@@ -16,6 +20,8 @@ import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.observeLiveData
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -23,7 +29,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     val viewModel: HomeViewModel by viewModels()
     val binding: FragmentHomeBinding by viewBinding()
 
-    private val mainAdapter by lazy { ParentAdapter(isHomeFragment = true) }
+    private val mainAdapter by lazy { HomeRecyclerViewAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

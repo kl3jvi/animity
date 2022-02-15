@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.di
 
 
-import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
@@ -15,7 +14,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -34,7 +32,7 @@ object NetworkModule {
         localStorage: LocalStorageImpl
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(HeaderInterceptor( localStorage))
+            .addInterceptor(HeaderInterceptor(localStorage))
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             })
