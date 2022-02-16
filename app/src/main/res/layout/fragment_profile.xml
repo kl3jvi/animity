@@ -154,8 +154,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginEnd="15dp">
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="0dp"
@@ -170,9 +170,9 @@
                     <Spinner
                         android:id="@+id/spinner"
                         android:layout_width="wrap_content"
-                        android:popupBackground="@color/primaryGrayBackground"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white" />
+                        android:backgroundTint="@color/white"
+                        android:popupBackground="@color/primaryGrayBackground" />
 
                 </LinearLayout>
 

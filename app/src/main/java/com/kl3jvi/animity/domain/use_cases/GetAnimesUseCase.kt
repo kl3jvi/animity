@@ -32,7 +32,8 @@ class GetAnimesUseCase @Inject constructor(
                 }
                 val newSeasonDeferred =
                     async { homeRepository.fetchNewSeason(Constants.getHeader(), 1) }
-                val moviesDeferred = async { homeRepository.fetchMovies(Constants.getHeader(), 1) }
+                val moviesDeferred =
+                    async { homeRepository.fetchMovies(Constants.getHeader(), 1) }
                 val popularDeferred =
                     async { homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1) }
 
@@ -41,19 +42,24 @@ class GetAnimesUseCase @Inject constructor(
                 val movies = moviesDeferred.await()
                 val popular = popularDeferred.await()
 
-//                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(1, "recentSub"))
-                mutableListOfAnimeMetaModel.addAll(recentSub)
+                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(1, "Recent Sub"))
+                mutableListOfAnimeMetaModel.add(recentSub)
+                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(2, "New Season"))
+                mutableListOfAnimeMetaModel.add(newSeason)
+                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(3, "Movies"))
+                mutableListOfAnimeMetaModel.add(movies)
+                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(4, "Popular"))
+                mutableListOfAnimeMetaModel.add(popular)
 
 
-//                mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Recent Sub", recentSub))
-//                mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("New Season", newSeason))
-//                mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("Movies", movies))
-//                mutableListOfAnimeMetaModel.add(HomeRecycleViewItemData("PopularAnimes", popular))
-//
-//                emit(Resource.Success(recentSub.map { it.toAnimeHorizontal() }))
+                emit(Resource.Success(mutableListOfAnimeMetaModel))
 
             } catch (e: Exception) {
-                emit(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))
+                emit(
+                    Resource.Error(
+                        message = e.localizedMessage ?: "An unexpected error occurred"
+                    )
+                )
             } catch (e: IOException) {
                 emit(
                     Resource.Error(

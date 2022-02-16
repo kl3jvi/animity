@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/innerRv"
     android:layout_width="match_parent"
-    android:layout_height="180dp">
+    android:layout_height="180dp"
+    android:orientation="horizontal"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:listitem="@layout/item_card_anime">
 
 </androidx.recyclerview.widget.RecyclerView>

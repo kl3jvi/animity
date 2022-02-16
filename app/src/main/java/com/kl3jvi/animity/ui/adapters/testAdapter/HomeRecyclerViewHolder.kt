@@ -3,14 +3,14 @@ package com.kl3jvi.animity.ui.adapters.testAdapter
 import android.graphics.Color
 import android.view.View
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.chip.Chip
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.ItemHorizontalRecyclerBinding
 import com.kl3jvi.animity.databinding.ItemTitleBinding
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
-import com.kl3jvi.animity.ui.adapters.TestAdapter
+import com.kl3jvi.animity.ui.adapters.AnimeCardAdapter
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
 import com.kl3jvi.animity.utils.Constants
@@ -20,25 +20,25 @@ import com.kl3jvi.animity.utils.Constants.Companion.getColor
 sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     class TitleViewHolder(private val binding: ItemTitleBinding) : HomeRecyclerViewHolder(binding) {
-        fun bind(title: HomeRecyclerViewItem.Title) {
+        fun bindTitle(title: HomeRecyclerViewItem.Title) {
             binding.contentTitle.text = title.title
         }
     }
 
     class HorizontalViewHolder(
-        private val binding: ItemHorizontalRecyclerBinding
+        val binding: ItemHorizontalRecyclerBinding,
+        sharedViewPool: RecyclerView.RecycledViewPool
     ) : HomeRecyclerViewHolder(binding) {
-        private val horizontalAdapter = TestAdapter()
+        private val horizontalAdapter = AnimeCardAdapter()
 
         init {
-            val linearLayoutManager =
-                LinearLayoutManager(binding.root.context, RecyclerView.HORIZONTAL, false)
-            binding.root.layoutManager = linearLayoutManager
-            binding.root.adapter = horizontalAdapter
+            binding.innerRv.setRecycledViewPool(sharedViewPool)
+//            binding.root.isNestedScrollingEnabled = false
+            binding.innerRv.adapter = horizontalAdapter
         }
 
-        fun bind(animeData: List<HomeRecyclerViewItem.Anime>) {
-            horizontalAdapter.submitList(animeData)
+        fun bindList(animeData: HomeRecyclerViewItem.HorizontalAnimeWrapper) {
+            horizontalAdapter.submitList(animeData.animeList)
         }
     }
 
@@ -56,7 +56,7 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         }
 
         private fun navigateToDetails(
-            animeDetails: HomeRecyclerViewItem.AnimeVertical,
+            animeDetails: AnimeMetaModel,
             view: View
         ) {
             try {
@@ -75,11 +75,11 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
             }
         }
 
-        fun bindAnimeItem(animeMetaModel: HomeRecyclerViewItem.AnimeVertical) {
-            binding.animeInfo = animeMetaModel
-
+        fun bindAnimeItem(animeMetaModel: HomeRecyclerViewItem.VerticalAnimeWrapper) {
+            val animeList = animeMetaModel.animeList.first()
+            binding.animeInfo = animeList
             binding.chipGroup.removeAllViews()
-            val arrayOfGenres = animeMetaModel.genreList
+            val arrayOfGenres = animeList.genreList
             arrayOfGenres?.let { genres ->
                 genres.forEach { data ->
                     if (data.genreName.isNotBlank()) {
@@ -96,6 +96,7 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
                         binding.chipGroup.removeAllViews()
                 }
             }
+            binding.executePendingBindings()
         }
     }
 

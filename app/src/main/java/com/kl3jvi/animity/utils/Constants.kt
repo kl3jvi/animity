@@ -32,7 +32,7 @@ class Constants {
         const val SIGNUP_URL = "https://anilist.co/signup"
 
         const val DEFAULT_COVER =
-            "https://kitsu.io/images/default_cover-22e5f56b17aeced6dc7f69c8d422a1ab.png"
+            "https://s4.anilist.co/file/anilistcdn/user/banner/n189170-XTnyb5J5KRai.jpg"
 
 
         // Model Type

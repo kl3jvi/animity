@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.ui.activities.main
 
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
-import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,12 +78,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    override fun onStart() {
-        super.onStart()
-        handleNetworkChanges()
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -102,9 +94,4 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
-
-    private fun handleNetworkChanges() {
-        isConnectedToInternet(this) { isConnected = it }
-    }
 }

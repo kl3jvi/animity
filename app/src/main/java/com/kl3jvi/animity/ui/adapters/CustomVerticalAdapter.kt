@@ -9,14 +9,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
 import com.kl3jvi.animity.utils.Constants.Companion.getVerticalAdapterBackgroundColor
 
 class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
-    ListAdapter<HomeRecyclerViewItem.AnimeVertical, CustomVerticalAdapter.ViewHolder>(MainDiffUtil<HomeRecyclerViewItem.AnimeVertical>()) {
+    ListAdapter<AnimeMetaModel, CustomVerticalAdapter.ViewHolder>(MainDiffUtil<AnimeMetaModel>()) {
 
     inner class ViewHolder(val binding: ItemTodaySelectionBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -32,7 +32,7 @@ class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
         }
 
         private fun navigateToDetails(
-            animeDetails: HomeRecyclerViewItem.AnimeVertical? = null,
+            animeDetails: AnimeMetaModel,
             view: View
         ) {
             try {
@@ -51,7 +51,7 @@ class CustomVerticalAdapter(var playButtonFlag: Boolean = true) :
             }
         }
 
-        fun bindAnimeItem(animeMetaModel: HomeRecyclerViewItem.AnimeVertical) {
+        fun bindAnimeItem(animeMetaModel: AnimeMetaModel) {
             binding.animeInfo = animeMetaModel
 
 

@@ -8,6 +8,8 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
 import com.kl3jvi.animity.utils.Constants.Companion.getHeader
 import com.kl3jvi.animity.utils.parser.HtmlParser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class SearchPagingSource(
     private val animeService: AnimeApiClient,
@@ -22,14 +24,16 @@ class SearchPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AnimeMetaModel> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val searchList = HtmlParser.parseMovie(
-                animeService.fetchSearchData(
-                    header = getHeader(),
-                    keyword = query,
-                    page = page
-                ).string(),
-                Constants.TYPE_SEARCH
-            )
+            val searchList = withContext(Dispatchers.IO) {
+                HtmlParser.parseMovie(
+                    animeService.fetchSearchData(
+                        header = getHeader(),
+                        keyword = query,
+                        page = page
+                    ).string(),
+                    Constants.TYPE_SEARCH
+                )
+            }
             LoadResult.Page(
                 data = searchList,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,

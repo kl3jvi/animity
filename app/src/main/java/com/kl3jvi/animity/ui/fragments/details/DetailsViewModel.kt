@@ -35,7 +35,8 @@ class DetailsViewModel @Inject constructor(
     private val _animeId = MutableLiveData<Int>()
 
     val animeInfo = Transformations.switchMap(_url) { string ->
-        getAnimeDetailsUseCase.fetchAnimeInfo(string).asLiveData()
+        getAnimeDetailsUseCase.fetchAnimeInfo(string)
+            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
 //    val animeId = Transformations.switchMap(_url) { string ->
@@ -54,16 +55,16 @@ class DetailsViewModel @Inject constructor(
                 info.data?.alias
             )
 
-        }.asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
     }
 
 
     val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
-        getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData()
+        getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
     val isOnDatabase = Transformations.switchMap(_url) { url ->
-        getAnimeDetailsUseCase.checkIfExists(url).asLiveData()
+        getAnimeDetailsUseCase.checkIfExists(url).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
     fun passUrl(url: String) {

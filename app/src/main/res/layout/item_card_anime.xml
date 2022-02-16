@@ -7,7 +7,7 @@
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem.Anime" />
+            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
 
         <variable
             name="clickListener"

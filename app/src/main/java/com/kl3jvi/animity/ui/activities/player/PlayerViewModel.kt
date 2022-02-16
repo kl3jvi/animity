@@ -7,13 +7,10 @@ import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.EpisodeDao
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +18,7 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
     private val episodeDao: EpisodeDao,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private var _episodeUrl = MutableLiveData<String>()
@@ -48,7 +46,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun insertOrUpdate(content: Content) {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             if (episodeDao.isEpisodeOnDatabase(content.episodeUrl) && content.watchedDuration > 0) {
                 episodeDao.updateEpisode(content)
             } else {
@@ -58,7 +56,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun getPlaybackPosition(episodeUrl: String): LiveData<Long> {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             if (episodeDao.isEpisodeOnDatabase(episodeUrl)) {
                 _playBackPosition.value = episodeDao.getEpisodeContent(episodeUrl).watchedDuration
             }

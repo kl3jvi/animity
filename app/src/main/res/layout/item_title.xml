@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_title"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/content_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:includeFontPadding="false"
-        android:padding="10dp"
-        android:textColor="@color/textColor"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text="New Season" />
-</LinearLayout>
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0dp"
+    android:includeFontPadding="false"
+    android:padding="10dp"
+    android:textColor="@color/textColor"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    tools:text="New Season" />
