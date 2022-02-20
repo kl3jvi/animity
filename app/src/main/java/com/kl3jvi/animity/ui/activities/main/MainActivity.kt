@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
     var isGuestLogin: Boolean = true
     var isConnected: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_favorites,
@@ -75,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

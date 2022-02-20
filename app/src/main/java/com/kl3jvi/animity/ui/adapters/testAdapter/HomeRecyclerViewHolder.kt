@@ -33,7 +33,7 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
 
         init {
             binding.innerRv.setRecycledViewPool(sharedViewPool)
-//            binding.root.isNestedScrollingEnabled = false
+            binding.root.isNestedScrollingEnabled = true
             binding.innerRv.adapter = horizontalAdapter
         }
 
@@ -100,4 +100,10 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         }
     }
 
+}
+
+fun <T> List<T>.second(): T {
+    if (isEmpty() || this[1] != null)
+        throw NoSuchElementException("List is empty.")
+    return this[1]
 }
