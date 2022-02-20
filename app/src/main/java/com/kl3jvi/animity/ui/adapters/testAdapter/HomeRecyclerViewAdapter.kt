@@ -48,7 +48,7 @@ class HomeRecyclerViewAdapter :
         when (holder) {
             is HomeRecyclerViewHolder.TitleViewHolder -> holder.bindTitle(getItem(position) as HomeRecyclerViewItem.Title)
             is HomeRecyclerViewHolder.HorizontalViewHolder -> holder.bindList(getItem(position) as HomeRecyclerViewItem.HorizontalAnimeWrapper)
-            is HomeRecyclerViewHolder.VerticalViewHolder -> holder.bindAnimeItem(getItem(position) as HomeRecyclerViewItem.VerticalAnimeWrapper)
+            is HomeRecyclerViewHolder.VerticalViewHolder -> holder.bindVerticalAnime(getItem(position) as HomeRecyclerViewItem.Anime)
         }
     }
 
@@ -57,9 +57,9 @@ class HomeRecyclerViewAdapter :
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position]) {
             is HomeRecyclerViewItem.HorizontalAnimeWrapper -> R.layout.item_horizontal_recycler
-            is HomeRecyclerViewItem.VerticalAnimeWrapper -> R.layout.item_today_selection
+            is HomeRecyclerViewItem.Anime -> R.layout.item_today_selection
             is HomeRecyclerViewItem.Title -> R.layout.item_title
-            else -> throw java.lang.IllegalArgumentException("saasdadsadsdasads")
+            else -> throw java.lang.IllegalArgumentException("Couldn't find a view that matches this type of data.")
         }
     }
 }

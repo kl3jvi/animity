@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.parser.HtmlParser
 
@@ -14,7 +15,7 @@ interface HomeRepository {
     suspend fun fetchPopularFromAjax(
         header: Map<String, String>,
         page: Int
-    ): HomeRecyclerViewItem.VerticalAnimeWrapper
+    ): List<HomeRecyclerViewItem.Anime>
 
     suspend fun fetchNewSeason(
         header: Map<String, String>,

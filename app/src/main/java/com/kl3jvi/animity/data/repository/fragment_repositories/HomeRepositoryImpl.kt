@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.repository.fragment_repositories
 
+import com.kl3jvi.animity.data.model.ui_models.toAnime
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
@@ -39,13 +40,11 @@ class HomeRepositoryImpl @Inject constructor(
     override suspend fun fetchPopularFromAjax(
         header: Map<String, String>,
         page: Int
-    ): HomeRecyclerViewItem.VerticalAnimeWrapper = withContext(ioDispatcher) {
-        HomeRecyclerViewItem.VerticalAnimeWrapper(
-            parser.parsePopular(
-                apiClient.fetchPopularFromAjax(header = header, page = page).string(),
-                TYPE_POPULAR_ANIME
-            )
-        )
+    ): List<HomeRecyclerViewItem.Anime> = withContext(ioDispatcher) {
+        parser.parsePopular(
+            apiClient.fetchPopularFromAjax(header = header, page = page).string(),
+            TYPE_POPULAR_ANIME
+        ).map { it.toAnime() }
     }
 
     override suspend fun fetchNewSeason(

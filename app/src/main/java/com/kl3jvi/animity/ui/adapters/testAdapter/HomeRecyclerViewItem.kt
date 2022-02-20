@@ -11,42 +11,24 @@ sealed class HomeRecyclerViewItem {
         val title: String
     ) : HomeRecyclerViewItem()
 
-//    data class Anime(
-//        var id: Int = 0,
-//        var typeValue: Int? = null,
-//        var imageUrl: String = "",
-//        var categoryUrl: String? = null,
-//        var episodeUrl: String? = null,
-//        var title: String = "",
-//        var episodeNumber: String? = null,
-//        var timestamp: Long = System.currentTimeMillis(),
-//        var insertionOrder: Int = -1,
-//        var genreList: List<GenreModel>? = null,
-//        var releasedDate: String? = null,
-//    ) : HomeRecyclerViewItem()
+    data class Anime(
+        var id: Int = 0,
+        var typeValue: Int? = null,
+        var imageUrl: String = "",
+        var categoryUrl: String? = null,
+        var episodeUrl: String? = null,
+        var title: String = "",
+        var episodeNumber: String? = null,
+        var timestamp: Long = System.currentTimeMillis(),
+        var insertionOrder: Int = -1,
+        var genreList: List<GenreModel>? = null,
+        var releasedDate: String? = null,
+    ) : HomeRecyclerViewItem()
 
     data class HorizontalAnimeWrapper(
-        val animeList: List<AnimeMetaModel>
+        val animeList: List<AnimeMetaModel>,
+        val id: Int = animeList.hashCode()
     ) : HomeRecyclerViewItem()
-
-    data class VerticalAnimeWrapper(
-        val animeList: List<AnimeMetaModel>
-    ) : HomeRecyclerViewItem()
-
-
-//    data class AnimeVertical(
-//        var id: Int = 0,
-//        var typeValue: Int? = null,
-//        var imageUrl: String = "",
-//        var categoryUrl: String? = null,
-//        var episodeUrl: String? = null,
-//        var title: String = "",
-//        var episodeNumber: String? = null,
-//        var timestamp: Long = System.currentTimeMillis(),
-//        var insertionOrder: Int = -1,
-//        var genreList: List<GenreModel>? = null,
-//        var releasedDate: String? = null,
-//    ) : HomeRecyclerViewItem()
 
 
 }

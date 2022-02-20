@@ -44,13 +44,15 @@ class GetAnimesUseCase @Inject constructor(
 
                 mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(1, "Recent Sub"))
                 mutableListOfAnimeMetaModel.add(recentSub)
+
                 mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(2, "New Season"))
                 mutableListOfAnimeMetaModel.add(newSeason)
+
                 mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(3, "Movies"))
                 mutableListOfAnimeMetaModel.add(movies)
-                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(4, "Popular"))
-                mutableListOfAnimeMetaModel.add(popular)
 
+                mutableListOfAnimeMetaModel.add(HomeRecyclerViewItem.Title(4, "Popular"))
+                mutableListOfAnimeMetaModel.addAll(popular)
 
                 emit(Resource.Success(mutableListOfAnimeMetaModel))
 

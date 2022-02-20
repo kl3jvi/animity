@@ -16,7 +16,6 @@ import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.CustomVerticalAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
@@ -37,7 +36,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private lateinit var animeCollectionResponseGlobal: ApolloResponse<AnimeListCollectionQuery.Data>
     override val viewModel: ProfileViewModel by viewModels()
     private val guestBinding: FragmentProfileGuestBinding get() = guestView()
-    private val adapter by lazy { CustomVerticalAdapter(playButtonFlag = false) }
+//    private val adapter by lazy { CustomVerticalAdapter(playButtonFlag = false) }
 
     override fun observeViewModel() {
         if (!isGuestLogin()) {

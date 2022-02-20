@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewAdapter
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.Resource
@@ -82,6 +80,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.apply {
                     mainRv.show()
                     noInternet.hide()
+                    if (mainRv.adapter?.itemCount == 0) {
+                        observeViewModel()
+                    }
                 }
             } else {
                 binding.apply {

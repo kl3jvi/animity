@@ -2,17 +2,14 @@ package com.kl3jvi.animity.ui.adapters.testAdapter
 
 import android.graphics.Color
 import android.view.View
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.chip.Chip
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.ItemHorizontalRecyclerBinding
 import com.kl3jvi.animity.databinding.ItemTitleBinding
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.ui.adapters.AnimeCardAdapter
-import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
-import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
+
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 
@@ -44,6 +41,8 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
 
     class VerticalViewHolder(val binding: ItemTodaySelectionBinding) :
         HomeRecyclerViewHolder(binding) {
+//        private val verticalAdapter = CustomVerticalAdapter()
+
         init {
             binding.setClickListener { view ->
                 binding.animeInfo?.let { animeDetails ->
@@ -56,7 +55,7 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         }
 
         private fun navigateToDetails(
-            animeDetails: AnimeMetaModel,
+            animeDetails: HomeRecyclerViewItem.Anime,
             view: View
         ) {
             try {
@@ -64,19 +63,19 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
                  * playButtonFlag = shows little play button on top of anime card view layout
                  * If playButtonFlag is false we are at profile else we are at home!
                  */
-                val direction = if (true)
-                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
-                else ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
-                    animeDetails
-                )
-                view.findNavController().navigate(direction)
+//                val direction = if (true)
+//                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeDetails)
+//                else ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
+//                    animeDetails
+//                )
+//                view.findNavController().navigate(direction)
             } catch (e: IllegalArgumentException) {
                 e.printStackTrace()
             }
         }
 
-        fun bindAnimeItem(animeMetaModel: HomeRecyclerViewItem.VerticalAnimeWrapper) {
-            val animeList = animeMetaModel.animeList.first()
+        fun bindVerticalAnime(animeList: HomeRecyclerViewItem.Anime) {
+
             binding.animeInfo = animeList
             binding.chipGroup.removeAllViews()
             val arrayOfGenres = animeList.genreList
@@ -99,11 +98,5 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
             binding.executePendingBindings()
         }
     }
-
 }
 
-fun <T> List<T>.second(): T {
-    if (isEmpty() || this[1] != null)
-        throw NoSuchElementException("List is empty.")
-    return this[1]
-}
