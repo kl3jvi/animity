@@ -1,13 +1,11 @@
 package com.kl3jvi.animity.utils.parser
 
 import android.os.Build
-import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.*
-import org.apache.commons.lang3.RandomStringUtils
+import com.kl3jvi.animity.utils.Constants
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
-import java.net.URLDecoder
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -18,6 +16,7 @@ import javax.crypto.spec.SecretKeySpec
  */
 
 object HtmlParser {
+
     fun parseRecentSubOrDub(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
         val document = Jsoup.parse(response)
@@ -26,7 +25,6 @@ object HtmlParser {
         lists?.forEach { anime ->
             val animeInfo = anime.getElementsByClass("name").first().select("a")
             val title = animeInfo.attr("title")
-            Log.e("HASHED FROM PARSER", title.lowercase(Locale.getDefault()).hashCode().toString())
             val episodeUrl = animeInfo.attr("href")
             val episodeNumber = anime.getElementsByClass("episode").first().text()
             val animeImageInfo = anime.selectFirst("a")
@@ -214,7 +212,7 @@ object HtmlParser {
 
     private fun decryptAES(encrypted: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val cipher = Cipher.getInstance("AES/CBC/NoPadding")
         val secretKey = SecretKeySpec(key.toByteArray(Charsets.UTF_8), "AES")
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ix)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -233,14 +231,15 @@ object HtmlParser {
 
     private fun encryptAes(text: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val cipher = Cipher.getInstance("AES/CBC/NoPadding")
         val secretKey = SecretKeySpec(key.toByteArray(), "AES")
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ix)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Base64.getEncoder().encodeToString(cipher.doFinal(text.toByteArray()))
+            Base64.getEncoder()
+                .encodeToString(cipher.doFinal(text.toByteArray() + Constants.GogoPadding))
         } else {
             android.util.Base64.encodeToString(
-                cipher.doFinal(text.toByteArray()),
+                cipher.doFinal(text.toByteArray() + Constants.GogoPadding),
                 android.util.Base64.DEFAULT
             )
         }
@@ -249,36 +248,20 @@ object HtmlParser {
 
     fun parseEncryptAjax(response: String): String {
         val document = Jsoup.parse(response)
-        val value6 = document.getElementsByAttributeValue("data-name", "ts").attr("data-value")
-        val value5 = document.getElementsByAttributeValue("name", "crypto").attr("content")
-        val value1 = decryptAES(
-            document.getElementsByAttributeValue("data-name", "crypto").attr("data-value"),
-            URLDecoder.decode(value6 + value6, Charsets.UTF_8.name()),
-            URLDecoder.decode(value6, Charsets.UTF_8.name())
-        )
-        val value4 = decryptAES(
-            value5,
-            URLDecoder.decode(value1, Charsets.UTF_8.name()),
-            URLDecoder.decode(value6, Charsets.UTF_8.name())
-        )
-        val value2 = RandomStringUtils.randomAlphanumeric(16)
-        val value3 = URLDecoder.decode(value4, Charsets.UTF_8.name()).toString()
-        val encrypted = encryptAes(
-            value4.removeRange(value4.indexOf("&"), value4.length),
-            URLDecoder.decode(value1, Charsets.UTF_8.name()),
-            URLDecoder.decode(value2, Charsets.UTF_8.name())
-        )
-        return "id=" + encrypted + "&time=" + "00" + value2 + "00" + value3.substring(
-            value3.indexOf(
-                "&"
-            )
-        )
+        val value2 = document.select("script[data-name='crypto']").attr("data-value")
+        val decryptkey =
+            decryptAES(value2, Constants.GogoSecretkey, Constants.GogoSecretIV).replaceAfter(
+                "&",
+                ""
+            ).removeSuffix("&")
+        val encrypted = encryptAes(decryptkey, Constants.GogoSecretkey, Constants.GogoSecretIV)
+        return "id=$encrypted"
     }
 
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
+        val info = document?.getElementsByClass("anime")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
             document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
@@ -297,8 +280,14 @@ object HtmlParser {
     fun parseEncryptedUrls(response: String): ArrayList<String> {
         val urls: ArrayList<String> = ArrayList()
         var i = 0
-        val res = JSONObject(response).getJSONArray("source")
-        Log.e("resu,", res.toString())
+        var crackit = JSONObject(response).getString("data")
+        crackit = decryptAES(
+            crackit,
+            Constants.GogoSecretkey,
+            Constants.GogoSecretIV
+        ).replace("""o"<P{#meme":""", """e":[{"file":""")
+        val res = JSONObject(crackit).getJSONArray("source")
+
         return try {
             while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
                 urls.add(res.getJSONObject(i).getString("file"))

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.adapters.testAdapter
+package com.kl3jvi.animity.ui.adapters.homeAdapter
 
 import android.graphics.Color
 import android.view.View

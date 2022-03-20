@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.kl3jvi.animity.data.model.ui_models.toAnime
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
+import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_MOVIE
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_NEW_SEASON
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_POPULAR_ANIME

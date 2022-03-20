@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewAdapter
+import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewAdapter
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.Resource

@@ -79,8 +79,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             .appendPath("v2")
             .appendPath("oauth")
             .appendPath("authorize")
-            .appendQueryParameter("client_id", ANILIST_ID)
-            .appendQueryParameter("redirect_uri", REDIRECT_URI)
+            .appendQueryParameter("client_id", anilistid)
+            .appendQueryParameter("redirect_uri", redirecturi)
             .appendQueryParameter("response_type", "code")
             .build()
     }
@@ -88,16 +88,16 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     override fun onHandleAuthIntent(intent: Intent?) {
         if (intent != null && intent.data != null) {
             val uri = intent.data
-            if (uri.toString().startsWith(REDIRECT_URI)) {
+            if (uri.toString().startsWith(redirecturi)) {
                 val authorizationToken = uri?.getQueryParameter("code")
                 Log.e("AUTH TOKEN", authorizationToken.toString())
                 if (!authorizationToken.isNullOrEmpty()) {
                     collectFlow(
                         viewModel.getAccessToken(
                             grantType = AUTH_GRANT_TYPE,
-                            clientId = ANILIST_ID.toInt(),
-                            clientSecret = ANILIST_SECRET,
-                            redirectUri = REDIRECT_URI,
+                            clientId = anilistid.toInt(),
+                            clientSecret = anilistsecret,
+                            redirectUri = redirecturi,
                             authorizationToken = authorizationToken
                         )
                     ) { state ->
