@@ -82,5 +82,6 @@
     <string name="shared_anime_image">shared_anime_image</string>
     <string name="player_settings">Player Settings</string>
     <string name="donate_creator">Donate Creator</string>
+    <string name="connecting_please_wait">Connecting, Please Wait!</string>
 
 </resources>

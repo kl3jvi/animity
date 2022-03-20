@@ -6,7 +6,7 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
-import com.kl3jvi.animity.utils.Constants.Companion.getHeader
+import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,7 +27,7 @@ class SearchPagingSource(
             val searchList = withContext(Dispatchers.IO) {
                 HtmlParser.parseMovie(
                     animeService.fetchSearchData(
-                        header = getHeader(),
+                        header = getNetworkHeader(),
                         keyword = query,
                         page = page
                     ).string(),

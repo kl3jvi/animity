@@ -20,7 +20,7 @@ class Constants {
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
-        const val BASE_URL = "https://gogoanime.fi"
+        const val BASE_URL = "https://gogoanime.gg"
         const val ANILIST_API_URL = "https://graphql.anilist.co"
 
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
@@ -31,8 +31,7 @@ class Constants {
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
         const val SIGNUP_URL = "https://anilist.co/signup"
 
-        const val DEFAULT_COVER =
-            "https://s4.anilist.co/file/anilistcdn/user/banner/n189170-XTnyb5J5KRai.jpg"
+        const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 
 
         // Model Type
@@ -54,13 +53,18 @@ class Constants {
         private const val ORIGIN = "https://streamani.io"
         const val REFERER = "https://streamani.io/"
 
-        fun getHeader(): Map<String, String> {
-            return mapOf(
-                "referer" to REFERER,
-                "origin" to ORIGIN,
-                "user-agent" to USER_AGENT
-            )
-        }
+        //        fun getHeader(): Map<String, String> {
+//            return mapOf(
+//                "referer" to REFERER,
+//                "origin" to ORIGIN,
+//                "user-agent" to USER_AGENT
+//            )
+//        }
+
+        //Gogoanime Secrets
+        const val GogoSecretkey = "25716538522938396164662278833288"
+        const val GogoSecretIV = "1285672985238393"
+        val GogoPadding = byteArrayOf(0x8, 0xe, 0x3, 0x8, 0x9, 0x3, 0x4, 0x9)
 
         fun getSafeString(string: String?) = string.toString()
 
@@ -91,7 +95,7 @@ class Constants {
                     "sec-fetch-user" to "?1",
                     "sec-fetch-mode" to "navigate",
                     "sec-fetch-dest" to "video"
-                ) + getHeader() // Adds the headers from the provider, e.g Authorization
+                ) + getNetworkHeader() // Adds the headers from the provider, e.g Authorization
                 setDefaultRequestProperties(headers)
             }
         }

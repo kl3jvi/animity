@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
     fun fetchSearchData(
-        header: Map<String, String>,
         keyword: String,
     ): Flow<PagingData<AnimeMetaModel>>
 }

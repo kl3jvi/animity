@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.use_cases.GetAnimesUseCase
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
+import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

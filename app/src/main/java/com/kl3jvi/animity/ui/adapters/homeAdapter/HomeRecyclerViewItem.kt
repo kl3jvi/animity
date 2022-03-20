@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.adapters.testAdapter
+package com.kl3jvi.animity.ui.adapters.homeAdapter
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.GenreModel

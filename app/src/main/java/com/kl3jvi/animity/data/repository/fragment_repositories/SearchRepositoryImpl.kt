@@ -21,7 +21,6 @@ class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
 
     override fun fetchSearchData(
-        header: Map<String, String>,
         keyword: String,
     ): Flow<PagingData<AnimeMetaModel>> {
         return Pager(

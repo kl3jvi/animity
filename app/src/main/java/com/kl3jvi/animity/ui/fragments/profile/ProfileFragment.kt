@@ -5,9 +5,6 @@ import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.R
@@ -17,7 +14,6 @@ import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants.Companion.DEFAULT_COVER
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.launchActivity
@@ -64,18 +60,18 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.spinner.onItemSelectedListener = this
+//        binding.spinner.onItemSelectedListener = this
     }
 
 
     private fun getProfileData() {
         observeLiveData(viewModel.profileData, viewLifecycleOwner) {
-            binding.bgImage.load(
-                if (it.data?.user?.bannerImage.isNullOrEmpty())
-                    DEFAULT_COVER
-                else
-                    it.data?.user?.bannerImage
-            )
+//            binding.bgImage.load(
+//                if (it.data?.user?.bannerImage.isNullOrEmpty())
+//                    DEFAULT_COVER
+//                else
+//                    it.data?.user?.bannerImage
+//            )
             binding.userData = it.data
         }
     }
@@ -84,11 +80,11 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
             binding.animeData = animeCollectionResponse.data
             animeCollectionResponseGlobal = animeCollectionResponse
-            val animeRecyclerView = binding.watchedAnime
-            animeRecyclerView.layoutManager = LinearLayoutManager(
-                requireContext(),
-                RecyclerView.HORIZONTAL, false
-            )
+//            val animeRecyclerView = binding.watchedAnime
+//            animeRecyclerView.layoutManager = LinearLayoutManager(
+//                requireContext(),
+//                RecyclerView.HORIZONTAL, false
+//            )
 
             animeCollectionResponse.data?.media?.lists?.toList()?.let { addSpinnerItems(it) }
 
@@ -115,7 +111,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     private fun addSpinnerItems(passedArray: List<AnimeListCollectionQuery.List?>) {
         val list = passedArray.map { it?.name }
-        val spinner = binding.spinner
+//        val spinner = binding.spinner
         val spinnerArrayAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(
                 requireContext(), R.layout.spinner_item,
@@ -123,7 +119,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
                 list
             ) //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item)
-        spinner.adapter = spinnerArrayAdapter
+//        spinner.adapter = spinnerArrayAdapter
 
 
     }
@@ -166,11 +162,11 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
             if (!isGuestLogin() && isConnected) {
-                binding.hasInternet.show()
+//                binding.hasInternet.show()
                 binding.noInternet.hide()
             } else {
                 binding.noInternet.show()
-                binding.hasInternet.hide()
+//                binding.hasInternet.hide()
             }
         }
     }

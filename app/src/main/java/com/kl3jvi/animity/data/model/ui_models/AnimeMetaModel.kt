@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
+import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

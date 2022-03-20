@@ -6,7 +6,7 @@
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem.Anime" />
+            type="com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem.Anime" />
 
 
         <variable

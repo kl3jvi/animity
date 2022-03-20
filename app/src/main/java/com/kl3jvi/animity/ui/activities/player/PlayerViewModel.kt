@@ -58,7 +58,7 @@ class PlayerViewModel @Inject constructor(
     fun getPlaybackPosition(episodeUrl: String): LiveData<Long> {
         viewModelScope.launch(ioDispatcher) {
             if (episodeDao.isEpisodeOnDatabase(episodeUrl)) {
-                _playBackPosition.value = episodeDao.getEpisodeContent(episodeUrl).watchedDuration
+                _playBackPosition.postValue(episodeDao.getEpisodeContent(episodeUrl).watchedDuration)
             }
         }
         return _playBackPosition

@@ -7,6 +7,7 @@ import com.kl3jvi.animity.data.repository.fragment_repositories.DetailsRepositor
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
         try {
             emit(Resource.Loading())
-            val response = detailsRepository.fetchAnimeInfo(Constants.getHeader(), url)
+            val response = detailsRepository.fetchAnimeInfo(getNetworkHeader(), url)
             emit(
                 Resource.Success(
                     data = response
@@ -56,7 +57,7 @@ class GetAnimeDetailsUseCase @Inject constructor(
         try {
             emit(Resource.Loading())
             val response = detailsRepository.fetchEpisodeList(
-                header = Constants.getHeader(),
+                header = getNetworkHeader(),
                 id = id ?: "",
                 endEpisode = endEpisode ?: "0",
                 alias = alias ?: ""

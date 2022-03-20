@@ -1,8 +1,9 @@
 package com.kl3jvi.animity.domain.use_cases
 
 import com.kl3jvi.animity.data.repository.fragment_repositories.HomeRepositoryImpl
-import com.kl3jvi.animity.ui.adapters.testAdapter.HomeRecyclerViewItem
+import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -25,17 +26,17 @@ class GetAnimesUseCase @Inject constructor(
 
                 val recentSubDubDeferred = async {
                     homeRepository.fetchRecentSubOrDub(
-                        Constants.getHeader(),
+                        getNetworkHeader(),
                         1,
                         Constants.TYPE_RECENT_DUB
                     )
                 }
                 val newSeasonDeferred =
-                    async { homeRepository.fetchNewSeason(Constants.getHeader(), 1) }
+                    async { homeRepository.fetchNewSeason(getNetworkHeader(), 1) }
                 val moviesDeferred =
-                    async { homeRepository.fetchMovies(Constants.getHeader(), 1) }
+                    async { homeRepository.fetchMovies(getNetworkHeader(), 1) }
                 val popularDeferred =
-                    async { homeRepository.fetchPopularFromAjax(Constants.getHeader(), 1) }
+                    async { homeRepository.fetchPopularFromAjax(getNetworkHeader(), 1) }
 
                 val recentSub = recentSubDubDeferred.await()
                 val newSeason = newSeasonDeferred.await()
