@@ -88,12 +88,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { info ->
-                        binding.expandTextView.text = info.plotSummary
+                        binding.animeInfoLayout.textOverview.text = info.plotSummary
                         binding.releaseDate.text = info.releasedTime
                         binding.status.text = info.status
                         binding.type.text = info.type
 
-                        binding.expandTextView.visibility = VISIBLE
+                        binding.animeInfoLayout.textOverview.visibility = VISIBLE
                         binding.releaseDate.visibility = VISIBLE
                         binding.status.visibility = VISIBLE
                         binding.type.visibility = VISIBLE
@@ -129,7 +129,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     }
                 }
                 is Resource.Loading -> {
-                    binding.expandTextView.visibility = GONE
+                    binding.animeInfoLayout.textOverview.visibility = GONE
                     binding.releaseDate.visibility = GONE
                     binding.status.visibility = GONE
                     binding.type.visibility = GONE

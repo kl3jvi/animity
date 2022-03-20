@@ -75,9 +75,10 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
 
     private fun observeAniList() {
-        collectFlow(viewModel.favoriteAnimesList) { animeList ->
-            val list = animeList.data?.user?.favourites?.anime?.edges?.map {
-                Log.e("HASHED",
+        collectFlow(viewModel.favoriteAnimeList) { animeList ->
+            val list = animeList?.data?.user?.favourites?.anime?.edges?.map {
+                Log.e(
+                    "HASHED",
                     it?.node?.title?.romaji?.lowercase(Locale.getDefault()).hashCode().toString()
                 )
                 AnimeMetaModel(

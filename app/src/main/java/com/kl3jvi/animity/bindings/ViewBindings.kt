@@ -26,15 +26,20 @@ object ViewBindings {
     }
 
     @JvmStatic
-    @BindingAdapter("drawable")
-    fun setImageDrawable(image: ImageView, drawable: Drawable?) {
-        if (drawable != null) {
-            GlideApp.with(image.context)
-                .load(R.drawable.ic_play_tv)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .into(image)
-        }
+    @BindingAdapter(value = ["imageUrl", "placeholder", "error"], requireAll = false)
+    fun loadImage(
+        imageView: ImageView,
+        imageUrl: String?,
+        placeholder: Drawable?,
+        error: Drawable?
+    ) {
+        imageView
+            .load(imageUrl) {
+                placeholder(placeholder)
+                error(error)
+            }
     }
+
 
     @JvmStatic
     @BindingAdapter("avatarImage")

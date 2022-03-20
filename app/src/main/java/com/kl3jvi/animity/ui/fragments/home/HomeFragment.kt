@@ -48,7 +48,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun fetchHomeData() {
         observeLiveData(viewModel.homeData, viewLifecycleOwner) { res ->
-
             when (res) {
                 is Resource.Error -> {
                     binding.mainRv.hide()

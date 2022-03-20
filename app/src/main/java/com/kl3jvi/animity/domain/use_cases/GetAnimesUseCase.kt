@@ -19,7 +19,7 @@ class GetAnimesUseCase @Inject constructor(
     private val homeRepository: HomeRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(): Flow<Resource<List<HomeRecyclerViewItem>>> = flow {
+    operator fun invoke(): Flow<Resource<List<HomeRecyclerViewItem>>> = flow {
         coroutineScope {
             try {
                 val mutableListOfAnimeMetaModel = mutableListOf<HomeRecyclerViewItem>()
