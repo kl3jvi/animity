@@ -9,12 +9,10 @@ import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,12 +29,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHomePageData() {
-        viewModelScope.launch {
-            getAnimesUseCase().flowOn(Dispatchers.IO).catch { e ->
-                e.printStackTrace()
-            }.onEach {
-                _homeData.value = it
-            }.launchIn(viewModelScope)
-        }
+
+        getAnimesUseCase().flowOn(ioDispatcher).catch { e ->
+            e.printStackTrace()
+        }.onEach {
+            _homeData.value = it
+        }.launchIn(viewModelScope)
+
     }
 }

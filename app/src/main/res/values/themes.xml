@@ -61,6 +61,21 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="TitleText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TitleText.Large">
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="EpisodeNumber">
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
 
     <style name="Theme.CastVideosTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- ... -->
@@ -120,9 +135,32 @@
     </style>
 
     <dimen name="dp_1">1dp</dimen>
+    <dimen name="text_18">18sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="text_24">24sp</dimen>
+    <dimen name="text_20">20sp</dimen>
 
     <style name="PreferenceScreen" parent="Theme.Animity">
         <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="Headline5">
+        <item name="android:textSize">@dimen/text_24</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Caption">
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
+    <style name="Headline6">
+        <item name="android:textSize">@dimen/text_20</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Body2">
+        <item name="android:textSize">@dimen/text_14</item>
     </style>
 
 </resources>

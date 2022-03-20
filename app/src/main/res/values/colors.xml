@@ -26,13 +26,15 @@
     <color name="darkBackground">#2B2C30</color>
 
     <color name="primaryGrayBackground">#2B2C30</color> <!--0f0f10 0E0E10 303135 2B2C30-->
-    <color name="primaryBlackBackground">#111111</color>
+    <color name="primaryBlackBackground">@color/colorPrimary</color>
 
     <color name="colorProgress">#048a81</color>
 
     <color name="green">#28a745</color>
     <color name="blue">#007bff</color>
-
+    <color name="darkBlue">#17293F</color>
+    <color name="yellow">#FFC42E</color>
+    <color name="grey">#A7A7A9</color>
 
     <color name="green_theme">#048a81</color>
     <color name="videoProgress">#66B5B5B5</color>

@@ -18,7 +18,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,11 +59,13 @@ class DetailsViewModel @Inject constructor(
 
 
     val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
-        getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last()).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last())
+            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
     val isOnDatabase = Transformations.switchMap(_url) { url ->
-        getAnimeDetailsUseCase.checkIfExists(url).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        getAnimeDetailsUseCase.checkIfExists(url)
+            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
     fun passUrl(url: String) {
@@ -72,10 +73,8 @@ class DetailsViewModel @Inject constructor(
         Log.e("Category URL", url)
     }
 
-    fun insert(anime: AnimeMetaModel) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {                        // Dispatchers.IO (main-safety block)
-            animeRepository.insertFavoriteAnime(anime)      // Dispatchers.IO (main-safety block)
-        }
+    fun insert(anime: AnimeMetaModel) = viewModelScope.launch(Dispatchers.IO) {
+        animeRepository.insertFavoriteAnime(anime)
     }
 
     fun updateAnimeFavorite(id: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
@@ -86,10 +85,8 @@ class DetailsViewModel @Inject constructor(
         return getAnimeDetailsFromAnilistUseCase(anime?.title.toString())
     }
 
-    fun delete(anime: AnimeMetaModel) = viewModelScope.launch {
-        withContext(Dispatchers.IO) {                   // Dispatchers.IO (main-safety block)
-            animeRepository.deleteAnime(anime)         // Dispatchers.IO (main-safety block)
-        }
+    fun delete(anime: AnimeMetaModel) = viewModelScope.launch(Dispatchers.IO) {
+        animeRepository.deleteAnime(anime)
     }
 
 }

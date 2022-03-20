@@ -14,4 +14,9 @@
     <dimen name="dp_5">5dp</dimen>
     <dimen name="dp_10">10dp</dimen>
     <dimen name="dp_32">32dp</dimen>
+    <dimen name="corner">8dp</dimen>
+    <dimen name="size_4">4dp</dimen>
+    <dimen name="page_horizontal_padding">20dp</dimen>
+    <dimen name="size_8">8dp</dimen>
+    <dimen name="size_20">20dp</dimen>
 </resources>
