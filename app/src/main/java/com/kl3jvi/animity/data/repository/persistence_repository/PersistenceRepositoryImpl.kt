@@ -18,7 +18,7 @@ class PersistenceRepositoryImpl @Inject constructor(
 
     override suspend fun updateEpisode(content: Content) = episodeDao.updateEpisode(content)
 
-    override suspend fun getEpisodeContent(episodeUrl: String): Content =
+    override suspend fun getEpisodeContent(episodeUrl: String): Flow<Content> =
         episodeDao.getEpisodeContent(episodeUrl)
 
     override suspend fun isEpisodeOnDatabase(episodeUrl: String): Boolean =
@@ -34,7 +34,7 @@ class PersistenceRepositoryImpl @Inject constructor(
     override fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>> =
         animeDao.getFavoriteAnimesList()
 
-    override suspend fun isAnimeOnDatabase(url:String): Boolean =
+    override suspend fun isAnimeOnDatabase(url: String): Boolean =
         animeDao.isAnimeOnDatabase(url)
 
     override suspend fun insertAnimeList(list: List<AnimeMetaModel>) {

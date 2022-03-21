@@ -29,7 +29,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHomePageData() {
-
         getAnimesUseCase().flowOn(ioDispatcher).catch { e ->
             e.printStackTrace()
         }.onEach {

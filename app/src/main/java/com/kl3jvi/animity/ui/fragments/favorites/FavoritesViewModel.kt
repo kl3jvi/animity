@@ -29,8 +29,10 @@ class FavoritesViewModel @Inject constructor(
     private val getUserSessionUseCase: GetUserSessionUseCase,
     private val persistenceRepository: PersistenceRepositoryImpl,
     private val userRepo: UserRepositoryImpl,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+
 ) : ViewModel() {
+
     private var _favoriteAnimeList =
         MutableStateFlow<ApolloResponse<FavoritesAnimeQuery.Data>?>(null)
     val favoriteAnimeList = _favoriteAnimeList.asStateFlow()

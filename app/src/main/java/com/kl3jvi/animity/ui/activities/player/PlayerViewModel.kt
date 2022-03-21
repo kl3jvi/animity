@@ -8,6 +8,7 @@ import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.EpisodeDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -58,7 +59,9 @@ class PlayerViewModel @Inject constructor(
     fun getPlaybackPosition(episodeUrl: String): LiveData<Long> {
         viewModelScope.launch(ioDispatcher) {
             if (episodeDao.isEpisodeOnDatabase(episodeUrl)) {
-                _playBackPosition.postValue(episodeDao.getEpisodeContent(episodeUrl).watchedDuration)
+                episodeDao.getEpisodeContent(episodeUrl).collectLatest {
+                    _playBackPosition.postValue(it.watchedDuration)
+                }
             }
         }
         return _playBackPosition

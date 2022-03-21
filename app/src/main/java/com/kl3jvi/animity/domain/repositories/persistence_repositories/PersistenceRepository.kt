@@ -10,7 +10,7 @@ interface PersistenceRepository {
 
     suspend fun updateEpisode(content: Content)
 
-    suspend fun getEpisodeContent(episodeUrl: String): Content
+    suspend fun getEpisodeContent(episodeUrl: String): Flow<Content>
 
     suspend fun isEpisodeOnDatabase(episodeUrl: String): Boolean
 

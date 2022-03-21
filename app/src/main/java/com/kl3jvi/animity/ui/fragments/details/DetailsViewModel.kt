@@ -53,8 +53,14 @@ class DetailsViewModel @Inject constructor(
                 info.data?.endEpisode,
                 info.data?.alias
             )
-
         }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
+    }
+
+    private fun getPercentageForEpisode() {
+        viewModelScope.launch(Dispatchers.IO) {
+
+        }
+
     }
 
 

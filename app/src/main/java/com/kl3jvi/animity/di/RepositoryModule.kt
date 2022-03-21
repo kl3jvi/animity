@@ -1,13 +1,15 @@
 package com.kl3jvi.animity.di
 
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
-import com.kl3jvi.animity.data.repository.fragment_repositories.DetailsRepositoryImpl
-import com.kl3jvi.animity.data.repository.fragment_repositories.HomeRepositoryImpl
 import com.kl3jvi.animity.data.repository.activity_repositories.PlayerRepositoryImpl
+import com.kl3jvi.animity.data.repository.fragment_repositories.DetailsRepositoryImpl
+import com.kl3jvi.animity.data.repository.fragment_repositories.FavoriteRepositoryImpl
+import com.kl3jvi.animity.data.repository.fragment_repositories.HomeRepositoryImpl
 import com.kl3jvi.animity.data.repository.fragment_repositories.SearchRepositoryImpl
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -53,6 +55,15 @@ object RepositoryModule {
         ioDispatcher: CoroutineDispatcher
     ): PlayerRepository {
         return PlayerRepositoryImpl(apiClient, ioDispatcher)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideFavoritesRepository(
+        apiClient: AnimeApiClient,
+        ioDispatcher: CoroutineDispatcher
+    ): FavoriteRepository {
+        return FavoriteRepositoryImpl(apiClient, ioDispatcher)
     }
 
 }

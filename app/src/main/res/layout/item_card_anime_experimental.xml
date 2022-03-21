@@ -18,65 +18,130 @@
             type="boolean" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="115dp"
         android:layout_height="220dp"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/dp_5"
+        app:cardBackgroundColor="@color/cardBackground"
+        app:cardCornerRadius="@dimen/corner">
 
-        android:onClick="@{clickListener}">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardPoster"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:cardCornerRadius="@dimen/corner"
-            app:layout_constraintDimensionRatio="9:14"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/imagePoster"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/darkBlue"
                 android:scaleType="centerCrop"
-                android:src="@color/darkBlue"
+                app:layout_constraintDimensionRatio="13:16"
                 app:error="@{@color/darkBlue}"
                 app:imageUrl="@{animeInfo.imageUrl}"
+                app:layout_constraintBottom_toTopOf="@+id/textMovieName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:placeholder="@{@color/darkBlue}" />
 
-        </androidx.cardview.widget.CardView>
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="-10dp"
-            android:background="@color/darkBlue"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardPoster">
-
             <TextView
-                android:id="@+id/textTitle"
-                style="@style/TitleText.Large"
+                android:id="@+id/textMovieName"
+                style="@style/Body2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="14dp"
-                android:text="@{animeInfo.title}"
-                tools:text="Star Wars: IV" />
-
-            <TextView
-                android:id="@+id/textVoteCount"
-                style="@style/EpisodeNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:text="@{animeInfo.episodeNumber}"
-                tools:text="2.6k reviews" />
-        </LinearLayout>
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{animeInfo.title}"
+                app:layout_constraintBottom_toTopOf="@+id/textReleaseYearAndGenres"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Mission Impossible" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textReleaseYearAndGenres"
+                style="@style/Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/size_4"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:maxLines="1"
+                android:text="@{animeInfo.episodeNumber}"
+                android:visibility="@{animeInfo.episodeNumber != null}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textMovieName"
+                tools:text="2021 Action" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:layout_width="115dp"-->
+    <!--        android:layout_height="220dp"-->
+    <!--        android:layout_margin="5dp"-->
+
+    <!--        android:onClick="@{clickListener}">-->
+
+    <!--        <androidx.cardview.widget.CardView-->
+    <!--            android:id="@+id/cardPoster"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            app:cardCornerRadius="@dimen/corner"-->
+    <!--            app:layout_constraintDimensionRatio="9:14"-->
+    <!--            app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--            <ImageView-->
+    <!--                android:id="@+id/imagePoster"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:scaleType="centerCrop"-->
+    <!--                android:src="@color/darkBlue"-->
+    <!--                app:error="@{@color/darkBlue}"-->
+    <!--                app:imageUrl="@{animeInfo.imageUrl}"-->
+    <!--                app:placeholder="@{@color/darkBlue}" />-->
+
+    <!--        </androidx.cardview.widget.CardView>-->
+
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="0dp"-->
+    <!--            android:layout_marginTop="-10dp"-->
+    <!--            android:background="@color/darkBlue"-->
+    <!--            android:orientation="vertical"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/cardPoster">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/textTitle"-->
+    <!--                style="@style/TitleText.Large"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="4dp"-->
+    <!--                android:layout_marginTop="14dp"-->
+    <!--                android:text="@{animeInfo.title}"-->
+    <!--                tools:text="Star Wars: IV" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/textVoteCount"-->
+    <!--                style="@style/EpisodeNumber"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="4dp"-->
+    <!--                android:layout_marginBottom="4dp"-->
+    <!--                android:text="@{animeInfo.episodeNumber}"-->
+    <!--                tools:text="2.6k reviews" />-->
+    <!--        </LinearLayout>-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 </layout>

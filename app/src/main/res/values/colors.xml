@@ -47,5 +47,6 @@
 
 
     <color name="dark_mode_bg">#15141F</color>
+    <color name="cardBackground">@color/darkBlue</color>
 
 </resources>
