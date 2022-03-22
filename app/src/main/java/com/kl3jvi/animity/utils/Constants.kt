@@ -43,6 +43,8 @@ class Constants {
         const val TYPE_SEARCH = 6
 
 
+        const val SAVED_STATE_KEY = "animeDetails"
+
         const val GUEST_LOGIN_TYPE = "guest"
         const val AUTHENTICATED_LOGIN_TYPE = "authenticated"
 

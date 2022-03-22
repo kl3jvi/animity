@@ -17,25 +17,25 @@ class CustomFavoriteAdapter : ListAdapter<AnimeMetaModel, CustomFavoriteAdapter.
 
     inner class ViewHolder(private val binding: ItemFavoriteAnimeBinding) :
         RecyclerView.ViewHolder(binding.root) {
-//        init {
-//            binding.setClickListener { view ->
-//                binding.animeInfo?.let {
-//                    navigateToDetails(it, view)
-//                }
-//            }
-//        }
-//
-//        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
-//            try {
-//                val direction =
-//                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-//                        animeDetails
-//                    )
-//                view.findNavController().navigate(direction)
-//            } catch (e: IllegalArgumentException) {
-//                e.printStackTrace()
-//            }
-//        }
+        init {
+            binding.setClickListener { view ->
+                binding.animeInfo?.let {
+                    navigateToDetails(it, view)
+                }
+            }
+        }
+
+        private fun navigateToDetails(animeDetails: AnimeMetaModel, view: View) {
+            try {
+                val direction =
+                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                        animeDetails
+                    )
+                view.findNavController().navigate(direction)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
+        }
 
         fun bindAnimeInfo(animeInfo: AnimeMetaModel) {
             binding.animeInfo = animeInfo

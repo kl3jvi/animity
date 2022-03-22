@@ -11,6 +11,7 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryImpl
 import com.kl3jvi.animity.data.repository.persistence_repository.PersistenceRepositoryImpl
 import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
+import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromFavoritesId
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +31,7 @@ class FavoritesViewModel @Inject constructor(
     private val persistenceRepository: PersistenceRepositoryImpl,
     private val userRepo: UserRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher,
+    private val getGogoUrlFromFavoritesId: GetGogoUrlFromFavoritesId
 
 ) : ViewModel() {
 

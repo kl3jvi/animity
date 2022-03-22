@@ -6,9 +6,11 @@ import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
 import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
+import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
+import kotlin.math.log
 
 class UserRepositoryImpl @Inject constructor(
     private val storage: LocalStorageImpl,
@@ -51,7 +53,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             apolloClient.query(SessionQuery()).toFlow()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emptyFlow<ApolloResponse<SessionQuery.Data>>()
         }
 
@@ -61,7 +63,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             apolloClient.query(UserQuery(Optional.Present(id))).toFlow()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emptyFlow<ApolloResponse<UserQuery.Data>>()
         }
     }
@@ -70,7 +72,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emptyFlow<ApolloResponse<AnimeListCollectionQuery.Data>>()
         }
     }
@@ -87,7 +89,7 @@ class UserRepositoryImpl @Inject constructor(
                 )
             ).toFlow()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emptyFlow<ApolloResponse<FavoritesAnimeQuery.Data>>()
         }
     }
@@ -96,7 +98,7 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             apolloClient.query(TrendingMediaQuery()).toFlow()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emptyFlow<ApolloResponse<TrendingMediaQuery.Data>>()
         }
     }
@@ -109,7 +111,7 @@ class UserRepositoryImpl @Inject constructor(
                 )
             ).toFlow()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emptyFlow<ApolloResponse<ToggleFavouriteMutation.Data>>()
         }
     }

@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetGogoUrlFromFavoritesId @Inject constructor(
     private val favoritesRepository: FavoriteRepository
 ) {
-    operator fun invoke() {
-//        return favoritesRepository.getGogoUrlFromAniListId()
-    }
+    operator fun invoke(id: Int) =
+        favoritesRepository.getGogoUrlFromAniListId(id)
+
 }

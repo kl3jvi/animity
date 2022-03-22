@@ -6,7 +6,6 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.data.repository.fragment_repositories.DetailsRepositoryImpl
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -54,8 +53,8 @@ class GetAnimeDetailsUseCase @Inject constructor(
         endEpisode: String?,
         alias: String?
     ): Flow<Resource<List<EpisodeModel>>> = flow {
+        emit(Resource.Loading())
         try {
-            emit(Resource.Loading())
             val response = detailsRepository.fetchEpisodeList(
                 header = getNetworkHeader(),
                 id = id ?: "",
@@ -111,6 +110,6 @@ class GetAnimeDetailsUseCase @Inject constructor(
     }.flowOn(ioDispatcher)
 
     fun checkIfExists(url: String) = flow {
-            emit(animeRepository.checkIfAnimeIsOnDatabase(url))
+        emit(animeRepository.checkIfAnimeIsOnDatabase(url))
     }.flowOn(ioDispatcher)
 }

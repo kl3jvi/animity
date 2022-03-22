@@ -137,6 +137,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 is Resource.Error -> {
 //                    showSnack(binding.root, res.message)
                 }
+                null -> {}
             }
         }
     }

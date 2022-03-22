@@ -40,7 +40,7 @@ inline fun <T> LifecycleOwner.collectFlow(
 ) {
     lifecycleScope.launchWhenStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.catch { e -> e.printStackTrace() }
+            flow.catch { e -> logError(e) }
                 .collect {
                     collector(it)
                 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.use_cases.GetAnimesUseCase
 import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
@@ -30,7 +31,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getHomePageData() {
         getAnimesUseCase().flowOn(ioDispatcher).catch { e ->
-            e.printStackTrace()
+            logError(e)
         }.onEach {
             _homeData.value = it
         }.launchIn(viewModelScope)

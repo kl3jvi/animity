@@ -82,28 +82,18 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                     it?.node?.title?.romaji?.lowercase(Locale.getDefault()).hashCode().toString()
                 )
                 AnimeMetaModel(
-                    id = it?.node?.title?.romaji?.lowercase(Locale.getDefault()).hashCode(),
+                    id = it?.node?.id ?: 0,
                     title = it?.node?.title?.userPreferred.toString(),
                     imageUrl = it?.node?.coverImage?.large.toString(),
-                    categoryUrl = "category/${
-                        it?.node?.title?.romaji
-                            .toString()
-                            .replace(" ", "-")
-                            .replace(":", "")
-                            .replace(";", "")
-                            .replace(".", "")
-                            .replace("//", "")
-                            .replace("/", "")
-                            .lowercase(Locale.getDefault())
-                    }"
+                    categoryUrl = null
                 )
             }
             if (!list.isNullOrEmpty()) {
                 favoriteAdapter.submitList(list)
-                if (!viewModel.isDataSynced()) { // Save favorites do local db for not making more requests
-                    viewModel.insertRemoteToLocalDb(list)
-                    viewModel.syncData("remote data synced")
-                }
+//                if (!viewModel.isDataSynced()) { // Save favorites do local db for not making more requests
+//                    viewModel.insertRemoteToLocalDb(list)
+//                    viewModel.syncData("remote data synced")
+//                }
                 binding.favoritesRecycler.show()
                 showLoading(false)
             } else {

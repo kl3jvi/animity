@@ -6,16 +6,15 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.MediaIdFromNameQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
-import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
-import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
-import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
-import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
+import com.kl3jvi.animity.domain.use_cases.*
 import com.kl3jvi.animity.persistence.AnimeRepository
-import com.kl3jvi.animity.persistence.EpisodeDao
+import com.kl3jvi.animity.utils.Constants.Companion.SAVED_STATE_KEY
+import com.kl3jvi.animity.utils.NetworkResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,15 +26,37 @@ class DetailsViewModel @Inject constructor(
     private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
     private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
     private val getAnimeDetailsFromAnilistUseCase: GetAnimeDetailsFromAnilistUseCase,
-    private val episodeDao: EpisodeDao
+    private val getGogoUrlFromFavoritesId: GetGogoUrlFromFavoritesId,
+    private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
     private val _animeId = MutableLiveData<Int>()
 
-    val animeInfo = Transformations.switchMap(_url) { string ->
-        getAnimeDetailsUseCase.fetchAnimeInfo(string)
-            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+    private val animeCategoryUrl = stateHandle.getLiveData<AnimeMetaModel>(SAVED_STATE_KEY)
+
+    init {
+
+        Log.e("anime info passed", animeCategoryUrl.value.toString())
+    }
+
+    val animeInfo = Transformations.switchMap(animeCategoryUrl) { animeMetaModel ->
+        if (animeMetaModel.categoryUrl.isNullOrEmpty()) {
+            getGogoUrlFromFavoritesId(animeMetaModel.id)
+                .flatMapLatest {
+                    when (it) {
+                        is NetworkResource.Failed -> emptyFlow()
+                        is NetworkResource.Success -> {
+                            getAnimeDetailsUseCase.fetchAnimeInfo(
+                                it.data.pages.data.entries.first().value.url.replace("vc","gg")
+                            )
+                        }
+                    }
+                }.asLiveData()
+        } else {
+            getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
+                .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+        }
     }
 
 //    val animeId = Transformations.switchMap(_url) { string ->
@@ -54,13 +75,6 @@ class DetailsViewModel @Inject constructor(
                 info.data?.alias
             )
         }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
-    }
-
-    private fun getPercentageForEpisode() {
-        viewModelScope.launch(Dispatchers.IO) {
-
-        }
-
     }
 
 
@@ -94,5 +108,9 @@ class DetailsViewModel @Inject constructor(
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch(Dispatchers.IO) {
         animeRepository.deleteAnime(anime)
     }
+
+//    fun getUrlFromId(id: String) {
+//        getGogoUrlFromFavoritesId(id)
+//    }
 
 }
