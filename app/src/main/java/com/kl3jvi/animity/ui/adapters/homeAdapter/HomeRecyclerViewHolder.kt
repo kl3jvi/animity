@@ -2,6 +2,7 @@ package com.kl3jvi.animity.ui.adapters.homeAdapter
 
 import android.graphics.Color
 import android.view.View
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.chip.Chip
@@ -9,6 +10,8 @@ import com.kl3jvi.animity.databinding.ItemHorizontalRecyclerBinding
 import com.kl3jvi.animity.databinding.ItemTitleBinding
 import com.kl3jvi.animity.databinding.ItemTodaySelectionBinding
 import com.kl3jvi.animity.ui.adapters.AnimeCardAdapter
+import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
+import com.kl3jvi.animity.ui.fragments.profile.ProfileFragmentDirections
 
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getColor

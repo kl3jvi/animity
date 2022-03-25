@@ -25,8 +25,8 @@ class GetAnimeDetailsUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
+        emit(Resource.Loading())
         try {
-            emit(Resource.Loading())
             val response = detailsRepository.fetchAnimeInfo(getNetworkHeader(), url)
             emit(
                 Resource.Success(

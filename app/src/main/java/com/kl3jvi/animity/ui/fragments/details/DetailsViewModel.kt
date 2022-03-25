@@ -5,17 +5,16 @@ import androidx.lifecycle.*
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.MediaIdFromNameQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
+import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.use_cases.*
 import com.kl3jvi.animity.persistence.AnimeRepository
-import com.kl3jvi.animity.utils.Constants.Companion.SAVED_STATE_KEY
 import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,37 +26,75 @@ class DetailsViewModel @Inject constructor(
     private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
     private val getAnimeDetailsFromAnilistUseCase: GetAnimeDetailsFromAnilistUseCase,
     private val getGogoUrlFromFavoritesId: GetGogoUrlFromFavoritesId,
-    private val stateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
-    private val _animeId = MutableLiveData<Int>()
 
-    private val animeCategoryUrl = stateHandle.getLiveData<AnimeMetaModel>(SAVED_STATE_KEY)
+    val animeMetaModel = MutableStateFlow<AnimeMetaModel?>(null)
 
     init {
-
-        Log.e("anime info passed", animeCategoryUrl.value.toString())
+        getAnimeInfo()
     }
 
-    val animeInfo = Transformations.switchMap(animeCategoryUrl) { animeMetaModel ->
-        if (animeMetaModel.categoryUrl.isNullOrEmpty()) {
-            getGogoUrlFromFavoritesId(animeMetaModel.id)
-                .flatMapLatest {
-                    when (it) {
-                        is NetworkResource.Failed -> emptyFlow()
-                        is NetworkResource.Success -> {
-                            getAnimeDetailsUseCase.fetchAnimeInfo(
-                                it.data.pages.data.entries.first().value.url.replace("vc","gg")
-                            )
-                        }
+
+    private val _animeInfo = MutableStateFlow<Resource<AnimeInfoModel>?>(null)
+    val animeInfo = _animeInfo.asStateFlow()
+
+
+    private val _episodeList = MutableStateFlow<Resource<List<EpisodeModel>>?>(null)
+    val episodeList = _episodeList.asStateFlow()
+
+
+    private fun getAnimeInfo() {
+        viewModelScope.launch(Dispatchers.IO) {
+            animeMetaModel.collect { animeDetails ->
+                animeDetails?.let { animeMetaModel ->
+                    if (animeDetails.categoryUrl.isNullOrEmpty()) {
+                        getGogoUrlFromFavoritesId(animeMetaModel.id).flatMapLatest { result ->
+                            when (result) {
+                                is NetworkResource.Failed -> emptyFlow()
+                                is NetworkResource.Success -> {
+                                    getAnimeDetailsUseCase.fetchAnimeInfo(
+                                        result.data.pages.data.entries.first().value.url.replace(
+                                            "vc",
+                                            "gg"
+                                        )
+                                    ).flatMapLatest { info ->
+                                        getAnimeDetailsUseCase.fetchEpisodeList(
+                                            info.data?.id,
+                                            info.data?.endEpisode,
+                                            info.data?.alias
+                                        )
+                                    }.collectLatest { _episodeList.value = it }
+
+                                    getAnimeDetailsUseCase.fetchAnimeInfo(
+                                        result.data.pages.data.entries.first().value.url.replace(
+                                            "vc",
+                                            "gg"
+                                        )
+                                    )
+                                }
+                            }
+                        }.collectLatest { _animeInfo.value = it }
+                    } else {
+                        getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
+                            .flatMapLatest { info ->
+                                getAnimeDetailsUseCase.fetchEpisodeList(
+                                    info.data?.id,
+                                    info.data?.endEpisode,
+                                    info.data?.alias
+                                )
+                            }.collectLatest { _episodeList.value = it }
+
+                        getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
+                            .collectLatest { _animeInfo.value = it }
+
                     }
-                }.asLiveData()
-        } else {
-            getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
-                .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+                }
+            }
         }
     }
+
 
 //    val animeId = Transformations.switchMap(_url) { string ->
 //        getAnimeDetailsUseCase.fetchAnimeInfo(string).flatMapLatest {
@@ -66,16 +103,20 @@ class DetailsViewModel @Inject constructor(
 //    }
 
 
-    @ExperimentalCoroutinesApi
-    val episodeList = Transformations.switchMap(_url) { list ->
-        getAnimeDetailsUseCase.fetchAnimeInfo(list).flatMapLatest { info ->
-            getAnimeDetailsUseCase.fetchEpisodeList(
-                info.data?.id,
-                info.data?.endEpisode,
-                info.data?.alias
-            )
-        }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
-    }
+//    @ExperimentalCoroutinesApi
+//    val episodeList = Transformations.switchMap(animeCategoryUrl) { animeMetaModel ->
+//        if (animeMetaModel.categoryUrl.isNullOrEmpty()) {
+//
+//        }
+//        getAnimeDetailsUseCase.fetchAnimeInfo("list").flatMapLatest { info ->
+//            getAnimeDetailsUseCase.fetchEpisodeList(
+//                info.data?.id,
+//                info.data?.endEpisode,
+//                info.data?.alias
+//            )
+//        }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
+//
+//    }
 
 
     val lastEpisodeReleaseTime = Transformations.switchMap(_url) {

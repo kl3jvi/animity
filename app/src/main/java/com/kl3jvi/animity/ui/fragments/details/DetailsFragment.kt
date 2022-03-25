@@ -18,9 +18,12 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.*
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
+import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -57,6 +60,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
         getAnilistId()
+        viewModel.animeMetaModel.value = animeDetails
+
         animeDetails.let { animeInfo ->
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) { crossfade(true) }
@@ -84,7 +89,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
 
     private fun fetchAnimeInfo() {
-        observeLiveData(viewModel.animeInfo, viewLifecycleOwner) { res ->
+        collectFlow(viewModel.animeInfo) { res ->
             when (res) {
                 is Resource.Success -> {
                     res.data?.let { info ->
@@ -201,8 +206,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
-        viewModel.episodeList.observe(viewLifecycleOwner) { episodeListResponse ->
-            episodeListResponse.data?.let { episodeList ->
+        collectFlow(viewModel.episodeList) { episodeListResponse ->
+            episodeListResponse?.data?.let { episodeList ->
                 episodeAdapter.submitList(episodeList.reversed())
                 binding.detailsProgress.visibility = GONE
                 binding.resultEpisodesText.text = "${episodeList.size} Episodes"

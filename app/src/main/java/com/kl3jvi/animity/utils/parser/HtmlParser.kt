@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.utils.parser
 
 import android.os.Build
+import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.utils.Constants
 import org.json.JSONObject
@@ -249,12 +250,12 @@ object HtmlParser {
     fun parseEncryptAjax(response: String): String {
         val document = Jsoup.parse(response)
         val value2 = document.select("script[data-name='crypto']").attr("data-value")
-        val decryptkey =
+        val decryptKey =
             decryptAES(value2, Constants.GogoSecretkey, Constants.GogoSecretIV).replaceAfter(
                 "&",
                 ""
             ).removeSuffix("&")
-        val encrypted = encryptAes(decryptkey, Constants.GogoSecretkey, Constants.GogoSecretIV)
+        val encrypted = encryptAes(decryptKey, Constants.GogoSecretkey, Constants.GogoSecretIV)
         return "id=$encrypted"
     }
 
@@ -280,13 +281,16 @@ object HtmlParser {
     fun parseEncryptedUrls(response: String): ArrayList<String> {
         val urls: ArrayList<String> = ArrayList()
         var i = 0
-        var crackit = JSONObject(response).getString("data")
-        crackit = decryptAES(
-            crackit,
-            Constants.GogoSecretkey,
+        Log.e("Response crypted", response)
+        val data = JSONObject(response).getString("data")
+        val decryptedData = decryptAES(
+            data, Constants.GogoSecretkey,
             Constants.GogoSecretIV
-        ).replace("""o"<P{#meme":""", """e":[{"file":""")
-        val res = JSONObject(crackit).getJSONArray("source")
+        ).replace(
+            """o"<P{#meme":""",
+            """e":[{"file":"""
+        )
+        val res = JSONObject(decryptedData).getJSONArray("source")
 
         return try {
             while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
