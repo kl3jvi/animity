@@ -22,5 +22,5 @@ interface UserRepository {
     fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
     fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>>
     fun getMediaId(query: String?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>>
-    fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>>
+    suspend fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>>
 }

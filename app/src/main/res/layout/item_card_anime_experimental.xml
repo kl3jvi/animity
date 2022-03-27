@@ -20,47 +20,40 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="115dp"
-        android:layout_height="220dp"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:onClick="@{clickListener}"
         app:cardBackgroundColor="@color/cardBackground"
         app:cardCornerRadius="@dimen/corner">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="250dp">
 
             <ImageView
                 android:id="@+id/imagePoster"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
                 android:background="@color/darkBlue"
                 android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="13:16"
-                app:error="@{@color/darkBlue}"
-                app:imageUrl="@{animeInfo.imageUrl}"
-                app:layout_constraintBottom_toTopOf="@+id/textMovieName"
+                app:image="@{animeInfo.imageUrl}"
+                app:layout_constraintDimensionRatio="9:16"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:placeholder="@{@color/darkBlue}" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textMovieName"
                 style="@style/Body2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginStart="@dimen/size_8"
+                android:layout_marginTop="@dimen/size_8"
+                android:layout_marginEnd="@dimen/size_8"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{animeInfo.title}"
-                app:layout_constraintBottom_toTopOf="@+id/textReleaseYearAndGenres"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagePoster"
                 tools:text="Mission Impossible" />
 
             <TextView
@@ -68,16 +61,15 @@
                 style="@style/Caption"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8"
                 android:layout_marginEnd="@dimen/size_4"
-                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
                 android:text="@{animeInfo.episodeNumber}"
-                android:visibility="@{animeInfo.episodeNumber != null}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textMovieName"
+                app:layout_constraintTop_toBottomOf="@+id/textMovieName"
                 tools:text="2021 Action" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

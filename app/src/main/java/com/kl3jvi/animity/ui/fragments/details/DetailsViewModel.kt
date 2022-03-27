@@ -1,10 +1,8 @@
 package com.kl3jvi.animity.ui.fragments.details
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.MediaIdFromNameQuery
-import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -14,10 +12,12 @@ import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
@@ -29,7 +29,6 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
-
     val animeMetaModel = MutableStateFlow<AnimeMetaModel?>(null)
 
     init {
@@ -55,23 +54,17 @@ class DetailsViewModel @Inject constructor(
                                 is NetworkResource.Failed -> emptyFlow()
                                 is NetworkResource.Success -> {
                                     getAnimeDetailsUseCase.fetchAnimeInfo(
-                                        result.data.pages.data.entries.first().value.url.replace(
-                                            "vc",
-                                            "gg"
-                                        )
+                                        result.data.pages.data.entries.first().value.url
                                     ).flatMapLatest { info ->
                                         getAnimeDetailsUseCase.fetchEpisodeList(
                                             info.data?.id,
                                             info.data?.endEpisode,
                                             info.data?.alias
                                         )
-                                    }.collectLatest { _episodeList.value = it }
+                                    }.collect { _episodeList.value = it }
 
                                     getAnimeDetailsUseCase.fetchAnimeInfo(
-                                        result.data.pages.data.entries.first().value.url.replace(
-                                            "vc",
-                                            "gg"
-                                        )
+                                        result.data.pages.data.entries.first().value.url
                                     )
                                 }
                             }
@@ -84,7 +77,7 @@ class DetailsViewModel @Inject constructor(
                                     info.data?.endEpisode,
                                     info.data?.alias
                                 )
-                            }.collectLatest { _episodeList.value = it }
+                            }.collect { _episodeList.value = it }
 
                         getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
                             .collectLatest { _animeInfo.value = it }
@@ -94,30 +87,6 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
-
-//    val animeId = Transformations.switchMap(_url) { string ->
-//        getAnimeDetailsUseCase.fetchAnimeInfo(string).flatMapLatest {
-//            getAnimeDetailsFromAnilistUseCase(1,it.data.)
-//        }.asLiveData()
-//    }
-
-
-//    @ExperimentalCoroutinesApi
-//    val episodeList = Transformations.switchMap(animeCategoryUrl) { animeMetaModel ->
-//        if (animeMetaModel.categoryUrl.isNullOrEmpty()) {
-//
-//        }
-//        getAnimeDetailsUseCase.fetchAnimeInfo("list").flatMapLatest { info ->
-//            getAnimeDetailsUseCase.fetchEpisodeList(
-//                info.data?.id,
-//                info.data?.endEpisode,
-//                info.data?.alias
-//            )
-//        }.asLiveData(Dispatchers.Default + viewModelScope.coroutineContext)
-//
-//    }
-
 
     val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
         getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last())
@@ -129,17 +98,18 @@ class DetailsViewModel @Inject constructor(
             .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
-    fun passUrl(url: String) {
-        _url.value = url
-        Log.e("Category URL", url)
+    fun passUrl(url: String) { _url.value = url
     }
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch(Dispatchers.IO) {
         animeRepository.insertFavoriteAnime(anime)
     }
 
-    fun updateAnimeFavorite(id: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
-        return markAnimeAsFavoriteUseCase(id)
+    fun updateAnimeFavorite(id: Int?) {
+        viewModelScope.launch {
+            markAnimeAsFavoriteUseCase(id)
+        }
+
     }
 
     fun getAnilistId(anime: AnimeMetaModel?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {

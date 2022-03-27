@@ -2,23 +2,21 @@ package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.AnimeListCollectionQuery
-import com.kl3jvi.animity.R
+import com.kl3jvi.animity.*
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
-import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
@@ -26,8 +24,7 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>(),
-    AdapterView.OnItemSelectedListener {
+class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
     private lateinit var animeCollectionResponseGlobal: ApolloResponse<AnimeListCollectionQuery.Data>
     override val viewModel: ProfileViewModel by viewModels()
@@ -60,19 +57,24 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.spinner.onItemSelectedListener = this
+
     }
 
 
     private fun getProfileData() {
         observeLiveData(viewModel.profileData, viewLifecycleOwner) {
-//            binding.bgImage.load(
-//                if (it.data?.user?.bannerImage.isNullOrEmpty())
-//                    DEFAULT_COVER
-//                else
-//                    it.data?.user?.bannerImage
-//            )
-            binding.userData = it.data
+            binding.profileRv.withModels {
+                profileCard {
+                    id(it.data.hashCode())
+                    bgImage(Constants.DEFAULT_COVER)
+                    userData(it.data)
+                }
+                title {
+                    id(1)
+                    title("Animes")
+                }
+
+            }
         }
     }
 
@@ -80,6 +82,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
             binding.animeData = animeCollectionResponse.data
             animeCollectionResponseGlobal = animeCollectionResponse
+
+
 //            val animeRecyclerView = binding.watchedAnime
 //            animeRecyclerView.layoutManager = LinearLayoutManager(
 //                requireContext(),
@@ -161,13 +165,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            if (!isGuestLogin() && isConnected) {
-//                binding.hasInternet.show()
-                binding.noInternet.hide()
-            } else {
-                binding.noInternet.show()
-//                binding.hasInternet.hide()
-            }
+            binding.noInternetResult.noInternet.isVisible = !isConnected
+            binding.profileRv.isVisible = isConnected
         }
     }
 
@@ -188,15 +187,5 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         }
     }
 
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-//        adapter.submitList(
-//            animeCollectionResponseGlobal.data
-//                ?.media?.lists?.first()?.entries?.mapToAnimeMetaModel()
-//        )
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("Not yet implemented")
-    }
 
 }

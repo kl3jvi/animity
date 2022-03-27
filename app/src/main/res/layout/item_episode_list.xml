@@ -24,7 +24,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="5dp"
         android:foreground="@drawable/outline_drawable"
-        app:cardBackgroundColor="@color/primaryGrayBackground"
+        app:cardBackgroundColor="@color/darkBlue"
         app:cardCornerRadius="@dimen/roundedImageRadius"
         app:cardElevation="0dp">
 

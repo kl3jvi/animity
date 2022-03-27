@@ -7,10 +7,11 @@ import com.kl3jvi.animity.*
 import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import com.kl3jvi.animity.utils.logError
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.log
 
 class UserRepositoryImpl @Inject constructor(
     private val storage: LocalStorageImpl,
@@ -103,13 +104,15 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
+    override suspend fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
         return try {
-            apolloClient.mutation(
-                ToggleFavouriteMutation(
-                    Optional.Present(animeId)
-                )
-            ).toFlow()
+            withContext(Dispatchers.IO) {
+                apolloClient.mutation(
+                    ToggleFavouriteMutation(
+                        Optional.Present(animeId)
+                    )
+                ).toFlow()
+            }
         } catch (e: Exception) {
             logError(e)
             emptyFlow<ApolloResponse<ToggleFavouriteMutation.Data>>()

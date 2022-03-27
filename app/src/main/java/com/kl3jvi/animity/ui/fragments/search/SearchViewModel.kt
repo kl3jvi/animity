@@ -8,8 +8,8 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.domain.use_cases.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,5 +27,29 @@ class SearchViewModel @Inject constructor(
             getSearchResultUseCase(queryString).cachedIn(viewModelScope).flowOn(ioDispatcher)
         currentSearchResult = newResult
         return newResult
+    }
+
+
+    private val _searchList = MutableStateFlow<PagingData<AnimeMetaModel>>(PagingData.empty())
+    val searchList = _searchList.asStateFlow()
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+
+    val queryString = MutableStateFlow("")
+
+    init {
+        searchData()
+    }
+
+    private fun searchData() {
+        viewModelScope.launch(ioDispatcher) {
+            queryString.collect { query ->
+                getSearchResultUseCase(query).cachedIn(viewModelScope).flowOn(ioDispatcher)
+                    .collect {
+                        _searchList.value = it
+                    }
+            }
+        }
     }
 }

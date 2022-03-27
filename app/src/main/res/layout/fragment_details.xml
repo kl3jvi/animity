@@ -35,13 +35,13 @@
                         android:layout_width="100dp"
                         android:layout_height="140dp"
                         android:elevation="10dp"
+                        android:transitionName="@string/anime_card_detail_transition_name"
                         app:cardCornerRadius="@dimen/roundedImageRadius">
 
                         <ImageView
                             android:id="@+id/details_poster"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:foreground="@drawable/outline_drawable"
                             android:scaleType="centerCrop" />
                     </androidx.cardview.widget.CardView>
 
@@ -294,17 +294,19 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/episode_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
         android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         tools:listitem="@layout/item_episode_list"
         tools:visibility="visible" />
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/details_progress"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"

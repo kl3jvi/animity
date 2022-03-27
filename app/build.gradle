@@ -58,6 +58,7 @@ android {
         dataBinding true
     }
 
+
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
@@ -71,6 +72,9 @@ android {
         }
     }
 
+}
+kapt {
+    correctErrorTypes = true
 }
 
 apollo {
@@ -99,7 +103,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     def livedataVersion = "2.4.1"
-    def viewModelVersion = "2.5.0-alpha04"
+    def viewModelVersion = "2.5.0-alpha05"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
@@ -114,10 +118,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.5.0-alpha04"
+    def lifecycle_version = "2.5.0-alpha05"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    def analyticsVersion = "20.1.0"
+    def analyticsVersion = "20.1.2"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
 
     def crashlyticsVersion = "18.2.9"
@@ -169,7 +173,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     //splash screen
-    def splashVersion = "1.0.0-beta01"
+    def splashVersion = "1.0.0-beta02"
     implementation "androidx.core:core-splashscreen:$splashVersion"
 
     def onesignalVersion = "4.6.2"
@@ -200,7 +204,11 @@ dependencies {
 //    def brainTree = "6.0.2"
 //    implementation "com.braintreepayments.api:drop-in:$brainTree"
 
-    implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
+    def epoxyVersion = "5.0.0-beta03"
+    implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-databinding:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
+    kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
 
 }

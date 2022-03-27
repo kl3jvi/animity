@@ -28,9 +28,9 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
-        android:elevation="@dimen/dp_8"
         android:layout_height="wrap_content"
-        android:background="@color/darkBackground"
+        android:background="@color/darkBlue"
+        android:elevation="@dimen/dp_8"
         app:itemIconTint="@color/item_text_color"
         app:itemTextColor="@color/item_text_color"
         app:labelVisibilityMode="labeled"

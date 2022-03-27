@@ -9,21 +9,18 @@ import android.view.View.VISIBLE
 import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import com.kl3jvi.animity.episodeList
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.adapters.CustomEpisodeAdapter
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
-import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.collectFlow
-import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -31,11 +28,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>() {
 
-
     override val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
-    private val episodeAdapter by lazy { CustomEpisodeAdapter(this, animeDetails.title) }
+
+    //    private val episodeAdapter by lazy { CustomEpisodeAdapter(this, animeDetails.title) }
     private lateinit var menu: Menu
     private lateinit var title: String
     private var check = false
@@ -60,15 +57,15 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
         getAnilistId()
-        viewModel.animeMetaModel.value = animeDetails
 
         animeDetails.let { animeInfo ->
+            viewModel.animeMetaModel.value = animeInfo
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) { crossfade(true) }
-                episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
+//                episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
                 title = animeInfo.title
-                episodeListRecycler.adapter = episodeAdapter
+//                episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
@@ -102,7 +99,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                         binding.releaseDate.visibility = VISIBLE
                         binding.status.visibility = VISIBLE
                         binding.type.visibility = VISIBLE
-                        binding.detailsProgress.visibility = VISIBLE
+                        binding.detailsProgress.visibility = GONE
 
                         // Check if the type is movie and this makes invisible the listview of the episodes
                         if (info.type == " Movie") {
@@ -171,32 +168,26 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 check = if (!check) {
-                    menu[1].setIcon(R.drawable.ic_favorite_complete)
-                    if (isGuestLogin()) {
+//                    if (isGuestLogin()) {
+//                        menu[1].setIcon(R.drawable.ic_favorite_complete)
 //                        viewModel.insert(anime = args.animeDetails)
-                    } else {
-                        collectFlow(viewModel.updateAnimeFavorite(anilistId)) {}
-                    }
-
-//                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
-//                        val id = idData.data?.media?.id
-//                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
+//                    } else {
+//                        viewModel.updateAnimeFavorite(anilistId)
+//                        menu[1].setIcon(R.drawable.ic_favorite_complete)
+//
 //                    }
-//                    showSnack(binding.root, "Anime added to Favorites")
+                    showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
-                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-                    if (isGuestLogin()) {
+//                    if (isGuestLogin()) {
+//                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
 //                        viewModel.delete(anime = args.animeDetails)
-                    } else {
-                        collectFlow(viewModel.updateAnimeFavorite(anilistId)) {}
-                    }
-//                    viewModel.delete(anime = args.animeDetails)
-//                    collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
-//                        val id = idData.data?.media?.id
-//                        collectFlow(viewModel.updateAnimeFavorite(id)) {}
+//                    } else {
+//                        viewModel.updateAnimeFavorite(anilistId)
+//                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+//
 //                    }
-//                    showSnack(binding.root, "Anime removed from Favorites")
+                    showSnack(binding.root, "Anime removed from Favorites")
                     false
                 }
             }
@@ -208,8 +199,16 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private fun fetchEpisodeList() {
         collectFlow(viewModel.episodeList) { episodeListResponse ->
             episodeListResponse?.data?.let { episodeList ->
-                episodeAdapter.submitList(episodeList.reversed())
                 binding.detailsProgress.visibility = GONE
+                binding.episodeListRecycler.withModels {
+                    logMessage(episodeList.toString())
+                    episodeList.forEach {
+                        episodeList {
+                            id(it.episodeNumber.hashCode())
+                            episodeInfo(it)
+                        }
+                    }
+                }
                 binding.resultEpisodesText.text = "${episodeList.size} Episodes"
                 var check = false
                 binding.imageButton.setOnClickListener {
@@ -217,13 +216,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                         binding.imageButton.load(R.drawable.ic_up_arrow) {
                             crossfade(true)
                         }
-                        episodeAdapter.submitList(episodeList)
+//                        episodeAdapter.submitList(episodeList)
                         true
                     } else {
                         binding.imageButton.load(R.drawable.ic_down_arrow) {
                             crossfade(true)
                         }
-                        episodeAdapter.submitList(episodeList.reversed())
+//                        episodeAdapter.submitList(episodeList.reversed())
                         false
                     }
                 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.domain.use_cases.GetAnimesUseCase
-import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +22,8 @@ class HomeViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private var _homeData = MutableLiveData<Resource<List<HomeRecyclerViewItem>>>()
-    var homeData: LiveData<Resource<List<HomeRecyclerViewItem>>> = _homeData
+    private var _homeData = MutableLiveData<Resource<MutableList<List<AnimeMetaModel>>>>()
+    var homeData: LiveData<Resource<MutableList<List<AnimeMetaModel>>>> = _homeData
 
     init {
         getHomePageData()

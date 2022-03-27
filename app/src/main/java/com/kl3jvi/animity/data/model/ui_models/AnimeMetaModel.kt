@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -23,19 +22,7 @@ data class AnimeMetaModel(
     @ColumnInfo var releasedDate: String? = null,
 ) : Parcelable
 
-fun AnimeMetaModel.toAnime(): HomeRecyclerViewItem.Anime {
-    return HomeRecyclerViewItem.Anime(
-        id,
-        typeValue,
-        imageUrl,
-        categoryUrl,
-        episodeUrl,
-        title,
-        episodeNumber,
-        timestamp,
-        insertionOrder
-    )
-}
+
 
 
 

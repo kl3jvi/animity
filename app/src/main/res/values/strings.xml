@@ -84,4 +84,8 @@
     <string name="donate_creator">Donate Creator</string>
     <string name="connecting_please_wait">Connecting, Please Wait!</string>
 
+    <string name="card_transition_name">anime_card_%1$s</string>
+    <string name="anime_card_detail_transition_name">anime_card_detail</string>
+
+
 </resources>
