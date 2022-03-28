@@ -61,10 +61,12 @@ fun List<AnimeMetaModel>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
 private fun List<AnimeListCollectionQuery.Entry?>.mapToAnimeMetaModel(): List<AnimeMetaModel> {
     return map { animeWatchedData ->
         AnimeMetaModel(
+            id = animeWatchedData?.media?.id ?: 0,
             title = animeWatchedData?.media?.title?.romaji.toString(),
             imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
             categoryUrl = null
         )
+
     }
 }
 

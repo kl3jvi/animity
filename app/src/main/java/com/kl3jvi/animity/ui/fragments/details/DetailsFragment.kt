@@ -38,12 +38,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private lateinit var menu: Menu
     private lateinit var title: String
     private var check = false
-    private var anilistId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -62,15 +60,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             viewModel.animeMetaModel.value = animeInfo
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) { crossfade(true) }
-//                episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
                 title = animeInfo.title
-//                episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
             }
-//            viewModel.passCategoryUrl(animeInfo.categoryUrl)
         }
     }
 

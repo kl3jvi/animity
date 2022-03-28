@@ -127,9 +127,11 @@ class DetailsViewModel @Inject constructor(
     fun getAnilistId() {
         viewModelScope.launch(Dispatchers.IO) {
             animeMetaModel.collect {
-                getAnimeDetailsFromAnilistUseCase(it?.title.toString()).collect {
-                    _anilistId.value = it.data?.media?.id ?: -1
-                }
+                getAnimeDetailsFromAnilistUseCase(it?.title.toString())
+                    .catch { e -> e.printStackTrace() }
+                    .collect {
+                        _anilistId.value = it.data?.media?.id ?: -1
+                    }
             }
         }
     }

@@ -27,7 +27,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     override fun observeViewModel() {
         if (!isGuestLogin()) {
             getProfileData()
-        }
+        } else guestViewSignIn()
     }
 
     override fun initViews() {}
@@ -47,17 +47,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        guestViewSignIn()
-    }
-
     private fun guestViewSignIn() {
-        if (isGuestLogin()) {
-            guestBinding.signInBack.setOnClickListener {
-                with(requireContext()) {
-                    launchActivity<LoginActivity> {}
-                }
+        guestBinding.signInBack.setOnClickListener {
+            with(requireContext()) {
+                launchActivity<LoginActivity> {}
             }
         }
     }

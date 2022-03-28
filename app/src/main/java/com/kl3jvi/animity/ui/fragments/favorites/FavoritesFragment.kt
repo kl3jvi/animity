@@ -48,13 +48,21 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun observeDatabase() {
+        binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
         collectFlow(viewModel.favoriteFromDatabase) { animeList ->
             binding.favoritesRecycler.withModels {
                 if (animeList.isNotEmpty()) {
-                    animeList.forEach {
+                    animeList.forEach { animeMetaModel ->
                         favoriteAnime {
-                            id(it.id)
-                            animeInfo(it)
+                            id(animeMetaModel.id)
+                            animeInfo(animeMetaModel)
+                            clickListener { _ ->
+                                val directions =
+                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                                        animeMetaModel
+                                    )
+                                findNavController().navigate(directions)
+                            }
                         }
                     }
                 }
