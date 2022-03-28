@@ -24,7 +24,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fetchHomeData()
     }
 
-
     private fun fetchHomeData() {
         observeLiveData(viewModel.homeData, viewLifecycleOwner) { result ->
             when (result) {
@@ -44,7 +43,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -69,8 +67,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onStart()
         handleNetworkChanges()
     }
-
-
 }
 
 

@@ -2,11 +2,11 @@ package com.kl3jvi.animity.ui.fragments.details
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -17,6 +17,7 @@ import com.kl3jvi.animity.episodeList
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
@@ -29,6 +30,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>() {
 
     override val viewModel: DetailsViewModel by viewModels()
+    val favoritesViewModel: FavoritesViewModel by activityViewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
 
@@ -36,12 +38,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private lateinit var menu: Menu
     private lateinit var title: String
     private var check = false
-    private var anilistId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -56,32 +56,21 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         fetchAnimeInfo()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
-        getAnilistId()
-
         animeDetails.let { animeInfo ->
             viewModel.animeMetaModel.value = animeInfo
             binding.apply {
                 detailsPoster.load(animeInfo.imageUrl) { crossfade(true) }
-//                episodeListRecycler.layoutManager = LinearLayoutManager(requireContext())
                 resultTitle.text = animeInfo.title
                 title = animeInfo.title
-//                episodeListRecycler.adapter = episodeAdapter
             }
             animeInfo.categoryUrl?.let { url ->
                 viewModel.passUrl(url)
             }
-//            viewModel.passCategoryUrl(animeInfo.categoryUrl)
         }
     }
 
     override fun initViews() {
 
-    }
-
-    private fun getAnilistId() {
-//        collectFlow(viewModel.getAnilistId(anime = args.animeDetails)) { idData ->
-//            anilistId = idData.data?.media?.id
-//        }
     }
 
 
@@ -152,14 +141,28 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     }
 
     private fun observeDatabase() {
-        viewModel.isOnDatabase.observe(viewLifecycleOwner) {
-            if (it) Log.e("Exists", "on Database")
-            else Log.e("Does Not", "on Database")
-            check = it
-            if (!check) {
-                menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-            } else {
-                menu[1].setIcon(R.drawable.ic_favorite_complete)
+        if (isGuestLogin()) {
+            viewModel.isOnDatabase.observe(viewLifecycleOwner) {
+                check = it
+                if (!check) {
+                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                } else {
+                    menu[1].setIcon(R.drawable.ic_favorite_complete)
+                }
+            }
+        } else {
+            collectFlow(favoritesViewModel.favoriteAniListAnimeList) {
+                check = it?.data?.user?.favourites?.anime?.edges?.any {
+                    it?.node?.id == animeDetails.id || it?.node?.title?.romaji.equals(
+                        animeDetails.title,
+                        true
+                    )
+                } ?: false
+                if (!check) {
+                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                } else {
+                    menu[1].setIcon(R.drawable.ic_favorite_complete)
+                }
             }
         }
     }
@@ -168,25 +171,23 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 check = if (!check) {
-//                    if (isGuestLogin()) {
-//                        menu[1].setIcon(R.drawable.ic_favorite_complete)
-//                        viewModel.insert(anime = args.animeDetails)
-//                    } else {
-//                        viewModel.updateAnimeFavorite(anilistId)
-//                        menu[1].setIcon(R.drawable.ic_favorite_complete)
-//
-//                    }
+                    if (isGuestLogin()) {
+                        viewModel.insert(anime = args.animeDetails)
+                        menu[1].setIcon(R.drawable.ic_favorite_complete)
+                    } else {
+                        viewModel.updateAnimeFavorite()
+                        menu[1].setIcon(R.drawable.ic_favorite_complete)
+                    }
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
-//                    if (isGuestLogin()) {
-//                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-//                        viewModel.delete(anime = args.animeDetails)
-//                    } else {
-//                        viewModel.updateAnimeFavorite(anilistId)
-//                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-//
-//                    }
+                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    if (isGuestLogin()) {
+                        viewModel.delete(anime = args.animeDetails)
+                    } else {
+                        viewModel.updateAnimeFavorite()
+                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    }
                     showSnack(binding.root, "Anime removed from Favorites")
                     false
                 }

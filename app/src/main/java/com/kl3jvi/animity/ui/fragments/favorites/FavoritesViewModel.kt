@@ -40,7 +40,7 @@ class FavoritesViewModel @Inject constructor(
     private val _favoriteFromDatabase = MutableStateFlow(emptyList<AnimeMetaModel>())
     val favoriteFromDatabase = _favoriteFromDatabase.asStateFlow()
 
-    val isGuestLogin = MutableStateFlow(false)
+    val shouldRefresh = MutableStateFlow(true)
 
     init {
         getFavoriteAnimes()
@@ -48,8 +48,8 @@ class FavoritesViewModel @Inject constructor(
 
     private fun getFavoriteAnimes() {
         viewModelScope.launch(Dispatchers.IO) {
-            isGuestLogin.collect { isGuestLogin ->
-                if (!isGuestLogin) {
+            shouldRefresh.collect { shouldRefresh ->
+                if (shouldRefresh) {
                     getUserSessionUseCase().flatMapLatest {
                         getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
                     }.flowOn(ioDispatcher)
@@ -57,25 +57,12 @@ class FavoritesViewModel @Inject constructor(
                         .collect {
                             _favoriteAniListAnimeList.value = it
                         }
-                } else {
-                    animeRepository.getFavoriteAnimes.collect {
-                        _favoriteFromDatabase.value = it
-                    }
+                }
+                animeRepository.getFavoriteAnimes.collect {
+                    _favoriteFromDatabase.value = it
                 }
             }
         }
     }
 
-
-    fun insertRemoteToLocalDb(list: List<AnimeMetaModel>) = viewModelScope.launch {
-        persistenceRepository.insertAnimeList(list)
-    }
-
-    fun isDataSynced(): Boolean {
-        return userRepo.isFavoritesSynced
-    }
-
-    fun syncData(sync: String?) {
-        userRepo.setSyncData(sync)
-    }
 }

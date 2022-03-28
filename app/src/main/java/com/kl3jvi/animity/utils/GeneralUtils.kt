@@ -18,11 +18,11 @@ fun View.show() {
 }
 
 fun logError(throwable: Throwable) {
-    Log.d("ApiError", "-------------------------------------------------------------------")
-    Log.d("ApiError", "safeApiCall: " + throwable.localizedMessage)
-    Log.d("ApiError", "safeApiCall: " + throwable.message)
+    Log.e("ApiError", "-------------------------------------------------------------------")
+    Log.e("ApiError", "safeApiCall: " + throwable.localizedMessage)
+    Log.e("ApiError", "safeApiCall: " + throwable.message)
     throwable.printStackTrace()
-    Log.d("ApiError", "-------------------------------------------------------------------")
+    Log.e("ApiError", "-------------------------------------------------------------------")
 }
 
 fun logMessage(string: String?) {

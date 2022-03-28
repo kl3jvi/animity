@@ -14,7 +14,7 @@ class HeaderInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         proceed(
             request().newBuilder()
-                .addHeader("Authorization", "Bearer ${localStorage.bearerToken}")
+                .addHeader("Authorization", "Bearer ${localStorage.bearerToken.orEmpty()}")
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .build()

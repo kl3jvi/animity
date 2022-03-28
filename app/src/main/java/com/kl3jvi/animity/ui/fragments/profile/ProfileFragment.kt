@@ -2,43 +2,32 @@ package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
-import com.kl3jvi.animity.profileCard
-import com.kl3jvi.animity.title
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
-    private lateinit var animeCollectionResponseGlobal: ApolloResponse<AnimeListCollectionQuery.Data>
     override val viewModel: ProfileViewModel by viewModels()
     private val guestBinding: FragmentProfileGuestBinding get() = guestView()
-//    private val adapter by lazy { CustomVerticalAdapter(playButtonFlag = false) }
 
     override fun observeViewModel() {
         if (!isGuestLogin()) {
             getProfileData()
-            getAnimeListProfileData()
-        }
+        } else guestViewSignIn()
     }
 
     override fun initViews() {}
@@ -58,91 +47,20 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        guestViewSignIn()
-    }
-
     private fun guestViewSignIn() {
-        if (isGuestLogin()) {
-            guestBinding.signInBack.setOnClickListener {
-                with(requireContext()) {
-                    launchActivity<LoginActivity> {}
-                }
+        guestBinding.signInBack.setOnClickListener {
+            with(requireContext()) {
+                launchActivity<LoginActivity> {}
             }
         }
     }
-
 
     private fun getProfileData() {
-        observeLiveData(viewModel.profileData, viewLifecycleOwner) {
+        observeLiveData(viewModel.profileData, viewLifecycleOwner) { userData ->
             observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
-
-                binding.profileRv.withModels {
-                    profileCard {
-                        id(it.data.hashCode())
-                        bgImage(Constants.DEFAULT_COVER)
-                        userData(it.data)
-                    }
-                    title {
-                        id(1)
-                        title("Animes")
-                    }
-
-
-                }
+                binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
             }
         }
-    }
-
-    private fun getAnimeListProfileData() {
-        observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
-            binding.animeData = animeCollectionResponse.data
-            animeCollectionResponseGlobal = animeCollectionResponse
-
-
-//            val animeRecyclerView = binding.watchedAnime
-//            animeRecyclerView.layoutManager = LinearLayoutManager(
-//                requireContext(),
-//                RecyclerView.HORIZONTAL, false
-//            )
-
-            animeCollectionResponse.data?.media?.lists?.toList()?.let { addSpinnerItems(it) }
-
-//            when (binding.spinner.selectedItem.toString()) {
-//                "Watching" -> {
-//                    adapter.submitList(
-//                        animeCollectionResponse.data?.media?.lists?.first()
-//                            ?.entries?.mapToAnimeMetaModel()
-//                    )
-//                    animeRecyclerView.adapter = adapter
-//                }
-//                "Planning" -> {
-//                    adapter.submitList(
-//                        animeCollectionResponse.data?.media?.lists?.last()
-//                            ?.entries?.mapToAnimeMetaModel()
-//                    )
-//                    animeRecyclerView.adapter = adapter
-//                }
-//            }
-
-        }
-    }
-
-
-    private fun addSpinnerItems(passedArray: List<AnimeListCollectionQuery.List?>) {
-        val list = passedArray.map { it?.name }
-//        val spinner = binding.spinner
-        val spinnerArrayAdapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(
-                requireContext(), R.layout.spinner_item,
-                R.id.textView2,
-                list
-            ) //selected item will look like a spinner set from XML
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item)
-//        spinner.adapter = spinnerArrayAdapter
-
-
     }
 
     override fun getViewBinding(): FragmentProfileBinding =
@@ -184,23 +102,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
             binding.noInternetResult.noInternet.isVisible = !isConnected
             binding.profileRv.isVisible = isConnected
-        }
-    }
-
-
-    private fun List<AnimeListCollectionQuery.Entry?>.mapToAnimeMetaModel(): List<AnimeMetaModel> {
-        return map { animeWatchedData ->
-            AnimeMetaModel(
-                title = animeWatchedData?.media?.title?.romaji.toString(),
-                imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
-                categoryUrl = "category/${
-                    animeWatchedData?.media?.title?.romaji
-                        .toString()
-                        .replace(" ", "-")
-                        .replace(":", "")
-                        .lowercase(Locale.getDefault())
-                }"
-            )
         }
     }
 

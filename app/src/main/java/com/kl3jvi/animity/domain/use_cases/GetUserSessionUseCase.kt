@@ -15,6 +15,11 @@ class GetUserSessionUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
     operator fun invoke(): Flow<ApolloResponse<SessionQuery.Data>> {
-        return user.getSessionForUser().flowOn(ioDispatcher)
+        return try {
+            user.getSessionForUser().flowOn(ioDispatcher)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            user.getSessionForUser().flowOn(ioDispatcher)
+        }
     }
 }

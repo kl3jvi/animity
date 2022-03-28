@@ -17,7 +17,7 @@ object ViewBindings {
 
     @JvmStatic
     @BindingAdapter("image")
-    fun setImage(image: ImageView, url: String?) {
+    fun provideImageBinding(image: ImageView, url: String?) {
         if (!url.isNullOrEmpty()) {
             GlideApp.with(image.context)
                 .load(url)

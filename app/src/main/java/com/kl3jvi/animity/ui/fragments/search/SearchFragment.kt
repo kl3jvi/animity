@@ -15,6 +15,7 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.viewBinding
+import com.kl3jvi.animity.utils.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -41,15 +42,16 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun initViews() {
         binding.apply {
-            binding.searchRecycler.setController(pagingController)
+            searchRecycler.setController(pagingController)
             mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
+                    search(newText)
                     return false
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    search(query)
-                    return true
+//                    search(query)
+                    return false
                 }
             })
         }
@@ -69,15 +71,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                 launch { viewModel.queryString.value = query }
 
                 launch {
-                    viewModel.searchList.collect { animeData ->
+                    collectLatestFlow(viewModel.searchList) { animeData ->
                         pagingController.submitData(animeData)
                     }
                 }
-
             }
         }
     }

@@ -86,13 +86,15 @@
         <entry key="app/src/main/res/layout/item_horizontal_rv.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_list_recycler_view.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/item_list_with_header.xml" value="0.33645833333333336" />
+        <entry key="app/src/main/res/layout/item_no_anime.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/item_no_internet.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/item_profile_card.xml" value="0.109375" />
         <entry key="app/src/main/res/layout/item_profile_header.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/item_profile_header1.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/item_search_layout.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/layout/item_title.xml" value="0.2703125" />
         <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
-        <entry key="app/src/main/res/layout/item_vertical.xml" value="0.15416666666666667" />
+        <entry key="app/src/main/res/layout/item_vertical.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_no_internet.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/search_layout.xml" value="0.27019498607242337" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.37604166666666666" />

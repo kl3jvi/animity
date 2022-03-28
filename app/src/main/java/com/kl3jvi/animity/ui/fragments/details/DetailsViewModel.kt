@@ -1,8 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.details
 
 import androidx.lifecycle.*
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.MediaIdFromNameQuery
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -10,6 +8,7 @@ import com.kl3jvi.animity.domain.use_cases.*
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,8 +30,13 @@ class DetailsViewModel @Inject constructor(
     private val _url = MutableLiveData<String>()
     val animeMetaModel = MutableStateFlow<AnimeMetaModel?>(null)
 
+
+    private val _anilistId = MutableStateFlow<Int>(-1)
+    private val anilistId = _anilistId.asStateFlow()
+
     init {
         getAnimeInfo()
+        getAnilistId()
     }
 
 
@@ -81,7 +85,6 @@ class DetailsViewModel @Inject constructor(
 
                         getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
                             .collectLatest { _animeInfo.value = it }
-
                     }
                 }
             }
@@ -98,22 +101,39 @@ class DetailsViewModel @Inject constructor(
             .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
     }
 
-    fun passUrl(url: String) { _url.value = url
+    private fun isFavoriteFromAnilist() {
+
+    }
+
+    fun passUrl(url: String) {
+        _url.value = url
     }
 
     fun insert(anime: AnimeMetaModel) = viewModelScope.launch(Dispatchers.IO) {
         animeRepository.insertFavoriteAnime(anime)
     }
 
-    fun updateAnimeFavorite(id: Int?) {
+    fun updateAnimeFavorite() {
         viewModelScope.launch {
-            markAnimeAsFavoriteUseCase(id)
+            anilistId.collect {
+                if (it != -1)
+                    markAnimeAsFavoriteUseCase(it).catch { error -> logError(error) }.collect {}
+            }
         }
 
     }
 
-    fun getAnilistId(anime: AnimeMetaModel?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
-        return getAnimeDetailsFromAnilistUseCase(anime?.title.toString())
+
+    fun getAnilistId() {
+        viewModelScope.launch(Dispatchers.IO) {
+            animeMetaModel.collect {
+                getAnimeDetailsFromAnilistUseCase(it?.title.toString())
+                    .catch { e -> e.printStackTrace() }
+                    .collect {
+                        _anilistId.value = it.data?.media?.id ?: -1
+                    }
+            }
+        }
     }
 
     fun delete(anime: AnimeMetaModel) = viewModelScope.launch(Dispatchers.IO) {

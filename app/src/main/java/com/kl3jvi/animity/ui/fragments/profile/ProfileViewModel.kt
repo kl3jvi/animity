@@ -6,8 +6,10 @@ import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryIm
 import com.kl3jvi.animity.domain.use_cases.GetAnimeListForProfileUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserDataUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
+import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
@@ -24,11 +26,15 @@ class ProfileViewModel @Inject constructor(
         userRepositoryImpl.clearStorage()
     }
 
-    val profileData = userSession().flatMapLatest {
-        userData(it.data?.viewer?.id)
-    }.asLiveData()
+    val profileData = userSession()
+        .catch { e -> logError(e) }
+        .flatMapLatest {
+            userData(it.data?.viewer?.id)
+        }.asLiveData()
 
-    val animeList = userSession().flatMapLatest {
-        animeListUseCase(it.data?.viewer?.id)
-    }.asLiveData()
+    val animeList = userSession()
+        .catch { e -> logError(e) }
+        .flatMapLatest {
+            animeListUseCase(it.data?.viewer?.id)
+        }.asLiveData()
 }

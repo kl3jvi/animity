@@ -111,9 +111,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     override fun onTokenResponse(response: AuthResponse) {
-        val token: String = response.accessToken
-        Log.e("Token", token)
-        if (token.isNotEmpty()) {
+        val token: String? = response.accessToken
+        if (!token.isNullOrEmpty()) {
             viewModel.saveToken(token)
             launchActivity<MainActivity> {
                 putExtra("loginType", AUTHENTICATED_LOGIN_TYPE)
@@ -121,7 +120,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             finish()
             return
         }
-//        showSnack(binding.root, "Couldn't Login!!")
+        showSnack(binding.root, "Couldn't Login!!")
     }
 
     private fun initViews() {
