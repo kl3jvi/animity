@@ -40,7 +40,7 @@ fun EpoxyController.buildHome(listOfAnimes: MutableList<List<AnimeMetaModel>>) {
     }
     listOfAnimes[3].forEach {
         vertical {
-            id(8)
+            id(it.id)
             clickListener { view ->
                 val direction =
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(

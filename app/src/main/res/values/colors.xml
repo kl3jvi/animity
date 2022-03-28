@@ -33,6 +33,7 @@
     <color name="green">#28a745</color>
     <color name="blue">#007bff</color>
     <color name="darkBlue">#17293F</color>
+    <color name="darkBlueTransparent">#DB17293F</color>
     <color name="yellow">#FFC42E</color>
     <color name="grey">#A7A7A9</color>
 

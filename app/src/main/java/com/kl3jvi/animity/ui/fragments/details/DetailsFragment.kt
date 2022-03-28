@@ -205,11 +205,18 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     episodeList.forEach {
                         episodeList {
                             id(it.episodeNumber.hashCode())
+                            clickListener { _ ->
+                                requireContext().launchActivity<PlayerActivity> {
+                                    putExtra(Constants.EPISODE_DETAILS, it)
+                                    putExtra(Constants.ANIME_TITLE, animeDetails.title)
+                                }
+                            }
                             episodeInfo(it)
                         }
                     }
                 }
-                binding.resultEpisodesText.text = "${episodeList.size} Episodes"
+                binding.resultEpisodesText.text =
+                    requireContext().getString(R.string.total_episodes, episodeList.size.toString())
                 var check = false
                 binding.imageButton.setOnClickListener {
                     check = if (!check) {

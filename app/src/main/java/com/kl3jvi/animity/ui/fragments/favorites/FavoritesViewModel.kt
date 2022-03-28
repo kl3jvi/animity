@@ -1,9 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.FavoritesAnimeQuery
@@ -25,7 +23,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    animeRepository: AnimeRepository,
+    private val animeRepository: AnimeRepository,
     private val getFavoriteAnimesUseCase: GetFavoriteAnimesUseCase,
     private val getUserSessionUseCase: GetUserSessionUseCase,
     private val persistenceRepository: PersistenceRepositoryImpl,
@@ -35,12 +33,14 @@ class FavoritesViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private var _favoriteAnimeList =
+    private var _favoriteAniListAnimeList =
         MutableStateFlow<ApolloResponse<FavoritesAnimeQuery.Data>?>(null)
-    val favoriteAnimeList = _favoriteAnimeList.asStateFlow()
+    val favoriteAniListAnimeList = _favoriteAniListAnimeList.asStateFlow()
 
-    val favoriteFromDatabase: LiveData<List<AnimeMetaModel>> =
-        animeRepository.getFavoriteAnimes.asLiveData(ioDispatcher + viewModelScope.coroutineContext)
+    private val _favoriteFromDatabase = MutableStateFlow(emptyList<AnimeMetaModel>())
+    val favoriteFromDatabase = _favoriteFromDatabase.asStateFlow()
+
+    val isGuestLogin = MutableStateFlow(false)
 
     init {
         getFavoriteAnimes()
@@ -48,13 +48,21 @@ class FavoritesViewModel @Inject constructor(
 
     private fun getFavoriteAnimes() {
         viewModelScope.launch(Dispatchers.IO) {
-            getUserSessionUseCase().flatMapLatest {
-                getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
-            }.flowOn(ioDispatcher)
-                .catch { e -> Log.e("Error", e.message.orEmpty()) }
-                .collect {
-                    _favoriteAnimeList.value = it
+            isGuestLogin.collect { isGuestLogin ->
+                if (!isGuestLogin) {
+                    getUserSessionUseCase().flatMapLatest {
+                        getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
+                    }.flowOn(ioDispatcher)
+                        .catch { e -> Log.e("Error", e.message.orEmpty()) }
+                        .collect {
+                            _favoriteAniListAnimeList.value = it
+                        }
+                } else {
+                    animeRepository.getFavoriteAnimes.collect {
+                        _favoriteFromDatabase.value = it
+                    }
                 }
+            }
         }
     }
 

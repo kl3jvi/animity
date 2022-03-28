@@ -3,6 +3,7 @@ package com.kl3jvi.animity.ui.activities.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -24,6 +25,7 @@ import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
+import me.ibrahimsn.lib.SmoothBottomBar
 
 
 @AndroidEntryPoint

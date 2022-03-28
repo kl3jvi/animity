@@ -6,10 +6,13 @@ import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.*
+import com.kl3jvi.animity.AnimeListCollectionQuery
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
+import com.kl3jvi.animity.profileCard
+import com.kl3jvi.animity.title
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
@@ -57,23 +60,37 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        guestViewSignIn()
+    }
 
+    private fun guestViewSignIn() {
+        if (isGuestLogin()) {
+            guestBinding.signInBack.setOnClickListener {
+                with(requireContext()) {
+                    launchActivity<LoginActivity> {}
+                }
+            }
+        }
     }
 
 
     private fun getProfileData() {
         observeLiveData(viewModel.profileData, viewLifecycleOwner) {
-            binding.profileRv.withModels {
-                profileCard {
-                    id(it.data.hashCode())
-                    bgImage(Constants.DEFAULT_COVER)
-                    userData(it.data)
-                }
-                title {
-                    id(1)
-                    title("Animes")
-                }
+            observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
 
+                binding.profileRv.withModels {
+                    profileCard {
+                        id(it.data.hashCode())
+                        bgImage(Constants.DEFAULT_COVER)
+                        userData(it.data)
+                    }
+                    title {
+                        id(1)
+                        title("Animes")
+                    }
+
+
+                }
             }
         }
     }

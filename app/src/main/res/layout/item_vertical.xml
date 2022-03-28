@@ -19,9 +19,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardBackground"
-        android:onClick="@{clickListener}"
         android:layout_marginBottom="@dimen/dp_5"
+        android:background="@color/cardBackground"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:onClick="@{clickListener}"
         android:paddingStart="@dimen/size_12"
         android:paddingEnd="@dimen/size_12"
         android:paddingBottom="@dimen/size_12">
@@ -85,9 +86,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
-                app:list_to_string="@{animeInfo.genreList}"
                 android:ellipsize="end"
                 android:maxLines="1"
+                app:list_to_string="@{animeInfo.genreList}"
                 tools:text="Action, Adventure" />
 
 
