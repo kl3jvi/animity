@@ -27,7 +27,6 @@ enum class Title(val title: String) {
     NEW_SEASON(title = "New Season"),
     MOVIES(title = "Movies"),
     POPULAR(title = "Popular")
-
 }
 
 fun List<AnimeMetaModel>.modelCardAnime(): List<CardAnimeBindingModel_> {

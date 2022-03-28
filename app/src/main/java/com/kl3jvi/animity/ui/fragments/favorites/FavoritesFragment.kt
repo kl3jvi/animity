@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
@@ -77,10 +78,17 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {
                 if (!list.isNullOrEmpty()) {
-                    list.forEach {
+                    list.forEach { animeMetaModel ->
                         favoriteAnime {
-                            id(it.id)
-                            animeInfo(it)
+                            id(animeMetaModel.id)
+                            clickListener { _ ->
+                                val directions =
+                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                                        animeMetaModel
+                                    )
+                                findNavController().navigate(directions)
+                            }
+                            animeInfo(animeMetaModel)
                         }
                     }
                 }
