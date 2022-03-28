@@ -22,13 +22,13 @@
 
 ## Screenshots
 
-[<img src="assets/asset1.jpg" height="400">](assets/asset1.jpg)
-[<img src="assets/asset2.jpg" height="400">](assets/asset2.jpg)
-[<img src="assets/asset3.jpg" height="400">](assets/asset3.jpg)
-[<img src="assets/asset5.jpg" height="400">](assets/asset5.jpg)
-[<img src="assets/asset6.jpg" height="400">](assets/asset6.jpg)
-[<img src="assets/asset7.jpg" height="400">](assets/asset7.jpg)
-[<img src="assets/asset8.jpg" height="400">](assets/asset8.jpg)
+[<img src="assets/asset1.png" height="400">](assets/asset1.png)
+[<img src="assets/asset2.png" height="400">](assets/asset2.png)
+[<img src="assets/asset3.png" height="400">](assets/asset3.png)
+[<img src="assets/asset5.png" height="400">](assets/asset5.png)
+[<img src="assets/asset6.png" height="400">](assets/asset6.png)
+<!-- [<img src="assets/asset7.png" height="400">](assets/asset7.png) -->
+
 
 ## Description
 
