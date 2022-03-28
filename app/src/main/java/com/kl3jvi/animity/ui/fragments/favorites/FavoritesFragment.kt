@@ -24,7 +24,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     private val viewModel: FavoritesViewModel by viewModels()
     private val binding: FragmentFavoritesBinding by viewBinding()
-
+    private var shouldRefreshFavorites: Boolean = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
@@ -37,8 +37,9 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initViews() {
-        viewModel.isGuestLogin.value = isGuestLogin()
         binding.swipeLayout.setOnRefreshListener {
+            shouldRefreshFavorites = !shouldRefreshFavorites
+            viewModel.shouldRefresh.value = shouldRefreshFavorites
             if (!isGuestLogin())
                 observeAniList()
             else

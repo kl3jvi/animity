@@ -26,11 +26,11 @@ class SearchRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { SearchPagingSource(apiClient, keyword) }
-        ).flow.flowOn(ioDispatcher)
+        ).flow
     }
 
     companion object {
-        const val NETWORK_PAGE_SIZE = 20
+        const val NETWORK_PAGE_SIZE = 50
     }
 
 }

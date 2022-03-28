@@ -27,6 +27,7 @@
         android:paddingEnd="@dimen/size_12"
         android:paddingBottom="@dimen/size_12">
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardPoster"
             android:layout_width="0dp"

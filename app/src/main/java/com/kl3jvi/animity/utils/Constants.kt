@@ -6,6 +6,7 @@ import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
 import com.kl3jvi.animity.BuildConfig
+import java.util.*
 
 class Constants {
     companion object {
@@ -114,6 +115,11 @@ class Constants {
         fun getNetworkHeader(): Map<String, String> {
             return mapOf("referer" to REFERER, "origin" to ORIGIN, "user-agent" to USER_AGENT)
         }
+
+        fun randomId(): String {
+            return UUID.randomUUID().toString()
+        }
+
     }
 }
 

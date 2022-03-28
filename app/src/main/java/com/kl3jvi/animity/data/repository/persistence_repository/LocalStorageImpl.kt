@@ -26,6 +26,7 @@ class LocalStorageImpl @Inject constructor(
         set(value) {
             setData(GUEST_TOKEN, value)
         }
+
     override var isDataSynced: String?
         get() = getData(FIRST_REMOTE_DATA_SAVE)
         set(value) {

@@ -21,6 +21,7 @@ class PagingSearchController : PagingDataEpoxyController<AnimeMetaModel>() {
                 } catch (e: Exception) {
                     logError(e)
                 }
-            }.animeInfo(item)
+            }
+            .animeInfo(item)
     }
 }

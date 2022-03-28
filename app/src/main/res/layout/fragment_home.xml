@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.home.HomeFragment">
 
-    <include android:id="@+id/noInternetStatus" layout="@layout/layout_no_internet"/>
+    <include android:id="@+id/noInternetStatus" layout="@layout/item_no_internet"/>
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/mainRv"
