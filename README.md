@@ -22,11 +22,11 @@
 
 ## Screenshots
 
-[<img src="assets/asset1.png" height="400">](assets/asset1.png)
-[<img src="assets/asset2.png" height="400">](assets/asset2.png)
-[<img src="assets/asset3.png" height="400">](assets/asset3.png)
-[<img src="assets/asset5.png" height="400">](assets/asset5.png)
-[<img src="assets/asset6.png" height="400">](assets/asset6.png)
+[<img src="assets/asset1.png" width=23%>](assets/asset1.png)
+[<img src="assets/asset2.png" width=23%>](assets/asset2.png)
+[<img src="assets/asset3.png" width=23%>](assets/asset3.png)
+[<img src="assets/asset5.png" width=23%>](assets/asset5.png)
+[<img src="assets/asset6.png" width=23%>](assets/asset6.png)
 <!-- [<img src="assets/asset7.png" height="400">](assets/asset7.png) -->
 
 
