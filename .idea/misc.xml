@@ -71,16 +71,17 @@
         <entry key="app/src/main/res/layout/fragment_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.15743243243243243" />
         <entry key="app/src/main/res/layout/fragment_profile_guest.xml" value="0.24270833333333333" />
-        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.2921686746987952" />
         <entry key="app/src/main/res/layout/fragment_video_player_placeholder.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/item_anime_details.xml" value="0.30185185185185187" />
         <entry key="app/src/main/res/layout/item_big_card_layout.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_card_anime.xml" value="0.75" />
-        <entry key="app/src/main/res/layout/item_card_anime_experimental.xml" value="0.4946889226100152" />
-        <entry key="app/src/main/res/layout/item_episode_list.xml" value="0.3497536945812808" />
+        <entry key="app/src/main/res/layout/item_card_anime.xml" value="0.4933920704845815" />
+        <entry key="app/src/main/res/layout/item_card_anime_experimental.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/item_episode_list.xml" value="0.2572944297082228" />
         <entry key="app/src/main/res/layout/item_episode_number.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_favorite_anime.xml" value="0.375" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/layout/item_header_details.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/layout/item_horizontal_recycler.xml" value="0.2703125" />
         <entry key="app/src/main/res/layout/item_horizontal_rv.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_list_recycler_view.xml" value="0.24270833333333333" />
@@ -88,10 +89,12 @@
         <entry key="app/src/main/res/layout/item_profile_card.xml" value="0.109375" />
         <entry key="app/src/main/res/layout/item_profile_header.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/item_profile_header1.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/layout/item_search_layout.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/layout/item_title.xml" value="0.2703125" />
         <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/item_vertical.xml" value="0.15416666666666667" />
         <entry key="app/src/main/res/layout/layout_no_internet.xml" value="0.24270833333333333" />
-        <entry key="app/src/main/res/layout/search_layout.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/search_layout.xml" value="0.27019498607242337" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/test_fragment.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/video_ripple.xml" value="0.25" />

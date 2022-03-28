@@ -1,49 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingStart="@dimen/page_horizontal_padding"
-    android:paddingEnd="@dimen/size_8">
+<layout>
 
+    <data>
 
-    <!--        <ImageButton-->
-    <!--            android:id="@+id/buttonBookmark"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:background="?selectableItemBackground"-->
-    <!--            android:padding="@dimen/size_8"-->
-    <!--            android:src="@drawable/selector_bookmark"-->
-    <!--            app:layout_constraintBottom_toBottomOf="@+id/textMovieName"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toEndOf="@+id/textMovieName"-->
-    <!--            app:layout_constraintTop_toTopOf="@+id/textMovieName" />-->
+        <variable
+            name="synopsis"
+            type="String" />
+    </data>
 
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/textGenres"-->
-    <!--        style="@style/Caption"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/size_8"-->
-    <!--        android:textColor="@color/grey"-->
-    <!--        tools:text="Action, Science Fictions, Adventure" />-->
-
-    <TextView
-        style="@style/Headline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_20"
-        android:text="@string/synopsis" />
-
-    <TextView
-        android:id="@+id/textOverview"
-        style="@style/Body2"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_8"
-        android:paddingBottom="@dimen/size_8"
-        tools:text="As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain." />
+        android:orientation="vertical"
+        android:paddingStart="@dimen/page_horizontal_padding"
+        android:paddingEnd="@dimen/size_8">
 
-</LinearLayout>
+
+        <TextView
+            style="@style/Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_20"
+            android:text="@string/synopsis" />
+
+        <TextView
+            android:id="@+id/textOverview"
+            style="@style/Body2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:paddingBottom="@dimen/size_8"
+            tools:text="As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain." />
+
+    </LinearLayout>
+</layout>

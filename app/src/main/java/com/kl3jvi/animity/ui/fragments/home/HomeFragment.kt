@@ -2,19 +2,15 @@ package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewAdapter
 import com.kl3jvi.animity.ui.base.viewBinding
+import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.Resource
-import com.kl3jvi.animity.utils.hide
-import com.kl3jvi.animity.utils.observeLiveData
-import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,43 +19,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     val viewModel: HomeViewModel by viewModels()
     val binding: FragmentHomeBinding by viewBinding()
 
-    private val mainAdapter by lazy { HomeRecyclerViewAdapter() }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
         fetchHomeData()
     }
 
-    private fun initViews() {
-        // recent sub adapter
-        val recyclerView = binding.mainRv
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            isNestedScrollingEnabled = false
-            setHasFixedSize(true)
-            adapter = mainAdapter
-        }
-    }
 
     private fun fetchHomeData() {
-        observeLiveData(viewModel.homeData, viewLifecycleOwner) { res ->
-            when (res) {
+        observeLiveData(viewModel.homeData, viewLifecycleOwner) { result ->
+            when (result) {
                 is Resource.Error -> {
-                    binding.mainRv.hide()
+                    logMessage(result.message)
+                    binding.loadingIndicator.hide()
                 }
                 is Resource.Loading -> {
-                    binding.mainRv.hide()
                     binding.loadingIndicator.show()
                 }
                 is Resource.Success -> {
-                    binding.loadingIndicator.hide()
-                    binding.mainRv.show()
-                    mainAdapter.submitList(res.data)
+                    result.data?.let { listOfAnimes ->
+                        binding.loadingIndicator.isVisible = listOfAnimes.isEmpty()
+                        binding.mainRv.withModels { buildHome(listOfAnimes) }
+                    }
                 }
             }
         }
@@ -75,18 +55,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            if (isConnected) {
-                binding.apply {
-                    mainRv.show()
-                    noInternet.hide()
-                    if (mainRv.adapter?.itemCount == 0) {
-                        observeViewModel()
-                    }
-                }
-            } else {
-                binding.apply {
-                    noInternet.show()
-                    mainRv.hide()
+            binding.apply {
+                mainRv.isVisible = isConnected
+                noInternetStatus.noInternet.isVisible = !isConnected
+                if (mainRv.adapter?.itemCount == 0) {
+                    fetchHomeData()
                 }
             }
         }
@@ -99,3 +72,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
 }
+
+

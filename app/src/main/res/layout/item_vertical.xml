@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="animeInfo"
+            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:background="@color/cardBackground"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:onClick="@{clickListener}"
+        android:paddingStart="@dimen/size_12"
+        android:paddingEnd="@dimen/size_12"
+        android:paddingBottom="@dimen/size_12">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardPoster"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/poster_height"
+            android:layout_marginTop="@dimen/size_12"
+            app:cardCornerRadius="@dimen/corner_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="9:16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imagePoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                android:src="@color/colorPrimary"
+                app:image="@{animeInfo.imageUrl}" />
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:id="@+id/layoutContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_12"
+            android:layout_marginTop="@dimen/size_4"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardPoster"
+            app:layout_constraintTop_toTopOf="@+id/cardPoster">
+
+            <TextView
+                android:id="@+id/textTitle"
+                style="@style/Headline6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{animeInfo.title}"
+                tools:text="Star Wars: IV" />
+
+            <TextView
+                android:id="@+id/textReleaseDate"
+                style="@style/Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8"
+                android:text="@{animeInfo.episodeNumber}"
+                android:textColor="@color/green_theme"
+                tools:text="2022-03-17" />
+
+            <TextView
+                android:id="@+id/textGenres"
+                style="@style/Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_8"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:list_to_string="@{animeInfo.genreList}"
+                tools:text="Action, Adventure" />
+
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

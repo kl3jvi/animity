@@ -1,6 +1,13 @@
 package com.kl3jvi.animity.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.View
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.core.content.res.use
 
 fun View.hide() {
     visibility = View.GONE
@@ -9,3 +16,30 @@ fun View.hide() {
 fun View.show() {
     visibility = View.VISIBLE
 }
+
+fun logError(throwable: Throwable) {
+    Log.d("ApiError", "-------------------------------------------------------------------")
+    Log.d("ApiError", "safeApiCall: " + throwable.localizedMessage)
+    Log.d("ApiError", "safeApiCall: " + throwable.message)
+    throwable.printStackTrace()
+    Log.d("ApiError", "-------------------------------------------------------------------")
+}
+
+fun logMessage(string: String?) {
+    Log.e("Error Happened", "-------------------------------------------------------------------")
+    Log.e("Error Happened", "--->: ${string.orEmpty()}")
+    Log.e("Error Happened", "-------------------------------------------------------------------")
+}
+
+@ColorInt
+@SuppressLint("Recycle")
+fun Context.themeColor(
+    @AttrRes themeAttrId: Int
+): Int {
+    return obtainStyledAttributes(
+        intArrayOf(themeAttrId)
+    ).use {
+        it.getColor(0, Color.MAGENTA)
+    }
+}
+

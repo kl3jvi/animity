@@ -31,7 +31,7 @@
         android:elevation="5dp"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        app:cardBackgroundColor="@color/itemBackground"
+        app:cardBackgroundColor="@color/darkBlue"
         app:cardCornerRadius="@dimen/roundedImageRadius">
 
         <androidx.cardview.widget.CardView

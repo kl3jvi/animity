@@ -1,9 +1,8 @@
 package com.kl3jvi.animity.data.repository.fragment_repositories
 
-import com.kl3jvi.animity.data.model.ui_models.toAnime
+import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
-import com.kl3jvi.animity.ui.adapters.homeAdapter.HomeRecyclerViewItem
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_MOVIE
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_NEW_SEASON
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_POPULAR_ANIME
@@ -27,47 +26,41 @@ class HomeRepositoryImpl @Inject constructor(
         header: Map<String, String>,
         page: Int,
         type: Int
-    ): HomeRecyclerViewItem.HorizontalAnimeWrapper = withContext(ioDispatcher) {
-        HomeRecyclerViewItem.HorizontalAnimeWrapper(
-            parser.parseRecentSubOrDub(
-                apiClient.fetchRecentSubOrDub(header = header, page = page, type = type).string(),
-                TYPE_RECENT_SUB
-            )
+    ): List<AnimeMetaModel> = withContext(ioDispatcher) {
+        parser.parseRecentSubOrDub(
+            apiClient.fetchRecentSubOrDub(header = header, page = page, type = type).string(),
+            TYPE_RECENT_SUB
         )
-
     }
 
     override suspend fun fetchPopularFromAjax(
         header: Map<String, String>,
         page: Int
-    ): List<HomeRecyclerViewItem.Anime> = withContext(ioDispatcher) {
+    ): List<AnimeMetaModel> = withContext(ioDispatcher) {
         parser.parsePopular(
             apiClient.fetchPopularFromAjax(header = header, page = page).string(),
             TYPE_POPULAR_ANIME
-        ).map { it.toAnime() }
+        )
     }
 
     override suspend fun fetchNewSeason(
         header: Map<String, String>,
         page: Int
-    ): HomeRecyclerViewItem.HorizontalAnimeWrapper = withContext(ioDispatcher) {
-        HomeRecyclerViewItem.HorizontalAnimeWrapper(
-            parser.parseMovie(
-                apiClient.fetchNewSeason(header = header, page = page).string(),
-                TYPE_NEW_SEASON
-            )
+    ): List<AnimeMetaModel> = withContext(ioDispatcher) {
+        parser.parseMovie(
+            apiClient.fetchNewSeason(header = header, page = page).string(),
+            TYPE_NEW_SEASON
         )
     }
 
     override suspend fun fetchMovies(
         header: Map<String, String>,
         page: Int
-    ): HomeRecyclerViewItem.HorizontalAnimeWrapper = withContext(ioDispatcher) {
-        HomeRecyclerViewItem.HorizontalAnimeWrapper(
-            parser.parseMovie(
-                apiClient.fetchMovies(header = header, page = page).string(),
-                TYPE_MOVIE
-            )
+    ): List<AnimeMetaModel> = withContext(ioDispatcher) {
+        parser.parseMovie(
+            apiClient.fetchMovies(header = header, page = page).string(),
+            TYPE_MOVIE
         )
+
     }
 }

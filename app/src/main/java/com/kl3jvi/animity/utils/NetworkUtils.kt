@@ -65,4 +65,6 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
             observer(it)
         }
     }
+
+
 }

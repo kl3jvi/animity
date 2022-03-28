@@ -33,10 +33,10 @@ android {
 
     buildTypes {
         release {
-//            minifyEnabled true
-//            shrinkResources true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
             signingConfig signingConfigs.release
         }
     }
@@ -58,6 +58,7 @@ android {
         dataBinding true
     }
 
+
     packagingOptions {
         exclude 'META-INF/atomicfu.kotlin_module'
     }
@@ -70,7 +71,10 @@ android {
             universalApk true
         }
     }
-    
+
+}
+kapt {
+    correctErrorTypes = true
 }
 
 apollo {
@@ -99,11 +103,11 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     def livedataVersion = "2.4.1"
-    def viewModelVersion = "2.5.0-alpha02"
+    def viewModelVersion = "2.5.0-alpha05"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.5.0-alpha02"
+    def navigationComponentVersion = "2.5.0-alpha03"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
@@ -114,13 +118,13 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.5.0-alpha02"
+    def lifecycle_version = "2.5.0-alpha05"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    def analyticsVersion = "20.0.2"
+    def analyticsVersion = "20.1.2"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
 
-    def crashlyticsVersion = "18.2.7"
+    def crashlyticsVersion = "18.2.9"
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
 
     // Hilt DI
@@ -131,7 +135,7 @@ dependencies {
 
     // Retrofit
     def retrofitVersion = "2.9.0"
-    def interceptor_version = "5.0.0-alpha.2"
+    def interceptor_version = "5.0.0-alpha.4"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
@@ -141,12 +145,12 @@ dependencies {
     implementation "org.jsoup:jsoup:$jsoupVersion"
 
     //Room Library
-    def room_version = "2.4.1"
+    def room_version = "2.4.2"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     //Video Player
-    def exoplayerVersion = "2.16.1"
+    def exoplayerVersion = "2.17.1"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-cast:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
@@ -169,7 +173,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     //splash screen
-    def splashVersion = "1.0.0-beta01"
+    def splashVersion = "1.0.0-beta02"
     implementation "androidx.core:core-splashscreen:$splashVersion"
 
     def onesignalVersion = "4.6.2"
@@ -179,7 +183,7 @@ dependencies {
     implementation "org.apache.commons:commons-text:$textUtilsVersion"
 
     // paging 3
-    def paginationVersion = "3.1.0"
+    def paginationVersion = "3.1.1"
     implementation "androidx.paging:paging-runtime-ktx:$paginationVersion"
 
     // browser
@@ -200,7 +204,11 @@ dependencies {
 //    def brainTree = "6.0.2"
 //    implementation "com.braintreepayments.api:drop-in:$brainTree"
 
-    implementation "androidx.metrics:metrics-performance:1.0.0-alpha01"
+    def epoxyVersion = "5.0.0-beta03"
+    implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-databinding:$epoxyVersion"
+    implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
+    kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
 
 }

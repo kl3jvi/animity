@@ -5,6 +5,7 @@ import com.kl3jvi.animity.data.repository.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -35,7 +36,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
             Log.e("response", response.toString())
             emit(Resource.Success(data = response.last()))
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emit(Resource.Error("Couldn't find a Stream for this Anime"))
         }
     }.flowOn(ioDispatcher)
@@ -48,7 +49,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
             val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
             emit(Resource.Success(data = streamUrl))
         } catch (e: Exception) {
-            e.printStackTrace()
+            logError(e)
             emit(Resource.Error("Couldn't find a Stream for this Anime"))
         }
     }.flowOn(ioDispatcher)

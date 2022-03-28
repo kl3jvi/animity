@@ -57,4 +57,6 @@ class AnimeApiClient @Inject constructor(
 
     suspend fun fetchM3u8PreProcessor(header: Map<String, String>, url: String) =
         animeService.fetchM3u8PreProcessor(header, url)
+
+    suspend fun getGogoUrlFromAniListId(id: Int) = animeService.getGogoUrlFromAniListId(id)
 }

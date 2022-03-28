@@ -19,4 +19,7 @@
     <dimen name="page_horizontal_padding">20dp</dimen>
     <dimen name="size_8">8dp</dimen>
     <dimen name="size_20">20dp</dimen>
+    <dimen name="size_12">12dp</dimen>
+    <dimen name="poster_height">120dp</dimen>
+    <dimen name="corner_small">4dp</dimen>
 </resources>

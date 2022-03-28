@@ -12,7 +12,7 @@ class MarkAnimeAsFavoriteUseCase @Inject constructor(
     private val userRepositoryImpl: UserRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
+    suspend operator fun invoke(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
         return userRepositoryImpl.markAnimeAsFavorite(animeId = animeId).flowOn(ioDispatcher)
     }
 }

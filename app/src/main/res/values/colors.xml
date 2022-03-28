@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryLight">#373737</color>
-    <color name="colorPrimary">#111111</color>
+    <color name="colorPrimaryLight">#121e2d</color>
+    <color name="colorPrimary">#121e2d</color>
     <color name="colorPrimaryDark">#000000</color>
 
     <color name="teal_200">#FF03DAC5</color>
@@ -33,6 +33,7 @@
     <color name="green">#28a745</color>
     <color name="blue">#007bff</color>
     <color name="darkBlue">#17293F</color>
+    <color name="darkBlueTransparent">#DB17293F</color>
     <color name="yellow">#FFC42E</color>
     <color name="grey">#A7A7A9</color>
 
@@ -47,5 +48,6 @@
 
 
     <color name="dark_mode_bg">#15141F</color>
+    <color name="cardBackground">@color/darkBlue</color>
 
 </resources>

@@ -19,10 +19,10 @@ class ProfileViewModel @Inject constructor(
     private val userRepositoryImpl: UserRepositoryImpl,
     private val animeListUseCase: GetAnimeListForProfileUseCase
 ) : ViewModel() {
+
     fun clearStorage() {
         userRepositoryImpl.clearStorage()
     }
-
 
     val profileData = userSession().flatMapLatest {
         userData(it.data?.viewer?.id)
