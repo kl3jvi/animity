@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.api.ApolloResponse
@@ -12,6 +11,8 @@ import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
 import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromFavoritesId
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
+import com.kl3jvi.animity.utils.logError
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -48,16 +49,15 @@ class FavoritesViewModel @Inject constructor(
 
     private fun getFavoriteAnimes() {
         viewModelScope.launch(Dispatchers.IO) {
-            shouldRefresh.collect { shouldRefresh ->
-                if (shouldRefresh) {
-                    getUserSessionUseCase().flatMapLatest {
-                        getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
-                    }.flowOn(ioDispatcher)
-                        .catch { e -> Log.e("Error", e.message.orEmpty()) }
-                        .collect {
-                            _favoriteAniListAnimeList.value = it
-                        }
-                }
+            shouldRefresh.collectLatest { t ->
+                logMessage(t.toString())
+                getUserSessionUseCase().flatMapLatest {
+                    getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
+                }.flowOn(ioDispatcher)
+                    .catch { e -> logError(e) }
+                    .collect {
+                        _favoriteAniListAnimeList.value = it
+                    }
                 animeRepository.getFavoriteAnimes.collect {
                     _favoriteFromDatabase.value = it
                 }

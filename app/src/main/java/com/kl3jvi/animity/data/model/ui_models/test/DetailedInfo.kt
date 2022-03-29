@@ -5,45 +5,45 @@ import com.google.gson.annotations.SerializedName
 
 data class DetailedAnimeInfo(
     @SerializedName("Pages")
-    val pages: Pages,
+    val pages: Pages?,
 )
 
 data class Pages(
     @SerializedName("Gogoanime")
-    val data: Map<String, SubInfo>
+    val data: Map<String, SubInfo>?
 )
 
 data class SubInfo(
     @SerializedName("active")
-    val active: Boolean,
+    val active: Boolean?,
     @SerializedName("actor")
-    val actor: Any,
+    val actor: Any?,
     @SerializedName("aniId")
-    val aniId: Int,
+    val aniId: Int?,
     @SerializedName("createdAt")
-    val createdAt: String,
+    val createdAt: String?,
     @SerializedName("deletedAt")
-    val deletedAt: Any,
+    val deletedAt: Any?,
     @SerializedName("hentai")
-    val hentai: Boolean,
+    val hentai: Boolean?,
     @SerializedName("identifier")
-    val identifier: String,
+    val identifier: String?,
     @SerializedName("image")
-    val image: String,
+    val image: String?,
     @SerializedName("malId")
-    val malId: Int,
+    val malId: Int?,
     @SerializedName("page")
-    val page: String,
+    val page: String?,
     @SerializedName("sticky")
-    val sticky: Boolean,
+    val sticky: Boolean?,
     @SerializedName("title")
-    val title: String,
+    val title: String?,
     @SerializedName("type")
-    val type: String,
+    val type: String?,
     @SerializedName("updatedAt")
-    val updatedAt: String,
+    val updatedAt: String?,
     @SerializedName("url")
-    val url: String
+    val url: String?
 )
 
 

@@ -15,6 +15,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.isGuestLogin
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -38,8 +39,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     private fun initViews() {
         binding.swipeLayout.setOnRefreshListener {
-            shouldRefreshFavorites = !shouldRefreshFavorites
+            logMessage("$shouldRefreshFavorites 1")
             viewModel.shouldRefresh.value = shouldRefreshFavorites
+            shouldRefreshFavorites = !shouldRefreshFavorites
+            logMessage("$shouldRefreshFavorites 2")
+
+
             if (!isGuestLogin())
                 observeAniList()
             else
@@ -83,6 +88,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                     categoryUrl = null
                 )
             }
+
 
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {

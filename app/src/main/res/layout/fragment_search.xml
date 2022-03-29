@@ -64,7 +64,11 @@
         android:paddingEnd="10dp"
         android:paddingBottom="5dp"
         android:visibility="visible"
-        tools:listitem="@layout/item_search_layout" />
+        tools:listitem="@layout/item_search_layout"
+        tools:visibility="gone">
+
+    </com.airbnb.epoxy.EpoxyRecyclerView>
+
 
 
     <TextView

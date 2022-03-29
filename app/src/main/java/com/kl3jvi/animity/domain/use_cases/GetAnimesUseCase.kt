@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.domain.use_cases
 
 import com.kl3jvi.animity.data.repository.fragment_repositories.HomeRepositoryImpl
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetAnimesUseCase @Inject constructor(
-    private val homeRepository: HomeRepositoryImpl,
+    private val homeRepository: HomeRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
     operator fun invoke() = flow {

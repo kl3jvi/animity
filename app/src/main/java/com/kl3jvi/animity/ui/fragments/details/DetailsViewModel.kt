@@ -30,7 +30,6 @@ class DetailsViewModel @Inject constructor(
     private val _url = MutableLiveData<String>()
     val animeMetaModel = MutableStateFlow<AnimeMetaModel?>(null)
 
-
     private val _anilistId = MutableStateFlow<Int>(-1)
     private val anilistId = _anilistId.asStateFlow()
 
@@ -57,31 +56,16 @@ class DetailsViewModel @Inject constructor(
                             when (result) {
                                 is NetworkResource.Failed -> emptyFlow()
                                 is NetworkResource.Success -> {
-                                    getAnimeDetailsUseCase.fetchAnimeInfo(
-                                        result.data.pages.data.entries.first().value.url
-                                    ).flatMapLatest { info ->
-                                        getAnimeDetailsUseCase.fetchEpisodeList(
-                                            info.data?.id,
-                                            info.data?.endEpisode,
-                                            info.data?.alias
-                                        )
-                                    }.collect { _episodeList.value = it }
+                                    fetchEpisodeList(result.data.pages?.data?.entries?.first()?.value?.url.orEmpty())
 
                                     getAnimeDetailsUseCase.fetchAnimeInfo(
-                                        result.data.pages.data.entries.first().value.url
+                                        result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
                                     )
                                 }
                             }
                         }.collectLatest { _animeInfo.value = it }
                     } else {
-                        getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
-                            .flatMapLatest { info ->
-                                getAnimeDetailsUseCase.fetchEpisodeList(
-                                    info.data?.id,
-                                    info.data?.endEpisode,
-                                    info.data?.alias
-                                )
-                            }.collect { _episodeList.value = it }
+                        fetchEpisodeList(animeMetaModel.categoryUrl.orEmpty())
 
                         getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
                             .collectLatest { _animeInfo.value = it }
@@ -91,6 +75,20 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    private fun fetchEpisodeList(url: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
+                getAnimeDetailsUseCase.fetchEpisodeList(
+                    info.data?.id,
+                    info.data?.endEpisode,
+                    info.data?.alias
+                )
+            }.catch { e -> logError(e) }
+                .collect { _episodeList.value = it }
+        }
+    }
+
+
     val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
         getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last())
             .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
@@ -99,10 +97,6 @@ class DetailsViewModel @Inject constructor(
     val isOnDatabase = Transformations.switchMap(_url) { url ->
         getAnimeDetailsUseCase.checkIfExists(url)
             .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
-    }
-
-    private fun isFavoriteFromAnilist() {
-
     }
 
     fun passUrl(url: String) {

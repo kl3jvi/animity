@@ -8,7 +8,6 @@ import com.kl3jvi.animity.*
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.randomId
-import java.util.*
 
 
 fun EpoxyController.buildProfile(
@@ -66,7 +65,6 @@ private fun List<AnimeListCollectionQuery.Entry?>.mapToAnimeMetaModel(): List<An
             imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
             categoryUrl = null
         )
-
     }
 }
 

@@ -58,6 +58,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private fun getProfileData() {
         observeLiveData(viewModel.profileData, viewLifecycleOwner) { userData ->
             observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
+                val hasNoData = animeCollectionResponse.data?.media?.lists?.isEmpty() == true
+                binding.progressBar.isVisible = hasNoData
+                binding.profileRv.isVisible = !hasNoData
                 binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
             }
         }

@@ -21,7 +21,11 @@ abstract class NetworkBoundRepository<RESULT> {
         if (!response.isSuccessful && body == null)
             emit(NetworkResource.Failed<RESULT>(response.message()))
         else if (body != null) {
-            emit(NetworkResource.Success<RESULT>(body))
+            try {
+                emit(NetworkResource.Success<RESULT>(body))
+            } catch (e: Exception) {
+                logError(e)
+            }
         }
     }.catch { e ->
         logError(e)

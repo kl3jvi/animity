@@ -67,7 +67,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
 
     private fun search(query: String) {
-        // Make sure we cancel the previous job before creating a new one
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
