@@ -49,7 +49,6 @@
                 app:image="@{animeInfo.coverImage.large}" />
         </androidx.cardview.widget.CardView>
 
-
         <LinearLayout
             android:id="@+id/layoutContent"
             android:layout_width="0dp"

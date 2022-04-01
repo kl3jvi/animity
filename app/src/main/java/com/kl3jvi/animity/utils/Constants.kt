@@ -31,6 +31,7 @@ class Constants {
         const val REFRESH_GRANT_TYPE = "refresh_token"
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
         const val SIGNUP_URL = "https://anilist.co/signup"
+        const val MAL_SYNC_URL = "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
 
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 

@@ -3,6 +3,7 @@ package com.kl3jvi.animity.data.network.anime_service
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_SCHEDULE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_LOAD_URL
+import com.kl3jvi.animity.utils.Constants.Companion.MAL_SYNC_URL
 import com.kl3jvi.animity.utils.Constants.Companion.SEARCH_URL
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -85,7 +86,7 @@ interface AnimeService {
         @Path("episodeUrl") episodeUrl: String
     ): ResponseBody
 
-    @GET("https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime/{id}.json")
+    @GET("$MAL_SYNC_URL/{id}.json")
     suspend fun getGogoUrlFromAniListId(
         @Path("id") id: Int = 1
     ): Response<DetailedAnimeInfo>

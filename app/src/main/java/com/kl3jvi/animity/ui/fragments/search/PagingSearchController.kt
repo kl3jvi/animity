@@ -14,9 +14,9 @@ class PagingSearchController : PagingDataEpoxyController<AnimeMetaModel>() {
             .clickListener { view ->
                 try {
                     item?.let {
-                        val directions =
-                            SearchFragmentDirections.actionNavigationExploreToNavigationDetails(item)
-                        view.findNavController().navigate(directions)
+//                        val directions =
+//                            SearchFragmentDirections.actionNavigationExploreToNavigationDetails(item)
+//                        view.findNavController().navigate(directions)
                     }
                 } catch (e: Exception) {
                     logError(e)

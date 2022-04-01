@@ -47,11 +47,11 @@ fun List<AnimeMetaModel>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
         CardAnimeBindingModel_()
             .id(animeMetaModel.id)
             .clickListener { view ->
-                val direction =
-                    ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
-                        animeMetaModel
-                    )
-                view.findNavController().navigate(direction)
+//                val direction =
+//                    ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
+//                        animeMetaModel
+//                    )
+//                view.findNavController().navigate(direction)
             }
     }
 }

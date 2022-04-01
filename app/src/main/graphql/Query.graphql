@@ -201,7 +201,6 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
                         id
                         title {
                             romaji
-                            userPreferred
                         }
                         coverImage {
                             large
@@ -221,17 +220,11 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
     }
 }
 
-query MediaIdFromName($search: String){
-    media:Media (search: $search, type: ANIME) {
-        id
-        title {
-            english
-            romaji
-            native
-            userPreferred
-        }
-    }
-}
+#query MediaIdFromName($search: String){
+#    media:Media (search: $search, type: ANIME) {
+#        id
+#    }
+#}
 
 #GetAnime data by searching
 #query SearchAnimeQuery(
@@ -361,7 +354,7 @@ fragment HomeMedia on Media {
     type
     status(version: 2)
     format
-    description
+    description(asHtml: true)
     coverImage {
         extraLarge
         large

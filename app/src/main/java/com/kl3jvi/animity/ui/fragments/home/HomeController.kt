@@ -5,59 +5,67 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.benasher44.uuid.Uuid
 import com.kl3jvi.animity.CardAnimeBindingModel_
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.HomeData
+import com.kl3jvi.animity.data.model.ui_models.Media
 import com.kl3jvi.animity.title
 import com.kl3jvi.animity.vertical
 
 
-fun EpoxyController.buildHome(listOfAnimes: MutableList<List<AnimeMetaModel>>) {
+fun EpoxyController.buildHome(homeData: HomeData) {
 
-    val lastIndex = listOfAnimes.lastIndex
-    listOfAnimes.forEachIndexed { index, list ->
+    val (trendingAnime, newAnime, popularAnime, reviews) = homeData
+
+    listOf(
+        homeData.newAnime,
+        homeData.trendingAnime,
+        homeData.movies
+    ).forEachIndexed { index, list ->
         title {
             id(Uuid.randomUUID().toString())
             title(Title.values()[index].title)
         }
-        if (index != lastIndex) {
-            carousel {
-                id(Uuid.randomUUID().toString())
-                models(list.modelCardAnime())
-            }
-        } else {
-            list.forEach { animeMetaModel ->
-                vertical {
-                    id(animeMetaModel.id)
-                    clickListener { view ->
-                        val direction =
-                            HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
-                                animeMetaModel
-                            )
-                        view.findNavController().navigate(direction)
-                    }
-//                    animeInfo(animeMetaModel)
-                }
+        carousel {
+            id(Uuid.randomUUID().toString())
+            models(list.modelCardAnime())
+        }
+    }
+
+    title {
+        id(Uuid.randomUUID().toString())
+        title(Title.values()[3].title)
+    }
+    popularAnime.forEach { media ->
+        vertical {
+            id(Uuid.randomUUID().toString())
+            animeInfo(media)
+            clickListener { v ->
+                val directions =
+                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
+                v.findNavController().navigate(directions)
             }
         }
-
     }
 }
 
+
 enum class Title(val title: String) {
-    RECENT_SUB(title = "Recent Sub"),
-    NEW_SEASON(title = "New Season"),
+    TRENDING_ANIME(title = "Trending Anime"),
+    NEW_ANIME(title = "New Anime"),
     MOVIES(title = "Movies"),
-    POPULAR(title = "Popular")
+    REVIEWS(title = "Reviews")
 }
 
-fun List<AnimeMetaModel>.modelCardAnime(): List<CardAnimeBindingModel_> {
-    return map { animeMetaModel ->
+fun List<Media>.modelCardAnime(): List<CardAnimeBindingModel_> {
+    return map { media ->
         CardAnimeBindingModel_()
-            .id(animeMetaModel.id)
+            .id(Uuid.randomUUID().toString())
             .clickListener { view ->
                 val direction =
-                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeMetaModel)
+                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
                 view.findNavController().navigate(direction)
             }
+            .animeInfo(media)
+
     }
 }
 

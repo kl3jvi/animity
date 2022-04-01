@@ -126,19 +126,5 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMediaId(
-        query: String?
-    ): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
-        return try {
-            withContext(Dispatchers.IO) {
-                val queryForApollo = MediaIdFromNameQuery(
-                    search = Optional.Present(query),
-                )
-                apolloClient.query(queryForApollo).toFlow()
-            }
-        } catch (e: Exception) {
-            logError(e)
-            emptyFlow<ApolloResponse<MediaIdFromNameQuery.Data>>()
-        }
-    }
+
 }

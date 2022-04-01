@@ -1,6 +1,8 @@
 package com.kl3jvi.animity.data.model.ui_models
 
+import android.os.Parcelable
 import com.kl3jvi.animity.type.*
+import kotlinx.parcelize.Parcelize
 
 
 data class HomeData(
@@ -29,6 +31,7 @@ data class Review(
 )
 
 
+@Parcelize
 data class Media(
     val idAniList: Int = 0,
     val idMal: Int? = null,
@@ -58,25 +61,27 @@ data class Media(
     val popularity: Int = 0,
     val trending: Int = 0,
     val favourites: Int = 0,
-    val tags: List<MediaTag> = listOf(),
+//    val tags: List<MediaTag> = listOf(),
     var isFavourite: Boolean = false,
     val isAdult: Boolean = false,
-    val nextAiringEpisode: AiringSchedule? = null,
-    val externalLinks: List<MediaExternalLink> = listOf(),
+//    val nextAiringEpisode: AiringSchedule? = null,
+//    val externalLinks: List<MediaExternalLink> = listOf(),
     val siteUrl: String = "",
-    val mediaListEntry: MediaList? = null
-)
+//    val mediaListEntry: MediaList? = null
+) : Parcelable
 
+@Parcelize
 data class MediaTitle(
     val romaji: String = "",
     val english: String = "",
     val native: String = "",
     val userPreferred: String = ""
-)
+) : Parcelable
 
+@Parcelize
 data class Genre(
     val name: String = ""
-)
+) : Parcelable
 
 fun Genre.getHexColor(): String {
     return when (name) {
@@ -131,18 +136,26 @@ data class UserAvatar(
     }
 }
 
+@Parcelize
 data class FuzzyDate(
     val year: Int? = null,
     val month: Int? = null,
     val day: Int? = null
-) {
+) : Parcelable {
     fun isNull(): Boolean {
         return year == null || month == null || day == null
     }
+
+    fun getDate(): String {
+        return if (!isNull())
+            "$year/$month/$day"
+        else "Unknown"
+    }
 }
 
+@Parcelize
 data class MediaCoverImage(
     val extraLarge: String = "",
     val large: String = "",
     val medium: String = ""
-)
+) : Parcelable

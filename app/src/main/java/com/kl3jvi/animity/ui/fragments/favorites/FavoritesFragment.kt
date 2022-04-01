@@ -65,11 +65,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                             id(animeMetaModel.id)
                             animeInfo(animeMetaModel)
                             clickListener { _ ->
-                                val directions =
-                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-                                        animeMetaModel
-                                    )
-                                findNavController().navigate(directions)
+//                                val directions =
+//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+//                                        animeMetaModel
+//                                    )
+//                                findNavController().navigate(directions)
                             }
                         }
                     }
@@ -100,11 +100,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                         favoriteAnime {
                             id(animeMetaModel.id)
                             clickListener { _ ->
-                                val directions =
-                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-                                        animeMetaModel
-                                    )
-                                findNavController().navigate(directions)
+//                                val directions =
+//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+//                                        animeMetaModel
+//                                    )
+//                                findNavController().navigate(directions)
                             }
                             animeInfo(animeMetaModel)
                         }
