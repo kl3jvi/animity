@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.repository.fragment_repositories
 
+import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
@@ -7,8 +8,10 @@ import com.kl3jvi.animity.utils.Constants.Companion.TYPE_MOVIE
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_NEW_SEASON
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_POPULAR_ANIME
 import com.kl3jvi.animity.utils.Constants.Companion.TYPE_RECENT_SUB
+import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,6 +20,7 @@ import javax.inject.Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class HomeRepositoryImpl @Inject constructor(
     private val apiClient: AnimeApiClient,
+
     private val ioDispatcher: CoroutineDispatcher
 ) : HomeRepository {
     override val parser: HtmlParser
@@ -61,6 +65,11 @@ class HomeRepositoryImpl @Inject constructor(
             apiClient.fetchMovies(header = header, page = page).string(),
             TYPE_MOVIE
         )
-
     }
+
+    override fun getHomeData(): Flow<NetworkResource<HomeData>> {
+        return apiClient.getHomeData()
+    }
+
+
 }

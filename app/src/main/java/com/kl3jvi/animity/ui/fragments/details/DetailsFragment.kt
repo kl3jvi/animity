@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.PopupMenu
+import androidx.annotation.MenuRes
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.model.ui_models.GenreModel
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeList
 import com.kl3jvi.animity.ui.activities.main.MainActivity
@@ -91,32 +95,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                         binding.detailsProgress.visibility = GONE
 
                         // Check if the type is movie and this makes invisible the listview of the episodes
-                        if (info.type == " Movie") {
-                            binding.apply {
-                                resultEpisodesText.visibility = GONE
-                                binding.episodeListRecycler.visibility = GONE
-                                resultPlayMovie.visibility = VISIBLE
-                                imageButton.visibility = GONE
-                            }
-                        } else {
-                            binding.apply {
-                                resultEpisodesText.visibility = VISIBLE
-                                resultPlayMovie.visibility = GONE
-                                episodeListRecycler.visibility = VISIBLE
-                            }
-                        }
-                        info.genre.forEach { data ->
-                            binding.genreGroup.removeAllViews()
-                            val chip = Chip(requireContext())
-                            chip.apply {
-                                text = data.genreName
-                                setTextColor(Color.WHITE)
-                                chipStrokeColor = getColor()
-                                chipStrokeWidth = 3f
-                                chipBackgroundColor = getBackgroundColor()
-                            }
-                            binding.genreGroup.addView(chip)
-                        }
+                        showButtonForMovie(info.type == " Movie")
+                        createGenreChips(info.genre)
                     }
                 }
                 is Resource.Loading -> {
@@ -126,10 +106,42 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     binding.type.visibility = GONE
                 }
                 is Resource.Error -> {
-//                    showSnack(binding.root, res.message)
+                    showSnack(binding.root, res.message)
                 }
                 null -> {}
             }
+        }
+    }
+
+    private fun showButtonForMovie(isMovie: Boolean) {
+        if (isMovie) {
+            binding.apply {
+                resultEpisodesText.visibility = GONE
+                binding.episodeListRecycler.visibility = GONE
+                resultPlayMovie.visibility = VISIBLE
+                imageButton.visibility = GONE
+            }
+        } else {
+            binding.apply {
+                resultEpisodesText.visibility = VISIBLE
+                resultPlayMovie.visibility = GONE
+                episodeListRecycler.visibility = VISIBLE
+            }
+        }
+    }
+
+    private fun createGenreChips(genre: ArrayList<GenreModel>) {
+        genre.forEach { data ->
+            binding.genreGroup.removeAllViews()
+            val chip = Chip(requireContext())
+            chip.apply {
+                text = data.genreName
+                setTextColor(Color.WHITE)
+                chipStrokeColor = getColor()
+                chipStrokeWidth = 3f
+                chipBackgroundColor = getBackgroundColor()
+            }
+            binding.genreGroup.addView(chip)
         }
     }
 
@@ -165,6 +177,32 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 }
             }
         }
+
+        binding.setType.isVisible = !isGuestLogin()
+        binding.setType.setOnClickListener { v ->
+            showMenu(v, R.menu.popup_menu)
+        }
+    }
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+        val popup = PopupMenu(requireContext(), v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.option_1 -> {
+                    binding.setType.text = requireContext().getText(R.string.completed)
+                }
+                R.id.option_2 -> {
+                    binding.setType.text = requireContext().getText(R.string.watching)
+                }
+                R.id.option_3 -> {
+                    binding.setType.text = requireContext().getText(R.string.planning)
+                }
+            }
+            false
+        }
+        // Show the popup menu.
+        popup.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -181,9 +219,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
-                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
                     if (isGuestLogin()) {
                         viewModel.delete(anime = args.animeDetails)
+                        menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
                     } else {
                         viewModel.updateAnimeFavorite()
                         menu[1].setIcon(R.drawable.ic_favorite_uncomplete)

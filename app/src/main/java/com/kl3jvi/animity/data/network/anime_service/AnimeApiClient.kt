@@ -1,9 +1,19 @@
 package com.kl3jvi.animity.data.network.anime_service
 
+import com.apollographql.apollo3.ApolloClient
+import com.kl3jvi.animity.HomeDataQuery
+import com.kl3jvi.animity.data.model.ui_models.HomeData
+import com.kl3jvi.animity.data.mapper.convert
+import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.logError
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AnimeApiClient @Inject constructor(
-    private val animeService: AnimeService
+    private val animeService: AnimeService,
+    private val apolloClient: ApolloClient
 ) {
     suspend fun fetchRecentSubOrDub(
         header: Map<String, String>,
@@ -59,4 +69,22 @@ class AnimeApiClient @Inject constructor(
         animeService.fetchM3u8PreProcessor(header, url)
 
     suspend fun getGogoUrlFromAniListId(id: Int) = animeService.getGogoUrlFromAniListId(id)
+
+    fun getHomeData(): Flow<NetworkResource<HomeData>> {
+        return try {
+            val response = apolloClient.query(HomeDataQuery()).toFlow()
+                .map { NetworkResource.Success(it.data?.convert() ?: HomeData()) }
+            response
+        } catch (e: Exception) {
+            logError(e)
+            flowOf(NetworkResource.Failed(e.localizedMessage))
+        }
+
+
+//        return apolloClient.query(HomeDataQuery()).toFlow()
+//
+//            .map {
+//                it.data?.convert() ?: HomeData()
+//            }
+    }
 }

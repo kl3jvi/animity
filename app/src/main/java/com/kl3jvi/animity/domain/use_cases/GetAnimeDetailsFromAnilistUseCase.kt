@@ -12,7 +12,7 @@ class GetAnimeDetailsFromAnilistUseCase @Inject constructor(
     private val userRepositoryImpl: UserRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    operator fun invoke(query: String?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
+    suspend operator fun invoke(query: String?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
         return userRepositoryImpl.getMediaId(query = query).flowOn(ioDispatcher)
     }
 }

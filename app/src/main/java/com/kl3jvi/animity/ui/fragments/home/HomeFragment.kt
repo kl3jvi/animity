@@ -37,9 +37,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is Resource.Success -> {
                     result.data?.let { listOfAnimes ->
                         binding.loadingIndicator.isVisible = listOfAnimes.isEmpty()
-                        binding.mainRv.withModels { buildHome(listOfAnimes) }
+//                        binding.mainRv.withModels { buildHome(listOfAnimes) }
                     }
                 }
+            }
+        }
+
+        collectFlow(viewModel.homeNewData) {
+            binding.mainRv.withModels {
+                binding.loadingIndicator.isVisible = it.newAnime.isEmpty()
+                buildHomeTest(it)
             }
         }
     }

@@ -11,16 +11,16 @@ import com.kl3jvi.animity.utils.Constants.Companion.randomId
 
 
 fun EpoxyController.buildProfile(
-    userData: ApolloResponse<UserQuery.Data>,
-    animeCollectionResponse: ApolloResponse<AnimeListCollectionQuery.Data>
+    userData: ApolloResponse<UserQuery.Data>?,
+    animeCollectionResponse: ApolloResponse<AnimeListCollectionQuery.Data>?
 ) {
 
     profileCard {
         id(randomId())
         bgImage(Constants.DEFAULT_COVER)
-        userData(userData.data)
+        userData(userData?.data)
     }
-    val listOfData = animeCollectionResponse.data?.media?.lists
+    val listOfData = animeCollectionResponse?.data?.media?.lists
     if (!listOfData.isNullOrEmpty()) {
         listOfData.map {
             title {
@@ -52,7 +52,7 @@ fun List<AnimeMetaModel>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
                         animeMetaModel
                     )
                 view.findNavController().navigate(direction)
-            }.animeInfo(animeMetaModel)
+            }
     }
 }
 

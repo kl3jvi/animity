@@ -12,13 +12,9 @@ import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromFavoritesId
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.utils.logError
-import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -49,18 +45,24 @@ class FavoritesViewModel @Inject constructor(
 
     private fun getFavoriteAnimes() {
         viewModelScope.launch(Dispatchers.IO) {
-            shouldRefresh.collectLatest { t ->
-                logMessage(t.toString())
-                getUserSessionUseCase().flatMapLatest {
-                    getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
-                }.flowOn(ioDispatcher)
+            shouldRefresh.collectLatest { _ ->
+                async {
+                    getUserSessionUseCase().flatMapLatest {
+                        getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
+                    }
+                }.await()
+                    .flowOn(ioDispatcher)
                     .catch { e -> logError(e) }
                     .collect {
                         _favoriteAniListAnimeList.value = it
                     }
-                animeRepository.getFavoriteAnimes.collect {
+
+                async {
+                    animeRepository.getFavoriteAnimes
+                }.await().collect {
                     _favoriteFromDatabase.value = it
                 }
+
             }
         }
     }

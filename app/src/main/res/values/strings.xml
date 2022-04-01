@@ -86,6 +86,13 @@
 
     <string name="card_transition_name">anime_card_%1$s</string>
     <string name="anime_card_detail_transition_name">anime_card_detail</string>
+    <string name="add_to_list">Add to List</string>
+    <string name="option_1">Set as Complete</string>
+    <string name="option_2">Set as Watching</string>
+    <string name="option_3">Set as Planning</string>
+    <string name="completed">Completed</string>
+    <string name="watching">Watching</string>
+    <string name="planning">Planning</string>
 
 
 </resources>

@@ -21,6 +21,7 @@ fun logError(throwable: Throwable) {
     Log.e("ApiError", "-------------------------------------------------------------------")
     Log.e("ApiError", "safeApiCall: " + throwable.localizedMessage)
     Log.e("ApiError", "safeApiCall: " + throwable.message)
+    Log.e("ApiError", "safeApiCall: $throwable")
     throwable.printStackTrace()
     Log.e("ApiError", "-------------------------------------------------------------------")
 }

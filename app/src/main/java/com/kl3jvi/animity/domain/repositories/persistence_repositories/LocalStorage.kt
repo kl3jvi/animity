@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 
 interface LocalStorage {
     var bearerToken: String?
+    var refreshToken: String?
     var guestToken:String?
-    var isDataSynced:String?
+    var aniListUserId:String?
     fun clearStorage()
 }

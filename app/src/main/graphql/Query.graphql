@@ -303,3 +303,77 @@ mutation ToggleFavouriteMutation($animeId: Int) {
         }
     }
 }
+
+query HomeDataQuery {
+    trendingAnime: Page(page: 1, perPage: 15) {
+        media(type: ANIME, status:RELEASING sort: [TRENDING_DESC], isAdult: false) {
+            ...HomeMedia
+        }
+    }
+
+    newAnime: Page(page: 1, perPage:15) {
+        media(type: ANIME,status_in:[FINISHED]  sort: [ID_DESC], isAdult: false) {
+            ...HomeMedia
+        }
+    }
+
+    movies: Page(page: 1, perPage:15) {
+        media(type: ANIME, format: MOVIE  status_in:[FINISHED] sort: [POPULARITY_DESC], isAdult: false) {
+            ...HomeMedia
+        }
+    }
+
+    review: Page(page: 1, perPage: 10) {
+        reviews(sort: [ID_DESC])    {
+            id
+            userId
+            mediaId
+            mediaType
+            summary
+            rating
+            ratingAmount
+            score
+            user {
+                id
+                name
+                avatar {
+                    large
+                    medium
+                }
+            }
+            media {
+                id
+                title {
+                    userPreferred
+                }
+                bannerImage
+            }
+        }
+    }
+}
+
+fragment HomeMedia on Media {
+    id
+    idMal
+    title {
+        userPreferred
+    }
+    type
+    status(version: 2)
+    format
+    description
+    coverImage {
+        extraLarge
+        large
+        medium
+    }
+    bannerImage
+    genres
+    averageScore
+    favourites
+    startDate {
+        year
+        month
+        day
+    }
+}

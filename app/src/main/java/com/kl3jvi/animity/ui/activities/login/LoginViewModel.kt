@@ -34,8 +34,11 @@ class LoginViewModel @Inject constructor(
         ).mapToState()
     }
 
-    fun saveToken(token: String) {
-        userRepository.setBearerToken(token)
+    fun saveTokens(authToken: String, refreshToken: String) {
+        userRepository.apply {
+            setBearerToken(authToken)
+            setRefreshToken(refreshToken)
+        }
     }
 
     fun getToken(): String? {

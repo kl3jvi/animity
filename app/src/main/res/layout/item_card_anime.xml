@@ -7,7 +7,7 @@
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+            type="com.kl3jvi.animity.data.model.ui_models.Media" />
 
         <variable
             name="clickListener"
@@ -23,7 +23,6 @@
         android:id="@+id/animeCardView"
         android:layout_width="115dp"
         android:layout_height="180dp"
-        android:layout_margin="@dimen/dp_5"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp">
 
@@ -35,7 +34,7 @@
             android:background="?selectableItemBackgroundBorderless"
             android:onClick="@{clickListener}"
             android:scaleType="centerCrop"
-            app:image="@{animeInfo.imageUrl}"
+            app:image="@{animeInfo.coverImage.large}"
             tools:src="@tools:sample/avatars" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -76,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:padding="3dp"
-                android:text="@{animeInfo.episodeNumber}"
                 android:textColor="#FFFFFF"
                 android:textSize="11sp" />
 
@@ -107,7 +105,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
-            android:text="@{animeInfo.title}"
+            android:text="@{animeInfo.title.userPreferred}"
             android:textColor="@color/textColor"
             android:textSize="14sp"
             android:textStyle="bold"

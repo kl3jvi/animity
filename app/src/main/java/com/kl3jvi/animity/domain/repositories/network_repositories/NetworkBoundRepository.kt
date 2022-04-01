@@ -35,4 +35,6 @@ abstract class NetworkBoundRepository<RESULT> {
     @MainThread
     protected abstract suspend fun fetchFromRemote(): Response<RESULT>
 
+
+
 }

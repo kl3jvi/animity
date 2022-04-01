@@ -34,7 +34,7 @@ fun EpoxyController.buildHome(listOfAnimes: MutableList<List<AnimeMetaModel>>) {
                             )
                         view.findNavController().navigate(direction)
                     }
-                    animeInfo(animeMetaModel)
+//                    animeInfo(animeMetaModel)
                 }
             }
         }
@@ -57,9 +57,11 @@ fun List<AnimeMetaModel>.modelCardAnime(): List<CardAnimeBindingModel_> {
                 val direction =
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(animeMetaModel)
                 view.findNavController().navigate(direction)
-            }.animeInfo(animeMetaModel)
+            }
     }
 }
+
+
 
 
 

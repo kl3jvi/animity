@@ -38,6 +38,9 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initViews() {
+
+        viewModel.shouldRefresh.value = shouldRefreshFavorites
+
         binding.swipeLayout.setOnRefreshListener {
             logMessage("$shouldRefreshFavorites 1")
             viewModel.shouldRefresh.value = shouldRefreshFavorites
@@ -83,7 +86,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             val list = animeList?.data?.user?.favourites?.anime?.edges?.map {
                 AnimeMetaModel(
                     id = it?.node?.id ?: 0,
-                    title = it?.node?.title?.userPreferred.toString(),
+                    title = it?.node?.title?.romaji.toString(),
                     imageUrl = it?.node?.coverImage?.large.toString(),
                     categoryUrl = null
                 )

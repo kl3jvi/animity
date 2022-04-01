@@ -4,7 +4,10 @@ import androidx.lifecycle.*
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.domain.use_cases.*
+import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
+import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
+import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromFavoritesId
+import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
 import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.Resource
@@ -12,6 +15,7 @@ import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +25,6 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
     private val animeRepository: AnimeRepository,
-    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
     private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
     private val getAnimeDetailsFromAnilistUseCase: GetAnimeDetailsFromAnilistUseCase,
     private val getGogoUrlFromFavoritesId: GetGogoUrlFromFavoritesId,
@@ -35,7 +38,7 @@ class DetailsViewModel @Inject constructor(
 
     init {
         getAnimeInfo()
-        getAnilistId()
+        getAniListId()
     }
 
 
@@ -48,44 +51,49 @@ class DetailsViewModel @Inject constructor(
 
 
     private fun getAnimeInfo() {
+
         viewModelScope.launch(Dispatchers.IO) {
             animeMetaModel.collect { animeDetails ->
                 animeDetails?.let { animeMetaModel ->
                     if (animeDetails.categoryUrl.isNullOrEmpty()) {
+
                         getGogoUrlFromFavoritesId(animeMetaModel.id).flatMapLatest { result ->
                             when (result) {
                                 is NetworkResource.Failed -> emptyFlow()
                                 is NetworkResource.Success -> {
-                                    fetchEpisodeList(result.data.pages?.data?.entries?.first()?.value?.url.orEmpty())
-
-                                    getAnimeDetailsUseCase.fetchAnimeInfo(
-                                        result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
-                                    )
+                                    async { fetchEpisodeList(result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()) }.await()
+                                        .collect { _episodeList.value = it }
+                                    async {
+                                        getAnimeDetailsUseCase.fetchAnimeInfo(
+                                            result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
+                                        )
+                                    }.await()
                                 }
                             }
                         }.collectLatest { _animeInfo.value = it }
-                    } else {
-                        fetchEpisodeList(animeMetaModel.categoryUrl.orEmpty())
-
-                        getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
-                            .collectLatest { _animeInfo.value = it }
                     }
+//                    else {
+//                        async { fetchEpisodeList(animeMetaModel.categoryUrl.orEmpty()) }.await()
+//                            .collect { _episodeList.value = it }
+//                        async {
+//                            getAnimeDetailsUseCase.fetchAnimeInfo(animeMetaModel.categoryUrl.toString())
+//                        }.await()
+//                            .collectLatest { _animeInfo.value = it }
+//                    }
                 }
             }
         }
     }
 
-    private fun fetchEpisodeList(url: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
-                getAnimeDetailsUseCase.fetchEpisodeList(
-                    info.data?.id,
-                    info.data?.endEpisode,
-                    info.data?.alias
-                )
-            }.catch { e -> logError(e) }
-                .collect { _episodeList.value = it }
-        }
+    private fun fetchEpisodeList(url: String): Flow<Resource<List<EpisodeModel>>> {
+        return getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
+            getAnimeDetailsUseCase.fetchEpisodeList(
+                info.data?.id,
+                info.data?.endEpisode,
+                info.data?.alias
+            )
+        }.catch { e -> logError(e) }
+
     }
 
 
@@ -108,7 +116,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun updateAnimeFavorite() {
-        viewModelScope.launch {
+        viewModelScope.async {
             anilistId.collect {
                 if (it != -1)
                     markAnimeAsFavoriteUseCase(it).catch { error -> logError(error) }.collect {}
@@ -118,9 +126,9 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    fun getAnilistId() {
+    fun getAniListId() {
         viewModelScope.launch(Dispatchers.IO) {
-            animeMetaModel.collect {
+            animeMetaModel.collect { it ->
                 getAnimeDetailsFromAnilistUseCase(it?.title.toString())
                     .catch { e -> e.printStackTrace() }
                     .collect {

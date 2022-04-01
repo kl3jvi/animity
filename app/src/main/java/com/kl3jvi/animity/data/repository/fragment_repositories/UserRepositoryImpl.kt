@@ -21,6 +21,9 @@ class UserRepositoryImpl @Inject constructor(
     override val bearerToken: String?
         get() = storage.bearerToken
 
+    override val refreshToken: String?
+        get() = storage.refreshToken
+
     override val guestToken: String?
         get() = storage.guestToken
 
@@ -30,20 +33,24 @@ class UserRepositoryImpl @Inject constructor(
     override val isGuest: Boolean
         get() = storage.guestToken != null
 
-    override val isFavoritesSynced: Boolean
-        get() = storage.isDataSynced != null
+    override val userId: String?
+        get() = storage.aniListUserId
 
 
-    override fun setBearerToken(token: String?) {
-        storage.bearerToken = token
+    override fun setBearerToken(authToken: String?) {
+        storage.bearerToken = authToken
+    }
+
+    override fun setRefreshToken(refreshToken: String?) {
+        storage.refreshToken = refreshToken
     }
 
     override fun setGuestToken(token: String?) {
         storage.guestToken = token
     }
 
-    override fun setSyncData(sync: String?) {
-        storage.isDataSynced = sync
+    override fun setAniListUserId(sync: String?) {
+        storage.aniListUserId = sync
     }
 
     override fun clearStorage() {
@@ -119,12 +126,19 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMediaId(
+    override suspend fun getMediaId(
         query: String?
     ): Flow<ApolloResponse<MediaIdFromNameQuery.Data>> {
-        val queryForApollo = MediaIdFromNameQuery(
-            search = Optional.Present(query),
-        )
-        return apolloClient.query(queryForApollo).toFlow()
+        return try {
+            withContext(Dispatchers.IO) {
+                val queryForApollo = MediaIdFromNameQuery(
+                    search = Optional.Present(query),
+                )
+                apolloClient.query(queryForApollo).toFlow()
+            }
+        } catch (e: Exception) {
+            logError(e)
+            emptyFlow<ApolloResponse<MediaIdFromNameQuery.Data>>()
+        }
     }
 }

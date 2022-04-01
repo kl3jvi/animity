@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
-import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.kl3jvi.animity.data.model.auth_models.AniListAuth
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_URL
