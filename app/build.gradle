@@ -136,9 +136,11 @@ dependencies {
     // Retrofit
     def retrofitVersion = "2.9.0"
     def interceptor_version = "5.0.0-alpha.4"
+    def dnsOverHttp = "5.0.0-alpha.4"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+    implementation "com.squareup.okhttp3:okhttp-dnsoverhttps:$dnsOverHttp"
 
     //Html Parsing
     def jsoupVersion = "1.13.1"
@@ -153,6 +155,7 @@ dependencies {
     def exoplayerVersion = "2.17.1"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-cast:$exoplayerVersion"
+    implementation "com.google.android.exoplayer:extension-okhttp:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
 
     //Bottom bar

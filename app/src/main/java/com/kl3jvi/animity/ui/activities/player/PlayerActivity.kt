@@ -14,6 +14,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -22,7 +23,9 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
+import com.google.common.net.HttpHeaders.USER_AGENT
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -31,6 +34,7 @@ import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -38,13 +42,19 @@ import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.Cache
+import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.OkHttpClient
+import okhttp3.dnsoverhttps.DnsOverHttps
+import java.io.File
+import java.net.InetAddress
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
 
-    private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
 
@@ -66,11 +76,12 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
     lateinit var content: Content
+    private var tempbit = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(viewBinding.root)
+        setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
         savedInstanceState?.putString("test", "12324")
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
@@ -79,8 +90,8 @@ class PlayerActivity : AppCompatActivity() {
             episodeNumberLocal = getIntentData?.episodeNumber.toString()
             episodeUrlLocal = getIntentData?.episodeUrl.toString()
 
-            val title = viewBinding.videoView.findViewById<TextView>(R.id.episodeName)
-            val episodeNum = viewBinding.videoView.findViewById<TextView>(R.id.episodeNum)
+            val title = binding.videoView.findViewById<TextView>(R.id.episodeName)
+            val episodeNum = binding.videoView.findViewById<TextView>(R.id.episodeNum)
 
             title.text = animeTitlePassed
             episodeNum.text = getIntentData?.episodeNumber
@@ -154,7 +165,7 @@ class PlayerActivity : AppCompatActivity() {
                             .setSeekForwardIncrementMs(seekForwardSeconds)
                             .build()
                             .also { exoPlayer ->
-                                viewBinding.videoView.player = exoPlayer
+                                binding.videoView.player = exoPlayer
                                 val mdItem = MediaItem.fromUri(videoM3U8Url)
                                 val videoSource: MediaSource =
                                     buildMediaSource(mdItem, videoM3U8Url)
@@ -189,7 +200,7 @@ class PlayerActivity : AppCompatActivity() {
 
 
                         val skipIntro =
-                            viewBinding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
+                            binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
                         viewModel.audioProgress(player).observe(this) { currentProgress ->
                             currentProgress?.let {
                                 currentTime = it
@@ -206,14 +217,14 @@ class PlayerActivity : AppCompatActivity() {
 
                     } catch (e: ExoPlaybackException) {
                         e.printStackTrace()
-                        showSnack(viewBinding.root, e.localizedMessage)
+                        showSnack(binding.root, e.localizedMessage)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    viewBinding.loadingOverlay.visibility = View.GONE
+                    binding.loadingOverlay.visibility = View.GONE
                 }
                 is Resource.Loading -> {
-                    viewBinding.loadingOverlay.visibility = View.VISIBLE
+                    binding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Resource.Error -> {
                     /*viewBinding.loadingOverlay.visibility = View.VISIBLE*/
@@ -231,7 +242,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun initialisePlayerLayout() {
 
-        val backButton = viewBinding.videoView.findViewById<ImageView>(R.id.back)
+        val backButton = binding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
             if (::content.isInitialized)
                 insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
@@ -239,7 +250,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         val qualityButton =
-            viewBinding.videoView.findViewById<ImageButton>(R.id.exo_track_selection_view)
+            binding.videoView.findViewById<ImageButton>(R.id.exo_track_selection_view)
         qualityButton.setOnClickListener {
             val popMenu = PopupMenu(this, qualityButton)
             popMenu.menuInflater.inflate(R.menu.exo_player_menu, popMenu.menu)
@@ -254,7 +265,7 @@ class PlayerActivity : AppCompatActivity() {
             popMenu.show()
         }
 
-        val fullView = viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+        val fullView = binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
         fullView.setOnClickListener {
             toggleFullView()
         }
@@ -286,9 +297,37 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
         val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
-        return if (url.contains("m3u8"))
-            HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
-        else ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
+        return if (url.contains("m3u8")) {
+            tempbit = true
+            val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
+            val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
+
+            val dns = DnsOverHttps.Builder().client(bootstrapClient)
+                .url("https://security.cloudflare-dns.com/dns-query".toHttpUrl())
+                .bootstrapDnsHosts(InetAddress.getByName("1.1.1.1"))
+                .build()
+
+            val client = bootstrapClient.newBuilder().dns(dns).build()
+
+            val dataSource = {
+                val dataSource = OkHttpDataSource.Factory(client)
+                    .setUserAgent(USER_AGENT)
+                    .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
+                dataSource.createDataSource()
+            }
+            return HlsMediaSource.Factory(dataSource)
+                .setAllowChunklessPreparation(true)
+                .createMediaSource(mediaItem)
+        } else {
+            val dataSource = {
+                val dataSource: DataSource.Factory = DefaultHttpDataSource.Factory()
+                    .setUserAgent(USER_AGENT)
+                    .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
+                dataSource.createDataSource()
+            }
+            return ProgressiveMediaSource.Factory(dataSource)
+                .createMediaSource(mediaItem)
+        }
     }
 
 
@@ -303,7 +342,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun onIsPlayingChanged(isPlaying: Boolean) {
-        viewBinding.videoView.keepScreenOn = isPlaying
+        binding.videoView.keepScreenOn = isPlaying
     }
 
 
@@ -345,11 +384,11 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun toggleFullView() {
         if (isFullScreen) {
-            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+            binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
             player?.videoScalingMode = C.VIDEO_SCALING_MODE_DEFAULT
             isFullScreen = false
             this.let {
-                viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+                binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
                     .setImageDrawable(
                         ContextCompat.getDrawable(
                             it,
@@ -358,11 +397,11 @@ class PlayerActivity : AppCompatActivity() {
                     )
             }
         } else {
-            viewBinding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+            binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
             player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
             isFullScreen = true
             this.let {
-                viewBinding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+                binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
                     .setImageDrawable(
                         ContextCompat.getDrawable(
                             it,
