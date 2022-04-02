@@ -8,14 +8,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.favoriteAnime
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.collectFlow
-import com.kl3jvi.animity.utils.isGuestLogin
-import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -33,87 +30,44 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun observeViewModel() {
-        if (isGuestLogin()) observeDatabase()
-        else observeAniList()
+        observeAniList()
     }
 
     private fun initViews() {
 
         viewModel.shouldRefresh.value = shouldRefreshFavorites
-
         binding.swipeLayout.setOnRefreshListener {
-            logMessage("$shouldRefreshFavorites 1")
             viewModel.shouldRefresh.value = shouldRefreshFavorites
             shouldRefreshFavorites = !shouldRefreshFavorites
-            logMessage("$shouldRefreshFavorites 2")
+            observeAniList()
 
-
-            if (!isGuestLogin())
-                observeAniList()
-            else
-                showLoading(false)
-        }
-    }
-
-    private fun observeDatabase() {
-        binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
-        collectFlow(viewModel.favoriteFromDatabase) { animeList ->
-            binding.favoritesRecycler.withModels {
-                if (animeList.isNotEmpty()) {
-                    animeList.forEach { animeMetaModel ->
-                        favoriteAnime {
-                            id(animeMetaModel.id)
-                            animeInfo(animeMetaModel)
-                            clickListener { _ ->
-//                                val directions =
-//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-//                                        animeMetaModel
-//                                    )
-//                                findNavController().navigate(directions)
-                            }
-                        }
-                    }
-                }
-                binding.favoritesRecycler.isVisible = !animeList.isNullOrEmpty()
-                binding.nothingSaved.isVisible = animeList.isNullOrEmpty()
-            }
         }
     }
 
 
     private fun observeAniList() {
         collectFlow(viewModel.favoriteAniListAnimeList) { animeList ->
-            val list = animeList?.data?.user?.favourites?.anime?.edges?.map {
-                AnimeMetaModel(
-                    id = it?.node?.id ?: 0,
-                    title = it?.node?.title?.romaji.toString(),
-                    imageUrl = it?.node?.coverImage?.large.toString(),
-                    categoryUrl = null
-                )
-            }
 
 
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {
-                if (!list.isNullOrEmpty()) {
-                    list.forEach { animeMetaModel ->
-                        favoriteAnime {
-                            id(animeMetaModel.id)
-                            clickListener { _ ->
-//                                val directions =
-//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-//                                        animeMetaModel
-//                                    )
-//                                findNavController().navigate(directions)
-                            }
-                            animeInfo(animeMetaModel)
+                animeList?.forEach { media ->
+                    favoriteAnime {
+                        id(media.idAniList)
+                        clickListener { _ ->
+                            val directions =
+                                FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                                    media
+                                )
+                            findNavController().navigate(directions)
                         }
+                        animeInfo(media)
                     }
                 }
-                binding.favoritesRecycler.isVisible = !list.isNullOrEmpty()
-                binding.nothingSaved.isVisible = list.isNullOrEmpty()
-                showLoading(false)
             }
+            binding.favoritesRecycler.isVisible = !animeList.isNullOrEmpty()
+            binding.nothingSaved.isVisible = animeList.isNullOrEmpty()
+            showLoading(false)
         }
     }
 

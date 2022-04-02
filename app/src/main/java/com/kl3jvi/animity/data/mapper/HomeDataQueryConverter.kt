@@ -33,7 +33,7 @@ fun HomeDataQuery.Data.convert(): HomeData {
             ),
             media = Media(
                 idAniList = it?.media?.id ?: 0,
-                title = MediaTitle(userPreferred = it?.media?.title?.userPreferred ?: ""),
+                title = MediaTitle(romaji = it?.media?.title?.romaji ?: ""),
                 bannerImage = it?.media?.bannerImage ?: ""
             )
         )
@@ -51,7 +51,7 @@ private fun HomeMedia?.convert(): Media {
     return Media(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,
-        title = MediaTitle(userPreferred = this?.title?.userPreferred ?: ""),
+        title = MediaTitle(romaji = this?.title?.romaji ?: ""),
         type = this?.type,
         format = this?.format,
         status = this?.status,

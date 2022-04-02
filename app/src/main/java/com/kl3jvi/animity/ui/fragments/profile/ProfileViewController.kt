@@ -1,18 +1,18 @@
 package com.kl3jvi.animity.ui.fragments.profile
 
-import androidx.navigation.findNavController
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
-import com.benasher44.uuid.Uuid
-import com.kl3jvi.animity.*
+import com.kl3jvi.animity.CardAnimeBindingModel_
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.Media
-import com.kl3jvi.animity.ui.fragments.home.modelCardAnime
+import com.kl3jvi.animity.noAnime
+import com.kl3jvi.animity.profileCard
+import com.kl3jvi.animity.title
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.randomId
 import com.kl3jvi.animity.utils.logMessage
+import com.kl3jvi.animity.utils.navigateSafe
 
 
 fun EpoxyController.buildProfile(
@@ -28,7 +28,7 @@ fun EpoxyController.buildProfile(
         }
     }
     if (!animeCollectionResponse.isNullOrEmpty()) {
-        animeCollectionResponse.map { profileRow->
+        animeCollectionResponse.map { profileRow ->
             title {
                 id(randomId())
                 title(profileRow.title)
@@ -54,7 +54,7 @@ fun List<Media>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
                     ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
                         media
                     )
-                view.findNavController().navigate(direction)
+                view.navigateSafe(direction)
             }.animeInfo(media)
     }
 }

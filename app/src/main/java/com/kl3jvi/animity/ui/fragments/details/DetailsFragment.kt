@@ -90,7 +90,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             binding.status.visibility = VISIBLE
             binding.type.visibility = VISIBLE
             binding.detailsProgress.visibility = GONE
-            showButtonForMovie(info.format?.rawValue == "MOVIE")
+
+            binding.apply {
+                resultEpisodesText.visibility = VISIBLE
+                resultPlayMovie.visibility = GONE
+                episodeListRecycler.visibility = VISIBLE
+            }
             createGenreChips(info.genres)
         }
 
@@ -125,20 +130,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     }
 
     private fun showButtonForMovie(isMovie: Boolean) {
-        if (isMovie) {
-            binding.apply {
-                resultEpisodesText.visibility = GONE
-                binding.episodeListRecycler.visibility = GONE
-                resultPlayMovie.visibility = VISIBLE
-                imageButton.visibility = GONE
-            }
-        } else {
-            binding.apply {
-                resultEpisodesText.visibility = VISIBLE
-                resultPlayMovie.visibility = GONE
-                episodeListRecycler.visibility = VISIBLE
-            }
-        }
+
     }
 
     private fun createGenreChips(genre: List<Genre>) {
@@ -175,8 +167,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             }
         } else {
             collectFlow(favoritesViewModel.favoriteAniListAnimeList) {
-                check = it?.data?.user?.favourites?.anime?.edges?.any {
-                    it?.node?.id == animeDetails.idAniList
+                check = it?.any { media ->
+                    media.idAniList == animeDetails.idAniList
                 } ?: false
                 if (!check) {
                     menu[1].setIcon(R.drawable.ic_favorite_uncomplete)

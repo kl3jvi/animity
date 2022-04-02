@@ -4,14 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Media
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
-import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromFavoritesId
+import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromAniListId
 import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
-import com.kl3jvi.animity.persistence.AnimeRepository
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.logError
@@ -28,10 +26,9 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
-    private val animeRepository: AnimeRepository,
     private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
     private val getAnimeDetailsFromAnilistUseCase: GetAnimeDetailsFromAnilistUseCase,
-    private val getGogoUrlFromFavoritesId: GetGogoUrlFromFavoritesId,
+    private val getGogoUrlFromAniListId: GetGogoUrlFromAniListId,
 ) : ViewModel() {
 
 
@@ -55,7 +52,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             animeMetaModel.collect { animeDetails ->
                 animeDetails?.let { animeMetaModel ->
-                    getGogoUrlFromFavoritesId(animeMetaModel.idAniList).flatMapLatest { result ->
+                    getGogoUrlFromAniListId(animeMetaModel.idAniList).flatMapLatest { result ->
                         when (result) {
                             is NetworkResource.Failed -> emptyFlow()
                             is NetworkResource.Success -> {

@@ -73,7 +73,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 launch { viewModel.queryString.value = query }
 
                 launch {
-                    collectLatestFlow(viewModel.searchList) { animeData ->
+                    collectLatestFlow(viewModel.searchList1) { animeData ->
                         pagingController.submitData(animeData)
                     }
                 }
