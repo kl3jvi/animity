@@ -1,5 +1,4 @@
 plugins {
-
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
@@ -10,6 +9,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id 'com.google.secrets_gradle_plugin' version("0.4")
     id "com.apollographql.apollo3" version("3.0.0")
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 }
 android {
     signingConfigs {
@@ -213,5 +213,6 @@ dependencies {
     implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
+    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 
 }
