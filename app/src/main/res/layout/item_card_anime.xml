@@ -105,7 +105,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
-            android:text="@{animeInfo.title.userPreferred}"
+            android:text="@{animeInfo.title.romaji}"
             android:textColor="@color/textColor"
             android:textSize="14sp"
             android:textStyle="bold"

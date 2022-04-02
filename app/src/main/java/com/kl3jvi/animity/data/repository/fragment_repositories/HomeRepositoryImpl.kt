@@ -74,10 +74,15 @@ class HomeRepositoryImpl @Inject constructor(
 
     override fun getHomeData(): Flow<NetworkResource<HomeData>> {
         return try {
+
             apiClient.getHomeData().catch { e -> logError(e) }
                 .mapNotNull {
-                    val data = it.data?.convert() ?: HomeData()
+                    var data = HomeData()
+                    if (!it.hasErrors() && it.data != null) {
+                        data = it.data?.convert() ?: HomeData()
+                    }
                     NetworkResource.Success(data)
+
                 }
         } catch (e: Exception) {
             logError(e)

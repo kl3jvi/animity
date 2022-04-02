@@ -7,7 +7,7 @@
 
        <variable
            name="animeInfo"
-           type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+           type="com.kl3jvi.animity.data.model.ui_models.Media" />
 
         <variable
             name="isVisible"
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="left"
-                app:image="@{animeInfo.imageUrl}"
+                app:image="@{animeInfo.coverImage.large}"
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 tools:ignore="RtlHardcoded" />
@@ -66,7 +66,7 @@
                 android:textColor="@color/textColor"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:text="@{animeInfo.title}"
+                android:text="@{animeInfo.title.romaji}"
                 tools:text="@string/no_data" />
 
             <TextView
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:text="@{animeInfo.releasedDate}"
+                android:text="@{animeInfo.countryOfOrigin}"
                 android:textColor="@color/grayTextColor"
                 android:textSize="13sp"
                 android:textStyle="bold"

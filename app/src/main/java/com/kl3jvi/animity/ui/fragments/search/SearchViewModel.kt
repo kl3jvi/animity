@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.Media
 import com.kl3jvi.animity.domain.use_cases.GetSearchResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,6 +25,9 @@ class SearchViewModel @Inject constructor(
     private val _searchList = MutableStateFlow<PagingData<AnimeMetaModel>>(PagingData.empty())
     val searchList = _searchList.asStateFlow()
 
+    private val _searchList1 = MutableStateFlow<PagingData<Media>>(PagingData.empty())
+    val searchList1 = _searchList1.asStateFlow()
+
     val queryString = MutableStateFlow("")
 
     init {
@@ -36,7 +40,7 @@ class SearchViewModel @Inject constructor(
                 getSearchResultUseCase(query)
                     .cachedIn(viewModelScope)
                     .distinctUntilChanged()
-                    .collect { _searchList.value = it }
+                    .collect { _searchList1.value = it }
             }
         }
     }

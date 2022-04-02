@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.HomeDataQuery
+import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.UserQuery
 import javax.inject.Inject
 
@@ -73,4 +74,11 @@ class AnimeApiClient @Inject constructor(
     fun getAnimeListData(userId: Int?) =
         apolloClient.query(AnimeListCollectionQuery(Optional.presentIfNotNull(userId))).toFlow()
 
+    fun fetchSearchAniListData(query: String, page: Int) =
+        apolloClient.query(
+            SearchAnimeQuery(
+                Optional.presentIfNotNull(query),
+                Optional.presentIfNotNull(page),
+            )
+        ).toFlow()
 }

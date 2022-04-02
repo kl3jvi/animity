@@ -2,6 +2,7 @@ package com.kl3jvi.animity.domain.use_cases
 
 import androidx.paging.PagingData
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.Media
 import com.kl3jvi.animity.data.repository.fragment_repositories.SearchRepositoryImpl
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,7 @@ class GetSearchResultUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 
 ) {
-    operator fun invoke(searchQuery: String): Flow<PagingData<AnimeMetaModel>> {
-        return searchRepository.fetchSearchData(searchQuery).flowOn(ioDispatcher)
+    operator fun invoke(searchQuery: String): Flow<PagingData<Media>> {
+        return searchRepository.fetchAniListSearchData(searchQuery).flowOn(ioDispatcher)
     }
 }
