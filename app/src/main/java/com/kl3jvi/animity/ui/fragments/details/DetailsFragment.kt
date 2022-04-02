@@ -8,7 +8,6 @@ import android.view.View.VISIBLE
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.get
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -31,6 +30,8 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.text.SimpleDateFormat
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -84,7 +85,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             binding.releaseDate.text = info.startDate?.getDate()
             binding.status.text = info.status?.name
             binding.type.text = info.type?.rawValue
-
+            binding.releaseTime.text =
+                if (info.nextAiringEpisode != null) displayInDayDateTimeFormat(info.nextAiringEpisode) else ""
             binding.animeInfoLayout.textOverview.visibility = VISIBLE
             binding.releaseDate.visibility = VISIBLE
             binding.status.visibility = VISIBLE
@@ -98,39 +100,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             }
             createGenreChips(info.genres)
         }
-
-//        collectFlow(viewModel.animeInfo) { res ->
-//            when (res) {
-//                is Resource.Success -> {
-//                    res.data?.let { info ->
-//
-//                        binding.animeInfoLayout.textOverview.visibility = VISIBLE
-//                        binding.releaseDate.visibility = VISIBLE
-//                        binding.status.visibility = VISIBLE
-//                        binding.type.visibility = VISIBLE
-//                        binding.detailsProgress.visibility = GONE
-//
-//                        // Check if the type is movie and this makes invisible the listview of the episodes
-//                        showButtonForMovie(info.type == " Movie")
-//                        createGenreChips(info.genre)
-//                    }
-//                }
-//                is Resource.Loading -> {
-//                    binding.animeInfoLayout.textOverview.visibility = GONE
-//                    binding.releaseDate.visibility = GONE
-//                    binding.status.visibility = GONE
-//                    binding.type.visibility = GONE
-//                }
-//                is Resource.Error -> {
-//                    showSnack(binding.root, res.message)
-//                }
-//                null -> {}
-//            }
-//        }
     }
 
-    private fun showButtonForMovie(isMovie: Boolean) {
-
+    private fun displayInDayDateTimeFormat(seconds: Int): String {
+        val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.getDefault())
+        val date = Date(seconds * 1000L)
+        return dateFormat.format(date)
     }
 
     private fun createGenreChips(genre: List<Genre>) {
@@ -156,29 +131,16 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     }
 
     private fun observeDatabase() {
-        if (isGuestLogin()) {
-            viewModel.isOnDatabase.observe(viewLifecycleOwner) {
-                check = it
-                if (!check) {
-                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-                } else {
-                    menu[1].setIcon(R.drawable.ic_favorite_complete)
-                }
-            }
-        } else {
-            collectFlow(favoritesViewModel.favoriteAniListAnimeList) {
-                check = it?.any { media ->
-                    media.idAniList == animeDetails.idAniList
-                } ?: false
-                if (!check) {
-                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-                } else {
-                    menu[1].setIcon(R.drawable.ic_favorite_complete)
-                }
+        collectFlow(favoritesViewModel.favoriteAniListAnimeList) {
+            check = it?.any { media ->
+                media.idAniList == animeDetails.idAniList
+            } ?: false
+            if (!check) {
+                menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+            } else {
+                menu[1].setIcon(R.drawable.ic_favorite_complete)
             }
         }
-
-        binding.setType.isVisible = !isGuestLogin()
         binding.setType.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)
         }

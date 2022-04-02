@@ -132,7 +132,6 @@ query AnimeListCollectionQuery(
                     nextAiringEpisode {
                         id
                         airingAt
-                        timeUntilAiring
                         episode
                         mediaId
                     }
@@ -209,7 +208,7 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
                         }
                         description
                         nextAiringEpisode {
-                            timeUntilAiring
+                            airingAt
                             episode
                         }
                     }
@@ -255,14 +254,14 @@ query SearchAnimeQuery(
                 medium
             }
             nextAiringEpisode {
-                timeUntilAiring
+                airingAt
                 episode
             }
             genres
             averageScore
             meanScore
             nextAiringEpisode {
-                timeUntilAiring
+                airingAt
                 episode
             }
             trailer { id site thumbnail }
@@ -378,7 +377,7 @@ fragment HomeMedia on Media {
         medium
     }
     nextAiringEpisode {
-        timeUntilAiring
+        airingAt
         episode
     }
     bannerImage

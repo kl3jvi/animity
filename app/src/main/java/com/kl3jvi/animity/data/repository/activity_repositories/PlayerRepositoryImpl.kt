@@ -35,13 +35,18 @@ class PlayerRepositoryImpl @Inject constructor(
             )
         }
 
-    override suspend fun fetchEncryptedAjaxUrl(header: Map<String, String>, url: String): String =
+    override suspend fun fetchEncryptedAjaxUrl(
+        header: Map<String, String>,
+        url: String,
+        id: String
+    ): String =
         withContext(ioDispatcher) {
             parser.parseEncryptAjax(
                 apiClient.fetchM3u8Url(
                     header = header,
                     url = url
-                ).string()
+                ).string(),
+                id
             )
         }
 }

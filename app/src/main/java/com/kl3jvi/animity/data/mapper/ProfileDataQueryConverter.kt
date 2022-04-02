@@ -36,6 +36,7 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<Media> {
             type = it?.media?.type,
             format = it?.media?.format,
             status = it?.media?.status,
+            nextAiringEpisode = it?.media?.nextAiringEpisode?.airingAt,
             description = it?.media?.description ?: "",
             startDate = if (it?.media?.startDate?.year != null) {
                 FuzzyDate(
