@@ -4,9 +4,6 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
-import com.kl3jvi.animity.persistence.AnimeRepository
-import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,7 +18,6 @@ import javax.inject.Singleton
 @Singleton
 class GetAnimeDetailsUseCase @Inject constructor(
     private val detailsRepository: DetailsRepository,
-    private val animeRepository: AnimeRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
@@ -111,7 +107,4 @@ class GetAnimeDetailsUseCase @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    fun checkIfExists(url: String) = flow {
-        emit(animeRepository.checkIfAnimeIsOnDatabase(url))
-    }.flowOn(ioDispatcher)
 }

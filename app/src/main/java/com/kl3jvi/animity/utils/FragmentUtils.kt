@@ -1,29 +1,25 @@
 package com.kl3jvi.animity.utils
 
 import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.View
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.ui.activities.main.MainActivity
 
-fun Fragment.isGuestLogin(): Boolean {
-    return (activity as MainActivity).isGuestLogin
+
+fun View.navigateSafe(directions: NavDirections, navOptions: NavOptions? = null) {
+    if (canNavigate()) this.findNavController().navigate(directions, navOptions)
 }
 
-fun Fragment.navigateSafe(directions: NavDirections, navOptions: NavOptions? = null) {
-    if (canNavigate()) findNavController().navigate(directions, navOptions)
-}
-
-fun Fragment.canNavigate(): Boolean {
+fun View.canNavigate(): Boolean {
     val navController = findNavController()
     val destinationIdInNavController = navController.currentDestination?.id
     val destinationIdOfThisFragment =
-        view?.getTag(R.id.tag_navigation_destination_id) ?: destinationIdInNavController
+        getTag(R.id.tag_navigation_destination_id) ?: destinationIdInNavController
     // check that the navigation graph is still in 'this' fragment, if not then the app already navigated:
     return if (destinationIdInNavController == destinationIdOfThisFragment) {
-        view?.setTag(R.id.tag_navigation_destination_id, destinationIdOfThisFragment)
+        setTag(R.id.tag_navigation_destination_id, destinationIdOfThisFragment)
         true
     } else {
         Log.d("NAVIGATION", "May not navigate: current destination is not the current fragment.")

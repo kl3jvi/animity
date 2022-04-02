@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.favoriteAnime
 import com.kl3jvi.animity.ui.activities.main.MainActivity
@@ -48,37 +47,27 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     private fun observeAniList() {
         collectFlow(viewModel.favoriteAniListAnimeList) { animeList ->
-            val list = animeList?.data?.user?.favourites?.anime?.edges?.map {
-                AnimeMetaModel(
-                    id = it?.node?.id ?: 0,
-                    title = it?.node?.title?.romaji.toString(),
-                    imageUrl = it?.node?.coverImage?.large.toString(),
-                    categoryUrl = null
-                )
-            }
 
 
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {
-                if (!list.isNullOrEmpty()) {
-                    list.forEach { animeMetaModel ->
-                        favoriteAnime {
-                            id(animeMetaModel.id)
-                            clickListener { _ ->
-//                                val directions =
-//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-//                                        animeMetaModel
-//                                    )
-//                                findNavController().navigate(directions)
-                            }
-                            animeInfo(animeMetaModel)
+                animeList?.forEach { media ->
+                    favoriteAnime {
+                        id(media.idAniList)
+                        clickListener { _ ->
+                            val directions =
+                                FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                                    media
+                                )
+                            findNavController().navigate(directions)
                         }
+                        animeInfo(media)
                     }
                 }
-                binding.favoritesRecycler.isVisible = !list.isNullOrEmpty()
-                binding.nothingSaved.isVisible = list.isNullOrEmpty()
-                showLoading(false)
             }
+            binding.favoritesRecycler.isVisible = !animeList.isNullOrEmpty()
+            binding.nothingSaved.isVisible = animeList.isNullOrEmpty()
+            showLoading(false)
         }
     }
 

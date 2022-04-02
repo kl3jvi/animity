@@ -2,11 +2,12 @@ package com.kl3jvi.animity.ui.fragments.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.FavoritesAnimeQuery
+import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
-import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
+import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logError
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val getFavoriteAnimesUseCase: GetFavoriteAnimesUseCase,
-    private val getUserSessionUseCase: GetUserSessionUseCase,
+    private val dataStore: LocalStorage,
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private var _favoriteAniListAnimeList =
-        MutableStateFlow<ApolloResponse<FavoritesAnimeQuery.Data>?>(null)
+        MutableStateFlow<List<Media>?>(null)
     val favoriteAniListAnimeList = _favoriteAniListAnimeList.asStateFlow()
 
     val shouldRefresh = MutableStateFlow(true)
@@ -36,12 +37,19 @@ class FavoritesViewModel @Inject constructor(
     private fun getFavoriteAnimes() {
         viewModelScope.launch(Dispatchers.IO) {
             shouldRefresh.collectLatest { _ ->
-                getUserSessionUseCase().flatMapLatest {
-                    getFavoriteAnimesUseCase(it.data?.viewer?.id, 1)
-                }.flowOn(ioDispatcher)
+                getFavoriteAnimesUseCase(dataStore.aniListUserId?.toInt(), 1)
+                    .flowOn(ioDispatcher)
                     .catch { e -> logError(e) }
                     .collect {
-                        _favoriteAniListAnimeList.value = it
+                        when (it) {
+                            is NetworkResource.Failed -> {
+                                logMessage(it.message)
+                            }
+                            is NetworkResource.Success -> {
+                                _favoriteAniListAnimeList.value = it.data
+                            }
+                        }
+
                     }
             }
         }

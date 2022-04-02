@@ -8,6 +8,7 @@ import com.kl3jvi.animity.CardAnimeBindingModel_
 import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.data.model.ui_models.Media
 import com.kl3jvi.animity.title
+import com.kl3jvi.animity.utils.navigateSafe
 import com.kl3jvi.animity.vertical
 
 
@@ -38,10 +39,10 @@ fun EpoxyController.buildHome(homeData: HomeData) {
         vertical {
             id(Uuid.randomUUID().toString())
             animeInfo(media)
-            clickListener { v ->
+            clickListener { view ->
                 val directions =
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
-                v.findNavController().navigate(directions)
+                view.navigateSafe(directions)
             }
         }
     }
@@ -62,7 +63,7 @@ fun List<Media>.modelCardAnime(): List<CardAnimeBindingModel_> {
             .clickListener { view ->
                 val direction =
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
-                view.findNavController().navigate(direction)
+                view.navigateSafe(direction)
             }
             .animeInfo(media)
 

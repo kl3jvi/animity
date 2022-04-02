@@ -127,7 +127,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     private fun initViews() {
         val aniListLogin = binding.aniListLogin
         val aniListRegister = binding.aniListSignUp
-        val guestLogin = binding.guestLogin
         val privacy = binding.privacy
 
         aniListLogin.setOnClickListener {
@@ -136,14 +135,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
         aniListRegister.setOnClickListener {
             launchBrowser(this@LoginActivity, Uri.parse(SIGNUP_URL))
-        }
-
-        guestLogin.setOnClickListener {
-            viewModel.saveGuestToken(GUEST_LOGIN_TYPE)
-            launchActivity<MainActivity> {
-                putExtra("loginType", GUEST_LOGIN_TYPE)
-            }
-            finish()
         }
 
         privacy.setOnClickListener {
@@ -162,7 +153,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             if (!isConnected) showSnack(binding.root, "No Internet Connection!")
             binding.aniListSignUp.isEnabled = isConnected
             binding.aniListLogin.isEnabled = isConnected
-            binding.guestLogin.isEnabled = isConnected
         }
     }
 
