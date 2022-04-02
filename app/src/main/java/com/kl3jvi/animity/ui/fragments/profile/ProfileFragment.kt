@@ -11,8 +11,8 @@ import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
+import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
-import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -56,9 +56,14 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     }
 
     private fun getProfileData() {
-        observeLiveData(viewModel.profileData, viewLifecycleOwner) { userData ->
-            observeLiveData(viewModel.animeList, viewLifecycleOwner) { animeCollectionResponse ->
-                binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
+        collectFlow(viewModel.profileData) { userData ->
+            collectFlow(viewModel.animeList) { animeCollectionResponse ->
+                animeCollectionResponse?.let {
+                    val hasNoData = animeCollectionResponse.isEmpty()
+                    binding.progressBar.isVisible = hasNoData
+                    binding.profileRv.isVisible = !hasNoData
+                    binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
+                }
             }
         }
     }

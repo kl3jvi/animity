@@ -3,6 +3,7 @@ package com.kl3jvi.animity.ui.activities.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -23,8 +24,9 @@ import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val viewModel: MainViewModel by viewModels()
 
     var isGuestLogin: Boolean = true
     var isConnected: Boolean = true
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 AUTHENTICATED_LOGIN_TYPE -> isGuestLogin = false
             }
         }
+        viewModel.initialise // just to initialise viewmodel
         if (intent.extras == null) {
             isGuestLogin = false
         }
@@ -63,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_profile
             )
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

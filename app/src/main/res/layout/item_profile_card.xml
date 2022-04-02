@@ -9,7 +9,7 @@
 
         <variable
             name="userData"
-            type="com.kl3jvi.animity.UserQuery.Data" />
+            type="com.kl3jvi.animity.data.model.ui_models.User" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,7 +51,7 @@
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:padding="10dp"
-                    app:avatarImage="@{userData.user.avatar.large}"
+                    app:avatarImage="@{userData.avatar.large}"
                     app:avatarViewBorderColor="@color/green_theme"
                     app:avatarViewBorderWidth="3dp"
                     app:avatarViewShape="circle"
@@ -68,7 +68,7 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/outline"
                     android:padding="@dimen/dp_10"
-                    android:text="@{userData.user.name}"
+                    android:text="@{userData.name}"
                     android:textColor="@color/textColor"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/avatarView"
@@ -82,8 +82,8 @@
                     android:layout_marginStart="@dimen/dp_16"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginEnd="@dimen/dp_16"
-                    android:text="@{userData.user.about}"
-                    app:animDuration="200"
+                    android:text="@{userData.about}"
+                    app:animDuration="300"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/avatarView"
                     app:layout_constraintTop_toBottomOf="@+id/username"

@@ -9,8 +9,8 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.viewBinding
-import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
+import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,20 +26,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun fetchHomeData() {
         observeLiveData(viewModel.homeData, viewLifecycleOwner) { result ->
-            when (result) {
-                is Resource.Error -> {
-                    logMessage(result.message)
-                    binding.loadingIndicator.hide()
-                }
-                is Resource.Loading -> {
-                    binding.loadingIndicator.show()
-                }
-                is Resource.Success -> {
-                    result.data?.let { listOfAnimes ->
-                        binding.loadingIndicator.isVisible = listOfAnimes.isEmpty()
-                        binding.mainRv.withModels { buildHome(listOfAnimes) }
-                    }
-                }
+            binding.mainRv.withModels {
+                binding.loadingIndicator.isVisible = result.newAnime.isEmpty()
+                buildHome(result)
             }
         }
     }
@@ -56,9 +45,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             binding.apply {
                 mainRv.isVisible = isConnected
                 noInternetStatus.noInternet.isVisible = !isConnected
-                if (mainRv.adapter?.itemCount == 0) {
-                    fetchHomeData()
-                }
             }
         }
     }

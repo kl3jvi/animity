@@ -38,28 +38,10 @@
             android:id="@+id/animeImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="@{clickListener}"
             app:image="@{animeInfo.imageUrl}"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerCrop" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/backgroundImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="@{clickListener}"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:src="#60000000"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-<!--        <androidx.appcompat.widget.AppCompatImageView-->
-<!--            android:id="@+id/play_logo"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:padding="2dp"-->
-<!--            android:src="@drawable/ic_play_tv" />-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/episodeCard"

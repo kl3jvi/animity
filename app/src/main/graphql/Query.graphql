@@ -102,6 +102,7 @@ query AnimeListCollectionQuery(
                         native
                         userPreferred
                     }
+                    description
                     type
                     format
                     status(version: 2)
@@ -201,7 +202,6 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
                         id
                         title {
                             romaji
-                            userPreferred
                         }
                         coverImage {
                             large
@@ -221,17 +221,11 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
     }
 }
 
-query MediaIdFromName($search: String){
-    media:Media (search: $search, type: ANIME) {
-        id
-        title {
-            english
-            romaji
-            native
-            userPreferred
-        }
-    }
-}
+#query MediaIdFromName($search: String){
+#    media:Media (search: $search, type: ANIME) {
+#        id
+#    }
+#}
 
 #GetAnime data by searching
 #query SearchAnimeQuery(
@@ -301,5 +295,79 @@ mutation ToggleFavouriteMutation($animeId: Int) {
                 total
             }
         }
+    }
+}
+
+query HomeDataQuery {
+    trendingAnime: Page(page: 1, perPage: 15) {
+        media(type: ANIME, status:RELEASING sort: [TRENDING_DESC], isAdult: false) {
+            ...HomeMedia
+        }
+    }
+
+    newAnime: Page(page: 1, perPage:15) {
+        media(type: ANIME,status_in:[FINISHED]  sort: [ID_DESC], isAdult: false) {
+            ...HomeMedia
+        }
+    }
+
+    movies: Page(page: 1, perPage:15) {
+        media(type: ANIME, format: MOVIE  status_in:[FINISHED] sort: [POPULARITY_DESC], isAdult: false) {
+            ...HomeMedia
+        }
+    }
+
+    review: Page(page: 1, perPage: 10) {
+        reviews(sort: [ID_DESC])    {
+            id
+            userId
+            mediaId
+            mediaType
+            summary
+            rating
+            ratingAmount
+            score
+            user {
+                id
+                name
+                avatar {
+                    large
+                    medium
+                }
+            }
+            media {
+                id
+                title {
+                    userPreferred
+                }
+                bannerImage
+            }
+        }
+    }
+}
+
+fragment HomeMedia on Media {
+    id
+    idMal
+    title {
+        userPreferred
+    }
+    type
+    status(version: 2)
+    format
+    description(asHtml: true)
+    coverImage {
+        extraLarge
+        large
+        medium
+    }
+    bannerImage
+    genres
+    averageScore
+    favourites
+    startDate {
+        year
+        month
+        day
     }
 }

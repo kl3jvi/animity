@@ -11,8 +11,9 @@ class LocalStorageImpl @Inject constructor(
 
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
+        private const val REFRESH_TOKEN = "refreshToken"
         private const val GUEST_TOKEN = "guestToken"
-        private const val FIRST_REMOTE_DATA_SAVE = "saveToDb"
+        private const val ANILIST_USER_ID = "anilistUserId"
     }
 
     override var bearerToken: String?
@@ -21,16 +22,22 @@ class LocalStorageImpl @Inject constructor(
             setData(BEARER_TOKEN, value)
         }
 
+    override var refreshToken: String?
+        get() = getData(REFRESH_TOKEN)
+        set(value) {
+            setData(REFRESH_TOKEN, value)
+        }
+
     override var guestToken: String?
         get() = getData(GUEST_TOKEN)
         set(value) {
             setData(GUEST_TOKEN, value)
         }
 
-    override var isDataSynced: String?
-        get() = getData(FIRST_REMOTE_DATA_SAVE)
+    override var aniListUserId: String?
+        get() = getData(ANILIST_USER_ID)
         set(value) {
-            setData(FIRST_REMOTE_DATA_SAVE, value)
+            setData(ANILIST_USER_ID, value)
         }
 
     private fun getData(key: String): String? {

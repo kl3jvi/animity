@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.data.repository.fragment_repositories
 
-import com.kl3jvi.animity.data.model.ui_models.test.DetailedAnimeInfo
+import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.network_repositories.NetworkBoundRepository
@@ -21,13 +21,9 @@ class FavoriteRepositoryImpl @Inject constructor(
         return object : NetworkBoundRepository<DetailedAnimeInfo>() {
             override suspend fun fetchFromRemote(): Response<DetailedAnimeInfo> {
                 return withContext(ioDispatcher) {
-                    apiClient.getGogoUrlFromAniListId(id) }
+                    apiClient.getGogoUrlFromAniListId(id)
+                }
             }
         }.asFlow()
     }
-
-//
-//
-//    withContext(ioDispatcher)
-//    { apiClient.getGogoUrlFromAniListId(id) }
 }

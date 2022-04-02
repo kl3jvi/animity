@@ -5,7 +5,7 @@
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+            type="com.kl3jvi.animity.data.model.ui_models.Media" />
 
 
         <variable
@@ -46,9 +46,8 @@
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
                 android:src="@color/colorPrimary"
-                app:image="@{animeInfo.imageUrl}" />
+                app:image="@{animeInfo.coverImage.large}" />
         </androidx.cardview.widget.CardView>
-
 
         <LinearLayout
             android:id="@+id/layoutContent"
@@ -68,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{animeInfo.title}"
+                android:text="@{animeInfo.title.userPreferred}"
                 tools:text="Star Wars: IV" />
 
             <TextView
@@ -77,9 +76,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_8"
-                android:text="@{animeInfo.episodeNumber}"
+                android:text="@{@string/total_episodes(animeInfo.episodes)}"
                 android:textColor="@color/green_theme"
                 tools:text="2022-03-17" />
+
 
             <TextView
                 android:id="@+id/textGenres"
@@ -89,9 +89,19 @@
                 android:layout_marginTop="@dimen/size_8"
                 android:ellipsize="end"
                 android:maxLines="1"
-                app:list_to_string="@{animeInfo.genreList}"
+                app:list_to_string="@{animeInfo.genres}"
                 tools:text="Action, Adventure" />
 
+            <RatingBar
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressBackgroundTint="@color/colorProgress"
+                android:progressTint="@color/yellow"
+                android:rating="@{animeInfo.averageScore/20}" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

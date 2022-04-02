@@ -1,13 +1,10 @@
 package com.kl3jvi.animity.utils
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
+import android.os.Build
+import android.text.Html
 import android.util.Log
 import android.view.View
-import androidx.annotation.AttrRes
-import androidx.annotation.ColorInt
-import androidx.core.content.res.use
+import android.widget.TextView
 
 fun View.hide() {
     visibility = View.GONE
@@ -21,6 +18,7 @@ fun logError(throwable: Throwable) {
     Log.e("ApiError", "-------------------------------------------------------------------")
     Log.e("ApiError", "safeApiCall: " + throwable.localizedMessage)
     Log.e("ApiError", "safeApiCall: " + throwable.message)
+    Log.e("ApiError", "safeApiCall: $throwable")
     throwable.printStackTrace()
     Log.e("ApiError", "-------------------------------------------------------------------")
 }
@@ -31,15 +29,11 @@ fun logMessage(string: String?) {
     Log.e("Error Happened", "-------------------------------------------------------------------")
 }
 
-@ColorInt
-@SuppressLint("Recycle")
-fun Context.themeColor(
-    @AttrRes themeAttrId: Int
-): Int {
-    return obtainStyledAttributes(
-        intArrayOf(themeAttrId)
-    ).use {
-        it.getColor(0, Color.MAGENTA)
+fun TextView.setHtmlText(htmlString: String?) {
+    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(htmlString)
     }
 }
 

@@ -111,9 +111,10 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
     override fun onTokenResponse(response: AuthResponse) {
-        val token: String? = response.accessToken
-        if (!token.isNullOrEmpty()) {
-            viewModel.saveToken(token)
+        val authToken: String? = response.accessToken
+        val refreshToken: String? = response.accessToken
+        if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
+            viewModel.saveTokens(authToken, refreshToken)
             launchActivity<MainActivity> {
                 putExtra("loginType", AUTHENTICATED_LOGIN_TYPE)
             }

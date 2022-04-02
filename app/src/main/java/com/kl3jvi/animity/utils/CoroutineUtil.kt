@@ -38,7 +38,7 @@ inline fun <T> LifecycleOwner.collectFlow(
     flow: Flow<T>,
     crossinline collector: suspend (T) -> Unit
 ) {
-    lifecycleScope.launchWhenStarted {
+    lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.catch { e -> logError(e) }
                 .collect {

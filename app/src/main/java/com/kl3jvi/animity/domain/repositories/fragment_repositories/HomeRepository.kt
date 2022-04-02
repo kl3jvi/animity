@@ -1,7 +1,10 @@
 package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
+import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.parser.HtmlParser
+import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     val parser: HtmlParser
@@ -25,4 +28,6 @@ interface HomeRepository {
         header: Map<String, String>,
         page: Int
     ): List<AnimeMetaModel>
+
+    fun getHomeData(): Flow<NetworkResource<HomeData>>
 }

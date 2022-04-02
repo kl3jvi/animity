@@ -15,6 +15,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.viewBinding
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.isGuestLogin
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -37,9 +38,16 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initViews() {
+
+        viewModel.shouldRefresh.value = shouldRefreshFavorites
+
         binding.swipeLayout.setOnRefreshListener {
-            shouldRefreshFavorites = !shouldRefreshFavorites
+            logMessage("$shouldRefreshFavorites 1")
             viewModel.shouldRefresh.value = shouldRefreshFavorites
+            shouldRefreshFavorites = !shouldRefreshFavorites
+            logMessage("$shouldRefreshFavorites 2")
+
+
             if (!isGuestLogin())
                 observeAniList()
             else
@@ -57,11 +65,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                             id(animeMetaModel.id)
                             animeInfo(animeMetaModel)
                             clickListener { _ ->
-                                val directions =
-                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-                                        animeMetaModel
-                                    )
-                                findNavController().navigate(directions)
+//                                val directions =
+//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+//                                        animeMetaModel
+//                                    )
+//                                findNavController().navigate(directions)
                             }
                         }
                     }
@@ -78,11 +86,12 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             val list = animeList?.data?.user?.favourites?.anime?.edges?.map {
                 AnimeMetaModel(
                     id = it?.node?.id ?: 0,
-                    title = it?.node?.title?.userPreferred.toString(),
+                    title = it?.node?.title?.romaji.toString(),
                     imageUrl = it?.node?.coverImage?.large.toString(),
                     categoryUrl = null
                 )
             }
+
 
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {
@@ -91,11 +100,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                         favoriteAnime {
                             id(animeMetaModel.id)
                             clickListener { _ ->
-                                val directions =
-                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
-                                        animeMetaModel
-                                    )
-                                findNavController().navigate(directions)
+//                                val directions =
+//                                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+//                                        animeMetaModel
+//                                    )
+//                                findNavController().navigate(directions)
                             }
                             animeInfo(animeMetaModel)
                         }

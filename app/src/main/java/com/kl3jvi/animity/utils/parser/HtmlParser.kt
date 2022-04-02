@@ -121,7 +121,7 @@ object HtmlParser {
     fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
         val animeInfo = document.getElementsByClass("anime_info_body_bg")
-        val animeUrl = animeInfo.select("img").first().absUrl("src")
+        val animeUrl = animeInfo.select("img").first().absUrl("src").orEmpty()
         val animeTitle = animeInfo.select("h1").first().text()
         val lists = document?.getElementsByClass("type")
         lateinit var type: String

@@ -6,14 +6,16 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     val bearerToken: String?
+    val refreshToken: String?
     val guestToken: String?
     val isAuthenticated: Boolean
     val isGuest: Boolean
-    val isFavoritesSynced:Boolean
+    val userId: String?
 
-    fun setBearerToken(token: String?)
+    fun setBearerToken(authToken: String?)
+    fun setRefreshToken(refreshToken: String?)
     fun setGuestToken(token: String?)
-    fun setSyncData(sync:String?)
+    fun setAniListUserId(sync: String?)
     fun clearStorage()
 
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
@@ -21,6 +23,7 @@ interface UserRepository {
     fun getAnimeListData(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>>
     fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
     fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>>
-    fun getMediaId(query: String?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>>
+
+    //    suspend fun getMediaId(query: String?): Flow<ApolloResponse<MediaIdFromNameQuery.Data>>
     suspend fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>>
 }

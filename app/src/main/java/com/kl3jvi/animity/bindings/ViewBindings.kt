@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.GenreModel
 import com.kl3jvi.animity.di.GlideApp
 import com.kl3jvi.animity.utils.hide
@@ -28,8 +29,8 @@ object ViewBindings {
 
     @JvmStatic
     @BindingAdapter("list_to_string")
-    fun joinList(textView: TextView, list: List<GenreModel>) {
-        textView.text = list.joinToString { it.genreName }
+    fun joinList(textView: TextView, list: List<Genre>) {
+        textView.text = list.joinToString { it.name }
     }
 
     @JvmStatic

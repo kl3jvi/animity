@@ -9,7 +9,7 @@ data class AuthResponse(
     @SerializedName("expires_in")
     val expiresIn: Int?,
     @SerializedName("refresh_token")
-    val refreshToken: String?,
+    var refreshToken: String?,
     @SerializedName("token_type")
     val tokenType: String?
 )

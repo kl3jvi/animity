@@ -16,12 +16,12 @@ class GetAccessTokenUseCase @Inject constructor(
         clientId: Int,
         clientSecret: String,
         redirectUri: String,
-        code: String
+        authorizationToken: String
     ) = repository.getAccessToken(
         grantType,
         clientId,
         clientSecret,
         redirectUri,
-        code
+        authorizationToken
     ).flowOn(ioDispatcher)
 }
