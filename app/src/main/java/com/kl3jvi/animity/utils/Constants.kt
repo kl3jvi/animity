@@ -66,8 +66,8 @@ class Constants {
 //        }
 
         //Gogoanime Secrets
-        const val GogoSecretkey = "25716538522938396164662278833288"
-        const val GogoSecretIV = "1285672985238393"
+        const val GogoSecretkey = "63976882873559819639988080820907"
+        const val GogoSecretIV = "4770478969418267"
         val GogoPadding = byteArrayOf(0x8, 0xe, 0x3, 0x8, 0x9, 0x3, 0x4, 0x9)
 
         fun getSafeString(string: String?) = string.toString()

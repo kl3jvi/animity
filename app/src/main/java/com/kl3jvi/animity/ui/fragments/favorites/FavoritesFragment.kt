@@ -12,6 +12,7 @@ import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.favoriteAnime
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.viewBinding
+import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -80,6 +81,19 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
+
+    private fun handleNetworkChanges() {
+        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
+            binding.noInternetResult.noInternet.isVisible = !isConnected
+            binding.favoritesRecycler.isVisible = isConnected
         }
     }
 }

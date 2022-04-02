@@ -40,7 +40,11 @@ class PlayerViewModel @Inject constructor(
 
     val videoUrlLiveData = Transformations.switchMap(_episodeUrl) { url ->
         getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
-            getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl)
+            val id =
+                Regex("id=([^&]+)").find(
+                    episodeInfo.data?.vidCdnUrl ?: ""
+                )?.value?.removePrefix("id=")
+            getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl, id ?: "")
         }.flatMapLatest {
             getEpisodeInfoUseCase.fetchM3U8(it.data)
         }.asLiveData()

@@ -12,6 +12,7 @@
     <string name="next_episode">Next Episode</string>
     <string name="quality_auto">Auto</string>
     <string name="speed">1x</string>
+    <string name="ep_x_on_y">Ep. %1$d on %2$s.</string>
     <string name="previous_episode">Previous Episode</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="release_date">Release Date</string>

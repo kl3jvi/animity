@@ -2,6 +2,8 @@ package com.kl3jvi.animity.data.model.ui_models
 
 import android.os.Parcelable
 import com.kl3jvi.animity.type.*
+
+
 import kotlinx.parcelize.Parcelize
 
 
@@ -39,6 +41,7 @@ data class Media(
     val type: MediaType? = null,
     val format: MediaFormat? = null,
     val status: MediaStatus? = null,
+    val nextAiringEpisode: Int? = null,
     val description: String = "",
     val startDate: FuzzyDate? = null,
     val endDate: FuzzyDate? = null,

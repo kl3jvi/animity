@@ -14,12 +14,12 @@ import com.kl3jvi.animity.vertical
 
 fun EpoxyController.buildHome(homeData: HomeData) {
 
-    val (trendingAnime, newAnime, popularAnime, reviews) = homeData
+    val (trendingAnime, newAnime, movies, reviews) = homeData
 
     listOf(
-        homeData.newAnime,
-        homeData.trendingAnime,
-        homeData.movies
+        newAnime,
+        trendingAnime,
+        movies
     ).forEachIndexed { index, list ->
         title {
             id(Uuid.randomUUID().toString())
@@ -35,7 +35,7 @@ fun EpoxyController.buildHome(homeData: HomeData) {
         id(Uuid.randomUUID().toString())
         title(Title.values()[3].title)
     }
-    popularAnime.forEach { media ->
+    movies.forEach { media ->
         vertical {
             id(Uuid.randomUUID().toString())
             animeInfo(media)

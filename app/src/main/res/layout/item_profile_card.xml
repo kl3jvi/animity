@@ -4,7 +4,7 @@
     <data>
 
         <variable
-            name="bgImage"
+            name="backgroundImage"
             type="String" />
 
         <variable
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:image="@{bgImage}"
+                app:image="@{backgroundImage}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

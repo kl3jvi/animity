@@ -42,10 +42,10 @@ class GetEpisodeInfoUseCase @Inject constructor(
     }.flowOn(ioDispatcher)
 
     //
-    fun fetchEncryptedAjaxUrl(url: String?) = flow {
+    fun fetchEncryptedAjaxUrl(url: String?,id:String) = flow {
         emit(Resource.Loading())
         try {
-            val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url ?: "")
+            val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url ?: "",id)
             val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
             emit(Resource.Success(data = streamUrl))
         } catch (e: Exception) {

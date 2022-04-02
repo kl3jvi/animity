@@ -10,7 +10,7 @@ fun FavoritesAnimeQuery.Data.convert(): List<Media>? {
         Media(
             idAniList = it?.node?.id ?: 0,
             title = MediaTitle(romaji = it?.node?.title?.romaji ?: ""),
-            coverImage = MediaCoverImage(it?.node?.coverImage?.large ?: ""),
+            coverImage = MediaCoverImage(large = it?.node?.coverImage?.large ?: ""),
             description = it?.node?.description ?: ""
         )
     }

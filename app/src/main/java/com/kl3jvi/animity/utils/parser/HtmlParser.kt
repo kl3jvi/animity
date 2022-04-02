@@ -213,7 +213,7 @@ object HtmlParser {
 
     private fun decryptAES(encrypted: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
-        val cipher = Cipher.getInstance("AES/CBC/NoPadding")
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(Charsets.UTF_8), "AES")
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ix)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -232,30 +232,29 @@ object HtmlParser {
 
     private fun encryptAes(text: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
-        val cipher = Cipher.getInstance("AES/CBC/NoPadding")
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(), "AES")
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ix)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Base64.getEncoder()
-                .encodeToString(cipher.doFinal(text.toByteArray() + Constants.GogoPadding))
+            Base64.getEncoder().encodeToString(cipher.doFinal(text.toByteArray()))
         } else {
             android.util.Base64.encodeToString(
-                cipher.doFinal(text.toByteArray() + Constants.GogoPadding),
+                cipher.doFinal(text.toByteArray()),
                 android.util.Base64.DEFAULT
             )
         }
     }
 
 
-    fun parseEncryptAjax(response: String): String {
-        val document = Jsoup.parse(response)
-        val value2 = document.select("script[data-name='crypto']").attr("data-value")
-        val decryptKey =
-            decryptAES(value2, Constants.GogoSecretkey, Constants.GogoSecretIV).replaceAfter(
-                "&",
-                ""
-            ).removeSuffix("&")
-        val encrypted = encryptAes(decryptKey, Constants.GogoSecretkey, Constants.GogoSecretIV)
+    fun parseEncryptAjax(response: String, id: String): String {
+//        val document = Jsoup.parse(response)
+//        val value2 = document.select("script[data-name='crypto']").attr("data-value")
+//        val decryptKey =
+//            decryptAES(value2, Constants.GogoSecretkey, Constants.GogoSecretIV).replaceAfter(
+//                "&",
+//                ""
+//            ).removeSuffix("&")
+        val encrypted = encryptAes(id, Constants.GogoSecretkey, Constants.GogoSecretIV)
         return "id=$encrypted"
     }
 

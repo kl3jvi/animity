@@ -2,6 +2,7 @@ package com.kl3jvi.animity.data.mapper
 
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.data.model.ui_models.*
+
 import com.kl3jvi.animity.fragment.HomeMedia
 
 
@@ -54,6 +55,7 @@ private fun HomeMedia?.convert(): Media {
         title = MediaTitle(romaji = this?.title?.romaji ?: ""),
         type = this?.type,
         format = this?.format,
+        nextAiringEpisode = this?.nextAiringEpisode?.airingAt,
         status = this?.status,
         description = this?.description ?: "",
         startDate = if (this?.startDate?.year != null) {
