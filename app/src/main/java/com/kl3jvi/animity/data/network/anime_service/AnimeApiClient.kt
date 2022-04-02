@@ -1,7 +1,10 @@
 package com.kl3jvi.animity.data.network.anime_service
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Optional
+import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.HomeDataQuery
+import com.kl3jvi.animity.UserQuery
 import javax.inject.Inject
 
 class AnimeApiClient @Inject constructor(
@@ -64,4 +67,10 @@ class AnimeApiClient @Inject constructor(
     suspend fun getGogoUrlFromAniListId(id: Int) = animeService.getGogoUrlFromAniListId(id)
 
     fun getHomeData() = apolloClient.query(HomeDataQuery()).toFlow()
+    fun getProfileData(userId: Int?) =
+        apolloClient.query(UserQuery(Optional.presentIfNotNull(userId))).toFlow()
+
+    fun getAnimeListData(userId: Int?) =
+        apolloClient.query(AnimeListCollectionQuery(Optional.presentIfNotNull(userId))).toFlow()
+
 }

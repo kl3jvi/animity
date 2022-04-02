@@ -69,8 +69,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             viewModel.animeMetaModel.value = animeInfo
             binding.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
-                resultTitle.text = animeInfo.title.userPreferred
-                title = animeInfo.title.userPreferred
+                resultTitle.text = animeInfo.title.romaji
+                title = animeInfo.title.romaji
             }
         }
     }
@@ -176,10 +176,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         } else {
             collectFlow(favoritesViewModel.favoriteAniListAnimeList) {
                 check = it?.data?.user?.favourites?.anime?.edges?.any {
-                    it?.node?.id == animeDetails.idAniList || it?.node?.title?.romaji.equals(
-                        animeDetails.title.userPreferred,
-                        true
-                    )
+                    it?.node?.id == animeDetails.idAniList
                 } ?: false
                 if (!check) {
                     menu[1].setIcon(R.drawable.ic_favorite_uncomplete)

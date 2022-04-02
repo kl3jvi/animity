@@ -58,10 +58,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->
             collectFlow(viewModel.animeList) { animeCollectionResponse ->
-                val hasNoData = animeCollectionResponse?.data?.media?.lists?.isEmpty() == true
-                binding.progressBar.isVisible = hasNoData
-                binding.profileRv.isVisible = !hasNoData
-                binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
+                animeCollectionResponse?.let {
+                    val hasNoData = animeCollectionResponse.isEmpty()
+                    binding.progressBar.isVisible = hasNoData
+                    binding.profileRv.isVisible = !hasNoData
+                    binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
+                }
             }
         }
     }

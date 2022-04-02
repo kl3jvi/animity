@@ -102,6 +102,7 @@ query AnimeListCollectionQuery(
                         native
                         userPreferred
                     }
+                    description
                     type
                     format
                     status(version: 2)

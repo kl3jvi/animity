@@ -41,7 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun handleNetworkChanges() {
-        requireActivity().isConnectedToInternet(requireActivity()) { isConnected ->
+        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
             binding.apply {
                 mainRv.isVisible = isConnected
                 noInternetStatus.noInternet.isVisible = !isConnected

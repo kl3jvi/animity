@@ -3,36 +3,39 @@ package com.kl3jvi.animity.ui.fragments.profile
 import androidx.navigation.findNavController
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
-import com.apollographql.apollo3.api.ApolloResponse
+import com.benasher44.uuid.Uuid
 import com.kl3jvi.animity.*
+import com.kl3jvi.animity.data.mapper.ProfileData
+import com.kl3jvi.animity.data.mapper.ProfileRow
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.ui.fragments.home.modelCardAnime
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.randomId
+import com.kl3jvi.animity.utils.logMessage
 
 
 fun EpoxyController.buildProfile(
-    userData: ApolloResponse<UserQuery.Data>?,
-    animeCollectionResponse: ApolloResponse<AnimeListCollectionQuery.Data>?
+    userData: ProfileData?,
+    animeCollectionResponse: List<ProfileRow>
 ) {
-
+    logMessage(animeCollectionResponse.toString())
     profileCard {
         id(randomId())
-        bgImage(Constants.DEFAULT_COVER)
-        userData(userData?.data)
+        userData?.userData?.let {
+            bgImage(it.bannerImage.ifEmpty { Constants.DEFAULT_COVER })
+            userData(it)
+        }
     }
-    val listOfData = animeCollectionResponse?.data?.media?.lists
-    if (!listOfData.isNullOrEmpty()) {
-        listOfData.map {
+    if (!animeCollectionResponse.isNullOrEmpty()) {
+        animeCollectionResponse.map { profileRow->
             title {
                 id(randomId())
-                title(it?.name)
+                title(profileRow.title)
             }
             carousel {
                 id(randomId())
-                models(
-                    it?.entries?.mapToAnimeMetaModel()?.modelCardAnimeProfile()
-                        ?: emptyList()
-                )
+                models(profileRow.animes.modelCardAnimeProfile())
             }
         }
     } else
@@ -42,29 +45,17 @@ fun EpoxyController.buildProfile(
 
 }
 
-fun List<AnimeMetaModel>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
-    return map { animeMetaModel ->
+fun List<Media>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
+    return map { media ->
         CardAnimeBindingModel_()
-            .id(animeMetaModel.id)
+            .id(randomId())
             .clickListener { view ->
-//                val direction =
-//                    ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
-//                        animeMetaModel
-//                    )
-//                view.findNavController().navigate(direction)
-            }
-    }
-}
-
-
-private fun List<AnimeListCollectionQuery.Entry?>.mapToAnimeMetaModel(): List<AnimeMetaModel> {
-    return map { animeWatchedData ->
-        AnimeMetaModel(
-            id = animeWatchedData?.media?.id ?: 0,
-            title = animeWatchedData?.media?.title?.romaji.toString(),
-            imageUrl = animeWatchedData?.media?.coverImage?.large.toString(),
-            categoryUrl = null
-        )
+                val direction =
+                    ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
+                        media
+                    )
+                view.findNavController().navigate(direction)
+            }.animeInfo(media)
     }
 }
 

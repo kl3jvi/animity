@@ -108,7 +108,7 @@ fun Genre.getHexColor(): String {
     }
 }
 
-data class User(
+open class User(
     val id: Int = 0,
     val name: String = "",
     val about: String = "",
