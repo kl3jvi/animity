@@ -90,6 +90,34 @@
         <item name="mediaRouteButtonTint">#EEFF41</item>
     </style>
 
+    <style name="PostTitleDetailText">
+        <item name="drawableLeftCompat">@drawable/ic_person</item>
+        <item name="android:drawablePadding">@dimen/dimen_4</item>
+        <item name="drawableTint">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="PostAuthorDetailText">
+        <item name="drawableLeftCompat">@drawable/ic_person</item>
+        <item name="android:drawablePadding">@dimen/dimen_4</item>
+        <item name="drawableTint">@color/grayTextColor</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/dimen_8</item>
+    </style>
+
+    <style name="PostBodyText">
+<!--        <item name="android:layout_marginTop">@dimen/dimen_16</item>-->
+<!--        <item name="android:textColor">@color/textColor</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--        <item name="android:lineSpacingExtra">@dimen/dimen_4</item>-->
+    </style>
+
+    <style name="ToolbarTitleTextAppearance" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+<!--        <item name="android:textColor">@android:color/transparent</item>-->
+    </style>
 
     <style name="NiceButton">
         <item name="android:padding">5dp</item>
@@ -134,12 +162,6 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <dimen name="dp_1">1dp</dimen>
-    <dimen name="text_18">18sp</dimen>
-    <dimen name="text_14">14sp</dimen>
-    <dimen name="text_12">12sp</dimen>
-    <dimen name="text_24">24sp</dimen>
-    <dimen name="text_20">20sp</dimen>
 
     <style name="PreferenceScreen" parent="Theme.Animity">
         <item name="android:textColor">@color/textColor</item>

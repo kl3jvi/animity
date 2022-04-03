@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="com.kl3jvi.animity.ui.fragments.details.DetailsViewModel" />
+            type="com.kl3jvi.animity.ui.fragments.details.animeDetails.DetailsViewModel" />
 
         <variable
             name="downloadClickListener"

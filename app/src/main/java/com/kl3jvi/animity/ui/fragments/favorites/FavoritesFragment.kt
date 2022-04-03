@@ -3,15 +3,13 @@ package com.kl3jvi.animity.ui.fragments.favorites
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.favoriteAnime
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.base.viewBinding
+import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,10 +17,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
+class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBinding>() {
 
-    private val viewModel: FavoritesViewModel by viewModels()
-    private val binding: FragmentFavoritesBinding by viewBinding()
+    override val viewModel: FavoritesViewModel by viewModels()
     private var shouldRefreshFavorites: Boolean = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,11 +27,11 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         initViews()
     }
 
-    private fun observeViewModel() {
+    override fun observeViewModel() {
         observeAniList()
     }
 
-    private fun initViews() {
+    override fun initViews() {
 
         viewModel.shouldRefresh.value = shouldRefreshFavorites
         binding.swipeLayout.setOnRefreshListener {
@@ -96,4 +93,8 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
             binding.favoritesRecycler.isVisible = isConnected
         }
     }
+
+    override fun getViewBinding(): FragmentFavoritesBinding =
+        FragmentFavoritesBinding.inflate(layoutInflater)
+
 }

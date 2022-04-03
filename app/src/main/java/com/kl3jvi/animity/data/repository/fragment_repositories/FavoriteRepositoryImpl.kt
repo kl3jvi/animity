@@ -2,7 +2,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
-import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.network_repositories.NetworkBoundRepository
@@ -36,11 +36,11 @@ class FavoriteRepositoryImpl @Inject constructor(
     override fun getFavoriteAnimesFromAniList(
         userId: Int?,
         page: Int?
-    ): Flow<NetworkResource<List<Media>>> {
+    ): Flow<NetworkResource<List<AniListMedia>>> {
         return try {
             apiClient.getFavoriteAnimesFromAniList(userId, page).catch { e -> logError(e) }
                 .mapNotNull {
-                    var data = listOf<Media>()
+                    var data = listOf<AniListMedia>()
                     if (!it.hasErrors() && it.data != null) {
                         data = it.data?.convert() ?: listOf()
                     }

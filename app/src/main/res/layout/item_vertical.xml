@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.Media" />
+            type="com.kl3jvi.animity.data.model.ui_models.Review" />
 
 
         <variable
@@ -14,95 +16,127 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_5"
         android:background="@color/cardBackground"
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
-        android:onClick="@{clickListener}"
-        android:paddingStart="@dimen/size_12"
-        android:paddingEnd="@dimen/size_12"
-        android:paddingBottom="@dimen/size_12">
+        android:onClick="@{clickListener}">
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardPoster"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/poster_height"
-            android:layout_marginTop="@dimen/size_12"
-            app:cardCornerRadius="@dimen/corner_small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="9:16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:image="@{animeInfo.aniListMedia.bannerImage}" />
 
-            <ImageView
-                android:id="@+id/imagePoster"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                android:src="@color/colorPrimary"
-                app:image="@{animeInfo.coverImage.large}" />
-        </androidx.cardview.widget.CardView>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/dark_bg" />
 
-        <LinearLayout
-            android:id="@+id/layoutContent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_12"
-            android:layout_marginTop="@dimen/size_4"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardPoster"
-            app:layout_constraintTop_toTopOf="@+id/cardPoster">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/size_12"
+            android:paddingEnd="@dimen/size_12"
+            android:paddingBottom="@dimen/size_12">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPoster"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/poster_height"
+                android:layout_marginTop="@dimen/size_12"
+                app:cardCornerRadius="@dimen/corner_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="9:16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imagePoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@color/colorPrimary"
+                    app:image="@{animeInfo.aniListMedia.coverImage.large}" />
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/layoutContent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_4"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardPoster"
+                app:layout_constraintTop_toTopOf="@+id/cardPoster">
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    style="@style/Headline6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{animeInfo.user.name}"
+                    tools:text="Star Wars: IV" />
+
+
+                <TextView
+                    android:id="@+id/textGenres"
+                    style="@style/Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    app:text="@{animeInfo.summary}"
+                    tools:text="Action, Adventure" />
+
+                <RatingBar
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:progressBackgroundTint="@color/colorProgress"
+                    android:progressTint="@color/yellow"
+                    android:rating="@{animeInfo.score/20}" />
+
+            </LinearLayout>
+
+            <io.getstream.avatarview.AvatarView
+                android:id="@+id/avatarView2"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                app:avatarImage="@{animeInfo.user.avatar.large}"
+                app:avatarViewBorderColor="@color/green_theme"
+                app:avatarViewBorderWidth="3dp"
+                app:avatarViewShape="circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutContent"
+                tools:src="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/textTitle"
-                style="@style/Headline6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{animeInfo.title.romaji}"
-                tools:text="Star Wars: IV" />
-
-            <TextView
-                android:id="@+id/textReleaseDate"
-                style="@style/Body2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_8"
-                android:text="@{@string/total_episodes(animeInfo.episodes)}"
-                android:textColor="@color/green_theme"
-                tools:text="2022-03-17" />
-
-
-            <TextView
-                android:id="@+id/textGenres"
-                style="@style/Caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_8"
-                android:ellipsize="end"
-                android:maxLines="1"
-                app:list_to_string="@{animeInfo.genres}"
-                tools:text="Action, Adventure" />
-
-            <RatingBar
-                style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:progressBackgroundTint="@color/colorProgress"
-                android:progressTint="@color/yellow"
-                android:rating="@{animeInfo.averageScore/20}" />
+                android:text="@{animeInfo.user.name}"
+                android:layout_marginEnd="@dimen/dp_10"
+                tools:text="Kl3jvi"
+                app:layout_constraintBottom_toBottomOf="@+id/avatarView2"
+                app:layout_constraintEnd_toStartOf="@+id/avatarView2"
+                app:layout_constraintTop_toTopOf="@+id/avatarView2" />
 
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>

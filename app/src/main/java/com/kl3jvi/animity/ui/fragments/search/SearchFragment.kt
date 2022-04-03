@@ -1,46 +1,40 @@
 package com.kl3jvi.animity.ui.fragments.search
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.base.viewBinding
+import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(R.layout.fragment_search) {
+class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
-    val viewModel: SearchViewModel by viewModels()
-    val binding: FragmentSearchBinding by viewBinding()
+    override val viewModel: SearchViewModel by viewModels()
     private val pagingController = PagingSearchController()
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private var searchJob: Job? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firebaseAnalytics = Firebase.analytics
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViews()
-    }
-
-    private fun initViews() {
+    override fun initViews() {
         binding.apply {
             searchRecycler.setController(pagingController)
             mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -80,5 +74,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             }
         }
     }
+
+    override fun observeViewModel() {}
+
+    override fun getViewBinding(): FragmentSearchBinding =
+        FragmentSearchBinding.inflate(layoutInflater)
 }
 

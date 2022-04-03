@@ -22,4 +22,14 @@
     <dimen name="size_12">12dp</dimen>
     <dimen name="poster_height">120dp</dimen>
     <dimen name="corner_small">4dp</dimen>
+    <dimen name="app_bar_height">192dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="text_18">18sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_12">12sp</dimen>
+    <dimen name="text_24">24sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="dimen_4">4sp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
 </resources>

@@ -5,15 +5,17 @@ import com.kl3jvi.animity.type.*
 
 
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 
 data class HomeData(
-    val trendingAnime: List<Media> = listOf(),
-    val newAnime: List<Media> = listOf(),
-    val movies: List<Media> = listOf(),
+    val trendingAnime: List<AniListMedia> = listOf(),
+    val newAnime: List<AniListMedia> = listOf(),
+    val movies: List<AniListMedia> = listOf(),
     val review: List<Review> = listOf()
 )
 
+@Parcelize
 data class Review(
     val id: Int = 0,
     val userId: Int = 0,
@@ -29,12 +31,12 @@ data class Review(
     val createdAt: Int = 0,
     val updatedAt: Int = 0,
     val user: User = User(),
-    val media: Media = Media()
-)
+    val aniListMedia: AniListMedia = AniListMedia()
+) : Parcelable
 
 
 @Parcelize
-data class Media(
+data class AniListMedia(
     val idAniList: Int = 0,
     val idMal: Int? = null,
     val title: MediaTitle = MediaTitle(),
@@ -111,7 +113,8 @@ fun Genre.getHexColor(): String {
     }
 }
 
-open class User(
+@Parcelize
+data class User(
     val id: Int = 0,
     val name: String = "",
     val about: String = "",
@@ -120,20 +123,21 @@ open class User(
     var isFollowing: Boolean = false,
     val isFollower: Boolean = false,
     val isBlocked: Boolean = false,
-    val mediaListOptions: MediaListOptions = MediaListOptions(),
-    val favourites: Favourites = Favourites(),
-    val statistics: UserStatisticTypes = UserStatisticTypes(),
+    val mediaListOptions: @RawValue MediaListOptions = MediaListOptions(),
+    val favourites: @RawValue  Favourites = Favourites(),
+    val statistics: @RawValue UserStatisticTypes = UserStatisticTypes(),
     val unreadNotificationCount: Int = 0,
     val siteUrl: String = "",
     val donatorTier: Int = 0,
     val donatorBadge: String = "",
     val moderatorRoles: List<ModRole> = listOf()
-)
+) : Parcelable
 
+@Parcelize
 data class UserAvatar(
     val large: String = "",
     val medium: String = ""
-) {
+) : Parcelable {
     fun getImageUrl(): String {
         return large
     }

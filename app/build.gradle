@@ -1,5 +1,4 @@
 plugins {
-
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
@@ -10,6 +9,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id 'com.google.secrets_gradle_plugin' version("0.4")
     id "com.apollographql.apollo3" version("3.0.0")
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 }
 android {
     signingConfigs {
@@ -25,16 +25,15 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 32
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 7
+        versionName "1.0.6"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.release
@@ -71,7 +70,9 @@ android {
             universalApk true
         }
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 kapt {
     correctErrorTypes = true
@@ -85,6 +86,7 @@ apollo {
 
 dependencies {
     implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def coordinatorLayoutVersion = "1.2.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     def androidCoreVersion = "1.7.0"
@@ -136,9 +138,11 @@ dependencies {
     // Retrofit
     def retrofitVersion = "2.9.0"
     def interceptor_version = "5.0.0-alpha.4"
+    def dnsOverHttp = "5.0.0-alpha.4"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
+    implementation "com.squareup.okhttp3:okhttp-dnsoverhttps:$dnsOverHttp"
 
     //Html Parsing
     def jsoupVersion = "1.13.1"
@@ -153,6 +157,7 @@ dependencies {
     def exoplayerVersion = "2.17.1"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-cast:$exoplayerVersion"
+    implementation "com.google.android.exoplayer:extension-okhttp:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
 
     //Bottom bar
@@ -210,5 +215,6 @@ dependencies {
     implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
+    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 
 }

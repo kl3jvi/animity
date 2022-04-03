@@ -5,7 +5,7 @@ import com.airbnb.epoxy.carousel
 import com.kl3jvi.animity.CardAnimeBindingModel_
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
-import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.noAnime
 import com.kl3jvi.animity.profileCard
 import com.kl3jvi.animity.title
@@ -35,7 +35,7 @@ fun EpoxyController.buildProfile(
             }
             carousel {
                 id(randomId())
-                models(profileRow.animes.modelCardAnimeProfile())
+                models(profileRow.anime.modelCardAnimeProfile())
             }
         }
     } else
@@ -45,7 +45,7 @@ fun EpoxyController.buildProfile(
 
 }
 
-fun List<Media>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
+fun List<AniListMedia>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
     return map { media ->
         CardAnimeBindingModel_()
             .id(randomId())

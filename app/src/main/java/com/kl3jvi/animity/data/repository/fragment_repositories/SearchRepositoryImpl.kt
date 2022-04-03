@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.data.paging.SearchAniListPagingSource
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.SearchRepository
@@ -20,7 +20,7 @@ class SearchRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : SearchRepository {
 
-    override fun fetchAniListSearchData(query: String): Flow<PagingData<Media>> {
+    override fun fetchAniListSearchData(query: String): Flow<PagingData<AniListMedia>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
             pagingSourceFactory = { SearchAniListPagingSource(apiClient, query) }

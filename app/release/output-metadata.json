@@ -11,35 +11,9 @@
       "type": "UNIVERSAL",
       "filters": [],
       "attributes": [],
-      "versionCode": 6,
-      "versionName": "1.0.5",
-      "outputFile": "Animity-v1.0.5-universal-release.apk"
-    },
-    {
-      "type": "ONE_OF_MANY",
-      "filters": [
-        {
-          "filterType": "ABI",
-          "value": "x86_64"
-        }
-      ],
-      "attributes": [],
-      "versionCode": 6,
-      "versionName": "1.0.5",
-      "outputFile": "Animity-v1.0.5-x86_64-release.apk"
-    },
-    {
-      "type": "ONE_OF_MANY",
-      "filters": [
-        {
-          "filterType": "ABI",
-          "value": "x86"
-        }
-      ],
-      "attributes": [],
-      "versionCode": 6,
-      "versionName": "1.0.5",
-      "outputFile": "Animity-v1.0.5-x86-release.apk"
+      "versionCode": 7,
+      "versionName": "1.0.6",
+      "outputFile": "Animity-v1.0.6-universal-release.apk"
     },
     {
       "type": "ONE_OF_MANY",
@@ -50,9 +24,35 @@
         }
       ],
       "attributes": [],
-      "versionCode": 6,
-      "versionName": "1.0.5",
-      "outputFile": "Animity-v1.0.5-arm64-v8a-release.apk"
+      "versionCode": 7,
+      "versionName": "1.0.6",
+      "outputFile": "Animity-v1.0.6-arm64-v8a-release.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "x86"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 7,
+      "versionName": "1.0.6",
+      "outputFile": "Animity-v1.0.6-x86-release.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "x86_64"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 7,
+      "versionName": "1.0.6",
+      "outputFile": "Animity-v1.0.6-x86_64-release.apk"
     },
     {
       "type": "ONE_OF_MANY",
@@ -63,9 +63,9 @@
         }
       ],
       "attributes": [],
-      "versionCode": 6,
-      "versionName": "1.0.5",
-      "outputFile": "Animity-v1.0.5-armeabi-v7a-release.apk"
+      "versionCode": 7,
+      "versionName": "1.0.6",
+      "outputFile": "Animity-v1.0.6-armeabi-v7a-release.apk"
     }
   ],
   "elementType": "File"
