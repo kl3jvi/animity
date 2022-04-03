@@ -41,16 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        with(intent) {
-            when (getStringExtra("loginType")) {
-                GUEST_LOGIN_TYPE -> isGuestLogin = true
-                AUTHENTICATED_LOGIN_TYPE -> isGuestLogin = false
-            }
-        }
         viewModel.initialise // just to initialise viewmodel
-        if (intent.extras == null) {
-            isGuestLogin = false
-        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics

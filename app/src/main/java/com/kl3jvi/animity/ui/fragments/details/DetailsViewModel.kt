@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromAniListId
@@ -32,7 +32,7 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    val animeMetaModel = MutableStateFlow<Media?>(null)
+    val animeMetaModel = MutableStateFlow<AniListMedia?>(null)
 
     init {
         getAnimeInfo()

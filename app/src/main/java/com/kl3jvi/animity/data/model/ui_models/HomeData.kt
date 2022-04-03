@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 
 
 data class HomeData(
-    val trendingAnime: List<Media> = listOf(),
-    val newAnime: List<Media> = listOf(),
-    val movies: List<Media> = listOf(),
+    val trendingAnime: List<AniListMedia> = listOf(),
+    val newAnime: List<AniListMedia> = listOf(),
+    val movies: List<AniListMedia> = listOf(),
     val review: List<Review> = listOf()
 )
 
@@ -29,12 +29,12 @@ data class Review(
     val createdAt: Int = 0,
     val updatedAt: Int = 0,
     val user: User = User(),
-    val media: Media = Media()
+    val aniListMedia: AniListMedia = AniListMedia()
 )
 
 
 @Parcelize
-data class Media(
+data class AniListMedia(
     val idAniList: Int = 0,
     val idMal: Int? = null,
     val title: MediaTitle = MediaTitle(),

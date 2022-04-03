@@ -5,7 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
+
 import androidx.browser.customtabs.CustomTabsIntent
 import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.R
@@ -13,7 +15,6 @@ import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BindingActivity
-import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
@@ -115,9 +116,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         val refreshToken: String? = response.accessToken
         if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
             viewModel.saveTokens(authToken, refreshToken)
-            launchActivity<MainActivity> {
-                putExtra("loginType", AUTHENTICATED_LOGIN_TYPE)
-            }
+            launchActivity<MainActivity> {}
             finish()
             return
         }

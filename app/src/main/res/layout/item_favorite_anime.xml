@@ -9,7 +9,7 @@
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.Media" />
+            type="com.kl3jvi.animity.data.model.ui_models.AniListMedia" />
 
         <variable
             name="isVisible"

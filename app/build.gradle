@@ -25,16 +25,15 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 32
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 7
+        versionName "1.0.6"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.release
@@ -71,7 +70,9 @@ android {
             universalApk true
         }
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 kapt {
     correctErrorTypes = true

@@ -28,9 +28,9 @@ fun AnimeListCollectionQuery.Data.convert(): List<ProfileRow> {
     } ?: listOf()
 }
 
-private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<Media> {
+private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia> {
     return this?.mapNotNull {
-        Media(
+        AniListMedia(
             idAniList = it?.media?.id ?: 0,
             title = MediaTitle(romaji = it?.media?.title?.romaji ?: ""),
             type = it?.media?.type,
@@ -66,6 +66,6 @@ data class ProfileData(
 
 data class ProfileRow(
     val title: String = "",
-    val animes: List<Media> = listOf()
+    val anime: List<AniListMedia> = listOf()
 )
 

@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kl3jvi.animity.data.mapper.convert
-import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
 import kotlinx.coroutines.Dispatchers
@@ -16,30 +16,30 @@ import kotlinx.coroutines.withContext
 class SearchAniListPagingSource(
     private val apiClient: AnimeApiClient,
     private val query: String
-) : PagingSource<Int, Media>() {
-    override fun getRefreshKey(state: PagingState<Int, Media>): Int? {
+) : PagingSource<Int, AniListMedia>() {
+    override fun getRefreshKey(state: PagingState<Int, AniListMedia>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Media> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            var listOfMedia: List<Media> = mutableListOf()
+            var listOfAniListMedia: List<AniListMedia> = mutableListOf()
             withContext(Dispatchers.IO) {
                 apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
                     .distinctUntilChanged()
                     .collectLatest {
                         it?.let {
-                            listOfMedia = it
+                            listOfAniListMedia = it
                         }
                     }
             }
             LoadResult.Page(
-                data = listOfMedia,
+                data = listOfAniListMedia,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
-                nextKey = if (listOfMedia.isNullOrEmpty()) null else page + 1
+                nextKey = if (listOfAniListMedia.isNullOrEmpty()) null else page + 1
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

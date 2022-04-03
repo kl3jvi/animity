@@ -4,9 +4,9 @@ import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.data.model.ui_models.*
 
 
-fun SearchAnimeQuery.Data.convert(): List<Media>? {
+fun SearchAnimeQuery.Data.convert(): List<AniListMedia>? {
     return page?.media?.map {
-        Media(
+        AniListMedia(
             idAniList = it?.id ?: 0,
             title = MediaTitle(romaji = it?.title?.romaji ?: ""),
             description = it?.description ?: "",

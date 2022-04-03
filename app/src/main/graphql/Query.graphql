@@ -356,6 +356,9 @@ query HomeDataQuery {
                     romaji
                 }
                 bannerImage
+                coverImage {
+                    large
+                }
             }
         }
     }

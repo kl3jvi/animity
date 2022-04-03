@@ -32,10 +32,13 @@ fun HomeDataQuery.Data.convert(): HomeData {
                     it?.user?.avatar?.medium ?: ""
                 )
             ),
-            media = Media(
+            aniListMedia = AniListMedia(
                 idAniList = it?.media?.id ?: 0,
                 title = MediaTitle(romaji = it?.media?.title?.romaji ?: ""),
-                bannerImage = it?.media?.bannerImage ?: ""
+                bannerImage = it?.media?.bannerImage ?: "",
+                coverImage = MediaCoverImage(
+                    large = it?.media?.coverImage?.large?:""
+                )
             )
         )
     } ?: listOf()
@@ -48,8 +51,8 @@ fun HomeDataQuery.Data.convert(): HomeData {
     )
 }
 
-private fun HomeMedia?.convert(): Media {
-    return Media(
+private fun HomeMedia?.convert(): AniListMedia {
+    return AniListMedia(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,
         title = MediaTitle(romaji = this?.title?.romaji ?: ""),

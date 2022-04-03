@@ -66,7 +66,7 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="animeDetails"
-            app:argType="com.kl3jvi.animity.data.model.ui_models.Media" />
+            app:argType="com.kl3jvi.animity.data.model.ui_models.AniListMedia" />
     </fragment>
 
     <fragment

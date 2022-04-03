@@ -2,7 +2,7 @@ package com.kl3jvi.animity.ui.fragments.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kl3jvi.animity.data.model.ui_models.Media
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
 import com.kl3jvi.animity.utils.NetworkResource
@@ -25,7 +25,7 @@ class FavoritesViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var _favoriteAniListAnimeList =
-        MutableStateFlow<List<Media>?>(null)
+        MutableStateFlow<List<AniListMedia>?>(null)
     val favoriteAniListAnimeList = _favoriteAniListAnimeList.asStateFlow()
 
     val shouldRefresh = MutableStateFlow(true)
