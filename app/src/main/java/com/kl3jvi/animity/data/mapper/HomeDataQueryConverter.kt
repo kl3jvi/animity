@@ -21,7 +21,8 @@ fun HomeDataQuery.Data.convert(): HomeData {
             mediaId = it?.mediaId ?: 0,
             mediaType = it?.mediaType,
             summary = it?.summary ?: "",
-            rating = it?.rating ?: 0,
+            body = it?.body ?: "",
+            rating = it ?. rating ?: 0,
             ratingAmount = it?.ratingAmount ?: 0,
             score = it?.score ?: 0,
             user = User(
@@ -37,7 +38,7 @@ fun HomeDataQuery.Data.convert(): HomeData {
                 title = MediaTitle(romaji = it?.media?.title?.romaji ?: ""),
                 bannerImage = it?.media?.bannerImage ?: "",
                 coverImage = MediaCoverImage(
-                    large = it?.media?.coverImage?.large?:""
+                    large = it?.media?.coverImage?.large ?: ""
                 )
             )
         )

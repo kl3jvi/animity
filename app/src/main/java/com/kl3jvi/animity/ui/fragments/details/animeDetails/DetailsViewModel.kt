@@ -1,12 +1,11 @@
-package com.kl3jvi.animity.ui.fragments.details
+package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsFromAnilistUseCase
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromAniListId
 import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
@@ -27,7 +26,6 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
     private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
-    private val getAnimeDetailsFromAnilistUseCase: GetAnimeDetailsFromAnilistUseCase,
     private val getGogoUrlFromAniListId: GetGogoUrlFromAniListId,
 ) : ViewModel() {
 
@@ -36,7 +34,6 @@ class DetailsViewModel @Inject constructor(
 
     init {
         getAnimeInfo()
-
     }
 
 
@@ -106,8 +103,6 @@ class DetailsViewModel @Inject constructor(
 //    }
 
 
-
-
     fun updateAnimeFavorite() {
         viewModelScope.launch {
             animeMetaModel.collect {
@@ -116,9 +111,6 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
-
-
 
 
 }

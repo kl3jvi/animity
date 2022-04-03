@@ -75,6 +75,7 @@
 #-keep class * extends com.airbnb.epoxy.ControllerHelper { *; }
 #-keepclasseswithmembernames class * { @com.airbnb.epoxy.AutoModel <fields>; }
 -keep class com.kl3jvi.animity.data.model.ui_models.AniListMedia
+-keep class com.kl3jvi.animity.data.model.ui_models.Review
 -keep public class com.kl3jvi.animity.data.model.auth_models.AuthResponse {*;}
 -keep public class com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 -keepclassmembers,allowobfuscation class * {

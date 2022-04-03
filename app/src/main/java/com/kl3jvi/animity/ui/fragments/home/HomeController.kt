@@ -39,9 +39,9 @@ fun EpoxyController.buildHome(homeData: HomeData) {
             id(Uuid.randomUUID().toString())
             animeInfo(media)
             clickListener { view ->
-//                val directions =
-//                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
-//                view.navigateSafe(directions)
+                val directions =
+                    HomeFragmentDirections.actionNavigationHomeToReviewDetailsFragment(media)
+                view.navigateSafe(directions)
             }
         }
     }

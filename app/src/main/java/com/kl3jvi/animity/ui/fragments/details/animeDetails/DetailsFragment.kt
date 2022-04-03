@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.fragments.details
+package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.graphics.Color
 import android.os.Bundle

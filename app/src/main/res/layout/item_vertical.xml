@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,9 +16,7 @@
 
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_5"
@@ -27,13 +27,15 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:scaleType="centerCrop"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             app:image="@{animeInfo.aniListMedia.bannerImage}" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/dark_bg" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -108,6 +110,33 @@
                     android:rating="@{animeInfo.score/20}" />
 
             </LinearLayout>
+
+            <io.getstream.avatarview.AvatarView
+                android:id="@+id/avatarView2"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                app:avatarImage="@{animeInfo.user.avatar.large}"
+                app:avatarViewBorderColor="@color/green_theme"
+                app:avatarViewBorderWidth="3dp"
+                app:avatarViewShape="circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutContent"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="@{animeInfo.user.name}"
+                android:layout_marginEnd="@dimen/dp_10"
+                tools:text="Kl3jvi"
+                app:layout_constraintBottom_toBottomOf="@+id/avatarView2"
+                app:layout_constraintEnd_toStartOf="@+id/avatarView2"
+                app:layout_constraintTop_toTopOf="@+id/avatarView2" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>

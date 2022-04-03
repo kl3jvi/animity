@@ -332,13 +332,14 @@ query HomeDataQuery {
         }
     }
 
-    review: Page(page: 1, perPage: 10) {
+    review: Page(page: 1, perPage: 15) {
         reviews(sort: [ID_DESC])    {
             id
             userId
             mediaId
             mediaType
             summary
+            body
             rating
             ratingAmount
             score
