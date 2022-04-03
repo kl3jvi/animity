@@ -83,7 +83,6 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
-        savedInstanceState?.putString("test", "12324")
         if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
             animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE).toString()
@@ -296,8 +295,7 @@ class PlayerActivity : AppCompatActivity() {
 //    }
 
     private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
-        val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
-        return if (url.contains("m3u8")) {
+        if (url.contains("m3u8")) {
             tempbit = true
             val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
             val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
