@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
-import com.kl3jvi.animity.databinding.FragmentProfileGuestBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
@@ -22,20 +21,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
     override val viewModel: ProfileViewModel by viewModels()
-    private val guestBinding: FragmentProfileGuestBinding get() = guestView()
 
     override fun observeViewModel() {
-        if (!isGuestLogin()) {
-            getProfileData()
-        } else guestViewSignIn()
+        getProfileData()
     }
 
     override fun initViews() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!isGuestLogin()) setHasOptionsMenu(true)
-        else setHasOptionsMenu(false)
+        setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -43,17 +39,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return if (!isGuestLogin()) binding.root else guestBinding.root
+        return binding.root
     }
 
-
-    private fun guestViewSignIn() {
-        guestBinding.signInBack.setOnClickListener {
-            with(requireContext()) {
-                launchActivity<LoginActivity> {}
-            }
-        }
-    }
 
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->
@@ -70,9 +58,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override fun getViewBinding(): FragmentProfileBinding =
         FragmentProfileBinding.inflate(layoutInflater)
-
-    private fun guestView(): FragmentProfileGuestBinding =
-        FragmentProfileGuestBinding.inflate(layoutInflater)
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

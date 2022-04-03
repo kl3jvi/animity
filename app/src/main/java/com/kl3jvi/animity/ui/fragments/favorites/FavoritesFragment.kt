@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,6 +22,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBinding>() {
 
     override val viewModel: FavoritesViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return binding.root
+    }
     private var shouldRefreshFavorites: Boolean = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
