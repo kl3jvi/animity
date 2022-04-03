@@ -22,12 +22,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
     override val viewModel: ProfileViewModel by viewModels()
-    private val guestBinding: FragmentProfileGuestBinding get() = guestView()
 
     override fun observeViewModel() {
-        if (!isGuestLogin()) {
-            getProfileData()
-        } else guestViewSignIn()
+        getProfileData()
     }
 
     override fun initViews() {}
@@ -43,17 +40,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return if (!isGuestLogin()) binding.root else guestBinding.root
+        return binding.root
     }
 
-
-    private fun guestViewSignIn() {
-        guestBinding.signInBack.setOnClickListener {
-            with(requireContext()) {
-                launchActivity<LoginActivity> {}
-            }
-        }
-    }
 
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->

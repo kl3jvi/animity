@@ -77,21 +77,21 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_settings) {
-            findNavController(
-                this,
-                R.id.nav_host_fragment_activity_main
-            ).navigate(R.id.settingsFragment)
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        menuInflater.inflate(R.menu.settings_menu, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        val id = item.itemId
+//        if (id == R.id.action_settings) {
+//            findNavController(
+//                this,
+//                R.id.nav_host_fragment_activity_main
+//            ).navigate(R.id.settingsFragment)
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
 
 }

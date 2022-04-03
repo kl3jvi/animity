@@ -136,9 +136,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 media.idAniList == animeDetails.idAniList
             } ?: false
             if (!check) {
-                menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
             } else {
-                menu[1].setIcon(R.drawable.ic_favorite_complete)
+                menu[0].setIcon(R.drawable.ic_favorite_complete)
             }
         }
         binding.setType.setOnClickListener { v ->
@@ -171,12 +171,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 check = if (!check) {
-                    menu[1].setIcon(R.drawable.ic_favorite_complete)
+                    menu[0].setIcon(R.drawable.ic_favorite_complete)
                     viewModel.updateAnimeFavorite()
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
-                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
                     viewModel.updateAnimeFavorite()
                     showSnack(binding.root, "Anime removed from Favorites")
                     false
@@ -198,7 +198,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                             clickListener { _ ->
                                 requireContext().launchActivity<PlayerActivity> {
                                     putExtra(Constants.EPISODE_DETAILS, it)
-                                    putExtra(Constants.ANIME_TITLE, animeDetails.title)
+                                    putExtra(Constants.ANIME_TITLE, animeDetails.title.romaji)
                                 }
                             }
                             episodeInfo(it)
