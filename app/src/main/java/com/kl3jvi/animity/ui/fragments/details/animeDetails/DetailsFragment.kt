@@ -198,7 +198,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                             clickListener { _ ->
                                 requireContext().launchActivity<PlayerActivity> {
                                     putExtra(Constants.EPISODE_DETAILS, it)
-                                    putExtra(Constants.ANIME_TITLE, animeDetails.title)
+                                    putExtra(Constants.ANIME_TITLE, animeDetails.title.romaji)
                                 }
                             }
                             episodeInfo(it)
