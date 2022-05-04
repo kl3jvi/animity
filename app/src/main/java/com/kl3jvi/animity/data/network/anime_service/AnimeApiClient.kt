@@ -64,13 +64,39 @@ class AnimeApiClient @Inject constructor(
 
     suspend fun getGogoUrlFromAniListId(id: Int) = animeService.getGogoUrlFromAniListId(id)
 
+    /**
+     * `getHomeData()` is a function that returns a Flow of HomeDataQuery.HomeDataQuery.Data
+     */
     fun getHomeData() = apolloClient.query(HomeDataQuery()).toFlow()
+
+    /**
+     * "Get the profile data for the user with the given ID, or the current user if no ID is given."
+     *
+     * The first thing to notice is that the function is marked as suspend. This means that it can be
+     * called from a coroutine
+     *
+     * @param userId The user ID of the user whose profile data we want to fetch.
+     */
     fun getProfileData(userId: Int?) =
         apolloClient.query(UserQuery(Optional.presentIfNotNull(userId))).toFlow()
 
+    /**
+     * "Get the anime list data for the given user ID, if it's not null."
+     *
+     * The first thing to notice is that the function is marked as suspend. This means that it can be
+     * called from a coroutine
+     *
+     * @param userId The user's ID.
+     */
     fun getAnimeListData(userId: Int?) =
         apolloClient.query(AnimeListCollectionQuery(Optional.presentIfNotNull(userId))).toFlow()
 
+    /**
+     * It takes a query and a page number, and returns a Flow of SearchAnimeQuery.Data
+     *
+     * @param query The search query
+     * @param page Int - The page number to fetch.
+     */
     fun fetchSearchAniListData(query: String, page: Int) =
         apolloClient.query(
             SearchAnimeQuery(
@@ -79,6 +105,13 @@ class AnimeApiClient @Inject constructor(
             )
         ).toFlow()
 
+    /**
+     * `getFavoriteAnimesFromAniList` is a function that takes in a userId and a page number and
+     * returns a Flow of FavoriteAnimeQuery.Data
+     *
+     * @param userId The user's id from AniList.
+     * @param page The page number of the results to be returned.
+     */
     fun getFavoriteAnimesFromAniList(
         userId: Int?,
         page: Int?

@@ -8,7 +8,6 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListService
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.AnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
-import com.kl3jvi.animity.data.network.interceptor.TokenAuthenticatior
 import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
@@ -29,6 +28,7 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
+    /* Providing an OkHttpClient to the dagger. */
     @Provides
     @Singleton
     fun provideOkHttpClient(
@@ -36,8 +36,7 @@ object NetworkModule {
         loginRepository: LoginRepository
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(HeaderInterceptor(localStorage))
-            .authenticator(TokenAuthenticatior(loginRepository, localStorage))
+            .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
@@ -46,6 +45,7 @@ object NetworkModule {
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
     }
+
 
     @Provides
     @Singleton
@@ -74,6 +74,12 @@ object NetworkModule {
             .build()
     }
 
+    /**
+     * Provide an ApolloClient instance with the given OkHttpClient instance.
+     *
+     * @param okHttpClient The OkHttpClient instance that will be used to make the network requests.
+     * @return ApolloClient
+     */
     @Provides
     @Singleton
     fun provideApolloClient(
@@ -85,7 +91,12 @@ object NetworkModule {
             .build()
     }
 
-
+    /**
+     * > It takes a Retrofit object as an argument and returns an AnimeService object
+     *
+     * @param retrofit Retrofit - The Retrofit instance that will be used to create the service.
+     * @return A Retrofit object.
+     */
     @Singleton
     @Provides
     fun provideAnimeService(retrofit: Retrofit): AnimeService {
@@ -98,10 +109,16 @@ object NetworkModule {
         animeService: AnimeService,
         apolloClient: ApolloClient
     ): AnimeApiClient {
-        return AnimeApiClient(animeService,apolloClient)
+        return AnimeApiClient(animeService, apolloClient)
     }
 
 
+    /**
+     * Create an AniListService object using the Retrofit object.
+     *
+     * @param retrofit Retrofit - The Retrofit object that will be used to create the service.
+     * @return AniListService
+     */
     @Singleton
     @Provides
     fun provideAniListService(retrofit: Retrofit): AniListService {

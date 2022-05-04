@@ -72,11 +72,21 @@ class Constants {
 
         fun getSafeString(string: String?) = string.toString()
 
+        /**
+         * It returns a ColorStateList object.
+         *
+         * @return A ColorStateList object.
+         */
         fun getColor(): ColorStateList {
             val color: Int = Color.argb(255, 4, 138, 129)
             return ColorStateList.valueOf(color)
         }
 
+        /**
+         * It returns a ColorStateList object.
+         *
+         * @return A ColorStateList object.
+         */
         fun getBackgroundColor(): ColorStateList {
             val color: Int = Color.argb(255, 17, 17, 17)
             return ColorStateList.valueOf(color)
@@ -88,6 +98,11 @@ class Constants {
         }
 
 
+        /**
+         * It creates a factory for the data source.
+         *
+         * @return A DefaultHttpDataSource.Factory object
+         */
         fun getDataSourceFactory(): DefaultHttpDataSource.Factory {
             return DefaultHttpDataSource.Factory().apply {
                 setUserAgent(USER_AGENT)

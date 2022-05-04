@@ -59,6 +59,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         return binding.root
     }
 
+
     override fun observeViewModel() {
         fetchAnimeInfo()
         fetchEpisodeList()
@@ -77,11 +78,12 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     }
 
 
+    /**
+     * It fetches the anime info and displays it on the screen.
+     */
     private fun fetchAnimeInfo() {
         animeDetails.let { info ->
-
             binding.animeInfoLayout.textOverview.setHtmlText(info.description)
-
             binding.releaseDate.text = info.startDate?.getDate()
             binding.status.text = info.status?.name
             binding.type.text = info.type?.rawValue
@@ -102,12 +104,24 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         }
     }
 
+    /**
+     * It takes a number of seconds since the epoch and returns a string in the format "Day, dd Month
+     * yyyy, hh:mm a"
+     *
+     * @param seconds The number of seconds since January 1, 1970 00:00:00 UTC.
+     * @return The date in the format of Day, Date Month Year, Hour:Minute AM/PM
+     */
     private fun displayInDayDateTimeFormat(seconds: Int): String {
         val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.getDefault())
         val date = Date(seconds * 1000L)
         return dateFormat.format(date)
     }
 
+    /**
+     * It creates a chip for each genre in the list.
+     *
+     * @param genre List<Genre> - The list of genres that we want to display.
+     */
     private fun createGenreChips(genre: List<Genre>) {
         genre.forEach { data ->
             binding.genreGroup.removeAllViews()
@@ -130,22 +144,27 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    /**
+     * It observes the database for changes and updates the menu icon accordingly.
+     */
     private fun observeDatabase() {
-        collectFlow(favoritesViewModel.favoriteAniListAnimeList) {
-            check = it?.any { media ->
+        collectFlow(favoritesViewModel.favoriteAniListAnimeList) { mediaList ->
+            check = mediaList?.any { media ->
                 media.idAniList == animeDetails.idAniList
             } ?: false
-            if (!check) {
-                menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
-            } else {
-                menu[1].setIcon(R.drawable.ic_favorite_complete)
-            }
+            menu[1].setIcon(if (!check) R.drawable.ic_favorite_uncomplete else R.drawable.ic_favorite_complete)
         }
         binding.setType.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)
         }
     }
 
+    /**
+     * It shows a popup menu when the user clicks on the view.
+     *
+     * @param v View - The view that the popup menu should be anchored to.
+     * @param menuRes The menu resource to inflate.
+     */
     private fun showMenu(v: View, @MenuRes menuRes: Int) {
         val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(menuRes, popup.menu)
@@ -167,6 +186,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         popup.show()
     }
 
+    /**
+     * When the user clicks on the add to favorites icon, the icon changes to a filled heart and the
+     * anime is added to the favorites list
+     *
+     * @param item MenuItem - The menu item that was selected.
+     * @return The superclass method is being returned.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add_to_favorites -> {
@@ -186,6 +212,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * It fetches the episode list from the view model and then populates the recycler view with the
+     * episode list
+     */
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
         collectFlow(viewModel.episodeList) { episodeListResponse ->
@@ -256,6 +286,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
 //        }
     }
 
+    /**
+     * It inflates the layout and returns the binding object.
+     */
     override fun getViewBinding(): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater)
 }

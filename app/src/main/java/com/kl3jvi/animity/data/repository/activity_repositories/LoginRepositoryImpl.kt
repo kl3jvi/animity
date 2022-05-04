@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.repository.activity_repositories
 
+import android.util.Log
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository

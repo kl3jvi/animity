@@ -6,6 +6,7 @@ import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.fragment.HomeMedia
 
 
+
 fun HomeDataQuery.Data.convert(): HomeData {
     val trendingAnime =
         trendingAnime?.media?.mapNotNull {

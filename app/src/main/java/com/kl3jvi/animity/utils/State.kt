@@ -37,7 +37,5 @@ sealed class State<T> {
             is NetworkResource.Failed -> error(resource.message)
 
         }
-
-//        fun <T> fromApolloResource(resource: ApolloResponse<T.data>){}
     }
 }

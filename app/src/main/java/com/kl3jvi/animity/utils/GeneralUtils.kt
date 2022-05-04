@@ -14,6 +14,11 @@ fun View.show() {
     visibility = View.VISIBLE
 }
 
+/**
+ * It logs the error message, the localized message, the throwable object, and the stack trace
+ *
+ * @param throwable The exception that was thrown.
+ */
 fun logError(throwable: Throwable) {
     Log.e("ApiError", "-------------------------------------------------------------------")
     Log.e("ApiError", "safeApiCall: " + throwable.localizedMessage)
@@ -29,6 +34,7 @@ fun logMessage(string: String?) {
     Log.e("Error Happened", "-------------------------------------------------------------------")
 }
 
+/* A function that is used to set the text of a TextView to a HTML string. */
 fun TextView.setHtmlText(htmlString: String?) {
     text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)

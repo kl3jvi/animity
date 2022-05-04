@@ -20,6 +20,11 @@ class GetAnimeDetailsUseCase @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
+    /**
+     * It fetches the anime info from the server and returns a flow of Resource<AnimeInfoModel>
+     *
+     * @param url The url of the anime you want to fetch the details of.
+     */
     fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
         emit(Resource.Loading())
         try {
@@ -46,6 +51,13 @@ class GetAnimeDetailsUseCase @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
+    /**
+     * It fetches a list of episodes from the server and returns a flow of resources
+     *
+     * @param id The id of the show
+     * @param endEpisode The episode number to start from.
+     * @param alias The alias of the show.
+     */
     fun fetchEpisodeList(
         id: String?,
         endEpisode: String?,

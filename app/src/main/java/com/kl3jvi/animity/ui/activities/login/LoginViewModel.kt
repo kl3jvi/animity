@@ -18,6 +18,20 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepositoryImpl
 ) : ViewModel() {
 
+    /**
+     * `getAccessToken` is a function that returns a `Flow` of `State<AuthResponse>`
+     *
+     * The `Flow` is a stream of `State<AuthResponse>` that can be observed by the `ViewModel`
+     *
+     * @param grantType The type of grant you are requesting. For this example, we are requesting an
+     * authorization code grant.
+     * @param clientId The client ID you received from GitHub when you registered.
+     * @param clientSecret This is the secret key that you get from the developer portal.
+     * @param redirectUri The redirect URI you set in the [developer
+     * portal](https://developer.spotify.com/dashboard/applications)
+     * @param authorizationToken The authorization token that you received from the user.
+     * @return A Flow of State<AuthResponse>
+     */
     fun getAccessToken(
         grantType: String,
         clientId: Int,
@@ -34,6 +48,13 @@ class LoginViewModel @Inject constructor(
         ).mapToState()
     }
 
+    /**
+     * > The function `saveTokens` takes two strings, `authToken` and `refreshToken`, and saves them to
+     * the `userRepository` object
+     *
+     * @param authToken The token that is used to authenticate the user.
+     * @param refreshToken The refresh token that was returned from the server.
+     */
     fun saveTokens(authToken: String, refreshToken: String) {
         userRepository.apply {
             setBearerToken(authToken)
@@ -41,6 +62,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    /**
+     * > The function `getToken()` returns the value of the `bearerToken` property of the
+     * `userRepository` object
+     *
+     * @return The bearer token
+     */
     fun getToken(): String? {
         return userRepository.bearerToken
     }

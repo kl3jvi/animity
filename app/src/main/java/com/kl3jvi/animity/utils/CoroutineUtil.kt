@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
+/* A function that observes a LiveData and calls the observer function when the LiveData changes. */
 fun <T> observeLiveData(
     liveData: LiveData<T>,
     owner: LifecycleOwner,
@@ -20,17 +21,6 @@ fun <T> observeLiveData(
         }
     }.onFailure {
         it.printStackTrace()
-    }
-}
-
-fun <T> LifecycleOwner.collectPagingLiveData(
-    liveData: LiveData<T>,
-    observer: suspend (T) -> Unit
-) {
-    liveData.observe(this) {
-        lifecycleScope.launch {
-            observer(it)
-        }
     }
 }
 
@@ -62,6 +52,7 @@ inline fun <T> Fragment.collectLatestFlow(
     }
 }
 
+/* A function that takes a Flow of NetworkResource and returns a Flow of State. */
 fun <T> Flow<NetworkResource<T>>.mapToState(): Flow<State<T>> = map { resource ->
     State.fromResource(resource)
 }

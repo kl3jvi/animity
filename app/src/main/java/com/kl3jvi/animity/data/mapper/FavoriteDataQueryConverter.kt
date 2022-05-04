@@ -5,6 +5,8 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.MediaCoverImage
 import com.kl3jvi.animity.data.model.ui_models.MediaTitle
 
+/* It's a function that converts the data from the graphql query to the data model that we use in the
+app. */
 fun FavoritesAnimeQuery.Data.convert(): List<AniListMedia>? {
     return user?.favourites?.anime?.edges?.map {
         AniListMedia(

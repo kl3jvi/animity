@@ -20,6 +20,7 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
 
     private var binding: T? = null
 
+    /* A workaround for a bug in the AndroidX Data Binding library. */
     init {
         fragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
@@ -34,6 +35,14 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
         })
     }
 
+    /**
+     * If the binding is null, then we invoke the static method `bind` on the binding class, passing in
+     * the view of the fragment
+     *
+     * @param thisRef Fragment - The fragment that the binding is being created for
+     * @param property KProperty<*> - This is the property that is being delegated.
+     * @return The binding object
+     */
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
         if (binding == null)
             binding = bindingClass.getMethod("bind", View::class.java)

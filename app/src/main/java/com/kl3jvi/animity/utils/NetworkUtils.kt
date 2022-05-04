@@ -19,7 +19,11 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
     private val networkLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     /**
-     * Returns instance of [LiveData] which can be observed for network changes.
+     * > We register a network callback with the connectivity manager, and then we retrieve the current
+     * status of connectivity
+     *
+     * @param context Context - The context of the activity or fragment
+     * @return A LiveData object that is being observed by the MainActivity.
      */
     private fun getNetworkLiveData(context: Context): LiveData<Boolean> {
         val connectivityManager =
@@ -51,14 +55,25 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
     }
 
 
+    /**
+     * It posts a value to the networkLiveData object.
+     *
+     * @param network The Network object that has become available.
+     */
     override fun onAvailable(network: Network) {
         networkLiveData.postValue(true)
     }
 
+    /**
+     * It posts a value to the networkLiveData object.
+     *
+     * @param network The Network object that has been lost.
+     */
     override fun onLost(network: Network) {
         networkLiveData.postValue(false)
     }
 
+    /* An extension function that is being used to observe the networkLiveData object. */
     fun Context.isConnectedToInternet(owner: LifecycleOwner, observer: (Boolean) -> Unit) {
         getNetworkLiveData(context = this).observe(owner) {
             observer(it)

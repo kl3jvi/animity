@@ -14,6 +14,12 @@ class GetAnimesUseCase @Inject constructor(
     private val homeRepository: HomeRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
+    /**
+     * It returns a Flow of NetworkResource<HomeData> that is emitted from the
+     * homeRepository.getHomeData() function
+     *
+     * @return A Flow of NetworkResource<HomeData>
+     */
     operator fun invoke(): Flow<NetworkResource<HomeData>> {
         return homeRepository.getHomeData().flowOn(ioDispatcher)
     }

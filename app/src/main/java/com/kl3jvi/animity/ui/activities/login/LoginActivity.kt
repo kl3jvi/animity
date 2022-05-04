@@ -41,9 +41,11 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         initViews()
     }
 
+
     /**
-     * Moves to main activity and also returns logged in state to check it
-     * when reopening app and not transitioning 2 times to home page after login
+     * It checks if the user is logged in or not.
+     *
+     * @return Boolean
      */
     override fun checkIfUserLoggedIn(): Boolean {
         val isLoggedInWithAuth: Boolean
@@ -66,14 +68,13 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
 
+
     /**
-     * Builds the uri for the authentication url for anilist.co
+     * It returns the authorization url for the user to login.
+     *
+     * @return A Uri object
      */
     override fun getAuthorizationUrl(): Uri {
-        /**
-         * https://anilist.co/api/v2/oauth/authorize?client_id={client_id}->
-         * -> &redirect_uri={redirect_uri}&response_type=token
-         */
         return Uri.Builder().scheme("https")
             .authority("anilist.co")
             .appendPath("api")
@@ -111,6 +112,13 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }
     }
 
+    /**
+     * It saves the tokens and launches the MainActivity.
+     *
+     * @param response AuthResponse - This is the response object that contains the access token and
+     * refresh token.
+     * @return The response from the server is being returned.
+     */
     override fun onTokenResponse(response: AuthResponse) {
         val authToken: String? = response.accessToken
         val refreshToken: String? = response.accessToken
@@ -141,12 +149,22 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }
     }
 
+    /**
+     * > Launch a browser with a custom tab
+     *
+     * @param context The context of the activity or fragment.
+     * @param uri The URI to be opened.
+     */
     private fun launchBrowser(context: Context, uri: Uri) {
         CustomTabsIntent.Builder()
             .build()
             .launchUrl(context, uri)
     }
 
+    /**
+     * It checks if the user is connected to the internet and enables/disables the login and sign up
+     * buttons accordingly.
+     */
     private fun handleNetworkChanges() {
         isConnectedToInternet(this) { isConnected ->
             if (!isConnected) showSnack(binding.root, "No Internet Connection!")
@@ -156,16 +174,28 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     }
 
 
+    /**
+     * If the intent is not null, and the intent has the action of the intent filter, then call the
+     * handleAuthIntent function
+     */
     override fun onResume() {
         super.onResume()
         onHandleAuthIntent(intent)
     }
 
+    /**
+     * It handles network changes.
+     */
     override fun onStart() {
         super.onStart()
         handleNetworkChanges()
     }
 
+    /**
+     * It handles the intent that is passed to the activity.
+     *
+     * @param intent The intent that was used to start the activity.
+     */
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         onHandleAuthIntent(intent)

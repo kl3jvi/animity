@@ -16,6 +16,15 @@ class GetAnimeListForProfileUseCase @Inject constructor(
     private val profileRepositoryImpl: ProfileRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
 ) {
+    /**
+     * `profileRepositoryImpl.getProfileAnimes(userId = userId).flowOn(ioDispatcher)`
+     *
+     * This function is a `suspend` function that returns a `Flow` of
+     * `NetworkResource<List<ProfileRow>>`
+     *
+     * @param userId The user id of the user whose profile you want to fetch.
+     * @return A flow of network resource of list of profile rows
+     */
     operator fun invoke(userId: Int?): Flow<NetworkResource<List<ProfileRow>>> {
         return profileRepositoryImpl.getProfileAnimes(userId = userId).flowOn(ioDispatcher)
     }
