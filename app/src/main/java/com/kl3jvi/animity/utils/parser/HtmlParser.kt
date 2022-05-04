@@ -18,6 +18,14 @@ import javax.crypto.spec.SecretKeySpec
 
 object HtmlParser {
 
+    /**
+     * It takes a response from a network request, parses it, and returns a list of AnimeMetaModel
+     * objects
+     *
+     * @param response The response from the server.
+     * @param typeValue This is the type of anime, whether it's subbed or dubbed.
+     * @return An ArrayList of AnimeMetaModel objects.
+     */
     fun parseRecentSubOrDub(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
         val document = Jsoup.parse(response)
@@ -45,10 +53,16 @@ object HtmlParser {
             )
             i++
         }
-
         return animeMetaModelList
     }
 
+    /**
+     * It takes a response from the server, parses it, and returns a list of AnimeMetaModel objects
+     *
+     * @param response The response from the server.
+     * @param typeValue This is the type of anime. It can be either 1 for ongoing or 2 for completed.
+     * @return An ArrayList of AnimeMetaModel
+     */
     fun parsePopular(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
         val document = Jsoup.parse(response)
@@ -157,6 +171,12 @@ object HtmlParser {
         )
     }
 
+    /**
+     * It takes a list of HTML elements and returns a list of GenreModel objects.
+     *
+     * @param genreHtmlList The list of genres in the HTML document.
+     * @return An ArrayList of GenreModel objects.
+     */
     private fun getGenreList(genreHtmlList: Elements): ArrayList<GenreModel> {
         val genreList = ArrayList<GenreModel>()
         genreHtmlList.forEach {
@@ -170,10 +190,16 @@ object HtmlParser {
                 )
             )
         }
-
         return genreList
     }
 
+    /**
+     * It takes a string as an input, parses it using Jsoup, and returns an arraylist of EpisodeModel
+     * objects
+     *
+     * @param response The response from the server.
+     * @return An ArrayList of EpisodeModel objects.
+     */
     fun fetchEpisodeList(response: String): ArrayList<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
@@ -211,6 +237,14 @@ object HtmlParser {
         )
     }
 
+    /**
+     * Decrypts a string using AES
+     *
+     * @param encrypted The encrypted string
+     * @param key "1234567890123456"
+     * @param iv `"0000000000000000"`
+     * @return The decrypted string
+     */
     private fun decryptAES(encrypted: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
@@ -230,6 +264,14 @@ object HtmlParser {
         }
     }
 
+    /**
+     * Encrypts a string using AES encryption.
+     *
+     * @param text The text to be encrypted
+     * @param key The key used to encrypt the data.
+     * @param iv Initialization vector. This is a random string that is used to encrypt the data.
+     * @return The encrypted text
+     */
     private fun encryptAes(text: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
@@ -247,13 +289,6 @@ object HtmlParser {
 
 
     fun parseEncryptAjax(response: String, id: String): String {
-//        val document = Jsoup.parse(response)
-//        val value2 = document.select("script[data-name='crypto']").attr("data-value")
-//        val decryptKey =
-//            decryptAES(value2, Constants.GogoSecretkey, Constants.GogoSecretIV).replaceAfter(
-//                "&",
-//                ""
-//            ).removeSuffix("&")
         val encrypted = encryptAes(id, Constants.GogoSecretkey, Constants.GogoSecretIV)
         return "id=$encrypted"
     }
@@ -261,7 +296,7 @@ object HtmlParser {
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("anime")?.first()?.select("a")
+        val info = document?.getElementsByClass("streamsb")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
             document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
@@ -277,6 +312,12 @@ object HtmlParser {
         )
     }
 
+    /**
+     * It takes a response from the server, decrypts it, parses it, and returns an array of URLs
+     *
+     * @param response The response from the server
+     * @return an arraylist of urls.
+     */
     fun parseEncryptedUrls(response: String): ArrayList<String> {
         val urls: ArrayList<String> = ArrayList()
         var i = 0

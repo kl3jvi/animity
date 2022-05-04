@@ -298,9 +298,7 @@ class PlayerActivity : AppCompatActivity() {
 //    }
 
     private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
-        val dataSourceFactory: DataSource.Factory = getDataSourceFactory()
-        return if (url.contains("m3u8")) {
-            tempbit = true
+        if (url.contains("m3u8")) {
             val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
             val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
 
@@ -333,6 +331,9 @@ class PlayerActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * It releases the player.
+     */
     private fun releasePlayer() {
         player?.run {
             playbackPosition = this.currentPosition
@@ -343,11 +344,19 @@ class PlayerActivity : AppCompatActivity() {
         player = null
     }
 
+    /**
+     * > When the video is playing, keep the screen on
+     *
+     * @param isPlaying Boolean
+     */
     private fun onIsPlayingChanged(isPlaying: Boolean) {
         binding.videoView.keepScreenOn = isPlaying
     }
 
 
+    /**
+     * It shows a dialog for speed selection.
+     */
     private fun showDialogForSpeedSelection() {
         val builder = AlertDialog.Builder(this, R.style.MaterialThemeDialog)
         builder.apply {
@@ -374,16 +383,29 @@ class PlayerActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    /**
+     * > The function sets the speed to the speed passed in and sets the checked item to the speed
+     *
+     * @param speed The speed to set the playback to.
+     */
     private fun setSpeed(speed: Int) {
         selectedSpeed = speed
         checkedItem = speed
     }
 
+    /**
+     * It sets the playback speed of the video player to the speed passed in as a parameter
+     *
+     * @param speed The playback speed.
+     */
     private fun setPlaybackSpeed(speed: Float) {
         val params = PlaybackParameters(speed)
         player?.playbackParameters = params
     }
 
+    /**
+     * It toggles the full screen mode of the video player.
+     */
     private fun toggleFullView() {
         if (isFullScreen) {
             binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
@@ -414,6 +436,11 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * "Hide the system UI and make it reappear when the user swipes down from the top of the screen."
+     *
+     * The function is called in the onCreate() method of the MainActivity class
+     */
     @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
         binding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE

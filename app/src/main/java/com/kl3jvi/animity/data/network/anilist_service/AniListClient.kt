@@ -21,7 +21,4 @@ class AniListClient @Inject constructor(
             code = code
         )
     )
-
-
-
 }

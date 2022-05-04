@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.domain.use_cases
 
 import android.util.Log
-import com.kl3jvi.animity.data.repository.activity_repositories.PlayerRepositoryImpl
+import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetEpisodeInfoUseCase @Inject constructor(
-    private val playerRepository: PlayerRepositoryImpl,
+    private val playerRepository: PlayerRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
@@ -42,10 +42,10 @@ class GetEpisodeInfoUseCase @Inject constructor(
     }.flowOn(ioDispatcher)
 
     //
-    fun fetchEncryptedAjaxUrl(url: String?,id:String) = flow {
+    fun fetchEncryptedAjaxUrl(url: String?, id: String) = flow {
         emit(Resource.Loading())
         try {
-            val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url ?: "",id)
+            val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url ?: "", id)
             val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
             emit(Resource.Success(data = streamUrl))
         } catch (e: Exception) {
