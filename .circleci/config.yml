@@ -25,7 +25,8 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - release-build:
+      
+-release-build:
             executor:
               name: android/android-machine
               resource-class: xlarge
