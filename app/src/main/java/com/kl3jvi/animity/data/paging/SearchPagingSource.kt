@@ -42,24 +42,20 @@ class SearchAniListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            var listOfAniListMedia: List<AniListMedia> = mutableListOf()
+            var listOfAniListMedia = listOf<AniListMedia>()
             withContext(Dispatchers.IO) {
                 apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
                     .distinctUntilChanged()
-                    .collectLatest { list ->
-                        list?.let {
-                            listOfAniListMedia = it
-                        }
-                    }
+                    .collectLatest { list -> list?.let { listOfAniListMedia = it } }
             }
             LoadResult.Page(
                 data = listOfAniListMedia,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
                 nextKey = if (listOfAniListMedia.isNullOrEmpty()) null else page + 1
             )
-        } catch (exception: Exception) {
-            exception.printStackTrace()
-            LoadResult.Error(exception)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            LoadResult.Error(e)
         }
     }
 }

@@ -117,9 +117,10 @@ class DetailsViewModel @Inject constructor(
      * favorite status
      */
     fun updateAnimeFavorite() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             animeMetaModel.collect {
-                markAnimeAsFavoriteUseCase(it?.idAniList).catch { error -> logError(error) }
+                markAnimeAsFavoriteUseCase(it?.idAniList)
+                    .catch { error -> logError(error) }
                     .collect {}
             }
         }

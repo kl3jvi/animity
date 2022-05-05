@@ -9,6 +9,7 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 
+/* It allows us to use the `T::class.java` syntax. */
 inline fun <reified T : ViewBinding> Fragment.viewBinding() =
     FragmentViewBindingDelegate(T::class.java, this)
 

@@ -45,14 +45,13 @@ class PlayerViewModel @Inject constructor(
     }.flowOn(Dispatchers.Main).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
 
     val videoUrlLiveData = Transformations.switchMap(_episodeUrl) { url ->
-        /* It's getting the episode info from the url and then it's getting the id from the vidCdnUrl. */
         getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
+            /* It's getting the id of the episode from the url. */
             val id = Regex("id=([^&]+)").find(
-                    episodeInfo.data?.vidCdnUrl ?: ""
-                )?.value?.removePrefix("id=")
+                episodeInfo.data?.vidCdnUrl ?: ""
+            )?.value?.removePrefix("id=")
             getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl, id ?: "")
         }.flatMapLatest {
-            /* It's fetching the m3u8 file from the url. */
             getEpisodeInfoUseCase.fetchM3U8(it.data)
         }.asLiveData()
     }

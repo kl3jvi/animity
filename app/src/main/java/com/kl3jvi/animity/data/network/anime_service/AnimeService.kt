@@ -52,6 +52,7 @@ interface AnimeService {
     ): ResponseBody
 
     @GET
+    @Headers("watchsb:streamsb")
     suspend fun fetchM3u8Url(
         @HeaderMap header: Map<String, String>,
         @Url url: String

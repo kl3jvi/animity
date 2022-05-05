@@ -17,6 +17,7 @@ class DetailsRepositoryImpl @Inject constructor(
     private val apiClient: AnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : DetailsRepository {
+
     override val parser: HtmlParser
         get() = HtmlParser
 

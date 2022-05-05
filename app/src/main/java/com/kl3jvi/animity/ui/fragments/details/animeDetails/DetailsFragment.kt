@@ -152,7 +152,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             check = mediaList?.any { media ->
                 media.idAniList == animeDetails.idAniList
             } ?: false
-            menu[1].setIcon(if (!check) R.drawable.ic_favorite_uncomplete else R.drawable.ic_favorite_complete)
+            menu[0].setIcon(
+                if (!check) R.drawable.ic_favorite_uncomplete
+                else R.drawable.ic_favorite_complete
+            )
         }
         binding.setType.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)

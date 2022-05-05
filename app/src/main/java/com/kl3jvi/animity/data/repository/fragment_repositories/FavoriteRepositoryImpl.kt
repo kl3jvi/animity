@@ -1,8 +1,8 @@
 package com.kl3jvi.animity.data.repository.fragment_repositories
 
 import com.kl3jvi.animity.data.mapper.convert
-import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.network_repositories.NetworkBoundRepository
@@ -51,8 +51,6 @@ class FavoriteRepositoryImpl @Inject constructor(
             flowOf(NetworkResource.Failed(e.localizedMessage ?: "Error Occurred!"))
         }
     }
-
-
 }
 
 

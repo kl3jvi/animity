@@ -13,11 +13,14 @@ import retrofit2.Response
 abstract class NetworkBoundRepository<RESULT> {
     fun asFlow() = flow<NetworkResource<RESULT>> {
 
-        // Fetch remote content and parse body
+        /* Fetching the response from the remote server and then getting the body of the response. */
         val response = fetchFromRemote()
         val body = response.body()
         Log.e("Response", body.toString())
 
+        /* This is checking if the response is successful and if the body is null. If it is, then it
+        will emit a failed network resource. If the body is not null, then it will emit a successful
+        network resource. */
         if (!response.isSuccessful && body == null)
             emit(NetworkResource.Failed<RESULT>(response.message()))
         else if (body != null) {
@@ -32,9 +35,9 @@ abstract class NetworkBoundRepository<RESULT> {
         emit(NetworkResource.Failed("Network Error Happened!"))
     }
 
+    /**
+     * It's a suspend function that returns a Response<RESULT> and is annotated with @MainThread
+     */
     @MainThread
     protected abstract suspend fun fetchFromRemote(): Response<RESULT>
-
-
-
 }
