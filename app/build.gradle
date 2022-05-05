@@ -40,8 +40,13 @@ android {
         }
     }
     kapt {
+        useBuildCache true
         arguments {
             arg("room.schemaLocation", "$projectDir/schemas")
+        }
+        dexOptions {
+            preDexLibraries true
+            jumboMode false
         }
     }
 
