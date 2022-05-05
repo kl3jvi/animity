@@ -50,6 +50,7 @@ class PlayerViewModel @Inject constructor(
             val id = Regex("id=([^&]+)").find(
                 episodeInfo.data?.vidCdnUrl ?: ""
             )?.value?.removePrefix("id=")
+
             getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl, id ?: "")
         }.flatMapLatest {
             getEpisodeInfoUseCase.fetchM3U8(it.data)

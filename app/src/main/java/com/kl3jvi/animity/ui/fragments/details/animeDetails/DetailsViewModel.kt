@@ -41,8 +41,12 @@ class DetailsViewModel @Inject constructor(
     val animeInfo = _animeInfo.asStateFlow()
 
 
+    /* A `MutableStateFlow` which is a `MutableLiveData` that is backed by a `SharedFlow` */
     private val _episodeList = MutableStateFlow<List<EpisodeModel>?>(null)
+    /* Converting the `MutableStateFlow` to a `StateFlow` which is a `LiveData` that is backed by a
+    `SharedFlow` */
     val episodeList = _episodeList.asStateFlow()
+
 
 
     /**

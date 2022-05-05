@@ -55,8 +55,8 @@ class Constants {
         const val USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
-        private const val ORIGIN = "https://streamani.io"
-        const val REFERER = "https://streamani.io/"
+        const val ORIGIN = "https://gogoanime.gg/"
+        const val  REFERER = "https://goload.pro/"
 
         //        fun getHeader(): Map<String, String> {
 //            return mapOf(
@@ -67,9 +67,10 @@ class Constants {
 //        }
 
         //Gogoanime Secrets
-        var GogoSecretkey = "93106165734640459728346589106791"
-        var GogoSecretIV = "8244002440089157"
-        var GogoSecretSecondKey = "97952160493714852094564712118349"
+//        {"key": "37911490979715163134003223491201", "second_key": "54674138327930866480207815084989", "iv": "3134003223491201"}
+        var GogoSecretkey = "37911490979715163134003223491201"
+        var GogoSecretIV = "3134003223491201"
+        var GogoSecretSecondKey = "54674138327930866480207815084989"
         val GogoPadding = byteArrayOf(0x8, 0xe, 0x3, 0x8, 0x9, 0x3, 0x4, 0x9)
 
         fun getSafeString(string: String?) = string.toString()

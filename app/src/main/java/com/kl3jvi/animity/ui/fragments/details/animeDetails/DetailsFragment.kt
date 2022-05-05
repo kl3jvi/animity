@@ -200,12 +200,14 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 check = if (!check) {
-                    menu[1].setIcon(R.drawable.ic_favorite_complete)
+                    /* Setting the icon of the menu item at index 0 to the icon with the id
+                    `R.drawable.ic_favorite_complete`. */
+                    menu[0].setIcon(R.drawable.ic_favorite_complete)
                     viewModel.updateAnimeFavorite()
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
-                    menu[1].setIcon(R.drawable.ic_favorite_uncomplete)
+                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
                     viewModel.updateAnimeFavorite()
                     showSnack(binding.root, "Anime removed from Favorites")
                     false

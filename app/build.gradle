@@ -33,7 +33,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.release
@@ -56,11 +56,12 @@ android {
         viewBinding true
         dataBinding true
     }
-
-
     packagingOptions {
-        exclude 'META-INF/atomicfu.kotlin_module'
+        resources {
+            excludes += ['META-INF/atomicfu.kotlin_module']
+        }
     }
+
 
     splits {
         abi {
@@ -70,7 +71,7 @@ android {
             universalApk true
         }
     }
-    lintOptions {
+    lint {
         checkReleaseBuilds false
     }
 }
@@ -115,7 +116,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
 
     // Coroutines
-    def coroutinesVersion = "1.6.0"
+    def coroutinesVersion = "1.6.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
@@ -160,9 +161,7 @@ dependencies {
     implementation "com.google.android.exoplayer:extension-okhttp:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
 
-    //Bottom bar
-    def bottomBarVersion = "1.7.8"
-    implementation "com.github.ibrahimsn98:SmoothBottomBar:$bottomBarVersion"
+
 
     //Expandable TextView
     def expandableTextViewVersion = "0.1.4"

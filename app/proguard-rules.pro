@@ -71,9 +71,9 @@
 #  *;
 #}
 #
-#-keep class * extends com.airbnb.epoxy.EpoxyController { *; }
-#-keep class * extends com.airbnb.epoxy.ControllerHelper { *; }
-#-keepclasseswithmembernames class * { @com.airbnb.epoxy.AutoModel <fields>; }
+-keep class * extends com.airbnb.epoxy.EpoxyController { *; }
+-keep class * extends com.airbnb.epoxy.ControllerHelper { *; }
+-keepclasseswithmembernames class * { @com.airbnb.epoxy.AutoModel <fields>; }
 -keep class com.kl3jvi.animity.data.model.ui_models.AniListMedia
 -keep class com.kl3jvi.animity.data.model.ui_models.Review
 -keep public class com.kl3jvi.animity.data.model.auth_models.AuthResponse {*;}
@@ -81,3 +81,6 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
+-keep class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+-keep class okhttp3.**{*;}

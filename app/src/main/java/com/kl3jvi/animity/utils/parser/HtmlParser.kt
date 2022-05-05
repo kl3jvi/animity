@@ -1,14 +1,13 @@
 package com.kl3jvi.animity.utils.parser
 
 import android.os.Build
-import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.utils.Constants.Companion.GogoSecretIV
+import com.kl3jvi.animity.utils.Constants.Companion.GogoSecretSecondKey
 import com.kl3jvi.animity.utils.Constants.Companion.GogoSecretkey
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
-import java.net.URLDecoder
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -277,7 +276,7 @@ object HtmlParser {
                 cipher.doFinal(
                     android.util.Base64.decode(
                         encrypted,
-                        android.util.Base64.DEFAULT
+                        android.util.Base64.URL_SAFE
                     )
                 )
             )
@@ -338,7 +337,7 @@ object HtmlParser {
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("anime")?.first()?.select("a")
+        val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
             document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
@@ -366,25 +365,18 @@ object HtmlParser {
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
             data,
-            GogoSecretkey,
+            GogoSecretSecondKey,
             GogoSecretIV
         ).replace(
             """o"<P{#meme":""",
             """e":[{"file":"""
         )
         val res = JSONObject(decryptedData).getJSONArray("source")
-
         return try {
             while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
-                urls.add(
-                    URLDecoder.decode(
-                        res.getJSONObject(i).getString("file"),
-                        Charsets.UTF_8.name()
-                    )
-                )
+                urls.add(res.getJSONObject(i).getString("file"))
                 i++
             }
-            Log.e("URLS ___", urls.toString())
             urls
         } catch (exp: java.lang.NullPointerException) {
             urls
