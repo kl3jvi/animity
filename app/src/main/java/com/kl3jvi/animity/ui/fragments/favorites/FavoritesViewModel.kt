@@ -27,13 +27,15 @@ class FavoritesViewModel @Inject constructor(
     private var _favoriteAniListAnimeList =
         MutableStateFlow<List<AniListMedia>?>(null)
     val favoriteAniListAnimeList = _favoriteAniListAnimeList.asStateFlow()
-
     val shouldRefresh = MutableStateFlow(true)
 
     init {
         getFavoriteAnimes()
     }
 
+    /**
+     * It gets the favorite animes from the AniList API.
+     */
     private fun getFavoriteAnimes() {
         viewModelScope.launch(Dispatchers.IO) {
             shouldRefresh.collectLatest { _ ->

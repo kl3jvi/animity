@@ -124,7 +124,7 @@ data class User(
     val isFollower: Boolean = false,
     val isBlocked: Boolean = false,
     val mediaListOptions: @RawValue MediaListOptions = MediaListOptions(),
-    val favourites: @RawValue  Favourites = Favourites(),
+    val favourites: @RawValue Favourites = Favourites(),
     val statistics: @RawValue UserStatisticTypes = UserStatisticTypes(),
     val unreadNotificationCount: Int = 0,
     val siteUrl: String = "",

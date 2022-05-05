@@ -17,12 +17,28 @@ class SearchAniListPagingSource(
     private val apiClient: AnimeApiClient,
     private val query: String
 ) : PagingSource<Int, AniListMedia>() {
+
+    /**
+     * > If the anchor position is not null, then get the closest page to the anchor position and
+     * return the previous key
+     *
+     * @param state PagingState<Int, AniListMedia>
+     * @return The previous key of the closest page to the anchor position.
+     */
     override fun getRefreshKey(state: PagingState<Int, AniListMedia>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey
         }
     }
 
+    /**
+     * We're trying to load the data from the API, and if it's successful, we're returning a
+     * `LoadResult.Page` object with the data, the previous page index, and the next page index. If it
+     * fails, we're returning a `LoadResult.Error` object with the exception
+     *
+     * @param params LoadParams<Int> - This is the page number that we want to load.
+     * @return A LoadResult object.
+     */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
@@ -30,8 +46,8 @@ class SearchAniListPagingSource(
             withContext(Dispatchers.IO) {
                 apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
                     .distinctUntilChanged()
-                    .collectLatest {
-                        it?.let {
+                    .collectLatest { list ->
+                        list?.let {
                             listOfAniListMedia = it
                         }
                     }

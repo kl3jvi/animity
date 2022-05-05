@@ -19,8 +19,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
-import com.kl3jvi.animity.utils.Constants.Companion.AUTHENTICATED_LOGIN_TYPE
-import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.hide
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +38,9 @@ class MainActivity : AppCompatActivity() {
     var isConnected: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        /* A function from the SplashScreen library that is used to show a splash screen. */
         installSplashScreen()
+        /* A workaround for a bug in Hilt. */
         viewModel.initialise // just to initialise viewmodel
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,8 +48,9 @@ class MainActivity : AppCompatActivity() {
 
 
         val navView: BottomNavigationView = binding.navView
+        /* Getting the navigation controller from the navigation host fragment. */
         navController = findNavController(R.id.nav_host_fragment_activity_main)
-
+        /* Used to set up the action bar with the navigation controller. */
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -59,20 +60,33 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+        /* Setting up the action bar with the navigation controller. */
         setupActionBarWithNavController(navController, appBarConfiguration)
+        /* Setting up the bottom navigation bar with the navigation controller. */
         navView.setupWithNavController(navController)
     }
 
+    /**
+     * It hides the bottom navigation bar.
+     */
     fun hideBottomNavBar() {
         binding.navView.animate().translationY(binding.navView.height.toFloat()).duration = 500
         binding.navView.hide()
     }
 
+    /**
+     * It shows the bottom navigation bar.
+     */
     fun showBottomNavBar() {
         binding.navView.show()
         binding.navView.animate().translationY(0f).duration = 500
     }
 
+    /**
+     * If the user presses the back button, the app will navigate to the previous fragment
+     *
+     * @return The return value is a boolean.
+     */
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
     }
@@ -92,6 +106,4 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }

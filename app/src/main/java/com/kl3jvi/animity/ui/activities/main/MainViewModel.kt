@@ -25,6 +25,9 @@ class MainViewModel
 
     val initialise = MutableLiveData<String>()
 
+    /**
+     * It gets the user session from the server and sets the user id in the repository.
+     */
     private fun getUserSession() {
         viewModelScope.launch(Dispatchers.IO) {
             userSession().collect {

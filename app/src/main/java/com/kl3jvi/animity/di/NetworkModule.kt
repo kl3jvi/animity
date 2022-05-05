@@ -8,8 +8,8 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListService
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.AnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
-import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
 import dagger.Module
@@ -32,7 +32,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        localStorage: LocalStorageImpl,
+        localStorage: LocalStorage,
         loginRepository: LoginRepository
     ): OkHttpClient {
         return OkHttpClient.Builder()

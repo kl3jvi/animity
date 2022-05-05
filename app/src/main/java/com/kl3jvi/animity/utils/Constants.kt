@@ -31,7 +31,8 @@ class Constants {
         const val REFRESH_GRANT_TYPE = "refresh_token"
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
         const val SIGNUP_URL = "https://anilist.co/signup"
-        const val MAL_SYNC_URL = "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
+        const val MAL_SYNC_URL =
+            "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
 
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 
@@ -66,8 +67,9 @@ class Constants {
 //        }
 
         //Gogoanime Secrets
-        const val GogoSecretkey = "63976882873559819639988080820907"
-        const val GogoSecretIV = "4770478969418267"
+        var GogoSecretkey = "93106165734640459728346589106791"
+        var GogoSecretIV = "8244002440089157"
+        var GogoSecretSecondKey = "97952160493714852094564712118349"
         val GogoPadding = byteArrayOf(0x8, 0xe, 0x3, 0x8, 0x9, 0x3, 0x4, 0x9)
 
         fun getSafeString(string: String?) = string.toString()

@@ -12,9 +12,7 @@ import com.kl3jvi.animity.vertical
 
 
 fun EpoxyController.buildHome(homeData: HomeData) {
-
     val (trendingAnime, newAnime, movies, reviews) = homeData
-
     listOf(
         newAnime,
         trendingAnime,
@@ -56,6 +54,7 @@ enum class Title(val title: String) {
 }
 
 fun List<AniListMedia>.modelCardAnime(): List<CardAnimeBindingModel_> {
+/* It's a function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
     return map { media ->
         CardAnimeBindingModel_()
             .id(Uuid.randomUUID().toString())
@@ -65,7 +64,6 @@ fun List<AniListMedia>.modelCardAnime(): List<CardAnimeBindingModel_> {
                 view.navigateSafe(direction)
             }
             .animeInfo(media)
-
     }
 }
 

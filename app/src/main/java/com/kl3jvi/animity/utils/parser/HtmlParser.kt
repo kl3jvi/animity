@@ -4,6 +4,8 @@ import android.os.Build
 import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.GogoSecretIV
+import com.kl3jvi.animity.utils.Constants.Companion.GogoSecretkey
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -103,6 +105,14 @@ object HtmlParser {
         return animeMetaModelList
     }
 
+    /**
+     * It takes a response from the server, parses it, and returns a list of AnimeMetaModel objects
+     *
+     * @param response The response from the server.
+     * @param typeValue This is the type of the anime. It can be either 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+     * 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+     * @return A list of AnimeMetaModel
+     */
     fun parseMovie(response: String, typeValue: Int): ArrayList<AnimeMetaModel> {
         val animeMetaModelList: ArrayList<AnimeMetaModel> = ArrayList()
         val document = Jsoup.parse(response)
@@ -219,6 +229,12 @@ object HtmlParser {
         return episodeList
     }
 
+    /**
+     * It takes a string as an input, parses it using Jsoup, and returns an EpisodeReleaseModel object
+     *
+     * @param response The response from the server.
+     * @return A list of EpisodeReleaseModel objects.
+     */
     fun fetchEpisodeReleaseTime(response: String): EpisodeReleaseModel {
         val document = Jsoup.parse(response)
         var episodeNumber = ""
@@ -245,7 +261,7 @@ object HtmlParser {
      * @param iv `"0000000000000000"`
      * @return The decrypted string
      */
-    private fun decryptAES(encrypted: String, key: String, iv: String): String {
+    fun decryptAES(encrypted: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(Charsets.UTF_8), "AES")
@@ -263,6 +279,7 @@ object HtmlParser {
             )
         }
     }
+
 
     /**
      * Encrypts a string using AES encryption.
@@ -288,15 +305,36 @@ object HtmlParser {
     }
 
 
+    /**
+     * It takes in a response and an id, and returns a string.
+     *
+     * @param response The response from the server.
+     * @param id The id of the episode you want to watch.
+     * @return The encrypted string
+     */
     fun parseEncryptAjax(response: String, id: String): String {
-        val encrypted = encryptAes(id, Constants.GogoSecretkey, Constants.GogoSecretIV)
-        return "id=$encrypted"
+        return try {
+            val document = Jsoup.parse(response)
+            val value2 = document.select("script[data-name=\"episode\"]").attr("data-value")
+            val decrypt =
+                decryptAES(value2, GogoSecretkey, GogoSecretIV).replace("\t", "").substringAfter(id)
+            val encrypted = encryptAes(id, GogoSecretkey, GogoSecretIV)
+            "id=$encrypted$decrypt&alias=$id"
+        } catch (e: java.lang.Exception) {
+            e.toString()
+        }
     }
 
+    /**
+     * It takes a string as input, parses it using Jsoup, and returns an object of type EpisodeInfo
+     *
+     * @param response The response from the server.
+     * @return EpisodeInfo
+     */
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)
-        val info = document?.getElementsByClass("streamsb")?.first()?.select("a")
+        val info = document?.getElementsByClass("anime")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
             document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
@@ -341,9 +379,32 @@ object HtmlParser {
         } catch (exp: java.lang.NullPointerException) {
             urls
         }
+
+        /*
+         return try {
+                var crackit = JSONObject(response).getString("data")
+                crackit = decryptAES(crackit, C.GogoSecretSecondKey, C.GogoSecretIV).replace("""o"<P{#meme":""","""e":[{"file":""")
+                val res =  JSONObject(crackit).getJSONArray("source")
+                while(i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
+                    urls.add(res.getJSONObject(i).getString("file"))
+                    qualities.add(
+                        res.getJSONObject(i).getString("label").lowercase(Locale.getDefault()).filterNot { it.isWhitespace() })
+                    i++
+                }
+                Pair(urls,qualities)
+            }catch (exp: JSONException) {
+                Pair(urls,qualities)
+            }
+         */
     }
 }
 
+/**
+ * It takes a url as a parameter and returns the category url
+ *
+ * @param url The URL of the page to be scraped.
+ * @return The categoryUrl is being returned.
+ */
 private fun getCategoryUrl(url: String): String {
     return try {
         var categoryUrl = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
@@ -354,6 +415,13 @@ private fun getCategoryUrl(url: String): String {
     }.toString()
 }
 
+/**
+ * If the genre name contains a comma, return the substring after the comma, otherwise return the genre
+ * name
+ *
+ * @param genreName The name of the genre.
+ * @return The genre name is being returned.
+ */
 private fun filterGenreName(genreName: String): String {
     return if (genreName.contains(',')) {
         genreName.substring(genreName.indexOf(',') + 1)
@@ -362,6 +430,12 @@ private fun filterGenreName(genreName: String): String {
     }
 }
 
+/**
+ * It takes a string, finds the first colon, and returns the substring after the colon
+ *
+ * @param infoValue The value of the info field.
+ * @return the substring of the infoValue parameter.
+ */
 private fun formatInfoValues(infoValue: String): String {
     return infoValue.substring(infoValue.indexOf(':') + 1, infoValue.length)
 }

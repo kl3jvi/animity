@@ -45,6 +45,10 @@ class DetailsViewModel @Inject constructor(
     val episodeList = _episodeList.asStateFlow()
 
 
+    /**
+     * `getAnimeInfo()` is a function that fetches the anime info from the gogoanime website and
+     * updates the `_animeInfo` LiveData object
+     */
     private fun getAnimeInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             animeMetaModel.collect { animeDetails ->
@@ -67,6 +71,13 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * `fetchAnimeInfo` returns a `Single<Resource<AnimeInfo>>` which is then flatMapped to
+     * `fetchEpisodeList` which returns a `Single<Resource<EpisodeList>>`
+     *
+     * @param url The url of the anime you want to fetch the episode list from.
+     * @return A list of episodes
+     */
     private suspend fun fetchEpisodeList(url: String) {
         return getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
             getAnimeDetailsUseCase.fetchEpisodeList(
@@ -85,9 +96,7 @@ class DetailsViewModel @Inject constructor(
                         _episodeList.value = it.data
                     }
                 }
-
             }
-
     }
 
 
@@ -103,6 +112,10 @@ class DetailsViewModel @Inject constructor(
 //    }
 
 
+    /**
+     * > When the user clicks the favorite button, we want to update the database to reflect the new
+     * favorite status
+     */
     fun updateAnimeFavorite() {
         viewModelScope.launch {
             animeMetaModel.collect {

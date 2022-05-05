@@ -19,10 +19,8 @@ class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
     private val localStorage: LocalStorage
 ) : Interceptor {
-
-
     /**
-     * It intercepts the request and adds the authorization header to it.
+     * It intercepts the request and adds the bearer token to the header.
      *
      * @param chain Interceptor.Chain - This is the chain of interceptors that the request will go
      * through.
@@ -67,5 +65,4 @@ class HeaderInterceptor @Inject constructor(
             }
         } else response
     }
-
 }

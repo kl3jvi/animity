@@ -7,9 +7,11 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.utils.Converters
 
+
 /**
- * The Room database for this app
- */
+ *  It's a database class that has two tables, one for anime metadata and one for episode metadata
+ *
+ * */
 @Database(
     entities = [AnimeMetaModel::class, Content::class],
     version = 2,

@@ -4,8 +4,6 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.utils.parser.HtmlParser
-import com.kl3jvi.animity.utils.parser.StreamSB.Companion.parseEncryptedUrls
-import com.kl3jvi.animity.utils.parser.StreamSB.Companion.parseUrl
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -31,7 +29,7 @@ class PlayerRepositoryImpl @Inject constructor(
         header: Map<String, String>,
         url: String
     ): ArrayList<String> = withContext(ioDispatcher) {
-        parseEncryptedUrls(
+        parser.parseEncryptedUrls(
             apiClient.fetchM3u8PreProcessor(header = header, url = url).string()
         )
     }
@@ -41,11 +39,12 @@ class PlayerRepositoryImpl @Inject constructor(
         url: String,
         id: String
     ): String = withContext(ioDispatcher) {
-        parseUrl(
-            apiClient.fetchM3u8Url(
+        parser.parseEncryptAjax(
+            response = apiClient.fetchM3u8Url(
                 header = header,
                 url = url
-            ).string()
+            ).string(),
+            id = id
         )
     }
 }

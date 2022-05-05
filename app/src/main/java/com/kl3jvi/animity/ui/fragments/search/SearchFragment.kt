@@ -30,10 +30,13 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return binding.root
     }
 
+    /**
+     * It sets up the search view and recycler view.
+     */
     override fun initViews() {
         binding.apply {
             searchRecycler.setController(pagingController)
@@ -60,6 +63,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     }
 
 
+    /**
+     * It searches for the query string and updates the viewModel.
+     *
+     * @param query String - The query string to search for
+     */
     private fun search(query: String) {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {

@@ -42,7 +42,15 @@ object PersistenceModule {
     @Singleton
     fun providesEpisodeDao(appDatabase: AppDatabase): EpisodeDao = appDatabase.episodeDao()
 
-
+    /**
+     * "Provide a SharedPreferences object for the application context."
+     *
+     * The @ApplicationContext annotation tells Dagger that the context parameter is the application
+     * context
+     *
+     * @param context Context - The context of the application.
+     * @return SharedPreferences
+     */
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {

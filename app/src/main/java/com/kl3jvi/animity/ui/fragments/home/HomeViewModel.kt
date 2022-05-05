@@ -29,6 +29,9 @@ class HomeViewModel @Inject constructor(
         getHomeNewData()
     }
 
+    /**
+     * It fetches data from the server and updates the UI.
+     */
     private fun getHomePageData() {
         getAnimesUseCase().flowOn(ioDispatcher).catch { e ->
             logError(e)
@@ -48,6 +51,9 @@ class HomeViewModel @Inject constructor(
     private val _homeNewData = MutableStateFlow(HomeData())
     val homeNewData = _homeNewData.asStateFlow()
 
+    /**
+     * It gets the data from the repository and sets it to the homeNewData variable.
+     */
     private fun getHomeNewData() {
         viewModelScope.launch(ioDispatcher) {
             getAnimesUseCase().catch { e -> logError(e) }
