@@ -71,11 +71,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
      */
     private fun search(query: String) {
         searchJob?.cancel()
-        searchJob = lifecycleScope.launch(Dispatchers.IO) {
+        searchJob = lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch(Dispatchers.IO) { viewModel.queryString.value = query }
+                launch{ viewModel.queryString.value = query }
 
-                launch(Dispatchers.IO) {
+                launch {
                     collectLatestFlow(viewModel.searchList1) { animeData ->
                         pagingController.submitData(animeData)
                     }

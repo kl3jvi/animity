@@ -29,7 +29,7 @@ inline fun <T> LifecycleOwner.collectFlow(
     flow: Flow<T>,
     crossinline collector: suspend (T) -> Unit
 ) {
-    lifecycleScope.launch(Dispatchers.IO) {
+    lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.catch { e -> logError(e) }
                 .collect {
