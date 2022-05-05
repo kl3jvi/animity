@@ -14,6 +14,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -70,11 +71,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
      */
     private fun search(query: String) {
         searchJob?.cancel()
-        searchJob = lifecycleScope.launch {
+        searchJob = lifecycleScope.launch(Dispatchers.IO) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch { viewModel.queryString.value = query }
+                launch(Dispatchers.IO) { viewModel.queryString.value = query }
 
-                launch {
+                launch(Dispatchers.IO) {
                     collectLatestFlow(viewModel.searchList1) { animeData ->
                         pagingController.submitData(animeData)
                     }

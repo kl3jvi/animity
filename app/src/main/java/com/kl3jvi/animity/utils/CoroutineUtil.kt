@@ -2,6 +2,7 @@ package com.kl3jvi.animity.utils
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +29,7 @@ inline fun <T> LifecycleOwner.collectFlow(
     flow: Flow<T>,
     crossinline collector: suspend (T) -> Unit
 ) {
-    lifecycleScope.launch {
+    lifecycleScope.launch(Dispatchers.IO) {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.catch { e -> logError(e) }
                 .collect {
