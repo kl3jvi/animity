@@ -34,7 +34,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Build debug APK and release APK
-            command: |
+          command: |
               ./gradlew :app:assembleDebug
               ./gradlew :app:assembleDebugAndroidTest
       - store_artifacts:
