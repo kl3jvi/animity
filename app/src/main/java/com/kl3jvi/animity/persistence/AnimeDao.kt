@@ -35,6 +35,7 @@ interface AnimeDao {
     /**
      * This function returns a Flow of List of AnimeMetaModel
      */
+
     @Query("SELECT * FROM ANIME_TABLE ORDER BY ID")
     fun getFavoriteAnimesList(): Flow<List<AnimeMetaModel>>
 

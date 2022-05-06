@@ -48,8 +48,6 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository
 
-
     @Binds
     abstract fun bindParser(parser: HtmlParser): Parser
-
 }

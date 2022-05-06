@@ -16,9 +16,11 @@ class AnimityApplication : Application() {
         super.onCreate()
         firebaseAnalytics = Firebase.analytics
         apply {
-//            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-//            OneSignal.initWithContext(this)
-//            OneSignal.setAppId(ONESIGNAL_APP_ID)
+            /* Setting the log level for the OneSignal SDK. */
+            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+            /* Initializing OneSignal SDK. */
+            OneSignal.initWithContext(this)
+            OneSignal.setAppId(ONESIGNAL_APP_ID)
         }
     }
 

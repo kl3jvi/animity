@@ -25,7 +25,7 @@ class MainViewModel
 
     init {
         getUserSession()
-        updateUserKeys()
+        updateEncryptionKeys()
     }
 
     val initialise = MutableLiveData<Unit>()
@@ -43,7 +43,10 @@ class MainViewModel
     }
 
 
-    private fun updateUserKeys() {
+    /**
+     * > It gets the encryption keys from the server and saves them to the local storage
+     */
+    private fun updateEncryptionKeys() {
         viewModelScope.launch(Dispatchers.IO) {
             val iv = getGogoKeys().iv
             val key = getGogoKeys().key

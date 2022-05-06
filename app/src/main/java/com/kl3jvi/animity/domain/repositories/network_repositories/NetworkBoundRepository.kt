@@ -30,6 +30,8 @@ abstract class NetworkBoundRepository<RESULT> {
                 logError(e)
             }
         }
+    /* It's catching any errors that might happen in the flow and then emitting a failed network
+    resource. */
     }.catch { e ->
         logError(e)
         emit(NetworkResource.Failed("Network Error Happened!"))

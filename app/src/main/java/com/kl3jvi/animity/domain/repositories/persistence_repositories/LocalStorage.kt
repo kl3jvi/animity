@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.domain.repositories.persistence_repositories
 
 
+/* It's an interface that defines the properties that are used to store data in the local storage */
 interface LocalStorage {
     var bearerToken: String?
     var refreshToken: String?
