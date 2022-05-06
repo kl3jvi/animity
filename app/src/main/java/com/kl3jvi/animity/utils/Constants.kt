@@ -122,6 +122,12 @@ class Constants {
             }
         }
 
+        /**
+         * It shows a snackbar with the message passed to it.
+         *
+         * @param view View - The view to show the snackbar on
+         * @param message The message to be displayed in the snackbar.
+         */
         fun showSnack(view: View, message: String?) {
             val snack =
                 Snackbar.make(view, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
@@ -131,10 +137,20 @@ class Constants {
         }
 
 
+        /**
+         * It returns a map of the network headers.
+         *
+         * @return A map of the headers
+         */
         fun getNetworkHeader(): Map<String, String> {
             return mapOf("referer" to REFERER, "origin" to ORIGIN, "user-agent" to USER_AGENT)
         }
 
+        /**
+         * It generates a random UUID.
+         *
+         * @return A random UUID
+         */
         fun randomId(): String {
             return UUID.randomUUID().toString()
         }

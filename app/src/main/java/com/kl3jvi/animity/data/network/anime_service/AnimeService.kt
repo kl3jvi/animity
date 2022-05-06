@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.data.network.anime_service
 
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
+import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_SCHEDULE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_LOAD_URL
 import com.kl3jvi.animity.utils.Constants.Companion.MAL_SYNC_URL
@@ -57,6 +58,9 @@ interface AnimeService {
         @HeaderMap header: Map<String, String>,
         @Url url: String
     ): ResponseBody
+
+    @GET("https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json")
+    suspend fun getKeys(): GogoAnimeKeys
 
     @GET
     @Headers("X-Requested-With:XMLHttpRequest")

@@ -4,9 +4,10 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.utils.parser.HtmlParser
+import com.kl3jvi.animity.utils.parser.Parser
 
 interface DetailsRepository {
-    val parser: HtmlParser
+    val parser: Parser
     suspend fun fetchAnimeInfo(header: Map<String, String>, episodeUrl: String): AnimeInfoModel
 
     suspend fun fetchEpisodeList(

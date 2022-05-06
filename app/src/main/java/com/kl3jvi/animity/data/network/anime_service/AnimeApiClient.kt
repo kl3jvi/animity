@@ -56,6 +56,8 @@ class AnimeApiClient @Inject constructor(
     suspend fun fetchM3u8Url(header: Map<String, String>, url: String) =
         animeService.fetchM3u8Url(header, url)
 
+    suspend fun getKeys() = animeService.getKeys()
+
     suspend fun fetchSearchData(header: Map<String, String>, keyword: String, page: Int) =
         animeService.fetchSearchData(header, keyword, page)
 

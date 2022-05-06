@@ -25,11 +25,11 @@ import javax.inject.Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class HomeRepositoryImpl @Inject constructor(
     private val apiClient: AnimeApiClient,
-
     private val ioDispatcher: CoroutineDispatcher
 ) : HomeRepository {
-    override val parser: HtmlParser
-        get() = HtmlParser
+
+    @Inject
+    override lateinit var parser: HtmlParser
 
     override suspend fun fetchRecentSubOrDub(
         header: Map<String, String>,
@@ -89,5 +89,7 @@ class HomeRepositoryImpl @Inject constructor(
         }
     }
 
-
+    override suspend fun getKeys() = withContext(ioDispatcher) {
+        apiClient.getKeys()
+    }
 }

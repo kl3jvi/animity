@@ -14,6 +14,10 @@ class LocalStorageImpl @Inject constructor(
         private const val REFRESH_TOKEN = "refreshToken"
         private const val GUEST_TOKEN = "guestToken"
         private const val ANILIST_USER_ID = "anilistUserId"
+
+        private const val ORIGIN = "https://gogoanime.gg/"
+        private const val REFERER = "https://goload.pro/"
+        private const val BASE_URL = "https://gogoanime.gg"
     }
 
     override var bearerToken: String?
@@ -40,6 +44,24 @@ class LocalStorageImpl @Inject constructor(
             setData(ANILIST_USER_ID, value)
         }
 
+    override var iv: String?
+        get() = getData(ORIGIN)
+        set(value) {
+            setData(ORIGIN, value)
+        }
+
+    override var key: String?
+        get() = getData(REFERER)
+        set(value) {
+            setData(REFERER, value)
+        }
+
+    override var secondKey: String?
+        get() = getData(BASE_URL)
+        set(value) {
+            setData(BASE_URL, value)
+        }
+
     private fun getData(key: String): String? {
         return sharedPreferences.getString(key, null)
     }
@@ -51,5 +73,4 @@ class LocalStorageImpl @Inject constructor(
     override fun clearStorage() {
         sharedPreferences.edit().clear().apply()
     }
-
 }

@@ -12,6 +12,7 @@ import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginReposit
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
+import com.kl3jvi.animity.utils.parser.Parser
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -130,6 +131,9 @@ object NetworkModule {
     fun provideAniListClient(aniListService: AniListService): AniListClient {
         return AniListClient(aniListService)
     }
+
+
+
 }
 
 

@@ -10,6 +10,8 @@ import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerReposi
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.*
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.utils.parser.HtmlParser
+import com.kl3jvi.animity.utils.parser.Parser
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +47,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository
+
+
+    @Binds
+    abstract fun bindParser(parser: HtmlParser): Parser
+
 }

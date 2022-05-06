@@ -18,8 +18,8 @@ class DetailsRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : DetailsRepository {
 
-    override val parser: HtmlParser
-        get() = HtmlParser
+    @Inject
+    override lateinit var parser: HtmlParser
 
     override suspend fun fetchAnimeInfo(
         header: Map<String, String>,

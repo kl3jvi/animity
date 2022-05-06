@@ -1,13 +1,14 @@
 package com.kl3jvi.animity.domain.repositories.fragment_repositories
 
-import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
+import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
+import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.utils.NetworkResource
-import com.kl3jvi.animity.utils.parser.HtmlParser
+import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    val parser: HtmlParser
+    val parser: Parser
     suspend fun fetchRecentSubOrDub(
         header: Map<String, String>,
         page: Int,
@@ -30,4 +31,6 @@ interface HomeRepository {
     ): List<AnimeMetaModel>
 
     fun getHomeData(): Flow<NetworkResource<HomeData>>
+
+    suspend fun getKeys(): GogoAnimeKeys
 }
