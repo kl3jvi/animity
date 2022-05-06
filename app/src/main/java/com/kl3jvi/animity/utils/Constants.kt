@@ -34,6 +34,9 @@ class Constants {
         const val MAL_SYNC_URL =
             "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
 
+
+        /* Used to get the gogoanime keys from the github repo. Thanks to https://github.com/justfoolingaround */
+        const val GOGO_KEYS_URL ="https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 
 

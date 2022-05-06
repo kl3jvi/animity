@@ -47,3 +47,4 @@ interface AnimeDao {
     @Query("SELECT EXISTS(SELECT * FROM ANIME_TABLE WHERE categoryUrl = :url)")
     suspend fun isAnimeOnDatabase(url: String): Boolean
 }
+
