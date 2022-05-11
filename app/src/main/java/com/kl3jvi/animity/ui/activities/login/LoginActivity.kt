@@ -5,10 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
-
 import androidx.browser.customtabs.CustomTabsIntent
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
@@ -34,9 +35,11 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     Authentication {
 
     private val viewModel: LoginViewModel by viewModels()
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
         checkIfUserLoggedIn()
         initViews()
     }
@@ -66,7 +69,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         }
         return isLoggedInWithAuth || isGuestLoggedIn
     }
-
 
 
     /**

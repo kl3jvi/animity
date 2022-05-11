@@ -35,17 +35,16 @@ class HomeViewModel @Inject constructor(
     private fun getHomePageData() {
         getAnimesUseCase().flowOn(ioDispatcher).catch { e ->
             logError(e)
-        }.catch { e -> logError(e) }
-            .onEach {
-                when (it) {
-                    is NetworkResource.Failed -> {
-                        logMessage(it.message)
-                    }
-                    is NetworkResource.Success -> {
-                        _homeData.value = it.data
-                    }
+        }.onEach {
+            when (it) {
+                is NetworkResource.Failed -> {
+                    logMessage(it.message)
                 }
-            }.launchIn(viewModelScope)
+                is NetworkResource.Success -> {
+                    _homeData.value = it.data
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private val _homeNewData = MutableStateFlow(HomeData())

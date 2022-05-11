@@ -1,12 +1,14 @@
 package com.kl3jvi.animity.utils
 
-import com.apollographql.apollo3.api.ApolloResponse
-
+/* `State` is a sealed class that can be either `Loading`, `Success` or `Error` */
 sealed class State<T> {
     class Loading<T> : State<T>()
     data class Success<T>(val data: T) : State<T>()
     data class Error<T>(val message: String) : State<T>()
 
+    /**
+     * It checks the state of the data.
+     */
     fun isLoading(): Boolean = this is Loading
     fun isSuccessful(): Boolean = this is Success
     fun isFailed(): Boolean = this is Error

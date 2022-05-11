@@ -9,6 +9,8 @@ import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
+/* A class that extends `Context` and is the base class for those who need to maintain global
+application state. */
 class AnimityApplication : Application() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics

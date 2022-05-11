@@ -55,9 +55,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return binding.root
-    }
+    ): View = binding.root
 
 
     override fun observeViewModel() {
@@ -83,24 +81,24 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      */
     private fun fetchAnimeInfo() {
         animeDetails.let { info ->
-            binding.animeInfoLayout.textOverview.setHtmlText(info.description)
-            binding.releaseDate.text = info.startDate?.getDate()
-            binding.status.text = info.status?.name
-            binding.type.text = info.type?.rawValue
-            binding.releaseTime.text =
-                if (info.nextAiringEpisode != null) displayInDayDateTimeFormat(info.nextAiringEpisode) else ""
-            binding.animeInfoLayout.textOverview.visibility = VISIBLE
-            binding.releaseDate.visibility = VISIBLE
-            binding.status.visibility = VISIBLE
-            binding.type.visibility = VISIBLE
-            binding.detailsProgress.visibility = GONE
-
             binding.apply {
+                animeInfoLayout.textOverview.setHtmlText(info.description)
+                releaseDate.text = info.startDate?.getDate()
+                status.text = info.status?.name
+                type.text = info.type?.rawValue
+                releaseTime.text =
+                    if (info.nextAiringEpisode != null) displayInDayDateTimeFormat(info.nextAiringEpisode) else ""
+                animeInfoLayout.textOverview.visibility = VISIBLE
+                releaseDate.visibility = VISIBLE
+                status.visibility = VISIBLE
+                type.visibility = VISIBLE
+                detailsProgress.visibility = GONE
+
                 resultEpisodesText.visibility = VISIBLE
                 resultPlayMovie.visibility = GONE
                 episodeListRecycler.visibility = VISIBLE
+                createGenreChips(info.genres)
             }
-            createGenreChips(info.genres)
         }
     }
 
@@ -137,6 +135,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         }
     }
 
+    /**
+     * We're inflating the menu, setting the menu to the menu we just inflated, and then observing the
+     * database to see if the user has favorite the current movie
+     *
+     * @param menu The menu object that you want to inflate.
+     * @param inflater The MenuInflater that can be used to inflate menu items from XML into the menu.
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
         this.menu = menu

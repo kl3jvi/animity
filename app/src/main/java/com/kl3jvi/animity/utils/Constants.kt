@@ -33,10 +33,12 @@ class Constants {
         const val SIGNUP_URL = "https://anilist.co/signup"
         const val MAL_SYNC_URL =
             "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
+        const val KITSU_EPISODE_URL = ""
 
 
         /* Used to get the gogoanime keys from the github repo. Thanks to https://github.com/justfoolingaround */
         const val GOGO_KEYS_URL ="https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
+        /* The default cover image for the profile. */
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 
 

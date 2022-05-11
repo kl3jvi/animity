@@ -14,12 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySplash"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ui.activities.login.LoginActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Animity.NoActionBar">
 
+<!--            For deep linking.-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -31,6 +33,7 @@
                     android:scheme="login" />
             </intent-filter>
 
+<!--             The entry point of the app.-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -47,6 +50,7 @@
             android:theme="@style/VideoPlayer"
             tools:ignore="LockedOrientationActivity"
             tools:targetApi="n" />
+
 
         <activity
             android:name=".ui.activities.main.MainActivity"

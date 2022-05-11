@@ -29,7 +29,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         observeLiveData(viewModel.homeData, viewLifecycleOwner) { result ->
             binding.mainRv.withModels {
                 binding.loadingIndicator.isVisible = result.newAnime.isEmpty()
-                buildHome(result)
+                buildHome(result,firebaseAnalytics)
             }
         }
     }

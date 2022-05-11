@@ -12,12 +12,9 @@ import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -50,24 +47,26 @@ class ProfileViewModel @Inject constructor(
             val profileDeferred = async { userData(dataStore.aniListUserId?.toInt()) }
             val animeListDeferred = async { animeListUseCase(dataStore.aniListUserId?.toInt()) }
 
-            profileDeferred.await().collect {
+            val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
+
+            profileData.collect {
                 when (it) {
                     is NetworkResource.Failed -> {
                         logMessage(it.message)
                     }
                     is NetworkResource.Success -> {
-                        _profileData.value = it.data
+                        _profileData.value = it.data as ProfileData
                     }
                 }
             }
 
-            animeListDeferred.await().collect {
+            animeList.collect {
                 when (it) {
                     is NetworkResource.Failed -> {
                         logMessage(it.message)
                     }
                     is NetworkResource.Success -> {
-                        _animeList.value = it.data
+                        _animeList.value = it.data as List<ProfileRow>
                     }
                 }
             }
