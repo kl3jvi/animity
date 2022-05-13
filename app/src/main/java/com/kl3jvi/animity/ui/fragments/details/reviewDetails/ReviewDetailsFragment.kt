@@ -9,7 +9,7 @@ import coil.load
 import com.kl3jvi.animity.databinding.ReviewDetailsFragmentBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
-import com.kl3jvi.animity.utils.setHtmlText
+import com.kl3jvi.animity.utils.setMarkdownText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,8 +30,9 @@ class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetails
     override fun initViews() {
         binding.imageView.load(reviewInfo.aniListMedia.coverImage.large)
         binding.postContent.postAuthor.text = reviewInfo.user.name
-        binding.postContent.postBody.setHtmlText(reviewInfo.body)
+        binding.postContent.postBody.setMarkdownText(reviewInfo.body)
     }
+
 
     override fun getViewBinding(): ReviewDetailsFragmentBinding =
         ReviewDetailsFragmentBinding.inflate(layoutInflater)

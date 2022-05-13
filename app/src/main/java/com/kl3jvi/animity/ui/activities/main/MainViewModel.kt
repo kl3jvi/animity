@@ -7,6 +7,9 @@ import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserReposito
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetGogoKeysUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
+import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.logError
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,13 +51,19 @@ class MainViewModel
      */
     private fun updateEncryptionKeys() {
         viewModelScope.launch(Dispatchers.IO) {
-            val iv = getGogoKeys().iv
-            val key = getGogoKeys().key
-            val secondKey = getGogoKeys().secondKey
-
-            localStorage.iv = iv
-            localStorage.key = key
-            localStorage.secondKey = secondKey
+            getGogoKeys().collect {
+                when (it) {
+                    is NetworkResource.Failed -> {
+                        logMessage(it.message)
+                    }
+                    is NetworkResource.Success -> {
+                        val data = it.data
+                        localStorage.iv = data.iv
+                        localStorage.key = data.key
+                        localStorage.secondKey = data.secondKey
+                    }
+                }
+            }
         }
     }
 }

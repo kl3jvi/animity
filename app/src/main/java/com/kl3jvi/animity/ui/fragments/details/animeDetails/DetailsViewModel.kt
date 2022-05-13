@@ -41,6 +41,7 @@ class DetailsViewModel @Inject constructor(
 
 
     private val _episodeList = MutableStateFlow<List<EpisodeModel>?>(null)
+
     /* Converting the `MutableStateFlow` to a `StateFlow` which is a `LiveData` that is backed by a
     `SharedFlow` */
     val episodeList = _episodeList.asStateFlow()
@@ -80,11 +81,13 @@ class DetailsViewModel @Inject constructor(
      */
     private suspend fun fetchEpisodeList(url: String) {
         return getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
-            getAnimeDetailsUseCase.fetchEpisodeList(
-                info.data?.id,
-                info.data?.endEpisode,
-                info.data?.alias
-            )
+            info.data?.let {
+                getAnimeDetailsUseCase.fetchEpisodeList(
+                    it.id,
+                    it.endEpisode,
+                    it.alias
+                )
+            } ?: emptyFlow()
         }.catch { e -> logError(e) }
             .collect {
                 when (it) {

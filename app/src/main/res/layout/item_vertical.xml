@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{animeInfo.user.name}"
+                    android:text="@{animeInfo.aniListMedia.title.romaji}"
                     tools:text="Star Wars: IV" />
 
 

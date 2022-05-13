@@ -21,17 +21,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
 
     override val viewModel: ProfileViewModel by viewModels()
-
-    override fun observeViewModel() {
-        getProfileData()
-    }
-
+    override fun observeViewModel() {}
     override fun initViews() {}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -90,6 +86,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
+            if (isConnected) getProfileData()
             binding.noInternetResult.noInternet.isVisible = !isConnected
             binding.profileRv.isVisible = isConnected
         }

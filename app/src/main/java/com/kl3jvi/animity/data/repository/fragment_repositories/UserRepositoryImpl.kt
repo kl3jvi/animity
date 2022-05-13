@@ -9,6 +9,7 @@ import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStor
 import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -59,7 +60,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>> {
         return try {
-            apolloClient.query(SessionQuery()).toFlow()
+            apolloClient.query(SessionQuery()).toFlow().catch { e-> logError(e) }
         } catch (e: Exception) {
             logError(e)
             emptyFlow<ApolloResponse<SessionQuery.Data>>()
@@ -69,7 +70,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>> {
         return try {
-            apolloClient.query(UserQuery(Optional.Present(id))).toFlow()
+            apolloClient.query(UserQuery(Optional.Present(id))).toFlow().catch { e-> logError(e) }
         } catch (e: Exception) {
             logError(e)
             emptyFlow<ApolloResponse<UserQuery.Data>>()
@@ -78,7 +79,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getAnimeListData(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>> {
         return try {
-            apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow()
+            apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow().catch { e-> logError(e) }
         } catch (e: Exception) {
             logError(e)
             emptyFlow<ApolloResponse<AnimeListCollectionQuery.Data>>()
@@ -95,7 +96,7 @@ class UserRepositoryImpl @Inject constructor(
                     Optional.Present(userId),
                     Optional.Present(page)
                 )
-            ).toFlow()
+            ).toFlow().catch { e-> logError(e) }
         } catch (e: Exception) {
             logError(e)
             emptyFlow<ApolloResponse<FavoritesAnimeQuery.Data>>()
@@ -104,7 +105,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>> {
         return try {
-            apolloClient.query(TrendingMediaQuery()).toFlow()
+            apolloClient.query(TrendingMediaQuery()).toFlow().catch { e-> logError(e) }
         } catch (e: Exception) {
             logError(e)
             emptyFlow<ApolloResponse<TrendingMediaQuery.Data>>()
@@ -118,7 +119,7 @@ class UserRepositoryImpl @Inject constructor(
                     ToggleFavouriteMutation(
                         Optional.Present(animeId)
                     )
-                ).toFlow()
+                ).toFlow().catch { e-> logError(e) }
             }
         } catch (e: Exception) {
             logError(e)

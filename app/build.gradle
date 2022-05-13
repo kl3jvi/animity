@@ -216,5 +216,8 @@ dependencies {
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+    def markwonVersion = "4.6.2"
+    implementation "io.noties.markwon:core:${markwonVersion}"
+
 
 }

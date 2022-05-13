@@ -3,6 +3,8 @@ package com.kl3jvi.animity.data.network.anime_service
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
+import com.kl3jvi.animity.utils.logError
+import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
 class AnimeApiClient @Inject constructor(
@@ -69,7 +71,7 @@ class AnimeApiClient @Inject constructor(
     /**
      * `getHomeData()` is a function that returns a Flow of HomeDataQuery.HomeDataQuery.Data
      */
-    fun getHomeData() = apolloClient.query(HomeDataQuery()).toFlow()
+    fun getHomeData() = apolloClient.query(HomeDataQuery()).toFlow().catch { e -> logError(e) }
 
     /**
      * "Get the profile data for the user with the given ID, or the current user if no ID is given."
@@ -80,7 +82,7 @@ class AnimeApiClient @Inject constructor(
      * @param userId The user ID of the user whose profile data we want to fetch.
      */
     fun getProfileData(userId: Int?) =
-        apolloClient.query(UserQuery(Optional.presentIfNotNull(userId))).toFlow()
+        apolloClient.query(UserQuery(Optional.presentIfNotNull(userId))).toFlow().catch { e-> logError(e) }
 
     /**
      * "Get the anime list data for the given user ID, if it's not null."
@@ -91,7 +93,7 @@ class AnimeApiClient @Inject constructor(
      * @param userId The user's ID.
      */
     fun getAnimeListData(userId: Int?) =
-        apolloClient.query(AnimeListCollectionQuery(Optional.presentIfNotNull(userId))).toFlow()
+        apolloClient.query(AnimeListCollectionQuery(Optional.presentIfNotNull(userId))).toFlow().catch { e-> logError(e) }
 
     /**
      * It takes a query and a page number, and returns a Flow of SearchAnimeQuery.Data
@@ -105,7 +107,7 @@ class AnimeApiClient @Inject constructor(
                 Optional.presentIfNotNull(query),
                 Optional.presentIfNotNull(page),
             )
-        ).toFlow()
+        ).toFlow().catch { e-> logError(e) }
 
     /**
      * `getFavoriteAnimesFromAniList` is a function that takes in a userId and a page number and
@@ -122,5 +124,5 @@ class AnimeApiClient @Inject constructor(
             Optional.Present(userId),
             Optional.Present(page)
         )
-    ).toFlow()
+    ).toFlow().catch { e-> logError(e) }
 }

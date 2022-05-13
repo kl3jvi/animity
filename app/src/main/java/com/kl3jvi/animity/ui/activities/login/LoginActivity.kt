@@ -42,6 +42,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         firebaseAnalytics = Firebase.analytics
         checkIfUserLoggedIn()
         initViews()
+
+
     }
 
 
@@ -123,10 +125,14 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
      */
     override fun onTokenResponse(response: AuthResponse) {
         val authToken: String? = response.accessToken
-        val refreshToken: String? = response.accessToken
+        val refreshToken: String? = response.refreshToken
         if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
             viewModel.saveTokens(authToken, refreshToken)
-            launchActivity<MainActivity> {}
+            launchActivity<MainActivity> {
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.METHOD, "login")
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+            }
             finish()
             return
         }

@@ -14,14 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySplash"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.activities.payment.PaymentActivity"
+            android:theme="@style/Theme.Animity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="jh" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activities.login.LoginActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Animity.NoActionBar">
 
-<!--            For deep linking.-->
+            <!-- For deep linking. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -33,14 +45,13 @@
                     android:scheme="login" />
             </intent-filter>
 
-<!--             The entry point of the app.-->
+            <!-- The entry point of the app. -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".ui.activities.player.PlayerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -50,14 +61,11 @@
             android:theme="@style/VideoPlayer"
             tools:ignore="LockedOrientationActivity"
             tools:targetApi="n" />
-
-
         <activity
             android:name=".ui.activities.main.MainActivity"
             android:configChanges="orientation"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
-
     </application>
 
 </manifest>

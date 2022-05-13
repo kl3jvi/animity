@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.di
 
 
+import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
@@ -12,10 +13,10 @@ import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginReposit
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
-import com.kl3jvi.animity.utils.parser.Parser
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
+import kotlin.reflect.KParameter
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -34,7 +36,7 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         localStorage: LocalStorage,
-        loginRepository: LoginRepository
+        loginRepository: LoginRepository,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
@@ -133,7 +135,7 @@ object NetworkModule {
     }
 
 
-
 }
+
 
 

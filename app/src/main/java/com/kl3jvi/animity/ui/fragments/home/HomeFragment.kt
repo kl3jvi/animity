@@ -13,6 +13,7 @@ import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override val viewModel: HomeViewModel by viewModels()
@@ -29,7 +30,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         observeLiveData(viewModel.homeData, viewLifecycleOwner) { result ->
             binding.mainRv.withModels {
                 binding.loadingIndicator.isVisible = result.newAnime.isEmpty()
-                buildHome(result,firebaseAnalytics)
+                buildHome(result, firebaseAnalytics)
             }
         }
     }
@@ -43,8 +44,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
+            if (isConnected) fetchHomeData()
+
             binding.apply {
                 mainRv.isVisible = isConnected
+                loadingIndicator.isVisible = isConnected
                 noInternetStatus.noInternet.isVisible = !isConnected
             }
         }
@@ -56,13 +60,31 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
 
-    override fun observeViewModel() {
-        fetchHomeData()
+    override fun observeViewModel() {}
+
+
+    override fun initViews() {
+//        binding.button2.setOnClickListener {
+//            requireContext().launchActivity<PaymentActivity> {
+//                val dropInRequest = DropInRequest()
+//                dropInClient = DropInClient(
+//                    requireContext(),
+//                    "sandbox_ykvmgk4j_fssw4nqtc2phhht8",
+//                    dropInRequest
+//                )
+//                dropInClient.launchDropInForResult(
+//                    requireActivity(),
+//                    PaymentActivity.DROP_IN_REQUEST_CODE
+//                )
+//            }
+//        }
     }
 
-    override fun initViews() {}
-
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
+
+    companion object {
+        const val DROP_IN_REQUEST_CODE = 800
+    }
 }
 
 

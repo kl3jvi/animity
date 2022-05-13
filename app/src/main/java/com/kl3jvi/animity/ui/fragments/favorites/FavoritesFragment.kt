@@ -27,36 +27,25 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return binding.root
     }
-    private var shouldRefreshFavorites: Boolean = false
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
-        initViews()
-    }
 
-    override fun observeViewModel() {
-        observeAniList()
-    }
+    private var shouldRefreshFavorites: Boolean = false
+
+    override fun observeViewModel() {}
 
     override fun initViews() {
-
         viewModel.shouldRefresh.value = shouldRefreshFavorites
         binding.swipeLayout.setOnRefreshListener {
             viewModel.shouldRefresh.value = shouldRefreshFavorites
             shouldRefreshFavorites = !shouldRefreshFavorites
-            observeAniList()
-
         }
     }
 
 
     private fun observeAniList() {
         collectFlow(viewModel.favoriteAniListAnimeList) { animeList ->
-
-
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {
                 animeList?.forEach { media ->
@@ -99,6 +88,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentFavoritesBind
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
+            if (isConnected) observeAniList()
             binding.noInternetResult.noInternet.isVisible = !isConnected
             binding.favoritesRecycler.isVisible = isConnected
         }

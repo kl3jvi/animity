@@ -1,15 +1,19 @@
 package com.kl3jvi.animity.data.network.interceptor
 
-import android.util.Log
+import android.content.Context
 import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
+import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import okhttp3.Request
 import okhttp3.Response
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
@@ -17,7 +21,7 @@ import javax.inject.Inject
 
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val localStorage: LocalStorage
+    private val localStorage: LocalStorage,
 ) : Interceptor {
     /**
      * It intercepts the request and adds the bearer token to the header.
@@ -25,7 +29,11 @@ class HeaderInterceptor @Inject constructor(
      * @param chain Interceptor.Chain - This is the chain of interceptors that the request will go
      * through.
      */
+
+
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
+
+
         /* Adding the header to the request. */
         val response = proceed(
             request().newBuilder()
@@ -34,6 +42,7 @@ class HeaderInterceptor @Inject constructor(
                 .addHeader("Content-Type", "application/json")
                 .build()
         )
+
 
         /* Checking if the response code is 401, if it is, it will get a new access token and refresh
         token and then proceed with the request. */
@@ -73,4 +82,8 @@ class HeaderInterceptor @Inject constructor(
             }
         } else response
     }
+
+
+
+
 }

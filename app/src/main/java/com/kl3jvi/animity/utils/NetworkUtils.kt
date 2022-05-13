@@ -9,6 +9,8 @@ import android.os.Build
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import kotlinx.coroutines.flow.collect
 
 
 /**
@@ -76,6 +78,12 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
     /* An extension function that is being used to observe the networkLiveData object. */
     fun Context.isConnectedToInternet(owner: LifecycleOwner, observer: (Boolean) -> Unit) {
         getNetworkLiveData(context = this).observe(owner) {
+            observer(it)
+        }
+    }
+
+    suspend fun Context.isConnectedToInternet(observer: (Boolean) -> Unit) {
+        getNetworkLiveData(context = this).asFlow().collect{
             observer(it)
         }
     }

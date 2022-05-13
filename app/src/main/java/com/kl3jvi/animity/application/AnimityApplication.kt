@@ -12,7 +12,6 @@ import dagger.hilt.android.HiltAndroidApp
 /* A class that extends `Context` and is the base class for those who need to maintain global
 application state. */
 class AnimityApplication : Application() {
-
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate() {
         super.onCreate()
@@ -25,6 +24,4 @@ class AnimityApplication : Application() {
             OneSignal.setAppId(ONESIGNAL_APP_ID)
         }
     }
-
-
 }

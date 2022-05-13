@@ -13,6 +13,7 @@ import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
@@ -49,6 +50,8 @@ class ProfileViewModel @Inject constructor(
 
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
 
+
+
             profileData.collect {
                 when (it) {
                     is NetworkResource.Failed -> {
@@ -73,3 +76,4 @@ class ProfileViewModel @Inject constructor(
         }
     }
 }
+

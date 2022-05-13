@@ -72,8 +72,6 @@ class GetAnimeDetailsUseCase @Inject constructor(
                 alias = alias ?: ""
             ).toList()
 
-            // TODO bej nje listener per databazen me flow ose livedata qe te listen ndryshimet!!!
-
             emit(
                 Resource.Success(
                     data = response
