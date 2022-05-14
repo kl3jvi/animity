@@ -67,7 +67,7 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): Lis
                 val params = Bundle()
                 params.putString(
                     "genre",
-                    media.genres.first().name
+                    media.genres.firstOrNull()?.name ?: "empty"
                 )
                 firebaseAnalytics.logEvent(media.title.toString(), params)
             }

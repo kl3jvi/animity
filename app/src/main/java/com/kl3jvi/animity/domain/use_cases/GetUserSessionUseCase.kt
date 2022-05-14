@@ -21,7 +21,7 @@ class GetUserSessionUseCase @Inject constructor(
             user.getSessionForUser().flowOn(ioDispatcher)
         } catch (e: Exception) {
             e.printStackTrace()
-            user.getSessionForUser().catch { e -> logError(e) }
+            user.getSessionForUser().catch { ex -> logError(ex) }
         }
     }
 }

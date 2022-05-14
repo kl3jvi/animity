@@ -8,7 +8,6 @@ import androidx.viewbinding.ViewBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.ui.activities.main.MainActivity
 
 abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : Fragment() {
 
@@ -46,20 +45,8 @@ abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : Fragment() {
         initViews()
     }
 
-
     /**
      * It returns a view binding object.
      */
     abstract fun getViewBinding(): VB
-
-    /**
-     * It checks if the device is connected to the internet.
-     */
-    fun isConnected(): Boolean = (activity as MainActivity).isConnected
-
-    /**
-     * It returns true if the user is logged in as a guest.
-     */
-    fun isGuestLogin(): Boolean = (activity as MainActivity).isGuestLogin
-
 }
