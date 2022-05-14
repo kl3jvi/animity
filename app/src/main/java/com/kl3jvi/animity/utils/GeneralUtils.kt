@@ -5,7 +5,6 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import coil.ImageLoader
 import io.noties.markwon.Markwon
 
 fun View.hide() {
@@ -47,10 +46,8 @@ fun TextView.setHtmlText(htmlString: String?) {
 
 
 fun TextView.setMarkdownText(string: String) {
-    // obtain an instance of Markwon
-    val markwon: Markwon = Markwon.create(this.context)
-    // set markdown
-    markwon.setMarkdown(this, string)
+    Markwon.create(this.context)
+        .setMarkdown(this, string)
 }
 
 

@@ -37,9 +37,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.showBottomNavBar()
-        }
+        if (requireActivity() is MainActivity) (activity as MainActivity?)?.showBottomNavBar()
     }
 
     private fun handleNetworkChanges() {
