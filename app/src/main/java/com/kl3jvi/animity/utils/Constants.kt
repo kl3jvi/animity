@@ -100,6 +100,7 @@ class Constants {
             return ColorStateList.valueOf(color)
         }
 
+
         fun getVerticalAdapterBackgroundColor(): ColorStateList {
             val color: Int = Color.argb(255, 17, 17, 17)
             return ColorStateList.valueOf(color)

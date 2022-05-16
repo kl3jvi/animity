@@ -69,7 +69,7 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): Lis
                     "genre",
                     media.genres.firstOrNull()?.name ?: "empty"
                 )
-                firebaseAnalytics.logEvent(media.title.toString(), params)
+                firebaseAnalytics.logEvent(media.title.romaji ?: "Unknown Title", params)
             }
             .animeInfo(media)
     }

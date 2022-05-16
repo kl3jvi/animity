@@ -51,7 +51,6 @@ class FavoritesViewModel @Inject constructor(
                                 _favoriteAniListAnimeList.value = it.data
                             }
                         }
-
                     }
             }
         }

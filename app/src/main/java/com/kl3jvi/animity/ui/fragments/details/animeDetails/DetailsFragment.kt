@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -15,6 +17,7 @@ import coil.load
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.Genre
+import com.kl3jvi.animity.data.model.ui_models.getHexColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeList
 import com.kl3jvi.animity.ui.activities.main.MainActivity
@@ -22,7 +25,6 @@ import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.Constants.Companion.getBackgroundColor
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collectFlow
@@ -121,15 +123,16 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      * @param genre List<Genre> - The list of genres that we want to display.
      */
     private fun createGenreChips(genre: List<Genre>) {
+        binding.genreGroup.removeAllViews()
         genre.forEach { data ->
-            binding.genreGroup.removeAllViews()
             val chip = Chip(requireContext())
             chip.apply {
                 text = data.name
+                val color = data.getHexColor()
                 setTextColor(Color.WHITE)
                 chipStrokeColor = getColor()
                 chipStrokeWidth = 3f
-                chipBackgroundColor = getBackgroundColor()
+                chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(color))
             }
             binding.genreGroup.addView(chip)
         }

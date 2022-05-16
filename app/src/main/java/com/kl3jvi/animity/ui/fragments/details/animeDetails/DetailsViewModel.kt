@@ -14,11 +14,8 @@ import com.kl3jvi.animity.utils.Resource
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -41,9 +38,6 @@ class DetailsViewModel @Inject constructor(
 
 
     private val _episodeList = MutableStateFlow<List<EpisodeModel>?>(null)
-
-    /* Converting the `MutableStateFlow` to a `StateFlow` which is a `LiveData` that is backed by a
-    `SharedFlow` */
     val episodeList = _episodeList.asStateFlow()
 
     /**
@@ -58,12 +52,17 @@ class DetailsViewModel @Inject constructor(
                         when (result) {
                             is NetworkResource.Failed -> emptyFlow()
                             is NetworkResource.Success -> {
-                                withContext(Dispatchers.Default) {
-                                    fetchEpisodeList(result.data.pages?.data?.entries?.first()?.value?.url.orEmpty())
-                                    getAnimeDetailsUseCase.fetchAnimeInfo(
-                                        result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
-                                    )
-                                }
+                                val (_, second) = awaitAll(
+                                    async {
+                                        fetchEpisodeList(result.data.pages?.data?.entries?.first()?.value?.url.orEmpty())
+                                    },
+                                    async {
+                                        getAnimeDetailsUseCase.fetchAnimeInfo(
+                                            result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
+                                        )
+                                    }
+                                )
+                                second as Flow<Resource<AnimeInfoModel>?>
                             }
                         }
                     }.collectLatest { _animeInfo.value = it }
