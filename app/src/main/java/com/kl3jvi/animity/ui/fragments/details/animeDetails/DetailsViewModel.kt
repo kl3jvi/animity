@@ -24,6 +24,7 @@ class DetailsViewModel @Inject constructor(
     private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
     private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
     private val getGogoUrlFromAniListId: GetGogoUrlFromAniListId,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
 
@@ -45,7 +46,7 @@ class DetailsViewModel @Inject constructor(
      * updates the `_animeInfo` LiveData object
      */
     private fun getAnimeInfo() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             animeMetaModel.collect { animeDetails ->
                 animeDetails?.let { animeMetaModel ->
                     getGogoUrlFromAniListId(animeMetaModel.idAniList).flatMapLatest { result ->
@@ -54,7 +55,10 @@ class DetailsViewModel @Inject constructor(
                             is NetworkResource.Success -> {
                                 val (_, second) = awaitAll(
                                     async {
-                                        fetchEpisodeList(result.data.pages?.data?.entries?.first()?.value?.url.orEmpty())
+                                        fetchEpisodeList(
+                                            result.data.pages?.data?.entries?.first()?.value?.url.orEmpty(),
+                                            animeMetaModel.idAniList
+                                        )
                                     },
                                     async {
                                         getAnimeDetailsUseCase.fetchAnimeInfo(
@@ -78,13 +82,14 @@ class DetailsViewModel @Inject constructor(
      * @param url The url of the anime you want to fetch the episode list from.
      * @return A list of episodes
      */
-    private suspend fun fetchEpisodeList(url: String) {
+    private suspend fun fetchEpisodeList(url: String, malId: Int) {
         return getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
             info.data?.let {
                 getAnimeDetailsUseCase.fetchEpisodeList(
                     it.id,
                     it.endEpisode,
-                    it.alias
+                    it.alias,
+                    malId
                 )
             } ?: emptyFlow()
         }.catch { e -> logError(e) }
@@ -119,7 +124,7 @@ class DetailsViewModel @Inject constructor(
      * favorite status
      */
     fun updateAnimeFavorite() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             animeMetaModel.collect {
                 markAnimeAsFavoriteUseCase(it?.idAniList)
                     .catch { error -> logError(error) }

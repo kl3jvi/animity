@@ -106,7 +106,7 @@
     <fragment
         android:id="@+id/reviewDetailsFragment"
         android:name="com.kl3jvi.animity.ui.fragments.details.reviewDetails.ReviewDetailsFragment"
-        android:label="ReviewDetailsFragment">
+        android:label="@string/title_review">
         <argument
             android:name="reviewDetails"
             app:argType="com.kl3jvi.animity.data.model.ui_models.Review" />

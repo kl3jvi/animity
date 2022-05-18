@@ -1,9 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -18,8 +16,9 @@ import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.getHexColor
+import com.kl3jvi.animity.data.model.ui_models.toStateListColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
-import com.kl3jvi.animity.episodeList
+import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
@@ -128,11 +127,11 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             val chip = Chip(requireContext())
             chip.apply {
                 text = data.name
-                val color = data.getHexColor()
+                val color = data.getHexColor().toStateListColor()
                 setTextColor(Color.WHITE)
                 chipStrokeColor = getColor()
                 chipStrokeWidth = 3f
-                chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(color))
+                chipBackgroundColor = color
             }
             binding.genreGroup.addView(chip)
         }
@@ -236,7 +235,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 binding.detailsProgress.visibility = GONE
                 binding.episodeListRecycler.withModels {
                     episodeList.forEach {
-                        episodeList {
+                        episodeLarge {
                             id(it.episodeNumber)
                             clickListener { _ ->
                                 requireContext().launchActivity<PlayerActivity> {

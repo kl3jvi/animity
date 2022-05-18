@@ -3,7 +3,6 @@ package com.kl3jvi.animity.data.repository.activity_repositories
 import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
-import com.kl3jvi.animity.utils.parser.HtmlParser
 import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -14,7 +13,7 @@ import javax.inject.Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class PlayerRepositoryImpl @Inject constructor(
     private val apiClient: AnimeApiClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : PlayerRepository {
     @Inject
     override lateinit var parser: Parser

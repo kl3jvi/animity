@@ -33,7 +33,7 @@ class Constants {
         const val SIGNUP_URL = "https://anilist.co/signup"
         const val MAL_SYNC_URL =
             "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
-        const val KITSU_EPISODE_URL = ""
+        const val EPISODE_TITLES = "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
 
 
         /* Used to get the gogoanime keys from the github repo. Thanks to https://github.com/justfoolingaround */

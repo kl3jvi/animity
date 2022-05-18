@@ -46,8 +46,7 @@ fun TextView.setHtmlText(htmlString: String?) {
 
 
 fun TextView.setMarkdownText(string: String) {
-    Markwon.create(this.context)
-        .setMarkdown(this, string)
+    Markwon.create(this.context).setMarkdown(this, string)
 }
 
 

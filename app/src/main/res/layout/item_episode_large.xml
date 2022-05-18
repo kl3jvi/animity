@@ -29,7 +29,7 @@
         android:layout_marginBottom="10dp"
         android:foreground="@drawable/outline_drawable"
         android:nextFocusLeft="@id/episode_poster"
-        app:cardBackgroundColor="@color/primaryGrayBackground"
+        app:cardBackgroundColor="@color/darkBlue"
         app:cardCornerRadius="@dimen/roundedImageRadius">
 
         <LinearLayout
@@ -90,7 +90,7 @@
                         android:id="@+id/episode_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{episodeInfo.episodeNumber.replace(`EP`,`Episode`)}"
+                        android:text="@{String.valueOf(episodeInfo.episodeNumber)}"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         tools:text="1. Jobless" />
@@ -99,6 +99,7 @@
                         android:id="@+id/episode_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(episodeInfo.episodeName)}"
                         android:textColor="@color/grayTextColor"
                         tools:text="Rated: 8.8" />
                 </LinearLayout>

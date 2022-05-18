@@ -1,9 +1,11 @@
 package com.kl3jvi.animity.data.network.anime_service
 
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
+import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_SCHEDULE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_LOAD_URL
+import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_TITLES
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_KEYS_URL
 import com.kl3jvi.animity.utils.Constants.Companion.MAL_SYNC_URL
 import com.kl3jvi.animity.utils.Constants.Companion.SEARCH_URL
@@ -96,6 +98,9 @@ interface AnimeService {
     suspend fun getGogoUrlFromAniListId(
         @Path("id") id: Int = 1
     ): Response<DetailedAnimeInfo>
+
+    @GET("$EPISODE_TITLES/{id}.json")
+    suspend fun getEpisodeTitles(@Path("id") id: Int = 1): EpisodeWithTitle
 
 }
 

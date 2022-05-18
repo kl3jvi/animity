@@ -6,6 +6,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
 import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.logMessage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -61,7 +62,8 @@ class GetAnimeDetailsUseCase @Inject constructor(
     fun fetchEpisodeList(
         id: String?,
         endEpisode: String?,
-        alias: String?
+        alias: String?,
+        malId: Int
     ): Flow<Resource<List<EpisodeModel>>> = flow {
         emit(Resource.Loading())
         try {
@@ -70,11 +72,29 @@ class GetAnimeDetailsUseCase @Inject constructor(
                 id = id ?: "",
                 endEpisode = endEpisode ?: "0",
                 alias = alias ?: ""
-            ).toList()
+            ).toList().reversed()
+
+            logMessage("List without titles-----$response")
+
+            val episodesWithTitle = detailsRepository.getEpisodeTitles(malId).episodes
+
+            logMessage("List with titles-----$episodesWithTitle")
+
+            val listWithEpisodeWithTitles =
+                episodesWithTitle.associateBy({ it.number }, { it.title })
+
+            val episodesWithoutTitles =
+                response.associateBy({ it.episodeNumber.split(" ").last() }, { it })
+                    .toMutableMap()
+
+            val listEpisodes = listWithEpisodeWithTitles.entries.mapNotNull {
+                episodesWithoutTitles[it.key]?.episodeName = it.value
+                episodesWithoutTitles[it.key]
+            }
 
             emit(
                 Resource.Success(
-                    data = response
+                    data = listEpisodes
                 )
             )
         } catch (e: HttpException) {

@@ -1,5 +1,7 @@
 package com.kl3jvi.animity.data.model.ui_models
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Parcelable
 import com.kl3jvi.animity.type.*
 
@@ -111,6 +113,10 @@ fun Genre.getHexColor(): String {
         "Thriller" -> "#224C80"
         else -> "#000000"
     }
+}
+
+fun String.toStateListColor(): ColorStateList {
+    return ColorStateList.valueOf(Color.parseColor(this))
 }
 
 @Parcelize

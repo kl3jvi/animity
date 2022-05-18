@@ -69,7 +69,7 @@
                 android:marqueeRepeatLimit="0"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text="@{episodeInfo.episodeNumber.replace(`EP`,`Episode`)}"
+                android:text="@{String.valueOf(`EP`+episodeInfo.episodeNumber+episodeInfo.episodeName)}"
                 android:textColor="@color/textColor"
                 tools:text="Episode 1" />
         </LinearLayout>

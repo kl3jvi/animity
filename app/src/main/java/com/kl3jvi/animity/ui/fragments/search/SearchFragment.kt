@@ -14,7 +14,6 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.collectLatestFlow
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -22,7 +21,7 @@ import kotlinx.coroutines.launch
 class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
     override val viewModel: SearchViewModel by viewModels()
-    private val pagingController = PagingSearchController()
+    private lateinit var pagingController: PagingSearchController
 
     private var searchJob: Job? = null
 
@@ -32,6 +31,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        pagingController = PagingSearchController(firebaseAnalytics)
         return binding.root
     }
 
@@ -42,8 +42,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         binding.apply {
             searchRecycler.setController(pagingController)
             mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextChange(newText: String): Boolean {
-                    search(newText)
+                override fun onQueryTextChange(query: String): Boolean {
+                    search(query)
                     return false
                 }
 
@@ -76,7 +76,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
                 launch{ viewModel.queryString.value = query }
 
                 launch {
-                    collectLatestFlow(viewModel.searchList1) { animeData ->
+                    collectLatestFlow(viewModel.searchList) { animeData ->
                         pagingController.submitData(animeData)
                     }
                 }
