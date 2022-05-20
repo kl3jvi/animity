@@ -48,7 +48,11 @@ class DetailsRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getEpisodeTitles(id: Int): EpisodeWithTitle = apiClient.getEpisodeTitles(id)
+    override suspend fun getEpisodeTitles(id: Int): EpisodeWithTitle = withContext(ioDispatcher) {
+        apiClient.getEpisodeTitles(
+            id
+        )
+    }
 
 
     override suspend fun fetchEpisodeTimeRelease(episodeUrl: String): EpisodeReleaseModel =

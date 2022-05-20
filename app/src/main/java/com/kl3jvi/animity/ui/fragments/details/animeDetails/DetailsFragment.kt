@@ -2,12 +2,14 @@ package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -31,6 +33,7 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,8 +73,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             viewModel.animeMetaModel.value = animeInfo
             binding.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
-                resultTitle.text = animeInfo.title.romaji
-                title = animeInfo.title.romaji
+                resultTitle.text = animeInfo.title.userPreferred
+                title = animeInfo.title.userPreferred
             }
         }
     }
@@ -210,15 +213,14 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     /* Setting the icon of the menu item at index 0 to the icon with the id
                     `R.drawable.ic_favorite_complete`. */
                     menu[0].setIcon(R.drawable.ic_favorite_complete)
-                    viewModel.updateAnimeFavorite()
                     showSnack(binding.root, "Anime added to Favorites")
                     true
                 } else {
                     menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-                    viewModel.updateAnimeFavorite()
                     showSnack(binding.root, "Anime removed from Favorites")
                     false
                 }
+                viewModel.updateAnimeFavorite()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -234,16 +236,33 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             episodeListResponse?.let { episodeList ->
                 binding.detailsProgress.visibility = GONE
                 binding.episodeListRecycler.withModels {
-                    episodeList.forEach {
+                    episodeList.forEachIndexed { index, episodeModel ->
                         episodeLarge {
-                            id(it.episodeNumber)
+                            id(episodeModel.episodeNumber)
                             clickListener { _ ->
                                 requireContext().launchActivity<PlayerActivity> {
-                                    putExtra(Constants.EPISODE_DETAILS, it)
-                                    putExtra(Constants.ANIME_TITLE, animeDetails.title.romaji)
+                                    putExtra(Constants.EPISODE_DETAILS, episodeModel)
+                                    putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
                                 }
                             }
-                            episodeInfo(it)
+                            showTitle(episodeModel.episodeName.isNotEmpty())
+                            isFiller(episodeModel.isFiller)
+                            imageUrl(
+                                when {
+                                    animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
+                                        animeDetails.bannerImage.ifEmpty {
+                                            animeDetails.coverImage.large
+                                        }
+                                    }
+                                    animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
+                                        animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
+                                    }
+                                    else -> {
+                                        animeDetails.coverImage.large
+                                    }
+                                }
+                            )
+                            episodeInfo(episodeModel)
                         }
                     }
                 }
@@ -278,24 +297,18 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     }
 
     private fun showLatestEpisodeReleaseTime() {
-//        viewModel.lastEpisodeReleaseTime.observe(viewLifecycleOwner) { res ->
-//            when (res) {
-//                is Resource.Success -> {
-//                    res.data?.let {
-//                        if (it.time.isNotEmpty()) {
-//                            binding.nextEpisodeContainer.visibility = VISIBLE
-//                            binding.releaseTime.text = " ${it.time}"
-//                        } else binding.nextEpisodeContainer.visibility = GONE
-//                    }
-//                }
-//                is Resource.Error -> {
-//                    binding.nextEpisodeContainer.visibility = GONE
-//                }
-//                is Resource.Loading -> {
-//                    binding.nextEpisodeContainer.visibility = GONE
-//                }
-//            }
-//        }
+        binding.releaseTime.text = animeDetails.nextAiringEpisode?.parseTime()
+    }
+
+    private fun Int.parseTime(): CharSequence {
+        return try {
+            val now = System.currentTimeMillis()
+            DateUtils.getRelativeTimeSpanString(now, toLong(), DateUtils.MINUTE_IN_MILLIS)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            binding.nextEpisodeContainer.isVisible = false
+            ""
+        }
     }
 
     /**
@@ -304,4 +317,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     override fun getViewBinding(): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater)
 }
+
+
 

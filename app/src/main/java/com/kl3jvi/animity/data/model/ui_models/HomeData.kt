@@ -1,11 +1,10 @@
 package com.kl3jvi.animity.data.model.ui_models
 
+
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Parcelable
 import com.kl3jvi.animity.type.*
-
-
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -58,6 +57,7 @@ data class AniListMedia(
     val countryOfOrigin: String? = null,
     val isLicensed: Boolean? = null,
     val source: MediaSource? = null,
+    val streamingEpisode: List<Episodes>? = null,
 //    val trailer: MediaTrailer? = null,
     val coverImage: MediaCoverImage = MediaCoverImage(),
     val bannerImage: String = "",
@@ -171,4 +171,10 @@ data class MediaCoverImage(
     val extraLarge: String = "",
     val large: String = "",
     val medium: String = ""
+) : Parcelable
+
+@Parcelize
+data class Episodes(
+    val title: String? = "",
+    val thumbnail: String? = "",
 ) : Parcelable

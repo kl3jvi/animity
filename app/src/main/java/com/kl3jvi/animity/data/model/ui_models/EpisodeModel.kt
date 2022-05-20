@@ -14,17 +14,20 @@ data class EpisodeModel(
     var episodeUrl: String,
     var episodeType: String,
     var percentage: Int = 0,
+    var isFiller: Boolean = false
 ) : Parcelable
 
 
 data class EpisodeWithTitle(
     @SerializedName("episodes")
-    val episodes: List<Episode>,
+    val episodes: List<Episode>? = emptyList(),
 )
 
 data class Episode(
     @SerializedName("number")
     val number: String,
     @SerializedName("title")
-    val title: String
+    val title: String,
+    @SerializedName("filler-bool")
+    val isFiller: Boolean,
 )

@@ -82,6 +82,7 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
         }
     }
 
+    /* An extension function that is being used to observe the networkLiveData object. */
     suspend fun Context.isConnectedToInternet(observer: (Boolean) -> Unit) {
         getNetworkLiveData(context = this).asFlow().collect{
             observer(it)

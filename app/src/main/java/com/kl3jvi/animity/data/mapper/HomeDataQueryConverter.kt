@@ -6,7 +6,6 @@ import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.fragment.HomeMedia
 
 
-
 fun HomeDataQuery.Data.convert(): HomeData {
     val trendingAnime =
         trendingAnime?.media?.mapNotNull {
@@ -23,7 +22,7 @@ fun HomeDataQuery.Data.convert(): HomeData {
             mediaType = it?.mediaType,
             summary = it?.summary ?: "",
             body = it?.body ?: "",
-            rating = it ?. rating ?: 0,
+            rating = it?.rating ?: 0,
             ratingAmount = it?.ratingAmount ?: 0,
             score = it?.score ?: 0,
             user = User(
@@ -36,7 +35,7 @@ fun HomeDataQuery.Data.convert(): HomeData {
             ),
             aniListMedia = AniListMedia(
                 idAniList = it?.media?.id ?: 0,
-                title = MediaTitle(romaji = it?.media?.title?.romaji ?: ""),
+                title = MediaTitle(userPreferred = it?.media?.title?.userPreferred ?: ""),
                 bannerImage = it?.media?.bannerImage ?: "",
                 coverImage = MediaCoverImage(
                     large = it?.media?.coverImage?.large ?: ""
@@ -57,9 +56,10 @@ private fun HomeMedia?.convert(): AniListMedia {
     return AniListMedia(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,
-        title = MediaTitle(romaji = this?.title?.romaji ?: ""),
+        title = MediaTitle(userPreferred = this?.title?.userPreferred ?: ""),
         type = this?.type,
         format = this?.format,
+        streamingEpisode = this?.streamingEpisodes?.mapNotNull { it.convert() },
         nextAiringEpisode = this?.nextAiringEpisode?.airingAt,
         status = this?.status,
         description = this?.description ?: "",
@@ -79,3 +79,14 @@ private fun HomeMedia?.convert(): AniListMedia {
         favourites = this?.favourites ?: 0
     )
 }
+
+private fun HomeMedia.StreamingEpisode?.convert() =
+    Episodes(
+        this?.title,
+        this?.thumbnail
+    )
+
+
+
+
+

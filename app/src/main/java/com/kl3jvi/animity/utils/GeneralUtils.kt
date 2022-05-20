@@ -1,11 +1,18 @@
 package com.kl3jvi.animity.utils
 
+import android.R.attr.data
+import android.content.Context
+import android.graphics.Bitmap
+import android.media.ThumbnailUtils
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import io.noties.markwon.Markwon
+
 
 fun View.hide() {
     visibility = View.GONE
@@ -48,6 +55,5 @@ fun TextView.setHtmlText(htmlString: String?) {
 fun TextView.setMarkdownText(string: String) {
     Markwon.create(this.context).setMarkdown(this, string)
 }
-
 
 

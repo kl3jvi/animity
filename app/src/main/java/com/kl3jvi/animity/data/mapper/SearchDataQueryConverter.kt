@@ -8,7 +8,7 @@ fun SearchAnimeQuery.Data.convert(): List<AniListMedia>? {
     return page?.media?.map {
         AniListMedia(
             idAniList = it?.id ?: 0,
-            title = MediaTitle(romaji = it?.title?.romaji ?: ""),
+            title = MediaTitle(userPreferred = it?.title?.userPreferred ?: ""),
             description = it?.description ?: "",
             startDate = if (it?.startDate?.year != null) {
                 FuzzyDate(

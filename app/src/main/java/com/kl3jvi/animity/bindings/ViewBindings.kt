@@ -1,9 +1,11 @@
 package com.kl3jvi.animity.bindings
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -102,4 +104,24 @@ object ViewBindings {
         if (value) view.show()
         else view.hide()
     }
+
+
+    /**
+     * "If the isFiller boolean is true, set the background color of the CardView to #2B2C30, otherwise
+     * set it to #17293F."
+     *
+     * The @BindingAdapter annotation is what tells the compiler that this function is a binding
+     * adapter. The first parameter is the name of the attribute that we'll be using in our XML layout.
+     * The second parameter is the type of the attribute. In this case, it's a boolean
+     *
+     * @param view CardView - The view that we're binding to.
+     * @param isFiller Boolean - This is the parameter that we will pass to the binding adapter.
+     */
+    @JvmStatic
+    @BindingAdapter("isFiller")
+    fun changeFillerBg(view: CardView, isFiller: Boolean) {
+        view.setCardBackgroundColor(Color.parseColor(if (isFiller) "#2B2C30" else "#17293F"))
+    }
+
+
 }

@@ -92,6 +92,7 @@ query AnimeListCollectionQuery(
                     month
                     day
                 }
+
                 updatedAt
                 createdAt
                 media {
@@ -100,7 +101,7 @@ query AnimeListCollectionQuery(
                         romaji
                         english
                         native
-                        romaji
+                        userPreferred
                     }
                     description
                     type
@@ -157,6 +158,7 @@ query TrendingMediaQuery{
             id
             title {
                 romaji
+                userPreferred
             }
             averageScore
             favourites
@@ -202,6 +204,7 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
                         id
                         title {
                             romaji
+                            userPreferred
                         }
                         coverImage {
                             large
@@ -246,6 +249,7 @@ query SearchAnimeQuery(
             startDate { year month day }
             title {
                 romaji
+                userPreferred
             }
             description
             coverImage {
@@ -264,6 +268,10 @@ query SearchAnimeQuery(
                 airingAt
                 episode
             }
+            streamingEpisodes {
+                title
+                thumbnail
+            }
             trailer { id site thumbnail }
             bannerImage
             recommendations {
@@ -274,6 +282,7 @@ query SearchAnimeQuery(
                         title {
                             english
                             romaji
+                            userPreferred
                         }
                         idMal
                         coverImage { medium large }
@@ -294,6 +303,7 @@ query SearchAnimeQuery(
                         title {
                             english
                             romaji
+                            userPreferred
                         }
                     }
                 }
@@ -332,6 +342,8 @@ query HomeDataQuery {
         }
     }
 
+
+
     review: Page(page: 1, perPage: 15) {
         reviews(sort: [ID_DESC])    {
             id
@@ -355,6 +367,7 @@ query HomeDataQuery {
                 id
                 title {
                     romaji
+                    userPreferred
                 }
                 bannerImage
                 coverImage {
@@ -370,6 +383,7 @@ fragment HomeMedia on Media {
     idMal
     title {
         romaji
+        userPreferred
     }
     type
     status(version: 2)
@@ -379,6 +393,24 @@ fragment HomeMedia on Media {
         extraLarge
         large
         medium
+    }
+    #    recommendations(
+    #        page: 1
+    #        perPage: 25
+    #        sort:ID
+    #    ){
+    #        edges {
+    #            node {
+    #                media {
+    #
+    #                }
+    #            }
+    #        }
+    #
+    #    }
+    streamingEpisodes {
+        title
+        thumbnail
     }
     nextAiringEpisode {
         airingAt

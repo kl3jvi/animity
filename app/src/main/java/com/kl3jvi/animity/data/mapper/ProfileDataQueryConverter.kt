@@ -32,7 +32,7 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia>
     return this?.mapNotNull {
         AniListMedia(
             idAniList = it?.media?.id ?: 0,
-            title = MediaTitle(romaji = it?.media?.title?.romaji ?: ""),
+            title = MediaTitle(userPreferred = it?.media?.title?.userPreferred ?: ""),
             type = it?.media?.type,
             format = it?.media?.format,
             status = it?.media?.status,

@@ -33,7 +33,7 @@ class PagingSearchController(private val firebaseAnalytics: FirebaseAnalytics) :
                         "genre", item.genres.firstOrNull()?.name ?: "empty"
                     )
                     firebaseAnalytics.logEvent(
-                        item.title.romaji.replace("\\s".toRegex(), ""), params
+                        item.title.userPreferred.replace("\\s".toRegex(), ""), params
                     )
                 }
             } catch (e: Exception) {

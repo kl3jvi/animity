@@ -1,8 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -107,7 +105,9 @@ class DetailsViewModel @Inject constructor(
     }
 
 
-    //    val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
+//    fun getRelease
+//
+//        val lastEpisodeReleaseTime = Transformations.switchMap(_url) {
 //        getAnimeDetailsUseCase.fetchEpisodeReleaseTime(it.split("/").last())
 //            .asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
 //    }

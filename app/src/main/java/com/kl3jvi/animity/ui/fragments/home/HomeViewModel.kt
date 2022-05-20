@@ -11,8 +11,10 @@ import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +28,6 @@ class HomeViewModel @Inject constructor(
 
     init {
         getHomePageData()
-        getHomeNewData()
     }
 
     /**
@@ -41,24 +42,9 @@ class HomeViewModel @Inject constructor(
                     logMessage(it.message)
                 }
                 is NetworkResource.Success -> {
-                    _homeData.value = it.data
+                    _homeData.value = it.data ?: HomeData()
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    private val _homeNewData = MutableStateFlow(HomeData())
-    val homeNewData = _homeNewData.asStateFlow()
-
-    /**
-     * It gets the data from the repository and sets it to the homeNewData variable.
-     */
-    private fun getHomeNewData() {
-        viewModelScope.launch(ioDispatcher) {
-            getAnimesUseCase().catch { e -> logError(e) }
-//                .collect { result ->
-////                _homeNewData.value = State.fromResource(result)
-//            }
-        }
     }
 }

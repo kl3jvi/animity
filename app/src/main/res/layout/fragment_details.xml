@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
             <LinearLayout
@@ -85,6 +85,7 @@
                                 android:id="@+id/releaseDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_5"
                                 android:lineSpacingExtra="3sp"
                                 android:paddingTop="3sp"
                                 android:textColor="@color/textColor"
@@ -114,6 +115,7 @@
                                 android:id="@+id/status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_5"
                                 android:lineSpacingExtra="3sp"
                                 android:paddingTop="3sp"
                                 android:textColor="@color/textColor"
@@ -143,8 +145,10 @@
                                 android:id="@+id/type"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_5"
                                 android:lineSpacingExtra="3sp"
                                 android:paddingTop="3sp"
+
                                 android:textColor="@color/textColor"
                                 android:textSize="15sp"
                                 android:textStyle="normal"
@@ -173,6 +177,7 @@
                                 android:id="@+id/releaseTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_5"
                                 android:lineSpacingExtra="3sp"
                                 android:paddingTop="3sp"
                                 android:textColor="@color/textColor"
@@ -197,6 +202,7 @@
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="5dp"
                     android:paddingEnd="@dimen/dp_20"
+
                     android:text="@string/add_to_list"
                     android:visibility="gone"
                     app:icon="@drawable/ic_down_arrow"
@@ -321,6 +327,7 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
         tools:listitem="@layout/item_episode_list"
         tools:visibility="visible" />
 

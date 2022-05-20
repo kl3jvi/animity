@@ -6,7 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.airbnb.epoxy.EpoxyModel
+import com.airbnb.epoxy.preload.EpoxyModelPreloader
+import com.airbnb.epoxy.preload.PreloadRequestHolder
+import com.airbnb.epoxy.preload.ViewMetadata
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
+import com.kl3jvi.animity.episodeLarge
+import com.kl3jvi.animity.title
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
@@ -56,7 +62,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         super.onStart()
         handleNetworkChanges()
     }
-
 
     override fun observeViewModel() {}
 

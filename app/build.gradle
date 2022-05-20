@@ -163,7 +163,6 @@ dependencies {
     implementation "com.google.android.exoplayer:extension-mediasession:$exoplayerVersion"
 
 
-
     //Expandable TextView
     def expandableTextViewVersion = "0.1.4"
     implementation "com.ms-square:expandableTextView:$expandableTextViewVersion"
@@ -173,9 +172,12 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // image library
-    def glideVersion = "4.13.0"
+    def glideVersion = "4.13.1"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
+    implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion") {
+        exclude group: 'glide-parent'
+    }
 
     //splash screen
     def splashVersion = "1.0.0-beta02"

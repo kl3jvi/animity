@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimaryLight">#121e2d</color>
     <color name="colorPrimary">#121e2d</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryDark">#121e2d</color>
 
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>

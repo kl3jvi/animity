@@ -16,6 +16,16 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="imageUrl"
+            type="String" />
+        <variable
+            name="showTitle"
+            type="Boolean" />
+        <variable
+            name="isFiller"
+            type="Boolean" />
+
+        <variable
             name="episodeInfo"
             type="com.kl3jvi.animity.data.model.ui_models.EpisodeModel" />
     </data>
@@ -26,10 +36,10 @@
         android:id="@+id/episode_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:isFiller="@{isFiller}"
         android:layout_marginBottom="10dp"
         android:foreground="@drawable/outline_drawable"
         android:nextFocusLeft="@id/episode_poster"
-        app:cardBackgroundColor="@color/darkBlue"
         app:cardCornerRadius="@dimen/roundedImageRadius">
 
         <LinearLayout
@@ -57,7 +67,8 @@
                         android:layout_height="match_parent"
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         android:nextFocusRight="@id/episode_holder"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        app:image="@{imageUrl}" />
 
                     <ImageView
                         android:layout_width="36dp"
@@ -90,7 +101,7 @@
                         android:id="@+id/episode_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(episodeInfo.episodeNumber)}"
+                        android:text="@{String.valueOf(episodeInfo.episodeNumber).replace(`EP`,`Episode`)}"
                         android:textColor="@color/textColor"
                         android:textStyle="bold"
                         tools:text="1. Jobless" />
@@ -99,12 +110,23 @@
                         android:id="@+id/episode_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="@{showTitle}"
                         android:text="@{String.valueOf(episodeInfo.episodeName)}"
                         android:textColor="@color/grayTextColor"
                         tools:text="Rated: 8.8" />
                 </LinearLayout>
 
+
+
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/filler"
+                android:textColor="@color/white"
+                android:visibility="@{isFiller}"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
