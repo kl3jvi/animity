@@ -26,7 +26,6 @@ import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.util.Util
-import com.google.common.net.HttpHeaders.USER_AGENT
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -36,7 +35,6 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
-import com.kl3jvi.animity.utils.Constants.Companion.getDataSourceFactory
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Resource
@@ -49,6 +47,7 @@ import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
 import java.io.File
 import java.net.InetAddress
+import kotlin.math.pow
 
 
 @ExperimentalCoroutinesApi
@@ -298,7 +297,7 @@ class PlayerActivity : AppCompatActivity() {
 //    }
 
     private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
-        if (url.contains("m3u8")) {
+        return if (url.contains("m3u8")) {
             val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
             val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
 
@@ -308,24 +307,24 @@ class PlayerActivity : AppCompatActivity() {
                 .build()
 
             val client = bootstrapClient.newBuilder().dns(dns).build()
-
             val dataSource = {
                 val dataSource = OkHttpDataSource.Factory(client)
-                    .setUserAgent(USER_AGENT)
+                    .setUserAgent(Constants.USER_AGENT)
                     .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
-                dataSource.createDataSource()
+                dataSource.createDataSource();
+
             }
-            return HlsMediaSource.Factory(dataSource)
+            HlsMediaSource.Factory(dataSource)
                 .setAllowChunklessPreparation(true)
                 .createMediaSource(mediaItem)
         } else {
             val dataSource = {
                 val dataSource: DataSource.Factory = DefaultHttpDataSource.Factory()
-                    .setUserAgent(USER_AGENT)
+                    .setUserAgent(Constants.USER_AGENT)
                     .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
                 dataSource.createDataSource()
             }
-            return ProgressiveMediaSource.Factory(dataSource)
+            ProgressiveMediaSource.Factory(dataSource)
                 .createMediaSource(mediaItem)
         }
     }
