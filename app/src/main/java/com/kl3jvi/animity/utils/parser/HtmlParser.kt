@@ -17,7 +17,6 @@ class HtmlParser @Inject constructor(
     private val preferences: LocalStorage
 ) : Parser {
 
-
     /**
      * It takes a response from a network request, parses it, and returns a list of AnimeMetaModel
      * objects

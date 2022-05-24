@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.kl3jvi.animity.BuildConfig
 import java.util.*
 
@@ -33,11 +35,14 @@ class Constants {
         const val SIGNUP_URL = "https://anilist.co/signup"
         const val MAL_SYNC_URL =
             "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
-        const val EPISODE_TITLES = "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
+        const val EPISODE_TITLES =
+            "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
 
 
         /* Used to get the gogoanime keys from the github repo. Thanks to https://github.com/justfoolingaround */
-        const val GOGO_KEYS_URL ="https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
+        const val GOGO_KEYS_URL =
+            "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
+
         /* The default cover image for the profile. */
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 
@@ -61,7 +66,7 @@ class Constants {
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36"
 
         const val ORIGIN = "https://gogoanime.gg/"
-        const val  REFERER = "https://goload.pro/"
+        const val REFERER = "https://goload.pro/"
 
         //        fun getHeader(): Map<String, String> {
 //            return mapOf(
@@ -160,6 +165,11 @@ class Constants {
         fun randomId(): String {
             return UUID.randomUUID().toString()
         }
+
+        val mapper = GsonBuilder().create()
+
+        inline fun <reified T> Gson.readValue(content: String): T =
+            this.fromJson(content, T::class.java)
 
     }
 }

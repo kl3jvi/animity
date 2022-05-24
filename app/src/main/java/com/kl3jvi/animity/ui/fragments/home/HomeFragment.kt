@@ -6,20 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.preload.EpoxyModelPreloader
-import com.airbnb.epoxy.preload.PreloadRequestHolder
-import com.airbnb.epoxy.preload.ViewMetadata
+import androidx.lifecycle.lifecycleScope
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
-import com.kl3jvi.animity.episodeLarge
-import com.kl3jvi.animity.title
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.observeLiveData
+import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override val viewModel: HomeViewModel by viewModels()
@@ -33,7 +31,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun fetchHomeData() {
-        observeLiveData(viewModel.homeData, viewLifecycleOwner) { result ->
+        collectFlow(viewModel.homeData) { result ->
             binding.mainRv.withModels {
                 binding.loadingIndicator.isVisible = result.newAnime.isEmpty()
                 buildHome(result, firebaseAnalytics)
@@ -48,8 +46,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
+            /* Checking if the user is connected to the internet and if so, it will fetch the data from
+            the server. */
             if (isConnected) fetchHomeData()
-
             binding.apply {
                 mainRv.isVisible = isConnected
                 loadingIndicator.isVisible = isConnected
@@ -58,6 +57,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
+    /**
+     * It handles network changes.
+     */
     override fun onStart() {
         super.onStart()
         handleNetworkChanges()
@@ -67,27 +69,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
 
     override fun initViews() {
-//        binding.button2.setOnClickListener {
-//            requireContext().launchActivity<PaymentActivity> {
-//                val dropInRequest = DropInRequest()
-//                dropInClient = DropInClient(
-//                    requireContext(),
-//                    "sandbox_ykvmgk4j_fssw4nqtc2phhht8",
-//                    dropInRequest
-//                )
-//                dropInClient.launchDropInForResult(
-//                    requireActivity(),
-//                    PaymentActivity.DROP_IN_REQUEST_CODE
-//                )
-//            }
-//        }
+        lifecycleScope.launch {
+
+        }
     }
 
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
 
-    companion object {
-        const val DROP_IN_REQUEST_CODE = 800
-    }
+
 }
 
 

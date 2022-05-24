@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.di
 
 
-import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
@@ -11,29 +10,28 @@ import com.kl3jvi.animity.data.network.anime_service.AnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.BASE_URL
+import com.kl3jvi.animity.utils.RetrofitClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Named
 import javax.inject.Singleton
-import kotlin.reflect.KParameter
 
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
 
-    /* Providing an OkHttpClient to the dagger. */
     @Provides
     @Singleton
+    @Apollo
     fun provideOkHttpClient(
         localStorage: LocalStorage,
         loginRepository: LoginRepository,
@@ -49,10 +47,9 @@ object NetworkModule {
             .build()
     }
 
-
     @Provides
     @Singleton
-    @Named("RetrofitOkHttp")
+    @RetrofitClient
     fun provideRetrofitOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
@@ -68,7 +65,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        @Named("RetrofitOkHttp") okHttpClient: OkHttpClient
+        @RetrofitClient okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -86,7 +83,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideApolloClient(
-        okHttpClient: OkHttpClient,
+        @Apollo okHttpClient: OkHttpClient,
     ): ApolloClient {
         return ApolloClient.Builder()
             .serverUrl(ANILIST_API_URL)

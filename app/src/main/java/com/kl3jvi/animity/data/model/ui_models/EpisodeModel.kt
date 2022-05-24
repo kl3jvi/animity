@@ -12,7 +12,7 @@ data class EpisodeModel(
     var episodeName: String = "",
     var episodeNumber: String,
     var episodeUrl: String,
-    var episodeType: String,
+    var episodeType: String = "",
     var percentage: Int = 0,
     var isFiller: Boolean = false
 ) : Parcelable

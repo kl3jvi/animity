@@ -2,7 +2,6 @@ package com.kl3jvi.animity.ui.activities.player
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -47,7 +46,6 @@ import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
 import java.io.File
 import java.net.InetAddress
-import kotlin.math.pow
 
 
 @ExperimentalCoroutinesApi
@@ -98,7 +96,7 @@ class PlayerActivity : AppCompatActivity() {
 
             initialisePlayerLayout()
             viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
-            Log.e("Playback position", playbackPosition.toString())
+            hideSystemUi()
         }
     }
 
@@ -116,7 +114,6 @@ class PlayerActivity : AppCompatActivity() {
 
     public override fun onResume() {
         super.onResume()
-        hideSystemUi()
         if (Util.SDK_INT <= 23 && player == null) {
             initializePlayer()
             onIsPlayingChanged(isPlaying = true)
@@ -318,6 +315,7 @@ class PlayerActivity : AppCompatActivity() {
                 .setAllowChunklessPreparation(true)
                 .createMediaSource(mediaItem)
         } else {
+            /* Creating a data source factory. */
             val dataSource = {
                 val dataSource: DataSource.Factory = DefaultHttpDataSource.Factory()
                     .setUserAgent(Constants.USER_AGENT)
