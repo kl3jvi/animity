@@ -33,6 +33,9 @@ import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
+import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
+import com.kl3jvi.animity.utils.Constants.Companion.INTRO_SKIP_TIME
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -81,10 +84,9 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
-        savedInstanceState?.putString("test", "12324")
-        if (intent.hasExtra(Constants.EPISODE_DETAILS)) {
-            val getIntentData = intent.getParcelableExtra<EpisodeModel>(Constants.EPISODE_DETAILS)
-            animeTitlePassed = intent.getStringExtra(Constants.ANIME_TITLE).toString()
+        if (intent.hasExtra(EPISODE_DETAILS)) {
+            val getIntentData = intent.getParcelableExtra<EpisodeModel>(EPISODE_DETAILS)
+            animeTitlePassed = intent.getStringExtra(ANIME_TITLE).toString()
             episodeNumberLocal = getIntentData?.episodeNumber.toString()
             episodeUrlLocal = getIntentData?.episodeUrl.toString()
 
@@ -204,7 +206,7 @@ class PlayerActivity : AppCompatActivity() {
                                 currentTime = it
                                 if (currentTime < 300000) {
                                     skipIntro.setOnClickListener {
-                                        player?.seekTo(currentTime + Constants.INTRO_SKIP_TIME)
+                                        player?.seekTo(currentTime + INTRO_SKIP_TIME)
                                         skipIntro.visibility = View.GONE
                                     }
                                 } else {

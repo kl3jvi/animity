@@ -69,9 +69,9 @@ class GetAnimeDetailsUseCase @Inject constructor(
         return@flow try {
             response = detailsRepository.fetchEpisodeList(
                 header = getNetworkHeader(),
-                id = id ?: "",
+                id = id .orEmpty(),
                 endEpisode = endEpisode ?: "0",
-                alias = alias ?: ""
+                alias = alias .orEmpty()
             ).toList().reversed()
             val episodesWithTitle =
                 detailsRepository.getEpisodeTitles(malId).episodes ?: emptyList()

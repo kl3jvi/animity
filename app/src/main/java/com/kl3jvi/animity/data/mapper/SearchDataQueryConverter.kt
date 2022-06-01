@@ -8,8 +8,8 @@ fun SearchAnimeQuery.Data.convert(): List<AniListMedia>? {
     return page?.media?.map {
         AniListMedia(
             idAniList = it?.id ?: 0,
-            title = MediaTitle(userPreferred = it?.title?.userPreferred ?: ""),
-            description = it?.description ?: "",
+            title = MediaTitle(userPreferred = it?.title?.userPreferred .orEmpty()),
+            description = it?.description .orEmpty(),
             startDate = if (it?.startDate?.year != null) {
                 FuzzyDate(
                     it.startDate.year,
@@ -20,11 +20,11 @@ fun SearchAnimeQuery.Data.convert(): List<AniListMedia>? {
                 null
             },
             coverImage = MediaCoverImage(
-                it?.coverImage?.large ?: "",
-                it?.coverImage?.large ?: "",
-                it?.coverImage?.large ?: ""
+                it?.coverImage?.large .orEmpty(),
+                it?.coverImage?.large .orEmpty(),
+                it?.coverImage?.large .orEmpty()
             ),
-            genres = it?.genres?.mapNotNull { Genre(name = it ?: "") } ?: listOf(),
+            genres = it?.genres?.mapNotNull { Genre(name = it .orEmpty()) } ?: listOf(),
             averageScore = it?.averageScore ?: 0,
         )
     }

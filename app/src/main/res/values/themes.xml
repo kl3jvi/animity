@@ -25,6 +25,21 @@
 
     </style>
 
+    <style name="Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:textColorHint">@color/textColor</item>
+        <item name="startIconTint">@color/textColor</item>
+        <item name="boxStrokeColor">@color/textColor</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="endIconTint">@color/textColor</item>
+    </style>
+
+    <style name="BottomSheet_Button" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="boxStrokeColor">@color/textColor</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
     <style name="Theme.Animity" parent="Base.Theme.Animity" />
 
     <style name="Theme.MySplash" parent="Theme.SplashScreen">
@@ -33,10 +48,20 @@
         <item name="postSplashScreenTheme">@style/Theme.Animity</item>
     </style>
 
+    <style name="Suffix">
+        <item name="android:height">54dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="ThemeOverlay.SearchView" parent="">
         <item name="android:editTextColor">@color/white</item>
         <item name="android:textColorHint">@color/grayTextColor</item>
         <item name="closeIconTint">@color/white</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Animity.FeedItem" parent="">
+        <item name="cornerSize">12dp</item>
     </style>
 
 

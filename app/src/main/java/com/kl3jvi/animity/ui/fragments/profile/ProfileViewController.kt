@@ -25,7 +25,7 @@ fun EpoxyController.buildProfile(
             userData(it)
         }
     }
-    if (!animeCollectionResponse.isNullOrEmpty()) {
+    if (animeCollectionResponse.isNotEmpty()) {
         animeCollectionResponse.map { profileRow ->
             title {
                 id(randomId())

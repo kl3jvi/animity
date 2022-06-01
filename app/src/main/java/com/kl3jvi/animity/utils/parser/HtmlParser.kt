@@ -12,7 +12,6 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
-
 class HtmlParser @Inject constructor(
     private val preferences: LocalStorage
 ) : Parser {

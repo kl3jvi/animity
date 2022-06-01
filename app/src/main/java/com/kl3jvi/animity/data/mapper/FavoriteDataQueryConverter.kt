@@ -11,9 +11,9 @@ fun FavoritesAnimeQuery.Data.convert(): List<AniListMedia>? {
     return user?.favourites?.anime?.edges?.map {
         AniListMedia(
             idAniList = it?.node?.id ?: 0,
-            title = MediaTitle(userPreferred = it?.node?.title?.userPreferred ?: ""),
-            coverImage = MediaCoverImage(large = it?.node?.coverImage?.large ?: ""),
-            description = it?.node?.description ?: ""
+            title = MediaTitle(userPreferred = it?.node?.title?.userPreferred .orEmpty()),
+            coverImage = MediaCoverImage(large = it?.node?.coverImage?.large .orEmpty()),
+            description = it?.node?.description .orEmpty()
         )
     }
 }

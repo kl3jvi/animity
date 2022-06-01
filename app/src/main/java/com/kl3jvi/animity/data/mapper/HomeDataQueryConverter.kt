@@ -20,25 +20,25 @@ fun HomeDataQuery.Data.convert(): HomeData {
             userId = it?.userId ?: 0,
             mediaId = it?.mediaId ?: 0,
             mediaType = it?.mediaType,
-            summary = it?.summary ?: "",
-            body = it?.body ?: "",
+            summary = it?.summary .orEmpty(),
+            body = it?.body .orEmpty(),
             rating = it?.rating ?: 0,
             ratingAmount = it?.ratingAmount ?: 0,
             score = it?.score ?: 0,
             user = User(
                 id = it?.user?.id ?: 0,
-                name = it?.user?.name ?: "",
+                name = it?.user?.name .orEmpty(),
                 avatar = UserAvatar(
-                    it?.user?.avatar?.large ?: "",
-                    it?.user?.avatar?.medium ?: ""
+                    it?.user?.avatar?.large .orEmpty(),
+                    it?.user?.avatar?.medium .orEmpty()
                 )
             ),
             aniListMedia = AniListMedia(
                 idAniList = it?.media?.id ?: 0,
-                title = MediaTitle(userPreferred = it?.media?.title?.userPreferred ?: ""),
-                bannerImage = it?.media?.bannerImage ?: "",
+                title = MediaTitle(userPreferred = it?.media?.title?.userPreferred .orEmpty()),
+                bannerImage = it?.media?.bannerImage .orEmpty(),
                 coverImage = MediaCoverImage(
-                    large = it?.media?.coverImage?.large ?: ""
+                    large = it?.media?.coverImage?.large .orEmpty()
                 )
             )
         )
@@ -56,25 +56,25 @@ private fun HomeMedia?.convert(): AniListMedia {
     return AniListMedia(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,
-        title = MediaTitle(userPreferred = this?.title?.userPreferred ?: ""),
+        title = MediaTitle(userPreferred = this?.title?.userPreferred .orEmpty()),
         type = this?.type,
         format = this?.format,
         streamingEpisode = this?.streamingEpisodes?.mapNotNull { it.convert() },
         nextAiringEpisode = this?.nextAiringEpisode?.airingAt,
         status = this?.status,
-        description = this?.description ?: "",
+        description = this?.description .orEmpty(),
         startDate = if (this?.startDate?.year != null) {
             FuzzyDate(this.startDate.year, this.startDate.month, this.startDate.day)
         } else {
             null
         },
         coverImage = MediaCoverImage(
-            this?.coverImage?.extraLarge ?: "",
-            this?.coverImage?.large ?: "",
-            this?.coverImage?.medium ?: ""
+            this?.coverImage?.extraLarge .orEmpty(),
+            this?.coverImage?.large .orEmpty(),
+            this?.coverImage?.medium .orEmpty()
         ),
-        bannerImage = this?.bannerImage ?: "",
-        genres = this?.genres?.mapNotNull { Genre(name = it ?: "") } ?: listOf(),
+        bannerImage = this?.bannerImage .orEmpty(),
+        genres = this?.genres?.mapNotNull { Genre(name = it .orEmpty()) } ?: listOf(),
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0
     )

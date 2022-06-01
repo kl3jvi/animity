@@ -16,6 +16,7 @@ import retrofit2.http.*
 /**
  * Used to connect to the GogoAnime page to fetch animes
  */
+
 interface AnimeService {
 
     @GET("https://ajax.gogocdn.net/ajax/page-recent-release.html")

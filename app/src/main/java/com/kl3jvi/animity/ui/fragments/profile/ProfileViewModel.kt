@@ -8,12 +8,10 @@ import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryIm
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetAnimeListForProfileUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserDataUseCase
-import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
@@ -21,17 +19,11 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userSession: GetUserSessionUseCase,
     private val userData: GetUserDataUseCase,
     private val userRepositoryImpl: UserRepositoryImpl,
     private val animeListUseCase: GetAnimeListForProfileUseCase,
     private val dataStore: LocalStorage,
-    private val profileUseCase: GetAnimeListForProfileUseCase
 ) : ViewModel() {
-
-    fun clearStorage() {
-        userRepositoryImpl.clearStorage()
-    }
 
     private val _profileData = MutableStateFlow<ProfileData?>(null)
     val profileData = _profileData.asStateFlow()
@@ -49,8 +41,6 @@ class ProfileViewModel @Inject constructor(
             val animeListDeferred = async { animeListUseCase(dataStore.aniListUserId?.toInt()) }
 
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
-
-
 
             profileData.collect {
                 when (it) {
@@ -75,5 +65,10 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun clearStorage() {
+        userRepositoryImpl.clearStorage()
+    }
 }
+
 

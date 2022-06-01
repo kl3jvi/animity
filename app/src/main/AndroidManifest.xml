@@ -14,19 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySplash"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ui.activities.payment.PaymentActivity"
-            android:theme="@style/Theme.Animity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="jh" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ui.activities.login.LoginActivity"
             android:exported="true"

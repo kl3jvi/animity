@@ -82,7 +82,6 @@ class HomeRepositoryImpl @Inject constructor(
                         data = it.data?.convert() ?: HomeData()
                     }
                     NetworkResource.Success(data)
-
                 }
         } catch (e: Exception) {
             logError(e)
@@ -90,6 +89,13 @@ class HomeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getKeys(): GogoAnimeKeys = apiClient.getKeys()
+    override suspend fun getKeys(): GogoAnimeKeys {
+        return try {
+            apiClient.getKeys()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            GogoAnimeKeys()
+        }
+    }
 
 }

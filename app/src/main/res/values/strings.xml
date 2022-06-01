@@ -96,6 +96,15 @@
     <string name="watching">Watching</string>
     <string name="planning">Planning</string>
     <string name="filler">FILLER</string>
+    <string name="list_editor">List Editor</string>
+    <string name="watch">Watch</string>
+    <string name="progress">Progress</string>
+    <string name="score">Score</string>
+    <string name="score_suffix">/ 10</string>
+    <string name="started_at">Started At</string>
+    <string name="completed_at">Completed At</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
 
 
 </resources>

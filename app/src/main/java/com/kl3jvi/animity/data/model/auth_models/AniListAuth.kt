@@ -24,3 +24,4 @@ data class AniListAuth(
     @SerializedName("code")
     val code: String
 )
+

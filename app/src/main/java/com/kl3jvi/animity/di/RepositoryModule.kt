@@ -48,6 +48,10 @@ abstract class RepositoryModule {
     abstract fun bindLocalRepository(repository: LocalStorageImpl): LocalStorage
 
     @Binds
+    abstract fun bindProfileRepository(repository: ProfileRepositoryImpl): ProfileRepository
+
+
+    @Binds
     abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository
 
     @Binds

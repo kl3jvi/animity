@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class GogoAnimeKeys(
     @SerializedName("iv")
-    val iv: String,
+    val iv: String = "",
     @SerializedName("key")
-    val key: String,
+    val key: String = "",
     @SerializedName("second_key")
-    val secondKey: String
+    val secondKey: String = ""
 )

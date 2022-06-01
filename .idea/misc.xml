@@ -39,6 +39,10 @@
         <entry key="app/src/main/res/drawable/ic_play_button.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_play_tv.xml" value="0.334375" />
         <entry key="app/src/main/res/drawable/ic_quality.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/drawable/ic_round_add_circle_outline_24.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_round_date_range_24.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_round_playlist_play_24.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_round_star_24.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.26614583333333336" />
@@ -58,6 +62,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.24270833333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10740740740740741" />
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
+        <entry key="app/src/main/res/layout/bottom_sheet_media_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/bottom_sheet_search.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/content_review_details.xml" value="0.1398148148148148" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />

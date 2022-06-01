@@ -1,3 +1,4 @@
+#Getting the user data.
 query SessionQuery {
     viewer:Viewer {
         id
@@ -5,6 +6,7 @@ query SessionQuery {
     }
 }
 
+#Getting the user data.
 query UserQuery($id: Int) {
     user:User(id: $id) {
         id
@@ -62,6 +64,7 @@ query UserQuery($id: Int) {
     }
 }
 
+#A GraphQL query that is requesting the anime list of a user.
 query AnimeListCollectionQuery(
     $userId: Int
 ) {
@@ -149,6 +152,7 @@ query AnimeListCollectionQuery(
     }
 }
 
+#Getting the trending anime.
 query TrendingMediaQuery{
     page:Page(
         page: 1,
@@ -229,12 +233,6 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
     }
 }
 
-#query MediaIdFromName($search: String){
-#    media:Media (search: $search, type: ANIME) {
-#        id
-#    }
-#}
-
 #GetAnime data by searching
 query SearchAnimeQuery(
     $search: String, $page: Int ) {
@@ -312,6 +310,46 @@ query SearchAnimeQuery(
     }
 }
 
+
+#Updating the list of the user.
+mutation EditList(
+    $mediaID: Int,
+    $progress: Int,
+    $scoreRaw:Int,
+    $status:MediaListStatus,
+    $start:FuzzyDateInput,
+    $completed:FuzzyDateInput
+) {
+    saveMedia:SaveMediaListEntry(
+        mediaId: $mediaID,
+        progress: $progress,
+        scoreRaw: $scoreRaw,
+        status:$status,
+        startedAt: $start,
+        completedAt: $completed
+    ) {
+        score(format:POINT_10_DECIMAL)
+        startedAt{
+            year
+            month
+            day
+        }
+        completedAt{
+            year
+            month
+            day
+        }
+    }
+}
+
+#It deletes the anime from the list.
+mutation DeleteMedia($id:Int){
+    deleteMedia:DeleteMediaListEntry(id:$id){
+        deleted
+    }
+}
+
+
 #marks anime as favorite
 mutation ToggleFavouriteMutation($animeId: Int) {
     toggle:ToggleFavourite(animeId: $animeId) {
@@ -341,7 +379,6 @@ query HomeDataQuery {
             ...HomeMedia
         }
     }
-
 
 
     review: Page(page: 1, perPage: 15) {

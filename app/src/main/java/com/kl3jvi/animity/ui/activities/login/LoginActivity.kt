@@ -1,10 +1,10 @@
 package com.kl3jvi.animity.ui.activities.login
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.browser.customtabs.CustomTabsIntent
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -144,29 +144,23 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         val aniListRegister = binding.aniListSignUp
         val privacy = binding.privacy
 
-        aniListLogin.setOnClickListener {
-            launchBrowser(this@LoginActivity, getAuthorizationUrl())
-        }
-
-        aniListRegister.setOnClickListener {
-            launchBrowser(this@LoginActivity, Uri.parse(SIGNUP_URL))
-        }
-
-        privacy.setOnClickListener {
-            launchBrowser(this@LoginActivity, Uri.parse(TERMS_AND_PRIVACY_LINK))
-        }
+        aniListLogin.launchBrowser(getAuthorizationUrl())
+        aniListRegister.launchBrowser(Uri.parse(SIGNUP_URL))
+        privacy.launchBrowser(Uri.parse(TERMS_AND_PRIVACY_LINK))
     }
 
+
     /**
-     * > Launch a browser with a custom tab
+     * > When the view is clicked, launch a custom tab with the given URI
      *
-     * @param context The context of the activity or fragment.
-     * @param uri The URI to be opened.
+     * @param uri The URI to be opened in the browser.
      */
-    private fun launchBrowser(context: Context, uri: Uri) {
-        CustomTabsIntent.Builder()
-            .build()
-            .launchUrl(context, uri)
+    private fun View.launchBrowser(uri: Uri) {
+        setOnClickListener {
+            CustomTabsIntent.Builder()
+                .build()
+                .launchUrl(this.context, uri)
+        }
     }
 
     /**

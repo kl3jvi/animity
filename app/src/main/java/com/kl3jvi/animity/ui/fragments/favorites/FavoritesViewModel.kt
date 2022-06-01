@@ -10,7 +10,6 @@ import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -37,7 +36,7 @@ class FavoritesViewModel @Inject constructor(
      * It gets the favorite animes from the AniList API.
      */
     private fun getFavoriteAnimes() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             shouldRefresh.collectLatest { _ ->
                 getFavoriteAnimesUseCase(dataStore.aniListUserId?.toInt(), 1)
                     .flowOn(ioDispatcher)

@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
 import com.kl3jvi.animity.utils.logError
+import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
@@ -11,6 +12,8 @@ class AnimeApiClient @Inject constructor(
     private val animeService: AnimeService,
     private val apolloClient: ApolloClient
 ) {
+
+
     suspend fun fetchRecentSubOrDub(
         header: Map<String, String>,
         page: Int,

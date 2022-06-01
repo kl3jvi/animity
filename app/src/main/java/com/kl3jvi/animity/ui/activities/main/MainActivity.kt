@@ -1,13 +1,10 @@
 package com.kl3jvi.animity.ui.activities.main
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -39,10 +36,10 @@ class MainActivity : AppCompatActivity() {
     var isConnected: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /* A function from the SplashScreen library that is used to show a splash screen. */
         installSplashScreen()
-        /* A workaround for a bug in Hilt. */
-        viewModel.initialise // just to initialise viewmodel
+
+        viewModel.initialise // just to initialise the viewmodel
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
@@ -67,27 +64,16 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    /**
-     * It hides the bottom navigation bar.
-     */
     fun hideBottomNavBar() {
         binding.navView.animate().translationY(binding.navView.height.toFloat()).duration = 500
         binding.navView.hide()
     }
 
-    /**
-     * It shows the bottom navigation bar.
-     */
     fun showBottomNavBar() {
         binding.navView.show()
         binding.navView.animate().translationY(0f).duration = 500
     }
 
-    /**
-     * If the user presses the back button, the app will navigate to the previous fragment
-     *
-     * @return The return value is a boolean.
-     */
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
     }
