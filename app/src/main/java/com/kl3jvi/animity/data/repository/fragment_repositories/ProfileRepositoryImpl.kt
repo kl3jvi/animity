@@ -1,10 +1,9 @@
 package com.kl3jvi.animity.data.repository.fragment_repositories
 
-import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
 import com.kl3jvi.animity.data.mapper.convert
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.ProfileRepository
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logError
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
-    private val apiClient: AnimeApiClient
+    private val apiClient: GogoAnimeApiClient
 ) : ProfileRepository {
     override fun getProfileData(userId: Int?): Flow<NetworkResource<ProfileData>> {
         return try {

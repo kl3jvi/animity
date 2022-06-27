@@ -17,8 +17,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class MainViewModel
-@Inject constructor(
+class MainViewModel @Inject constructor(
     private val userSession: GetUserSessionUseCase,
     private val getGogoKeys: GetGogoKeysUseCase,
     private val userRepository: UserRepository,
@@ -30,6 +29,7 @@ class MainViewModel
         updateEncryptionKeys()
     }
 
+    /* Used to notify the activity that the view model is ready to be used. */
     val initialise = MutableLiveData<Unit>()
 
     /**

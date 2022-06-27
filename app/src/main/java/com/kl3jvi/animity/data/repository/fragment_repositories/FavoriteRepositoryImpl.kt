@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.network_repositories.NetworkBoundRepository
 
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class FavoriteRepositoryImpl @Inject constructor(
-    private val apiClient: AnimeApiClient,
+    private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : FavoriteRepository {
     override fun getGogoUrlFromAniListId(id: Int): Flow<NetworkResource<DetailedAnimeInfo>> {

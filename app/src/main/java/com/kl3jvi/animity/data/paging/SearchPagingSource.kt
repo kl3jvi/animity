@@ -4,9 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -15,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 
 class SearchAniListPagingSource(
-    private val apiClient: AnimeApiClient,
+    private val apiClient: GogoAnimeApiClient,
     private val query: String,
 ) : PagingSource<Int, AniListMedia>() {
 

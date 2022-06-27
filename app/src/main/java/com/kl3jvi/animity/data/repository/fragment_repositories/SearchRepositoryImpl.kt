@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.data.paging.SearchAniListPagingSource
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.SearchRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class SearchRepositoryImpl @Inject constructor(
-    private val apiClient: AnimeApiClient,
+    private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : SearchRepository {
 

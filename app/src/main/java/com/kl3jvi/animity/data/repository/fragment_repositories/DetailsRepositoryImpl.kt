@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class DetailsRepositoryImpl @Inject constructor(
-    private val apiClient: AnimeApiClient,
+    private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : DetailsRepository {
 

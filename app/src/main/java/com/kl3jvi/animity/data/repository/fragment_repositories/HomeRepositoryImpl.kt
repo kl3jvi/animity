@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
 import com.kl3jvi.animity.data.model.ui_models.HomeData
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logError
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class HomeRepositoryImpl @Inject constructor(
-    private val apiClient: AnimeApiClient,
+    private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : HomeRepository {
 
@@ -43,9 +43,9 @@ class HomeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getKeys(): GogoAnimeKeys {
+    override suspend fun getEncryptionKeys(): GogoAnimeKeys {
         return try {
-            apiClient.getKeys()
+            apiClient.getEncryptionKeys()
         } catch (e: Exception) {
             e.printStackTrace()
             GogoAnimeKeys()

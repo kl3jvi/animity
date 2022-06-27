@@ -7,50 +7,61 @@ import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
-class AnimeApiClient @Inject constructor(
-    private val animeService: AnimeService,
+class GogoAnimeApiClient @Inject constructor(
+    private val gogoAnimeService: GogoAnimeService,
     private val apolloClient: ApolloClient
 ) {
-
+    /**
+     * It fetches the anime info from the given episode url
+     *
+     * @param header Map<String, String>
+     * @param episodeUrl The url of the episode you want to fetch the info from.
+     */
     suspend fun fetchAnimeInfo(
         header: Map<String, String>,
         episodeUrl: String
-    ) = animeService.fetchAnimeInfo(header, episodeUrl)
+    ) = gogoAnimeService.fetchAnimeInfo(header, episodeUrl)
 
     suspend fun fetchEpisodeList(
         header: Map<String, String>,
         id: String,
         endEpisode: String,
         alias: String
-    ) = animeService.fetchEpisodeList(
+    ) = gogoAnimeService.fetchEpisodeList(
         header = header,
         id = id,
         endEpisode = endEpisode,
         alias = alias
     )
 
+    /**
+     * It fetches the media url of an episode
+     *
+     * @param header Map<String, String>
+     * @param url The url of the episode you want to fetch the media url from.
+     */
     suspend fun fetchEpisodeMediaUrl(
         header: Map<String, String>,
-        url: String
-    ) = animeService.fetchEpisodeMediaUrl(header, url)
+        episodeUrl: String
+    ) = gogoAnimeService.fetchEpisodeMediaUrl(header, episodeUrl)
 
     suspend fun fetchM3u8Url(
         header: Map<String, String>,
         url: String
-    ) = animeService.fetchM3u8Url(header, url)
+    ) = gogoAnimeService.fetchM3u8Url(header, url)
 
-    suspend fun getKeys() = animeService.getKeys()
+    suspend fun getEncryptionKeys() = gogoAnimeService.getKeys()
 
     suspend fun fetchM3u8PreProcessor(
         header: Map<String, String>,
         url: String
-    ) = animeService.fetchM3u8PreProcessor(header, url)
+    ) = gogoAnimeService.fetchM3u8PreProcessor(header, url)
 
     suspend fun getGogoUrlFromAniListId(id: Int) =
-        animeService.getGogoUrlFromAniListId(id)
+        gogoAnimeService.getGogoUrlFromAniListId(id)
 
     suspend fun getEpisodeTitles(id: Int) =
-        animeService.getEpisodeTitles(id)
+        gogoAnimeService.getEpisodeTitles(id)
 
     fun getHomeData() = apolloClient.query(
         HomeDataQuery()

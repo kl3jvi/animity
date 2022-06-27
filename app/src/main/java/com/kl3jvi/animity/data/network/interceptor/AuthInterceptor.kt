@@ -1,19 +1,14 @@
 package com.kl3jvi.animity.data.network.interceptor
 
-import android.content.Context
 import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.NetworkResource
-import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
-import okhttp3.Request
 import okhttp3.Response
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
@@ -82,8 +77,6 @@ class HeaderInterceptor @Inject constructor(
             }
         } else response
     }
-
-
 
 
 }

@@ -10,10 +10,11 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListService
-import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
-import com.kl3jvi.animity.data.network.anime_service.AnimeService
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
+import com.kl3jvi.animity.data.network.anime_service.NineAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.NineAnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
-import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl.Companion.SELECTED_PROVIDER
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.parsers.Providers
@@ -114,26 +115,34 @@ object NetworkModule {
      */
     @Singleton
     @Provides
-    fun provideAnimeService(retrofit: Retrofit): AnimeService {
-        return retrofit.create(AnimeService::class.java)
+    fun provideGogoAnimeService(retrofit: Retrofit): GogoAnimeService {
+        return retrofit.create(GogoAnimeService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAnimeApiClient(
-        animeService: AnimeService,
+    fun provideGogoAnimeApiClient(
+        gogoAnimeService: GogoAnimeService,
         apolloClient: ApolloClient
-    ): AnimeApiClient {
-        return AnimeApiClient(animeService, apolloClient)
+    ): GogoAnimeApiClient {
+        return GogoAnimeApiClient(gogoAnimeService, apolloClient)
     }
 
+    @Singleton
+    @Provides
+    fun provideNineAnimeService(retrofit: Retrofit): NineAnimeService {
+        return retrofit.create(NineAnimeService::class.java)
+    }
 
-    /**
-     * Create an AniListService object using the Retrofit object.
-     *
-     * @param retrofit Retrofit - The Retrofit object that will be used to create the service.
-     * @return AniListService
-     */
+    @Provides
+    @Singleton
+    fun provideNineAnimeApiClient(
+        nineAnimeService: NineAnimeService,
+        apolloClient: ApolloClient
+    ): NineAnimeApiClient {
+        return NineAnimeApiClient(nineAnimeService, apolloClient)
+    }
+
     @Singleton
     @Provides
     fun provideAniListService(retrofit: Retrofit): AniListService {
@@ -145,7 +154,6 @@ object NetworkModule {
     fun provideAniListClient(aniListService: AniListService): AniListClient {
         return AniListClient(aniListService)
     }
-
 
     @Provides
     @Singleton
@@ -168,7 +176,7 @@ private fun Retrofit.Builder.selectedUrl(selectedProvider: Providers) = apply {
     }
 }
 
-private fun OkHttpClient.Builder.addChuckerOnDebug(
+internal fun OkHttpClient.Builder.addChuckerOnDebug(
     chuckerInterceptor: ChuckerInterceptor
 ) = apply {
     if (BuildConfig.DEBUG) {

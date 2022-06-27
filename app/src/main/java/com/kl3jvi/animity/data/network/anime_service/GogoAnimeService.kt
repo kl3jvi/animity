@@ -15,7 +15,7 @@ import retrofit2.http.*
  * Used to connect to the GogoAnime page to fetch animes
  */
 
-interface AnimeService {
+interface GogoAnimeService {
 
     @GET
     suspend fun fetchEpisodeMediaUrl(
