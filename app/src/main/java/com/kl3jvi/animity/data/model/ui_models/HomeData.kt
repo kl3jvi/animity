@@ -11,7 +11,7 @@ import kotlinx.parcelize.RawValue
 
 data class HomeData(
     val trendingAnime: List<AniListMedia> = listOf(),
-    val newAnime: List<AniListMedia> = listOf(),
+    val popularAnime: List<AniListMedia> = listOf(),
     val movies: List<AniListMedia> = listOf(),
     val review: List<Review> = listOf()
 )

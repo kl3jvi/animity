@@ -60,29 +60,31 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>> {
         return try {
-            apolloClient.query(SessionQuery()).toFlow().catch { e-> logError(e) }
+            apolloClient.query(SessionQuery()).toFlow().catch { e -> logError(e) }
         } catch (e: Exception) {
             logError(e)
-            emptyFlow<ApolloResponse<SessionQuery.Data>>()
+            emptyFlow()
         }
 
     }
 
     override fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>> {
         return try {
-            apolloClient.query(UserQuery(Optional.Present(id))).toFlow().catch { e-> logError(e) }
+            apolloClient.query(UserQuery(Optional.Present(id))).toFlow().catch { e -> logError(e) }
         } catch (e: Exception) {
             logError(e)
-            emptyFlow<ApolloResponse<UserQuery.Data>>()
+            emptyFlow()
         }
     }
 
     override fun getAnimeListData(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>> {
         return try {
-            apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow().catch { e-> logError(e) }
+
+            apolloClient.query(AnimeListCollectionQuery(Optional.Present(userId))).toFlow()
+                .catch { e -> logError(e) }
         } catch (e: Exception) {
             logError(e)
-            emptyFlow<ApolloResponse<AnimeListCollectionQuery.Data>>()
+            emptyFlow()
         }
     }
 
@@ -96,19 +98,19 @@ class UserRepositoryImpl @Inject constructor(
                     Optional.Present(userId),
                     Optional.Present(page)
                 )
-            ).toFlow().catch { e-> logError(e) }
+            ).toFlow().catch { e -> logError(e) }
         } catch (e: Exception) {
             logError(e)
-            emptyFlow<ApolloResponse<FavoritesAnimeQuery.Data>>()
+            emptyFlow()
         }
     }
 
     override fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>> {
         return try {
-            apolloClient.query(TrendingMediaQuery()).toFlow().catch { e-> logError(e) }
+            apolloClient.query(TrendingMediaQuery()).toFlow().catch { e -> logError(e) }
         } catch (e: Exception) {
             logError(e)
-            emptyFlow<ApolloResponse<TrendingMediaQuery.Data>>()
+            emptyFlow()
         }
     }
 
@@ -119,11 +121,11 @@ class UserRepositoryImpl @Inject constructor(
                     ToggleFavouriteMutation(
                         Optional.Present(animeId)
                     )
-                ).toFlow().catch { e-> logError(e) }
+                ).toFlow().catch { e -> logError(e) }
             }
         } catch (e: Exception) {
             logError(e)
-            emptyFlow<ApolloResponse<ToggleFavouriteMutation.Data>>()
+            emptyFlow()
         }
     }
 

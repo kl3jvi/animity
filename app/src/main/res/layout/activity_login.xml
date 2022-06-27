@@ -103,16 +103,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:elevation="@dimen/dp_10"
                 android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/privacy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="invisible" />
 
             <TextView
                 android:id="@+id/privacy"

@@ -32,4 +32,5 @@
     <dimen name="text_20">20sp</dimen>
     <dimen name="dimen_4">4sp</dimen>
     <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
 </resources>

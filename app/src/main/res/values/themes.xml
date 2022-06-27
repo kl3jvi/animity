@@ -25,17 +25,19 @@
 
     </style>
 
+
+
     <style name="Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="android:textColorHint">@color/textColor</item>
-        <item name="startIconTint">@color/textColor</item>
-        <item name="boxStrokeColor">@color/textColor</item>
+        <item name="android:textColorHint">@color/background_color</item>
+        <item name="startIconTint">@color/background_color</item>
+        <item name="boxStrokeColor">@color/background_color</item>
         <item name="boxStrokeWidth">1dp</item>
-        <item name="endIconTint">@color/textColor</item>
+        <item name="endIconTint">@color/background_color</item>
     </style>
 
     <style name="BottomSheet_Button" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/textColor</item>
-        <item name="boxStrokeColor">@color/textColor</item>
+        <item name="android:textColor">@color/background_color</item>
+        <item name="boxStrokeColor">@color/background_color</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
@@ -120,7 +122,7 @@
         <item name="android:drawablePadding">@dimen/dimen_4</item>
         <item name="drawableTint">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">19sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/textColor</item>
     </style>

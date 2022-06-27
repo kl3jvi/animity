@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
@@ -11,6 +13,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.createFragmentMenu
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +30,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -52,25 +55,25 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         }
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        createFragmentMenu(menuLayout = R.menu.profile_menu) {
+            when (it.itemId) {
+                R.id.action_log_out -> {
+                    viewModel.clearStorage()
+                    requireActivity().launchActivity<LoginActivity> { }
+                    requireActivity().finish()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     override fun getViewBinding(): FragmentProfileBinding =
         FragmentProfileBinding.inflate(layoutInflater)
 
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.profile_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_log_out -> {
-                viewModel.clearStorage()
-                requireActivity().launchActivity<LoginActivity> { }
-                requireActivity().finish()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onResume() {
         super.onResume()
@@ -94,3 +97,4 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
 
 
 }
+

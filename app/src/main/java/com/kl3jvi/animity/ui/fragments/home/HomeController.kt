@@ -16,8 +16,8 @@ import com.kl3jvi.animity.vertical
 fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAnalytics) {
     val (trendingAnime, newAnime, movies, reviews) = homeData
     listOf(
-        newAnime,
         trendingAnime,
+        newAnime,
         movies
     ).forEachIndexed { index, list ->
         title {
@@ -49,8 +49,8 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAna
 
 
 enum class Title(val title: String) {
-    TRENDING_ANIME(title = "Trending Anime"),
-    NEW_ANIME(title = "New Anime"),
+    TRENDING_ANIME(title = "Trending"),
+    NEW_ANIME(title = "Popular"),
     MOVIES(title = "Movies"),
     REVIEWS(title = "Reviews")
 }
@@ -69,7 +69,10 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): Lis
                     "genre",
                     media.genres.firstOrNull()?.name ?: "empty"
                 )
-                firebaseAnalytics.logEvent(media.title.userPreferred.replace("\\s".toRegex(), ""), params)
+                firebaseAnalytics.logEvent(
+                    media.title.userPreferred.replace("\\s".toRegex(), ""),
+                    params
+                )
             }
             .animeInfo(media)
     }

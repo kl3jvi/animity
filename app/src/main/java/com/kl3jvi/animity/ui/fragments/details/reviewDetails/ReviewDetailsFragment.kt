@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.kl3jvi.animity.databinding.ReviewDetailsFragmentBinding
@@ -11,19 +12,26 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.setMarkdownText
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+
 
 @AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetailsFragmentBinding>() {
-
     private val args: ReviewDetailsFragmentArgs by navArgs()
     private val reviewInfo get() = args.reviewDetails
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.actionBar?.hide()
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = binding.root
+
 
     override fun observeViewModel() {}
 
@@ -40,11 +48,23 @@ class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetails
     override val viewModel: ReviewDetailsViewModel
         get() = ReviewDetailsViewModel()
 
+
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.hideBottomNavBar()
+            val activity = activity as MainActivity?
+            activity?.let {
+                it.hideBottomNavBar()
+                it.supportActionBar!!.hide()
+            }
         }
     }
+
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+    }
+
 
 }

@@ -23,7 +23,8 @@ class Constants {
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
-        const val BASE_URL = "https://gogoanime.gg"
+        const val GOGO_BASE_URL = "https://gogoanime.gg"
+        const val NINEANIME_BASE_URL = "https://gogoanime.gg"
         const val ANILIST_API_URL = "https://graphql.anilist.co"
 
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"

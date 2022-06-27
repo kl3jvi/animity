@@ -1,12 +1,11 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
@@ -14,7 +13,6 @@ import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 
 
 @ExperimentalCoroutinesApi
@@ -30,14 +28,37 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         return binding.root
     }
 
+
     private fun fetchHomeData() {
         collectFlow(viewModel.homeData) { result ->
             binding.mainRv.withModels {
-                binding.loadingIndicator.isVisible = result.newAnime.isEmpty()
+                binding.loadingIndicator.isVisible = result.popularAnime.isEmpty()
                 buildHome(result, firebaseAnalytics)
             }
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.settings_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -67,11 +88,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     override fun observeViewModel() {}
 
-
     override fun initViews() {
-        lifecycleScope.launch {
-
-        }
+//        binding.setOnClickListener {
+//            MediaListDialogFragment().show(parentFragmentManager, "dialog")
+//        }
     }
 
     override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)

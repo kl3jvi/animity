@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.home.HomeFragment">
 
-    <include android:id="@+id/noInternetStatus" layout="@layout/item_no_internet"/>
+    <include
+        android:id="@+id/noInternetStatus"
+        layout="@layout/item_no_internet"
+        tools:visibility="gone" />
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/mainRv"
@@ -15,7 +18,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@tools:sample/avatars" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"

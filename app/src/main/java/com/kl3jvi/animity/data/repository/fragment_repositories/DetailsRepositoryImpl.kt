@@ -2,7 +2,6 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
 import com.kl3jvi.animity.data.network.anime_service.AnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
@@ -47,18 +46,10 @@ class DetailsRepositoryImpl @Inject constructor(
         )
     }
 
-
     override suspend fun getEpisodeTitles(id: Int): EpisodeWithTitle = withContext(ioDispatcher) {
         apiClient.getEpisodeTitles(
             id
         )
     }
 
-
-    override suspend fun fetchEpisodeTimeRelease(episodeUrl: String): EpisodeReleaseModel =
-        withContext(ioDispatcher) {
-            parser.fetchEpisodeReleaseTime(
-                apiClient.fetchEpisodeTimeRelease(episodeUrl = episodeUrl).string()
-            )
-        }
 }

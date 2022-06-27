@@ -8,7 +8,6 @@ import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStor
 import com.kl3jvi.animity.domain.use_cases.GetGogoKeysUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
 import com.kl3jvi.animity.utils.NetworkResource
-import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

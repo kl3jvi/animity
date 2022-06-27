@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mediaListContainer"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.Animity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
+            android:visibility="invisible"
             tools:visibility="invisible" />
 
         <LinearLayout
@@ -25,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
             android:orientation="vertical"
-            android:visibility="invisible"
+            android:visibility="visible"
             tools:visibility="visible">
 
             <LinearLayout
@@ -42,6 +44,7 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="@string/list_editor"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -69,7 +72,7 @@
                     android:padding="8dp"
                     android:text="@string/watch"
                     android:textAllCaps="true"
-                    android:textColor="@color/textColor"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:ignore="LabelFor,TextContrastCheck,DuplicateSpeakableTextCheck" />

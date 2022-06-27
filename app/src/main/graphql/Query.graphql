@@ -362,19 +362,19 @@ mutation ToggleFavouriteMutation($animeId: Int) {
 }
 
 query HomeDataQuery {
-    trendingAnime: Page(page: 1, perPage: 15) {
+    trendingAnime: Page(page: 1, perPage: 30) {
         media(type: ANIME, status:RELEASING sort: [TRENDING_DESC], isAdult: false) {
             ...HomeMedia
         }
     }
 
-    newAnime: Page(page: 1, perPage:15) {
-        media(type: ANIME,status_in:[FINISHED]  sort: [ID_DESC], isAdult: false) {
+    popularAnime: Page(page: 1, perPage:30) {
+        media(type: ANIME,status_in:[FINISHED]  sort: [POPULARITY_DESC], isAdult: false) {
             ...HomeMedia
         }
     }
 
-    movies: Page(page: 1, perPage:15) {
+    movies: Page(page: 1, perPage:30) {
         media(type: ANIME, format: MOVIE  status_in:[FINISHED] sort: [POPULARITY_DESC], isAdult: false) {
             ...HomeMedia
         }
@@ -382,7 +382,7 @@ query HomeDataQuery {
 
 
     review: Page(page: 1, perPage: 15) {
-        reviews(sort: [ID_DESC])    {
+        reviews(sort: [RATING_DESC])    {
             id
             userId
             mediaId

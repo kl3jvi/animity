@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.data.repository.persistence_repository
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.parsers.Providers
 import javax.inject.Inject
 
 
@@ -14,6 +16,7 @@ class LocalStorageImpl @Inject constructor(
         private const val REFRESH_TOKEN = "refreshToken"
         private const val GUEST_TOKEN = "guestToken"
         private const val ANILIST_USER_ID = "anilistUserId"
+        const val SELECTED_PROVIDER = "selectedProvider"
 
         private const val ORIGIN = "https://gogoanime.gg/"
         private const val REFERER = "https://goload.pro/"
@@ -44,6 +47,13 @@ class LocalStorageImpl @Inject constructor(
             setData(ANILIST_USER_ID, value)
         }
 
+    override var selectedProvider: Providers?
+        get() = getData(SELECTED_PROVIDER)?.fromJson<Providers>()
+        set(value) {
+            setData(SELECTED_PROVIDER, value.toJson())
+        }
+
+
     override var iv: String?
         get() = getData(ORIGIN)
         set(value) {
@@ -73,4 +83,15 @@ class LocalStorageImpl @Inject constructor(
     override fun clearStorage() {
         sharedPreferences.edit().clear().apply()
     }
+
+
 }
+
+inline fun <reified T> String?.fromJson(): T {
+    return Gson().fromJson(this.orEmpty(), T::class.java);
+}
+
+inline fun <reified T> T?.toJson(): String? {
+    return Gson().toJson(this)
+}
+

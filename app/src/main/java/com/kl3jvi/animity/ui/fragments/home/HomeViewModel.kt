@@ -8,6 +8,7 @@ import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +17,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAnimesUseCase: GetAnimesUseCase,
-    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private var _homeData = MutableStateFlow(HomeData())
@@ -30,11 +30,10 @@ class HomeViewModel @Inject constructor(
      * It fetches data from the server and updates the UI.
      */
     private fun getHomePageData() {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch(Dispatchers.IO) {
             getAnimesUseCase().collect {
                 when (it) {
                     is NetworkResource.Failed -> {
-                        /* A function that logs the message to the console. */
                         logMessage(it.message)
                     }
                     is NetworkResource.Success -> {

@@ -11,7 +11,7 @@ fun HomeDataQuery.Data.convert(): HomeData {
         trendingAnime?.media?.mapNotNull {
             it?.homeMedia?.convert()
         } ?: listOf()
-    val newAnime = newAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+    val popularAnime = popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
     val movies =
         movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
     val review = review?.reviews?.mapNotNull {
@@ -46,7 +46,7 @@ fun HomeDataQuery.Data.convert(): HomeData {
 
     return HomeData(
         trendingAnime = trendingAnime,
-        newAnime = newAnime,
+        popularAnime = popularAnime,
         movies = movies,
         review = review
     )

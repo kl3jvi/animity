@@ -59,12 +59,12 @@
         <entry key="app/src/main/res/drawable/video_player_ripple_effect.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/video_ripple.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout-v23/item_card_anime.xml" value="0.16458333333333333" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.24270833333333333" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10740740740740741" />
         <entry key="app/src/main/res/layout/activity_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/bottom_sheet_media_list.xml" value="0.375" />
         <entry key="app/src/main/res/layout/bottom_sheet_search.xml" value="0.24427083333333333" />
-        <entry key="app/src/main/res/layout/content_review_details.xml" value="0.1398148148148148" />
+        <entry key="app/src/main/res/layout/content_review_details.xml" value="0.37479935794542535" />
         <entry key="app/src/main/res/layout/content_scrolling.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/layout/episode_item_large.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/error_screen_video_player.xml" value="0.3140625" />
@@ -103,7 +103,7 @@
         <entry key="app/src/main/res/layout/item_today_selection.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/item_vertical.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_no_internet.xml" value="0.24270833333333333" />
-        <entry key="app/src/main/res/layout/review_details_fragment.xml" value="0.1398148148148148" />
+        <entry key="app/src/main/res/layout/review_details_fragment.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/search_layout.xml" value="0.27019498607242337" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/test_fragment.xml" value="0.24270833333333333" />

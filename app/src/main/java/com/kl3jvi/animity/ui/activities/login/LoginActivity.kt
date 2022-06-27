@@ -17,7 +17,6 @@ import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BindingActivity
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
-import com.kl3jvi.animity.utils.Constants.Companion.GUEST_LOGIN_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -53,23 +52,15 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
      * @return Boolean
      */
     override fun checkIfUserLoggedIn(): Boolean {
-        val isLoggedInWithAuth: Boolean
-        val isGuestLoggedIn: Boolean
-        val authToken = viewModel.getToken()
-        val guestToken = viewModel.getGuestToken()
-        isLoggedInWithAuth = !authToken.isNullOrEmpty()
-        isGuestLoggedIn = !guestToken.isNullOrEmpty()
+        val isLoggedInWithAuth = viewModel.getToken().run {
+            !this.isNullOrEmpty()
+        }
         if (isLoggedInWithAuth) {
             binding.progressBar.show()
             launchActivity<MainActivity> {}
             finish()
-        } else if (isGuestLoggedIn) {
-            launchActivity<MainActivity> {
-                putExtra("loginType", GUEST_LOGIN_TYPE)
-            }
-            finish()
         }
-        return isLoggedInWithAuth || isGuestLoggedIn
+        return isLoggedInWithAuth
     }
 
 

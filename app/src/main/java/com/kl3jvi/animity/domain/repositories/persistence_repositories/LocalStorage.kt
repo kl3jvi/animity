@@ -1,5 +1,7 @@
 package com.kl3jvi.animity.domain.repositories.persistence_repositories
 
+import com.kl3jvi.animity.parsers.Providers
+
 
 /* It's an interface that defines the properties that are used to store data in the local storage */
 interface LocalStorage {
@@ -13,6 +15,9 @@ interface LocalStorage {
     var iv: String?
     var key: String?
     var secondKey: String?
+
+
+    var selectedProvider: Providers?
 
     /**
      * Clears the storage and logs out

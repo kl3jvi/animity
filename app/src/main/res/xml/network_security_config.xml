@@ -2,7 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">gogoanime.gg</domain>
-        <domain includeSubdomains="true">gogoanime.sk</domain>
+        <domain includeSubdomains="true">gogoanime.lu</domain>
         <domain includeSubdomains="true">ajax.gogocdn.net</domain>
         <domain includeSubdomains="true">goload.pro</domain>
         <domain includeSubdomains="true">api.myanimelist.net</domain>

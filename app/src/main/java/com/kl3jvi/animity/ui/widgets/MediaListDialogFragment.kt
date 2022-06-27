@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.ui.widgets
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import com.kl3jvi.animity.databinding.BottomSheetMediaListBinding
 
 class MediaListDialogFragment : BottomSheetDialogFragment() {
 
-
     private lateinit var binding: BottomSheetMediaListBinding
 
     override fun onCreateView(
@@ -21,10 +19,5 @@ class MediaListDialogFragment : BottomSheetDialogFragment() {
     ): View {
         binding = BottomSheetMediaListBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 }

@@ -277,14 +277,12 @@ class PlayerActivity : AppCompatActivity() {
             TrackSelectionDialogBuilder(
                 this,
                 getString(R.string.video_quality),
-                trackSelector!!,
+                player!!,
                 0
             ).setTheme(R.style.MaterialThemeDialog)
                 .setTrackNameProvider { f: Format ->
                     "${f.height}p"
-                }
-                .build()
-                .show()
+                }.build().show()
         } catch (ignored: NullPointerException) {
             ignored.printStackTrace()
         }

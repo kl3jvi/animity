@@ -11,6 +11,8 @@ plugins {
     id "com.apollographql.apollo3" version("3.0.0")
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 }
+
+
 android {
     signingConfigs {
         release {
@@ -25,8 +27,8 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 32
-        versionCode 11
-        versionName "1.1.0"
+        versionCode 12
+        versionName "1.1.1"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -91,44 +93,44 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def coordinatorLayoutVersion = "1.2.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
-    def androidCoreVersion = "1.7.0"
+    def androidCoreVersion = "1.8.0"
     implementation "androidx.core:core-ktx:$androidCoreVersion"
 
     def swipeVersion = "1.1.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeVersion"
 
 
-    def appCompatVersion = "1.4.1"
-    def materialVersion = "1.5.0"
+    def appCompatVersion = "1.4.2"
+    def materialVersion = "1.6.1"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
 
-    def constraintLayoutVersion = "2.1.3"
+    def constraintLayoutVersion = "2.1.4"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     def livedataVersion = "2.4.1"
-    def viewModelVersion = "2.5.0-alpha05"
+    def viewModelVersion = "2.5.0-rc02"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.5.0-alpha03"
+    def navigationComponentVersion = "2.5.0-rc02"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
 
     // Coroutines
-    def coroutinesVersion = "1.6.1"
+    def coroutinesVersion = "1.6.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.5.0-alpha05"
+    def lifecycle_version = "2.5.0-rc02"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    def analyticsVersion = "20.1.2"
+    def analyticsVersion = "21.0.0"
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
 
-    def crashlyticsVersion = "18.2.9"
+    def crashlyticsVersion = "18.2.11"
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
 
     // Hilt DI
@@ -140,7 +142,7 @@ dependencies {
     // Retrofit
     def retrofitVersion = "2.9.0"
     def interceptor_version = "5.0.0-alpha.4"
-    def dnsOverHttp = "5.0.0-alpha.4"
+    def dnsOverHttp = "5.0.0-alpha.6"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
@@ -156,7 +158,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     //Video Player
-    def exoplayerVersion = "2.17.1"
+    def exoplayerVersion = "2.18.0"
     implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-cast:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-okhttp:$exoplayerVersion"
@@ -168,11 +170,11 @@ dependencies {
     implementation "com.ms-square:expandableTextView:$expandableTextViewVersion"
 
     //animation lib
-    def lottieVersion = "4.2.2"
+    def lottieVersion = "5.1.1"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // image library
-    def glideVersion = "4.13.1"
+    def glideVersion = "4.13.2"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
     implementation("com.github.bumptech.glide:okhttp3-integration:$glideVersion") {
@@ -180,7 +182,7 @@ dependencies {
     }
 
     //splash screen
-    def splashVersion = "1.0.0-beta02"
+    def splashVersion = "1.0.0-rc01"
     implementation "androidx.core:core-splashscreen:$splashVersion"
 
     def onesignalVersion = "4.6.2"
@@ -223,6 +225,11 @@ dependencies {
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
     def markwonVersion = "4.6.2"
     implementation "io.noties.markwon:core:${markwonVersion}"
+
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+
+    implementation 'com.google.code.gson:gson:2.9.0'
 
 
 }

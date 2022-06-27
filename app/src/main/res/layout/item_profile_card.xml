@@ -46,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_10">
 
+
                 <io.getstream.avatarview.AvatarView
                     android:id="@+id/avatarView"
                     android:layout_width="110dp"
