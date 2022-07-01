@@ -32,7 +32,6 @@ abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         /* Used to initialize the firebase analytics object. */
         firebaseAnalytics = Firebase.analytics
         /* Initializing the view binding object. */

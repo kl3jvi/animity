@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
-import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,14 +42,12 @@ class FavoritesViewModel @Inject constructor(
                 getFavoriteAnimesUseCase(dataStore.aniListUserId?.toInt(), 1)
                     .flowOn(ioDispatcher)
                     .catch { e -> logError(e) }
+                    .asResult()
                     .collect {
                         when (it) {
-                            is NetworkResource.Failed -> {
-                                logMessage(it.message)
-                            }
-                            is NetworkResource.Success -> {
-                                _favoriteAniListAnimeList.value = it.data
-                            }
+                            is Result.Error -> logMessage(it.exception?.message)
+                            Result.Loading -> TODO()
+                            is Result.Success -> _favoriteAniListAnimeList.value = it.data
                         }
                     }
             }

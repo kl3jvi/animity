@@ -2,7 +2,6 @@ package com.kl3jvi.animity.utils
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -54,7 +53,7 @@ inline fun <T> Fragment.collectLatestFlow(
 }
 
 /* A function that takes a Flow of NetworkResource and returns a Flow of State. */
-fun <T> Flow<NetworkResource<T>>.mapToState(): Flow<State<T>> = map { resource ->
+fun <T> Flow<Result<T>>.mapToState(): Flow<State<T>> = map { resource ->
     State.fromResource(resource)
 }
 

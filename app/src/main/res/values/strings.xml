@@ -105,6 +105,7 @@
     <string name="completed_at">Completed At</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="network_settings">Network Settings</string>
 
 
 </resources>

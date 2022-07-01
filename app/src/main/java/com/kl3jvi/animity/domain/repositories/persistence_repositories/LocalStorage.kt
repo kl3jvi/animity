@@ -11,6 +11,8 @@ interface LocalStorage {
     var guestToken: String?
     var aniListUserId: String?
 
+    var dns: Int?
+
     /* It's a part of the encryption algorithm. */
     var iv: String?
     var key: String?

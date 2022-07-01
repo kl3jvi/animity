@@ -14,7 +14,7 @@ interface AniListService {
         "Accept: application/json"
     )
     @POST(AUTH_URL)
-    suspend fun getAccessToken(@Body aniListAuth: AniListAuth): Response<AuthResponse>
+    suspend fun getAccessToken(@Body aniListAuth: AniListAuth): AuthResponse
 
 
     @Headers()

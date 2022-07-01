@@ -5,11 +5,13 @@ import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
 import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
-import com.kl3jvi.animity.utils.NetworkResource
 import com.kl3jvi.animity.utils.logError
-import com.kl3jvi.animity.utils.parser.HtmlParser
+import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,38 +19,28 @@ import javax.inject.Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class HomeRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    override val parser: Parser
 ) : HomeRepository {
 
-    @Inject
-    override lateinit var parser: HtmlParser
-
-    override fun getHomeData(): Flow<NetworkResource<HomeData>> {
-        return try {
-            apiClient.getHomeData().catch { e -> logError(e) }
-                .mapNotNull {
-                    var data = HomeData()
-                    if (!it.hasErrors() && it.data != null) {
-                        data = it.data?.convert() ?: HomeData()
-                    }
-                    NetworkResource.Success(data)
-                }.flowOn(ioDispatcher)
-        } catch (e: Exception) {
-            logError(e)
-            flowOf<NetworkResource.Failed<HomeData>>(
-                NetworkResource.Failed(
-                    e.localizedMessage ?: "Error Occurred!"
-                )
-            ).flowOn(ioDispatcher)
-        }
+    override fun getHomeData(): Flow<HomeData> {
+        return apiClient.getHomeData().catch { e -> logError(e) }
+            .mapNotNull {
+                var data = HomeData()
+                if (!it.hasErrors() && it.data != null) {
+                    data = it.data?.convert() ?: HomeData()
+                }
+                data
+            }
     }
 
-    override suspend fun getEncryptionKeys(): GogoAnimeKeys {
-        return try {
-            apiClient.getEncryptionKeys()
+
+    override suspend fun getEncryptionKeys() = flow {
+        try {
+            emit(apiClient.getEncryptionKeys())
         } catch (e: Exception) {
             e.printStackTrace()
-            GogoAnimeKeys()
+            emit(GogoAnimeKeys())
         }
     }
 

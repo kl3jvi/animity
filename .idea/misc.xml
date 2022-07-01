@@ -126,6 +126,7 @@
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Documents" />
     <option name="OPTION_SCOPE" value="public" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
     <option name="HEAP_SIZE" value="2048" />
     <option name="LOCALE" value="en" />
   </component>

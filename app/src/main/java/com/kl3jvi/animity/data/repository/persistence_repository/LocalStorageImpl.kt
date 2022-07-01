@@ -17,6 +17,7 @@ class LocalStorageImpl @Inject constructor(
         private const val GUEST_TOKEN = "guestToken"
         private const val ANILIST_USER_ID = "anilistUserId"
         const val SELECTED_PROVIDER = "selectedProvider"
+        const val SELECTED_DNS = "dns"
 
         private const val ORIGIN = "https://gogoanime.gg/"
         private const val REFERER = "https://goload.pro/"
@@ -45,6 +46,12 @@ class LocalStorageImpl @Inject constructor(
         get() = getData(ANILIST_USER_ID)
         set(value) {
             setData(ANILIST_USER_ID, value)
+        }
+
+    override var dns: Int?
+        get() = getData(SELECTED_DNS)?.toInt()
+        set(value) {
+            setData(SELECTED_DNS, value.toString())
         }
 
     override var selectedProvider: Providers?

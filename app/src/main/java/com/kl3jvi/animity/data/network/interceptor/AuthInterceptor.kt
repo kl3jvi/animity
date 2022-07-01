@@ -4,7 +4,8 @@ import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
@@ -53,10 +54,11 @@ class HeaderInterceptor @Inject constructor(
                     clientSecret = anilistsecret,
                     redirectUri = redirecturi,
                     code = localStorage.refreshToken.orEmpty()
-                ).collectLatest {
+                ).asResult().collectLatest {
                     when (it) {
-                        is NetworkResource.Failed -> logMessage(it.message)
-                        is NetworkResource.Success -> {
+                        is Result.Error -> logMessage(it.exception?.message)
+                        Result.Loading -> {}
+                        is Result.Success -> {
                             accessToken = it.data.accessToken.toString()
                             /* Decrementing the count of the latch, releasing all waiting threads if
                             the count reaches zero. */

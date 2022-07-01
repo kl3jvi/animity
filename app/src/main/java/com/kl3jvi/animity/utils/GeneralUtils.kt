@@ -5,7 +5,6 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.kl3jvi.animity.R
 import io.noties.markwon.Markwon
 
 
@@ -22,12 +21,12 @@ fun View.show() {
  *
  * @param throwable The exception that was thrown.
  */
-fun logError(throwable: Throwable) {
+fun logError(throwable: Throwable?) {
     Log.e("ApiError", "-------------------------------------------------------------------")
-    Log.e("ApiError", "safeApiCall: " + throwable.localizedMessage)
-    Log.e("ApiError", "safeApiCall: " + throwable.message)
+    Log.e("ApiError", "safeApiCall: " + throwable?.localizedMessage)
+    Log.e("ApiError", "safeApiCall: " + throwable?.message)
     Log.e("ApiError", "safeApiCall: $throwable")
-    throwable.printStackTrace()
+    throwable?.printStackTrace()
     Log.e("ApiError", "-------------------------------------------------------------------")
 }
 

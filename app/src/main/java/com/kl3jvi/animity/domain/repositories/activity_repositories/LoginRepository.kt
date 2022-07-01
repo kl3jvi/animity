@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.domain.repositories.activity_repositories
 
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
-import com.kl3jvi.animity.utils.NetworkResource
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
@@ -11,5 +10,5 @@ interface LoginRepository {
         clientSecret: String,
         redirectUri: String,
         code: String
-    ): Flow<NetworkResource<AuthResponse>>
+    ): Flow<AuthResponse>
 }

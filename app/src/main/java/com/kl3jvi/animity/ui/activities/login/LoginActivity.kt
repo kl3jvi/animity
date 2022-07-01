@@ -21,7 +21,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.State
+import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.show
@@ -98,8 +98,10 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
                             authorizationToken = authorizationToken
                         )
                     ) { state ->
-                        if (state is State.Success) {
-                            onTokenResponse(state.data)
+                        when (state) {
+                            is Result.Error -> showSnack(binding.root, "Error Logging In")
+                            Result.Loading -> binding.progressBar.show() // TODO Check this if this raises na issue.
+                            is Result.Success -> onTokenResponse(state.data)
                         }
                     }
                 }

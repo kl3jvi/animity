@@ -8,7 +8,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_TITLES
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_KEYS_URL
 import com.kl3jvi.animity.utils.Constants.Companion.MAL_SYNC_URL
 import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.http.*
 
 /**w
@@ -57,7 +56,7 @@ interface GogoAnimeService {
     @GET("$MAL_SYNC_URL/{id}.json")
     suspend fun getGogoUrlFromAniListId(
         @Path("id") id: Int = 1
-    ): Response<DetailedAnimeInfo>
+    ): DetailedAnimeInfo
 
     @GET("$EPISODE_TITLES/{id}.json")
     suspend fun getEpisodeTitles(@Path("id") id: Int = 1): EpisodeWithTitle

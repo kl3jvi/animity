@@ -14,15 +14,16 @@ import javax.inject.Singleton
 class PlayerRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
+    override val parser: Parser
 ) : PlayerRepository {
-    @Inject
-    override lateinit var parser: Parser
 
     override suspend fun fetchEpisodeMediaUrl(
         header: Map<String, String>,
         url: String
     ): EpisodeInfo = withContext(ioDispatcher) {
-        parser.parseMediaUrl(apiClient.fetchEpisodeMediaUrl(header = header, url = url).string())
+        parser.parseMediaUrl(
+            apiClient.fetchEpisodeMediaUrl(header = header, episodeUrl = url).string()
+        )
     }
 
     override suspend fun fetchM3u8Url(

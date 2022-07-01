@@ -2,12 +2,10 @@ package com.kl3jvi.animity.di
 
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListService
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
@@ -17,14 +15,12 @@ import com.kl3jvi.animity.data.network.anime_service.NineAnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
-import com.kl3jvi.animity.parsers.Providers
-import com.kl3jvi.animity.parsers.Providers.GOGOANIME
-import com.kl3jvi.animity.parsers.Providers.NINEANIME
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
-import com.kl3jvi.animity.utils.Constants.Companion.NINEANIME_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
+import com.kl3jvi.animity.utils.addChuckerOnDebug
+import com.kl3jvi.animity.utils.addGoogleDns
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,6 +54,7 @@ object NetworkModule {
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
+
             .build()
     }
 
@@ -65,11 +62,22 @@ object NetworkModule {
     @Provides
     @Singleton
     @RetrofitClient
-    fun provideRetrofitOkHttpClient(): OkHttpClient {
+    fun provideRetrofitOkHttpClient(
+        localStorage: LocalStorage
+    ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            })
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BASIC
+                }
+            ).apply {
+                addGoogleDns()
+//                when (localStorage.dns) {
+//                    1 -> addGoogleDns()
+//                    2 -> addCloudFlareDns()
+//                    3 -> addAdGuardDns()
+//                }
+            }
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
@@ -81,7 +89,6 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         @RetrofitClient okHttpClient: OkHttpClient,
-        preferences: SharedPreferences
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(GOGO_BASE_URL)
@@ -169,20 +176,7 @@ object NetworkModule {
     }
 }
 
-private fun Retrofit.Builder.selectedUrl(selectedProvider: Providers) = apply {
-    when (selectedProvider) {
-        GOGOANIME -> baseUrl(GOGO_BASE_URL)
-        NINEANIME -> baseUrl(NINEANIME_BASE_URL)
-    }
-}
 
-internal fun OkHttpClient.Builder.addChuckerOnDebug(
-    chuckerInterceptor: ChuckerInterceptor
-) = apply {
-    if (BuildConfig.DEBUG) {
-        addInterceptor(chuckerInterceptor)
-    }
-}
 
 
 

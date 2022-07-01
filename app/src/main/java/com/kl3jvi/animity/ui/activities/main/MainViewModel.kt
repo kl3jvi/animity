@@ -7,7 +7,9 @@ import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserReposito
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetGogoKeysUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserSessionUseCase
-import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
+import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,9 +39,19 @@ class MainViewModel @Inject constructor(
      */
     private fun getUserSession() {
         viewModelScope.launch(Dispatchers.IO) {
-            userSession().collect {
-                if (!it.hasErrors())
-                    userRepository.setAniListUserId(it.data?.viewer?.id.toString())
+            userSession().asResult().collect {
+                when (it) {
+                    is Result.Error -> {
+                        logError(it.exception)
+                    }
+                    Result.Loading -> {
+
+                    }
+                    is Result.Success -> {
+                        if (!it.data.hasErrors())
+                            userRepository.setAniListUserId(it.data.data?.viewer?.id.toString())
+                    }
+                }
             }
         }
     }
@@ -50,12 +62,13 @@ class MainViewModel @Inject constructor(
      */
     private fun updateEncryptionKeys() {
         viewModelScope.launch(Dispatchers.IO) {
-            getGogoKeys().collect {
+            getGogoKeys().asResult().collect {
                 when (it) {
-                    is NetworkResource.Failed -> {
-                        logMessage(it.message)
+                    is Result.Error -> {
+                        logMessage(it.exception?.message)
                     }
-                    is NetworkResource.Success -> {
+                    Result.Loading -> {}
+                    is Result.Success -> {
                         val data = it.data
                         localStorage.iv = data.iv
                         localStorage.key = data.key

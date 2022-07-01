@@ -1,17 +1,11 @@
 package com.kl3jvi.animity.domain.use_cases
 
-import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.data.model.ui_models.EpisodeReleaseModel
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
-import com.kl3jvi.animity.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,28 +19,11 @@ class GetAnimeDetailsUseCase @Inject constructor(
      *
      * @param url The url of the anime you want to fetch the details of.
      */
-    fun fetchAnimeInfo(url: String): Flow<Resource<AnimeInfoModel>> = flow {
-        emit(Resource.Loading())
-        try {
-            if (url.isNotEmpty()) {
-                val response = detailsRepository.fetchAnimeInfo(getNetworkHeader(), url)
-                emit(
-                    Resource.Success(
-                        data = response
-                    )
-                )
-            }
-        } catch (e: HttpException) {
+    fun fetchAnimeInfo(url: String) = flow {
+        if (url.isNotEmpty()) {
+            val response = detailsRepository.fetchAnimeInfo(getNetworkHeader(), url)
             emit(
-                Resource.Error(
-                    message = e.localizedMessage ?: "An unexpected error occurred",
-                )
-            )
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(
-                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection.",
-                )
+                response
             )
         }
     }.flowOn(ioDispatcher)
@@ -63,65 +40,29 @@ class GetAnimeDetailsUseCase @Inject constructor(
         endEpisode: String?,
         alias: String?,
         malId: Int
-    ): Flow<Resource<List<EpisodeModel>>> = flow {
-        emit(Resource.Loading())
-        var response = emptyList<EpisodeModel>()
-        return@flow try {
-            response = detailsRepository.fetchEpisodeList(
-                header = getNetworkHeader(),
-                id = id .orEmpty(),
-                endEpisode = endEpisode ?: "0",
-                alias = alias .orEmpty()
-            ).toList().reversed()
-            val episodesWithTitle =
-                detailsRepository.getEpisodeTitles(malId).episodes ?: emptyList()
+    ) = flow {
+        val response: List<EpisodeModel> = detailsRepository.fetchEpisodeList(
+            header = getNetworkHeader(),
+            id = id.orEmpty(),
+            endEpisode = endEpisode.orEmpty(),
+            alias = alias.orEmpty()
+        ).toList().reversed()
+        val episodesWithTitle =
+            detailsRepository.getEpisodeTitles(malId).episodes ?: emptyList()
 
-
-            response.forEachIndexed { index, episodeModel ->
-                if (episodeModel.episodeNumber.split(" ").last() ==
-                    episodesWithTitle.getOrNull(
-                        index
-                    )?.number
-                ) {
-                    episodeModel.episodeName = episodesWithTitle[index].title
-                    episodeModel.isFiller = episodesWithTitle[index].isFiller
-                } else {
-                    episodeModel.episodeName = ""
-                }
+        response.forEachIndexed { index, episodeModel ->
+            if (episodeModel.episodeNumber.split(" ").last() ==
+                episodesWithTitle.getOrNull(
+                    index
+                )?.number
+            ) {
+                episodeModel.episodeName = episodesWithTitle[index].title
+                episodeModel.isFiller = episodesWithTitle[index].isFiller
+            } else {
+                episodeModel.episodeName = ""
             }
-
-
-            //            val episodeWithTitlesList = episodesWithTitle.associateBy({ it.number }, { it.title })
-            //
-            //            val episodesWithoutTitlesList =
-            //                response.associateBy({ it.episodeNumber.split(" ").last() }, { it })
-            //
-            ////                val listEpisodes = listWithEpisodeWithTitles.entries.mapNotNull {
-            ////                    episodesWithoutTitles[it.key]?.episodeName = it.value
-            ////                    episodesWithoutTitles[it.key]
-            ////                }
-
-            emit(
-                Resource.Success(
-                    data = response
-                )
-            )
-
-
-        } catch (e: HttpException) {
-            emit(
-                Resource.Success(
-                    data = response
-                )
-            )
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(
-                    e.localizedMessage ?: "Couldn't reach server. Check your internet connection."
-                )
-            )
         }
+        emit(response)
     }.flowOn(ioDispatcher)
-
 }
 

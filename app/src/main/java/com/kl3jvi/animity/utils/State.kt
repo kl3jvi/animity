@@ -31,13 +31,14 @@ sealed class State<T> {
          */
         fun <T> error(message: String) = Error<T>(message)
 
+
         /**
          * Returns [State] from [Resource]
          */
-        fun <T> fromResource(resource: NetworkResource<T>): State<T> = when (resource) {
-            is NetworkResource.Success -> success(resource.data)
-            is NetworkResource.Failed -> error(resource.message)
-
+        fun <T> fromResource(resource: Result<T>): State<T> = when (resource) {
+            is Result.Error -> error(resource.exception?.message.orEmpty())
+            Result.Loading -> loading()
+            is Result.Success -> success(resource.data)
         }
     }
 }

@@ -8,7 +8,8 @@ import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryIm
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.use_cases.GetAnimeListForProfileUseCase
 import com.kl3jvi.animity.domain.use_cases.GetUserDataUseCase
-import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -42,25 +43,23 @@ class ProfileViewModel @Inject constructor(
 
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
 
-            profileData.collect {
+            profileData.asResult().collect {
                 when (it) {
-                    is NetworkResource.Failed -> {
-                        logMessage(it.message)
+                    is Result.Error -> {
+                        logMessage(it.exception?.message)
                     }
-                    is NetworkResource.Success -> {
-                        _profileData.value = it.data as ProfileData
+                    Result.Loading -> {
+
                     }
+                    is Result.Success -> _profileData.value = it.data as ProfileData
                 }
             }
 
-            animeList.collect {
+            animeList.asResult().collect {
                 when (it) {
-                    is NetworkResource.Failed -> {
-                        logMessage(it.message)
-                    }
-                    is NetworkResource.Success -> {
-                        _animeList.value = it.data as List<ProfileRow>
-                    }
+                    is Result.Error -> logMessage(it.exception?.message)
+                    Result.Loading -> {}
+                    is Result.Success -> _animeList.value = it.data as List<ProfileRow>
                 }
             }
         }

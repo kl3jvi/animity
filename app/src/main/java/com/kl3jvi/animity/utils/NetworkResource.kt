@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.onStart
 
 /* `T` is a generic type. It can be anything. */
 /* `<T>` is a generic type. It can be anything. */
-sealed class NetworkResource<T> {
-    class Success<T>(val data: T) : NetworkResource<T>()
-    class Failed<T>(val message: String) : NetworkResource<T>()
-}
+//sealed class NetworkResource<T> {
+//    class Success<T>(val data: T) : NetworkResource<T>()
+//    class Failed<T>(val message: String) : NetworkResource<T>()
+//}
 
 
 sealed interface Result<out T> {

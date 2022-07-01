@@ -9,28 +9,31 @@
             app:useSimpleSummaryProvider="true" />
 
 
+        <SeekBarPreference
+            android:max="60"
+            app:key="forward"
+            app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
+            app:title="Seek Forward Time" />
 
-    <SeekBarPreference
-        android:max="60"
-        app:key="forward"
-        app:seekBarIncrement="5"
-        app:showSeekBarValue="true"
-        app:title="Seek Forward Time" />
+        <SeekBarPreference
+            android:max="60"
+            app:key="forward"
+            app:showSeekBarValue="true"
+            app:title="Seek Backward Time" />
 
-    <SeekBarPreference
-        android:max="60"
-        app:key="forward"
-        app:showSeekBarValue="true"
-        app:title="Seek Backward Time" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/network_settings">
 
-</PreferenceCategory>
+    </PreferenceCategory>
 
-<PreferenceCategory app:title="@string/donation">
-<Preference
-    android:summary="Klejvi Kapaj"
-    app:icon="@drawable/baseline_paid_24"
-    app:title="@string/donate_creator" />
 
-</PreferenceCategory>
+    <PreferenceCategory app:title="@string/donation">
+        <Preference
+            android:summary="Klejvi Kapaj"
+            app:icon="@drawable/baseline_paid_24"
+            app:title="@string/donate_creator" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
+
+</PreferenceScreen>

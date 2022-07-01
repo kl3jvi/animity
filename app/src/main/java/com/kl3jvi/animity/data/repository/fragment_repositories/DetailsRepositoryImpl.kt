@@ -5,7 +5,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
-import com.kl3jvi.animity.utils.parser.HtmlParser
+import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,11 +15,9 @@ import javax.inject.Singleton
 @Suppress("BlockingMethodInNonBlockingContext")
 class DetailsRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    override val parser: Parser
 ) : DetailsRepository {
-
-    @Inject
-    override lateinit var parser: HtmlParser
 
     override suspend fun fetchAnimeInfo(
         header: Map<String, String>,
@@ -51,5 +49,4 @@ class DetailsRepositoryImpl @Inject constructor(
             id
         )
     }
-
 }

@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.domain.use_cases.GetAnimesUseCase
-import com.kl3jvi.animity.utils.NetworkResource
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,14 +31,11 @@ class HomeViewModel @Inject constructor(
      */
     private fun getHomePageData() {
         viewModelScope.launch(Dispatchers.IO) {
-            getAnimesUseCase().collect {
+            getAnimesUseCase().asResult().collect {
                 when (it) {
-                    is NetworkResource.Failed -> {
-                        logMessage(it.message)
-                    }
-                    is NetworkResource.Success -> {
-                        _homeData.value = it.data
-                    }
+                    is Result.Error -> logMessage(it.exception?.message)
+                    Result.Loading -> {}
+                    is Result.Success -> _homeData.value = it.data
                 }
             }
         }

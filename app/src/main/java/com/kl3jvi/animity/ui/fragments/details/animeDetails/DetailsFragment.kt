@@ -27,7 +27,6 @@ import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
-import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.setHtmlText
@@ -90,8 +89,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 releaseDate.text = info.startDate?.getDate()
                 status.text = info.status?.name
                 type.text = info.type?.rawValue
-                releaseTime.text =
-                    if (info.nextAiringEpisode != null) displayInDayDateTimeFormat(info.nextAiringEpisode) else ""
+
+                /* Checking if the nextAiringEpisode is not null, if it is not null, then it will run
+                the displayInDayDateTimeFormat function on it. */
+                releaseTime.text = info.nextAiringEpisode.takeIf {
+                    it != null
+                }?.run { displayInDayDateTimeFormat(this) }
+
                 animeInfoLayout.textOverview.visibility = VISIBLE
                 releaseDate.visibility = VISIBLE
                 status.visibility = VISIBLE
@@ -199,32 +203,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         popup.show()
     }
 
-    /**
-     * When the user clicks on the add to favorites icon, the icon changes to a filled heart and the
-     * anime is added to the favorites list
-     *
-     * @param item MenuItem - The menu item that was selected.
-     * @return The superclass method is being returned.
-     */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_to_favorites -> {
-                check = if (!check) {
-                    /* Setting the icon of the menu item at index 0 to the icon with the id
-                    `R.drawable.ic_favorite_complete`. */
-                    menu[0].setIcon(R.drawable.ic_favorite_complete)
-                    showSnack(binding.root, "Anime added to Favorites")
-                    true
-                } else {
-                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-                    showSnack(binding.root, "Anime removed from Favorites")
-                    false
-                }
-                viewModel.updateAnimeFavorite()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     /**
      * It fetches the episode list from the view model and then populates the recycler view with the
@@ -242,7 +220,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                             clickListener { _ ->
                                 requireContext().launchActivity<PlayerActivity> {
                                     putExtra(Constants.EPISODE_DETAILS, episodeModel)
-                                    putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
+                                    putExtra(
+                                        Constants.ANIME_TITLE,
+                                        animeDetails.title.userPreferred
+                                    )
                                 }
                             }
                             showTitle(episodeModel.episodeName.isNotEmpty())

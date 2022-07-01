@@ -1,7 +1,9 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,6 +13,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.createFragmentMenu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -28,6 +31,17 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        createFragmentMenu(R.menu.settings_menu) { item ->
+            when (item.itemId) {
+                R.id.action_settings -> {
+                    findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment());true
+                }
+                else -> false
+            }
+        }
+    }
 
     private fun fetchHomeData() {
         collectFlow(viewModel.homeData) { result ->
@@ -36,27 +50,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 buildHome(result, firebaseAnalytics)
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(false)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.settings_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment())
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
     }
 
 
@@ -94,7 +87,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 //        }
     }
 
-    override fun getViewBinding(): FragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
+    override fun getViewBinding(): FragmentHomeBinding =
+        FragmentHomeBinding.inflate(layoutInflater)
 
 
 }
