@@ -4,7 +4,7 @@ import android.util.Log
 import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
-import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
@@ -24,12 +24,12 @@ class GetEpisodeInfoUseCase @Inject constructor(
      * @param url The url of the episode to be played
      */
     operator fun invoke(url: String) = flow {
-        emit(Resource.Loading())
+        emit(Result.Loading)
         try {
             val response = playerRepository.fetchEpisodeMediaUrl(getNetworkHeader(), url)
-            emit(Resource.Success(data = response))
+            emit(Result.Success(data = response))
         } catch (e: Exception) {
-            emit(Resource.Error("Oops an error occurred, try again!"))
+            emit(Result.Error(e))
         }
     }.flowOn(ioDispatcher)
 
@@ -40,14 +40,14 @@ class GetEpisodeInfoUseCase @Inject constructor(
      * @param url The url of the anime you want to fetch the m3u8 url from.
      */
     fun fetchM3U8(url: String?) = flow {
-        emit(Resource.Loading())
+        emit(Result.Loading)
         try {
             val response = playerRepository.fetchM3u8Url(getNetworkHeader(), url ?: "")
             Log.e("response", response.toString())
-            emit(Resource.Success(data = response.last()))
+            emit(Result.Success(data = response.last()))
         } catch (e: Exception) {
             logError(e)
-            emit(Resource.Error("Couldn't find a Stream for this Anime"))
+            emit(Result.Error(e))
         }
     }.flowOn(ioDispatcher)
 
@@ -59,14 +59,14 @@ class GetEpisodeInfoUseCase @Inject constructor(
      * @param id The id of the anime you want to fetch the stream for.
      */
     fun fetchEncryptedAjaxUrl(url: String?, id: String) = flow {
-        emit(Resource.Loading())
+        emit(Result.Loading)
         try {
             val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url ?: "", id)
             val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
-            emit(Resource.Success(data = streamUrl))
+            emit(Result.Success(streamUrl))
         } catch (e: Exception) {
             logError(e)
-            emit(Resource.Error("Couldn't find a Stream for this Anime"))
+            emit(Result.Error(e))
         }
     }.flowOn(ioDispatcher)
 }

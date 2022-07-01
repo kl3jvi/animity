@@ -39,7 +39,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.INTRO_SKIP_TIME
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.observeLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,7 +77,6 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
     lateinit var content: Content
-    private var tempbit = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,7 +146,13 @@ class PlayerActivity : AppCompatActivity() {
     private fun initializePlayer() {
         observeLiveData(viewModel.videoUrlLiveData, this) { res ->
             when (res) {
-                is Resource.Success -> {
+                is Result.Error -> {
+                    binding.loadingOverlay.visibility = View.VISIBLE
+                }
+                Result.Loading -> {
+                    binding.loadingOverlay.visibility = View.VISIBLE
+                }
+                is Result.Success -> {
                     val videoM3U8Url = getSafeString(res.data)
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
@@ -155,7 +160,7 @@ class PlayerActivity : AppCompatActivity() {
                         }
                         val audioAttributes: AudioAttributes = AudioAttributes.Builder()
                             .setUsage(C.USAGE_MEDIA)
-                            .setContentType(C.CONTENT_TYPE_MOVIE)
+                            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
                             .build()
 
                         player = ExoPlayer.Builder(this)
@@ -222,12 +227,7 @@ class PlayerActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                     binding.loadingOverlay.visibility = View.GONE
-                }
-                is Resource.Loading -> {
-                    binding.loadingOverlay.visibility = View.VISIBLE
-                }
-                is Resource.Error -> {
-                    /*viewBinding.loadingOverlay.visibility = View.VISIBLE*/
+
                 }
             }
 
@@ -308,7 +308,7 @@ class PlayerActivity : AppCompatActivity() {
                 val dataSource = OkHttpDataSource.Factory(client)
                     .setUserAgent(Constants.USER_AGENT)
                     .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
-                dataSource.createDataSource();
+                dataSource.createDataSource()
 
             }
             HlsMediaSource.Factory(dataSource)

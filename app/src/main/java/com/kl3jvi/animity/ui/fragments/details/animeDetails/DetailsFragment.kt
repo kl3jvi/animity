@@ -27,6 +27,7 @@ import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.setHtmlText
@@ -290,6 +291,34 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             binding.nextEpisodeContainer.isVisible = false
             ""
         }
+    }
+
+
+    /**
+     * When the user clicks on the add to favorites icon, the icon changes to a filled heart and the
+     * anime is added to the favorites list
+     *
+     * @param item MenuItem - The menu item that was selected.
+     * @return The superclass method is being returned.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> {
+                check = if (!check) {
+                    /* Setting the icon of the menu item at index 0 to the icon with the id
+                    `R.drawable.ic_favorite_complete`. */
+                    menu[0].setIcon(R.drawable.ic_favorite_complete)
+                    showSnack(binding.root, "Anime added to Favorites")
+                    true
+                } else {
+                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+                    showSnack(binding.root, "Anime removed from Favorites")
+                    false
+                }
+                viewModel.updateAnimeFavorite()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /**

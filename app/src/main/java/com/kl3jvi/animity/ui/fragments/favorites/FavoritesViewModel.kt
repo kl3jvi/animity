@@ -46,7 +46,7 @@ class FavoritesViewModel @Inject constructor(
                     .collect {
                         when (it) {
                             is Result.Error -> logMessage(it.exception?.message)
-                            Result.Loading -> TODO()
+                            Result.Loading ->{}
                             is Result.Success -> _favoriteAniListAnimeList.value = it.data
                         }
                     }

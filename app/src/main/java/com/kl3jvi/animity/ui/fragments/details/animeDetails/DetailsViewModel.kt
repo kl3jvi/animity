@@ -8,7 +8,10 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
 import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromAniListId
 import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
-import com.kl3jvi.animity.utils.*
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
+import com.kl3jvi.animity.utils.logError
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -30,7 +33,7 @@ class DetailsViewModel @Inject constructor(
         getAnimeInfo()
     }
 
-    private val _animeInfo = MutableStateFlow<Resource<AnimeInfoModel>?>(null)
+    private val _animeInfo = MutableStateFlow<Result<AnimeInfoModel>?>(null)
     val animeInfo = _animeInfo.asStateFlow()
 
 
@@ -64,7 +67,7 @@ class DetailsViewModel @Inject constructor(
                                             )
                                         }
                                     )
-                                    second as Flow<Resource<AnimeInfoModel>?>
+                                    second as Flow<Result<AnimeInfoModel>?>
                                 }
                             }
                         }.collectLatest { _animeInfo.value = it }
@@ -99,7 +102,6 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
 
     /**
      * > When the user clicks the favorite button, we want to update the database to reflect the new

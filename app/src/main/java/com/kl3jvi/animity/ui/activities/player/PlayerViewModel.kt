@@ -2,11 +2,11 @@ package com.kl3jvi.animity.ui.activities.player
 
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.ExoPlayer
-
 import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.utils.Resource
+import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -44,26 +44,38 @@ class PlayerViewModel @Inject constructor(
 
     val videoUrlLiveData = Transformations.switchMap(_episodeUrl) { url ->
         getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
-            /* It's getting the id of the episode from the url. */
-            val id = Regex("id=([^&]+)").find(
-                episodeInfo.data?.vidCdnUrl ?: ""
-            )?.value?.removePrefix("id=")
-
-            getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(episodeInfo.data?.vidCdnUrl, id ?: "")
+            when (episodeInfo) {
+                is Result.Error -> {
+                    logError(episodeInfo.exception)
+                    emptyFlow()
+                }
+                is Result.Loading -> {
+                    emptyFlow()
+                }
+                is Result.Success -> {
+                    val id = Regex("id=([^&]+)").find(
+                        episodeInfo.data.vidCdnUrl ?: ""
+                    )?.value?.removePrefix("id=")
+                    getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(
+                        episodeInfo.data.vidCdnUrl,
+                        id ?: ""
+                    )
+                }
+            }
         }.flatMapLatest {
-            getEpisodeInfoUseCase.fetchM3U8(it.data)
+            when (it) {
+                is Result.Error -> emptyFlow()
+                Result.Loading -> emptyFlow()
+                is Result.Success -> getEpisodeInfoUseCase.fetchM3U8(it.data)
+            }
         }.asLiveData()
     }
 
     fun insertOrUpdate(content: Content) {
         viewModelScope.launch(ioDispatcher) {
-            /* It's checking if the episode is on the database and if the watched duration is greater
-            than 0. */
             if (episodeDao.isEpisodeOnDatabase(content.episodeUrl) && content.watchedDuration > 0) {
-                /* It's updating the episode in the database. */
                 episodeDao.updateEpisode(content)
             } else {
-                /* It's inserting the episode into the database. */
                 episodeDao.insertEpisode(content)
             }
         }
