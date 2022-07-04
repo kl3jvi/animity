@@ -42,7 +42,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
     fun fetchM3U8(url: String?) = flow {
         emit(Result.Loading)
         try {
-            val response = playerRepository.fetchM3u8Url(getNetworkHeader(), url ?: "")
+            val response = playerRepository.fetchM3u8Url(getNetworkHeader(), url.orEmpty())
             Log.e("response", response.toString())
             emit(Result.Success(data = response.last()))
         } catch (e: Exception) {
@@ -61,7 +61,7 @@ class GetEpisodeInfoUseCase @Inject constructor(
     fun fetchEncryptedAjaxUrl(url: String?, id: String) = flow {
         emit(Result.Loading)
         try {
-            val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url ?: "", id)
+            val response = playerRepository.fetchEncryptedAjaxUrl(getNetworkHeader(), url.orEmpty(), id)
             val streamUrl = "${REFERER}encrypt-ajax.php?${response}"
             emit(Result.Success(streamUrl))
         } catch (e: Exception) {

@@ -54,11 +54,11 @@ class PlayerViewModel @Inject constructor(
                 }
                 is Result.Success -> {
                     val id = Regex("id=([^&]+)").find(
-                        episodeInfo.data.vidCdnUrl ?: ""
+                        episodeInfo.data.vidCdnUrl.orEmpty()
                     )?.value?.removePrefix("id=")
                     getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(
                         episodeInfo.data.vidCdnUrl,
-                        id ?: ""
+                        id.orEmpty()
                     )
                 }
             }
