@@ -16,9 +16,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Named
-
 
 @GlideModule
 class GlideModule : AppGlideModule() {
@@ -52,3 +49,4 @@ class GlideModule : AppGlideModule() {
         super.registerComponents(context, glide, registry)
     }
 }
+

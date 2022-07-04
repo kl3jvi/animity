@@ -60,8 +60,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            /* Checking if the user is connected to the internet and if so, it will fetch the data from
-            the server. */
             if (isConnected) fetchHomeData()
             binding.apply {
                 mainRv.isVisible = isConnected

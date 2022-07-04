@@ -29,7 +29,6 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAna
             models(list.modelCardAnime(firebaseAnalytics))
         }
     }
-
     title {
         id(Uuid.randomUUID().toString())
         title(Title.values()[3].title)
