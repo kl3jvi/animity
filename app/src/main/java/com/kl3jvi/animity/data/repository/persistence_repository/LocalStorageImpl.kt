@@ -95,7 +95,7 @@ class LocalStorageImpl @Inject constructor(
 }
 
 inline fun <reified T> String?.fromJson(): T {
-    return Gson().fromJson(this.orEmpty(), T::class.java);
+    return Gson().fromJson(this.orEmpty(), T::class.java)
 }
 
 inline fun <reified T> T?.toJson(): String? {

@@ -6,6 +6,4 @@ import javax.inject.Inject
 class NineAnimeApiClient @Inject constructor(
     private val nineAnimeService: NineAnimeService,
     private val apolloClient: ApolloClient
-) {
-
-}
+)

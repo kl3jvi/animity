@@ -64,10 +64,10 @@ class DetailsViewModel @Inject constructor(
                                         async {
                                             getAnimeDetailsUseCase.fetchAnimeInfo(
                                                 result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
-                                            )
+                                            ).asResult()
                                         }
                                     )
-                                    second as Flow<Result<AnimeInfoModel>?>
+                                    second as? Flow<Result<AnimeInfoModel>?> ?: emptyFlow()
                                 }
                             }
                         }.collectLatest { _animeInfo.value = it }
@@ -116,6 +116,4 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
-
 }

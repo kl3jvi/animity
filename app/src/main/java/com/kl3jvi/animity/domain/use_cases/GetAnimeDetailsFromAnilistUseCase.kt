@@ -7,6 +7,4 @@ import javax.inject.Inject
 class GetAnimeDetailsFromAnilistUseCase @Inject constructor(
     private val userRepositoryImpl: UserRepositoryImpl,
     private val ioDispatcher: CoroutineDispatcher
-) {
-
-}
+)
