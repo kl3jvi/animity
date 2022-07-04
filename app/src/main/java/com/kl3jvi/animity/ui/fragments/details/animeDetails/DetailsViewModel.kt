@@ -76,36 +76,28 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    /**
-     * `fetchAnimeInfo` returns a `Single<Resource<AnimeInfo>>` which is then flatMapped to
-     * `fetchEpisodeList` which returns a `Single<Resource<EpisodeList>>`
-     *
-     * @param url The url of the anime you want to fetch the episode list from.
-     * @return A list of episodes
-     */
     private suspend fun fetchEpisodeList(url: String, malId: Int) {
-
         return getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
-            info.let {
-                getAnimeDetailsUseCase.fetchEpisodeList(
-                    it.id,
-                    it.endEpisode,
-                    it.alias,
-                    malId
-                )
+            getAnimeDetailsUseCase.fetchEpisodeList(
+                info.id,
+                info.endEpisode,
+                info.alias,
+                malId
+            )
+        }.asResult()
+            .catch { e -> logError(e) }
+            .collect {
+                when (it) {
+                    is Result.Error -> logMessage(it.exception?.message)
+                    Result.Loading -> {}
+                    is Result.Success -> _episodeList.value = it.data
+                }
             }
-        }.catch { e -> logError(e) }.asResult().collect {
-            when (it) {
-                is Result.Error -> logMessage(it.exception?.message)
-                Result.Loading -> {}
-                is Result.Success -> _episodeList.value = it.data
-            }
-        }
     }
 
+
     /**
-     * > When the user clicks the favorite button, we want to update the database to reflect the new
-     * favorite status
+     * > The function updates the anime as favorite in the anilist website
      */
     fun updateAnimeFavorite() {
         viewModelScope.launch(ioDispatcher) {

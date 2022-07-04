@@ -46,9 +46,6 @@ class UserRepositoryImpl @Inject constructor(
         storage.refreshToken = refreshToken
     }
 
-    override fun setGuestToken(token: String?) {
-        storage.guestToken = token
-    }
 
     override fun setAniListUserId(sync: String?) {
         storage.aniListUserId = sync
@@ -65,7 +62,6 @@ class UserRepositoryImpl @Inject constructor(
             logError(e)
             emptyFlow()
         }
-
     }
 
     override fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>> {

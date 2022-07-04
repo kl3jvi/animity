@@ -10,5 +10,4 @@ interface FavoriteRepository {
         userId: Int?,
         page: Int?
     ): Flow<List<AniListMedia>>
-
 }

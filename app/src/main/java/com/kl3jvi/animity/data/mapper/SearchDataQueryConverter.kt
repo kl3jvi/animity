@@ -4,12 +4,12 @@ import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.data.model.ui_models.*
 
 
-fun SearchAnimeQuery.Data.convert(): List<AniListMedia>? {
-    return page?.media?.map {
+fun SearchAnimeQuery.Data.convert(): List<AniListMedia> {
+    return page?.media?.mapNotNull {
         AniListMedia(
             idAniList = it?.id ?: 0,
-            title = MediaTitle(userPreferred = it?.title?.userPreferred .orEmpty()),
-            description = it?.description .orEmpty(),
+            title = MediaTitle(userPreferred = it?.title?.userPreferred.orEmpty()),
+            description = it?.description.orEmpty(),
             startDate = if (it?.startDate?.year != null) {
                 FuzzyDate(
                     it.startDate.year,
@@ -20,12 +20,12 @@ fun SearchAnimeQuery.Data.convert(): List<AniListMedia>? {
                 null
             },
             coverImage = MediaCoverImage(
-                it?.coverImage?.large .orEmpty(),
-                it?.coverImage?.large .orEmpty(),
-                it?.coverImage?.large .orEmpty()
+                it?.coverImage?.large.orEmpty(),
+                it?.coverImage?.large.orEmpty(),
+                it?.coverImage?.large.orEmpty()
             ),
-            genres = it?.genres?.mapNotNull { Genre(name = it .orEmpty()) } ?: listOf(),
+            genres = it?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: listOf(),
             averageScore = it?.averageScore ?: 0,
         )
-    }
+    } ?: emptyList()
 }

@@ -14,7 +14,6 @@ interface UserRepository {
 
     fun setBearerToken(authToken: String?)
     fun setRefreshToken(refreshToken: String?)
-    fun setGuestToken(token: String?)
     fun setAniListUserId(sync: String?)
     fun clearStorage()
 

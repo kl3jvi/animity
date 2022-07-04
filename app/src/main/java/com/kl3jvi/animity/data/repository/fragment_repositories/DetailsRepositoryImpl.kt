@@ -45,8 +45,6 @@ class DetailsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getEpisodeTitles(id: Int): EpisodeWithTitle = withContext(ioDispatcher) {
-        apiClient.getEpisodeTitles(
-            id
-        )
+        apiClient.getEpisodeTitles(id)
     }
 }
