@@ -14,7 +14,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Suppress("BlockingMethodInNonBlockingContext")
 class SearchRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher

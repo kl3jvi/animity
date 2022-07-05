@@ -15,33 +15,8 @@ fun HomeDataQuery.Data.convert(): HomeData {
     val movies =
         movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
     val review = review?.reviews?.mapNotNull {
-        Review(
-            id = it?.id ?: 0,
-            userId = it?.userId ?: 0,
-            mediaId = it?.mediaId ?: 0,
-            mediaType = it?.mediaType,
-            summary = it?.summary .orEmpty(),
-            body = it?.body .orEmpty(),
-            rating = it?.rating ?: 0,
-            ratingAmount = it?.ratingAmount ?: 0,
-            score = it?.score ?: 0,
-            user = User(
-                id = it?.user?.id ?: 0,
-                name = it?.user?.name .orEmpty(),
-                avatar = UserAvatar(
-                    it?.user?.avatar?.large .orEmpty(),
-                    it?.user?.avatar?.medium .orEmpty()
-                )
-            ),
-            aniListMedia = AniListMedia(
-                idAniList = it?.media?.id ?: 0,
-                title = MediaTitle(userPreferred = it?.media?.title?.userPreferred .orEmpty()),
-                bannerImage = it?.media?.bannerImage .orEmpty(),
-                coverImage = MediaCoverImage(
-                    large = it?.media?.coverImage?.large .orEmpty()
-                )
-            )
-        )
+        it.convert()
+
     } ?: listOf()
 
     return HomeData(
@@ -52,39 +27,71 @@ fun HomeDataQuery.Data.convert(): HomeData {
     )
 }
 
-private fun HomeMedia?.convert(): AniListMedia {
+fun HomeDataQuery.Review1?.convert(): Review {
+    return Review(
+        id = this?.id ?: 0,
+        userId = this?.userId ?: 0,
+        mediaId = this?.mediaId ?: 0,
+        mediaType = this?.mediaType,
+        summary = this?.summary.orEmpty(),
+        body = this?.body.orEmpty(),
+        rating = this?.rating ?: 0,
+        ratingAmount = this?.ratingAmount ?: 0,
+        score = this?.score ?: 0,
+        user = User(
+            id = this?.user?.id ?: 0,
+            name = this?.user?.name.orEmpty(),
+            avatar = UserAvatar(
+                this?.user?.avatar?.large.orEmpty(),
+                this?.user?.avatar?.medium.orEmpty()
+            )
+        ),
+        aniListMedia = AniListMedia(
+            idAniList = this?.media?.id ?: 0,
+            title = MediaTitle(userPreferred = this?.media?.title?.userPreferred.orEmpty()),
+            bannerImage = this?.media?.bannerImage.orEmpty(),
+            coverImage = MediaCoverImage(
+                large = this?.media?.coverImage?.large.orEmpty()
+            )
+        )
+    )
+}
+
+public fun HomeMedia?.convert(): AniListMedia {
     return AniListMedia(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,
-        title = MediaTitle(userPreferred = this?.title?.userPreferred .orEmpty()),
+        title = MediaTitle(userPreferred = this?.title?.userPreferred.orEmpty()),
         type = this?.type,
         format = this?.format,
         streamingEpisode = this?.streamingEpisodes?.mapNotNull { it.convert() },
         nextAiringEpisode = this?.nextAiringEpisode?.airingAt,
         status = this?.status,
-        description = this?.description .orEmpty(),
+        description = this?.description.orEmpty(),
         startDate = if (this?.startDate?.year != null) {
             FuzzyDate(this.startDate.year, this.startDate.month, this.startDate.day)
         } else {
             null
         },
         coverImage = MediaCoverImage(
-            this?.coverImage?.extraLarge .orEmpty(),
-            this?.coverImage?.large .orEmpty(),
-            this?.coverImage?.medium .orEmpty()
+            this?.coverImage?.extraLarge.orEmpty(),
+            this?.coverImage?.large.orEmpty(),
+            this?.coverImage?.medium.orEmpty()
         ),
-        bannerImage = this?.bannerImage .orEmpty(),
-        genres = this?.genres?.mapNotNull { Genre(name = it .orEmpty()) } ?: listOf(),
+        bannerImage = this?.bannerImage.orEmpty(),
+        genres = this?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: listOf(),
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0
     )
 }
 
-private fun HomeMedia.StreamingEpisode?.convert() =
+fun HomeMedia.StreamingEpisode?.convert() =
     Episodes(
         this?.title,
         this?.thumbnail
     )
+
+
 
 
 

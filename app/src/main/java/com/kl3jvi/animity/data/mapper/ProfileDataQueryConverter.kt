@@ -9,12 +9,12 @@ fun UserQuery.Data.convert(): ProfileData {
         User(
             user.id,
             user.name,
-            user.about .orEmpty(),
+            user.about.orEmpty(),
             UserAvatar(
-                user.avatar?.large .orEmpty(),
-                user.avatar?.medium .orEmpty()
+                user.avatar?.large.orEmpty(),
+                user.avatar?.medium.orEmpty()
             ),
-            user.bannerImage .orEmpty(),
+            user.bannerImage.orEmpty(),
         )
     ) else ProfileData()
 }
@@ -32,12 +32,12 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia>
     return this?.mapNotNull {
         AniListMedia(
             idAniList = it?.media?.id ?: 0,
-            title = MediaTitle(userPreferred = it?.media?.title?.userPreferred .orEmpty()),
+            title = MediaTitle(userPreferred = it?.media?.title?.userPreferred.orEmpty()),
             type = it?.media?.type,
             format = it?.media?.format,
             status = it?.media?.status,
             nextAiringEpisode = it?.media?.nextAiringEpisode?.airingAt,
-            description = it?.media?.description .orEmpty(),
+            description = it?.media?.description.orEmpty(),
             startDate = if (it?.media?.startDate?.year != null) {
                 FuzzyDate(
                     it.media.startDate.year,
@@ -48,11 +48,11 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia>
                 null
             },
             coverImage = MediaCoverImage(
-                it?.media?.coverImage?.large .orEmpty(),
-                it?.media?.coverImage?.large .orEmpty(),
-                it?.media?.coverImage?.large .orEmpty()
+                it?.media?.coverImage?.large.orEmpty(),
+                it?.media?.coverImage?.large.orEmpty(),
+                it?.media?.coverImage?.large.orEmpty()
             ),
-            genres = it?.media?.genres?.mapNotNull { Genre(name = it .orEmpty()) } ?: listOf(),
+            genres = it?.media?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: listOf(),
             averageScore = it?.media?.averageScore ?: 0,
         )
     } ?: listOf()

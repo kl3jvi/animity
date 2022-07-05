@@ -8,7 +8,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.secrets_gradle_plugin' version("0.4")
-    id "com.apollographql.apollo3" version("3.0.0")
+    id "com.apollographql.apollo3" version("3.3.2")
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 }
 
@@ -200,7 +200,7 @@ dependencies {
     implementation "androidx.browser:browser:$inAppBrowserVersion"
 
     // Apollo GraphQl
-    def apolloVersion = "3.0.0"
+    def apolloVersion = "3.3.2"
     implementation "com.apollographql.apollo3:apollo-runtime:$apolloVersion"
 
     // DataStore
@@ -239,5 +239,6 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation "io.mockk:mockk:1.12.4"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
+    testImplementation("com.apollographql.apollo3:apollo-testing-support:3.3.2")
 
 }

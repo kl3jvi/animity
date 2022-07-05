@@ -8,15 +8,11 @@ import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeReposito
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Suppress("BlockingMethodInNonBlockingContext")
 class HomeRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
@@ -31,7 +27,7 @@ class HomeRepositoryImpl @Inject constructor(
                     data = it.data?.convert() ?: HomeData()
                 }
                 data
-            }
+            }.flowOn(ioDispatcher)
     }
 
 
@@ -42,6 +38,6 @@ class HomeRepositoryImpl @Inject constructor(
             e.printStackTrace()
             emit(GogoAnimeKeys())
         }
-    }
+    }.flowOn(ioDispatcher)
 
 }

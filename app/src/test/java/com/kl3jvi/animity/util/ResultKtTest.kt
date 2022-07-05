@@ -1,4 +1,4 @@
-package com.kl3jvi.animity
+package com.kl3jvi.animity.util
 
 import app.cash.turbine.test
 import com.kl3jvi.animity.utils.Result
