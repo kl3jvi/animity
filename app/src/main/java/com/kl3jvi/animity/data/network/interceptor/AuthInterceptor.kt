@@ -2,7 +2,7 @@ package com.kl3jvi.animity.data.network.interceptor
 
 import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val localStorage: LocalStorage,
+    private val localStorage: PersistenceRepository,
 ) : Interceptor {
     /**
      * It intercepts the request and adds the bearer token to the header.
@@ -28,7 +28,6 @@ class HeaderInterceptor @Inject constructor(
 
 
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
-
 
         /* Adding the header to the request. */
         val response = proceed(

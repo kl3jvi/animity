@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import com.kl3jvi.animity.persistence.AnimeDao
 import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants.Companion.DATABASE_NAME
@@ -25,18 +24,14 @@ object PersistenceModule {
     @Singleton
     fun provideAppDatabase(
         application: Application,
-        typeResponseConverter: Converters
     ): AppDatabase {
         return Room
             .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
             .fallbackToDestructiveMigration()
-            .addTypeConverter(typeResponseConverter)
+//            .addTypeConverter(typeResponseConverter)
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideAnimesDao(appDatabase: AppDatabase): AnimeDao = appDatabase.animeDao()
 
     @Provides
     @Singleton

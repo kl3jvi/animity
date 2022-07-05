@@ -1,8 +1,11 @@
 package com.kl3jvi.animity.utils.parser
 
 import android.os.Build
-import com.kl3jvi.animity.data.model.ui_models.*
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
+import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
+import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
+import com.kl3jvi.animity.data.model.ui_models.GenreModel
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
@@ -13,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
 class HtmlParser @Inject constructor(
-    private val preferences: LocalStorage
+    private val preferences: PersistenceRepository,
 ) : Parser {
 
     /**

@@ -20,6 +20,5 @@ import com.kl3jvi.animity.utils.Converters
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun animeDao(): AnimeDao
     abstract fun episodeDao(): EpisodeDao
 }

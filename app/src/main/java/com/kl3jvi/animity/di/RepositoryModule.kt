@@ -3,12 +3,10 @@ package com.kl3jvi.animity.di
 import com.kl3jvi.animity.data.repository.activity_repositories.LoginRepositoryImpl
 import com.kl3jvi.animity.data.repository.activity_repositories.PlayerRepositoryImpl
 import com.kl3jvi.animity.data.repository.fragment_repositories.*
-import com.kl3jvi.animity.data.repository.persistence_repository.LocalStorageImpl
 import com.kl3jvi.animity.data.repository.persistence_repository.PersistenceRepositoryImpl
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.*
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import com.kl3jvi.animity.utils.parser.Parser
@@ -44,8 +42,6 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindLoginRepository(repository: LoginRepositoryImpl): LoginRepository
 
-    @Binds
-    abstract fun bindLocalRepository(repository: LocalStorageImpl): LocalStorage
 
     @Binds
     abstract fun bindProfileRepository(repository: ProfileRepositoryImpl): ProfileRepository

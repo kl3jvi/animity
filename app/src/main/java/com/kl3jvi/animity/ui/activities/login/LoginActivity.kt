@@ -41,20 +41,15 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         firebaseAnalytics = Firebase.analytics
         checkIfUserLoggedIn()
         initViews()
-
-
     }
 
-
     /**
-     * It checks if the user is logged in or not.
+     * It checks if the user is logged in.
      *
      * @return Boolean
      */
     override fun checkIfUserLoggedIn(): Boolean {
-        val isLoggedInWithAuth = viewModel.getToken().run {
-            !this.isNullOrEmpty()
-        }
+        val isLoggedInWithAuth = viewModel.getToken().run { this.isNotNullOrEmpty() }
         if (isLoggedInWithAuth) {
             binding.progressBar.show()
             launchActivity<MainActivity> {}
@@ -63,6 +58,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         return isLoggedInWithAuth
     }
 
+    private fun String?.isNotNullOrEmpty() = !this.isNullOrEmpty()
 
     /**
      * It returns the authorization url for the user to login.

@@ -14,7 +14,7 @@ import com.kl3jvi.animity.data.network.anime_service.NineAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.NineAnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
@@ -40,7 +40,7 @@ object NetworkModule {
     @Singleton
     @Apollo
     fun provideOkHttpClient(
-        localStorage: LocalStorage,
+        localStorage: PersistenceRepository,
         loginRepository: LoginRepository,
         chuckerInterceptor: ChuckerInterceptor
     ): OkHttpClient {
@@ -53,7 +53,6 @@ object NetworkModule {
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
-
             .build()
     }
 
@@ -62,7 +61,7 @@ object NetworkModule {
     @Singleton
     @RetrofitClient
     fun provideRetrofitOkHttpClient(
-        localStorage: LocalStorage
+        /*localStorage: PersistenceRepository*/
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(

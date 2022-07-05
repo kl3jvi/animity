@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val userRepository: UserRepository,
-    private val localStorage: LocalStorage
+    private val localStorage: PersistenceRepository
 ) : ViewModel() {
 
     val initialise = MutableLiveData<Unit>()

@@ -5,7 +5,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val storage: LocalStorage,
+    private val storage: PersistenceRepository,
     private val apolloClient: ApolloClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : UserRepository {

@@ -6,7 +6,7 @@ import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.ProfileRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val profileRepository: ProfileRepository,
-    private val dataStore: LocalStorage,
+    private val localStorage: PersistenceRepository,
 ) : ViewModel() {
 
     private val _profileData = MutableStateFlow<ProfileData?>(null)
@@ -37,9 +37,9 @@ class ProfileViewModel @Inject constructor(
     private fun getProfileData() {
         viewModelScope.launch(Dispatchers.IO) {
             val profileDeferred =
-                async { profileRepository.getProfileData(dataStore.aniListUserId?.toInt()) }
+                async { profileRepository.getProfileData(localStorage.aniListUserId?.toInt()) }
             val animeListDeferred =
-                async { profileRepository.getProfileAnimes(dataStore.aniListUserId?.toInt()) }
+                async { profileRepository.getProfileAnimes(localStorage.aniListUserId?.toInt()) }
 
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
 

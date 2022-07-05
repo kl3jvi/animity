@@ -25,7 +25,7 @@ interface GogoAnimeService {
     @GET
     suspend fun fetchAnimeInfo(
         @HeaderMap header: Map<String, String>,
-        @Url url: String
+        @Url episodeUrl: String
     ): ResponseBody
 
     @GET

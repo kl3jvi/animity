@@ -3,8 +3,6 @@ package com.kl3jvi.animity.data.network.anime_service
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
-import com.kl3jvi.animity.utils.logError
-import kotlinx.coroutines.flow.catch
 import javax.inject.Inject
 
 class GogoAnimeApiClient @Inject constructor(

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val favoriteRepository: FavoriteRepository,
-    private val dataStore: LocalStorage,
+    private val localStorage: PersistenceRepository,
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -39,7 +39,7 @@ class FavoritesViewModel @Inject constructor(
     private fun getFavoriteAnimes() {
         viewModelScope.launch(ioDispatcher) {
             shouldRefresh.collectLatest { _ ->
-                favoriteRepository.getFavoriteAnimesFromAniList(dataStore.aniListUserId?.toInt(), 1)
+                favoriteRepository.getFavoriteAnimesFromAniList(localStorage.aniListUserId?.toInt(), 1)
                     .flowOn(ioDispatcher)
                     .catch { e -> logError(e) }
                     .asResult()
