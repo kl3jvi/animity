@@ -3,8 +3,8 @@ package com.kl3jvi.animity.ui.fragments.favorites
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
-import com.kl3jvi.animity.domain.use_cases.GetFavoriteAnimesUseCase
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val getFavoriteAnimesUseCase: GetFavoriteAnimesUseCase,
+    private val favoriteRepository: FavoriteRepository,
     private val dataStore: LocalStorage,
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
@@ -39,14 +39,14 @@ class FavoritesViewModel @Inject constructor(
     private fun getFavoriteAnimes() {
         viewModelScope.launch(ioDispatcher) {
             shouldRefresh.collectLatest { _ ->
-                getFavoriteAnimesUseCase(dataStore.aniListUserId?.toInt(), 1)
+                favoriteRepository.getFavoriteAnimesFromAniList(dataStore.aniListUserId?.toInt(), 1)
                     .flowOn(ioDispatcher)
                     .catch { e -> logError(e) }
                     .asResult()
                     .collect {
                         when (it) {
                             is Result.Error -> logMessage(it.exception?.message)
-                            Result.Loading ->{}
+                            Result.Loading -> {}
                             is Result.Success -> _favoriteAniListAnimeList.value = it.data
                         }
                     }

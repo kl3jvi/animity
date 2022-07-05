@@ -5,11 +5,11 @@ import org.jsoup.select.Elements
 
 interface Parser {
     fun parseAnimeInfo(response: String): AnimeInfoModel
-    fun getGenreList(genreHtmlList: Elements): ArrayList<GenreModel>
-    fun fetchEpisodeList(response: String): ArrayList<EpisodeModel>
+    fun getGenreList(genreHtmlList: Elements): List<GenreModel>
+    fun fetchEpisodeList(response: String): List<EpisodeModel>
     fun decryptAES(encrypted: String, key: String, iv: String): String
     fun encryptAes(text: String, key: String, iv: String): String
     fun parseEncryptAjax(response: String, id: String): String
     fun parseMediaUrl(response: String): EpisodeInfo
-    fun parseEncryptedUrls(response: String): ArrayList<String>
+    fun parseEncryptedUrls(response: String): List<String>
 }

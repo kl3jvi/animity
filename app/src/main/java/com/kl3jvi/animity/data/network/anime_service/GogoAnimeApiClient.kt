@@ -65,17 +65,18 @@ class GogoAnimeApiClient @Inject constructor(
 
     fun getHomeData() = apolloClient.query(
         HomeDataQuery()
-    ).toFlow().catch { e -> logError(e) }
+    ).toFlow()
 
     fun getProfileData(userId: Int?) =
         apolloClient.query(
             UserQuery(Optional.presentIfNotNull(userId))
-        ).toFlow().catch { e -> logError(e) }
+        ).toFlow()
 
     fun getAnimeListData(userId: Int?) =
         apolloClient.query(
             AnimeListCollectionQuery(Optional.presentIfNotNull(userId))
-        ).toFlow().catch { e -> logError(e) }
+        ).toFlow()
+
 
     fun fetchSearchAniListData(query: String, page: Int) =
         apolloClient.query(
@@ -83,7 +84,7 @@ class GogoAnimeApiClient @Inject constructor(
                 Optional.presentIfNotNull(query),
                 Optional.presentIfNotNull(page),
             )
-        ).toFlow().catch { e -> logError(e) }
+        ).toFlow()
 
 
     fun getFavoriteAnimesFromAniList(
@@ -94,5 +95,5 @@ class GogoAnimeApiClient @Inject constructor(
             Optional.Present(userId),
             Optional.Present(page)
         )
-    ).toFlow().catch { e -> logError(e) }
+    ).toFlow()
 }

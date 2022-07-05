@@ -4,10 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
-import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryImpl
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.ProfileRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
-import com.kl3jvi.animity.domain.use_cases.GetAnimeListForProfileUseCase
-import com.kl3jvi.animity.domain.use_cases.GetUserDataUseCase
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
@@ -20,9 +19,8 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userData: GetUserDataUseCase,
-    private val userRepositoryImpl: UserRepositoryImpl,
-    private val animeListUseCase: GetAnimeListForProfileUseCase,
+    private val userRepository: UserRepository,
+    private val profileRepository: ProfileRepository,
     private val dataStore: LocalStorage,
 ) : ViewModel() {
 
@@ -38,8 +36,10 @@ class ProfileViewModel @Inject constructor(
 
     private fun getProfileData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val profileDeferred = async { userData(dataStore.aniListUserId?.toInt()) }
-            val animeListDeferred = async { animeListUseCase(dataStore.aniListUserId?.toInt()) }
+            val profileDeferred =
+                async { profileRepository.getProfileData(dataStore.aniListUserId?.toInt()) }
+            val animeListDeferred =
+                async { profileRepository.getProfileAnimes(dataStore.aniListUserId?.toInt()) }
 
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
 
@@ -66,7 +66,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun clearStorage() {
-        userRepositoryImpl.clearStorage()
+        userRepository.clearStorage()
     }
 }
 

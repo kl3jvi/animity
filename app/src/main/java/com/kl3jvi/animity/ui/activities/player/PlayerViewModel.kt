@@ -1,11 +1,15 @@
 package com.kl3jvi.animity.ui.activities.player
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.ui_models.Content
-import com.kl3jvi.animity.domain.use_cases.GetEpisodeInfoUseCase
+import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Result
+import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -15,23 +19,23 @@ import javax.inject.Inject
 @HiltViewModel
 @ExperimentalCoroutinesApi
 class PlayerViewModel @Inject constructor(
-    private val getEpisodeInfoUseCase: GetEpisodeInfoUseCase,
+    private val playerRepository: PlayerRepository,
     private val episodeDao: EpisodeDao,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private var _episodeUrl = MutableLiveData<String>()
+    var episodeUrl = MutableStateFlow("")
+    var videoUrlLiveData = MutableStateFlow<Result<List<String>>>(Result.Loading)
     private var _playBackPosition = MutableLiveData<Long>()
 
-    fun updateEpisodeUrl(vidUrl: String) {
-        _episodeUrl.value = vidUrl
+    init {
+        getEpisodeUrl()
     }
 
     /**
-     * We create a flow that emits the current position of the ExoPlayer every second, and then we
-     * convert it to a LiveData object
+     * It creates a flow that emits the current position of the exoPlayer every second.
      *
-     * @param exoPlayer ExoPlayer? - The ExoPlayer instance that you want to observe.
+     * @param exoPlayer ExoPlayer? - The ExoPlayer instance
      */
     fun audioProgress(exoPlayer: ExoPlayer?) = flow {
         exoPlayer?.currentPosition?.let {
@@ -40,35 +44,41 @@ class PlayerViewModel @Inject constructor(
                 delay(1000)
             }
         }
-    }.flowOn(Dispatchers.Main).asLiveData(Dispatchers.IO + viewModelScope.coroutineContext)
+    }.flowOn(Dispatchers.IO + viewModelScope.coroutineContext)
 
-    val videoUrlLiveData = Transformations.switchMap(_episodeUrl) { url ->
-        getEpisodeInfoUseCase(url).flatMapLatest { episodeInfo ->
-            when (episodeInfo) {
-                is Result.Error -> {
-                    logError(episodeInfo.exception)
-                    emptyFlow()
-                }
-                is Result.Loading -> {
-                    emptyFlow()
-                }
-                is Result.Success -> {
-                    val id = Regex("id=([^&]+)").find(
-                        episodeInfo.data.vidCdnUrl.orEmpty()
-                    )?.value?.removePrefix("id=")
-                    getEpisodeInfoUseCase.fetchEncryptedAjaxUrl(
-                        episodeInfo.data.vidCdnUrl,
-                        id.orEmpty()
-                    )
+    private fun getEpisodeUrl() {
+        viewModelScope.launch(ioDispatcher) {
+            episodeUrl.collectLatest { url ->
+                val episodeUrl =
+                    playerRepository.fetchEpisodeMediaUrl(url = url.orEmpty()).asResult()
+                        .flatMapLatest { episodeInfo ->
+                            when (episodeInfo) {
+                                is Result.Error -> {
+                                    logError(episodeInfo.exception)
+                                    emptyFlow()
+                                }
+                                is Result.Loading -> {
+                                    emptyFlow()
+                                }
+                                is Result.Success -> {
+                                    val id = Regex("id=([^&]+)").find(
+                                        episodeInfo.data.vidCdnUrl.orEmpty()
+                                    )?.value?.removePrefix("id=")
+                                    playerRepository.fetchEncryptedAjaxUrl(
+                                        url = episodeInfo.data.vidCdnUrl.orEmpty(),
+                                        id = id.orEmpty()
+                                    )
+                                }
+                            }
+                        }.flatMapLatest {
+                            playerRepository.fetchM3u8Url(url = it)
+                        }.asResult()
+
+                episodeUrl.collect {
+                    videoUrlLiveData.value = it
                 }
             }
-        }.flatMapLatest {
-            when (it) {
-                is Result.Error -> emptyFlow()
-                Result.Loading -> emptyFlow()
-                is Result.Success -> getEpisodeInfoUseCase.fetchM3U8(it.data)
-            }
-        }.asLiveData()
+        }
     }
 
     fun insertOrUpdate(content: Content) {

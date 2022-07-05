@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.domain.use_cases.GetSearchResultUseCase
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getSearchResultUseCase: GetSearchResultUseCase,
+    private val searchRepository: SearchRepository,
+
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -34,7 +35,7 @@ class SearchViewModel @Inject constructor(
     private fun searchData() {
         viewModelScope.launch(ioDispatcher) {
             queryString.collectLatest { query ->
-                getSearchResultUseCase(query)
+                searchRepository.fetchAniListSearchData(query)
                     .cachedIn(viewModelScope)
                     .distinctUntilChanged()
                     .collect { _searchList.value = it }

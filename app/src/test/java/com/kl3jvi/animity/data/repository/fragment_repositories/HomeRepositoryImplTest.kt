@@ -4,6 +4,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.annotations.ApolloExperimental
+import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
 import com.kl3jvi.animity.HomeDataQuery
@@ -53,10 +54,19 @@ class HomeRepositoryImplTest {
         val testQuery = HomeDataQuery()
         apolloClient.enqueueTestResponse(testQuery, mockData)
         val actual = apolloClient.query(testQuery).execute().data!!
-
         assertEquals(
             mockData.movies?.media?.first()?.homeMedia?.id,
             actual.movies?.media?.first()?.homeMedia?.id
         )
+    }
+
+    @Test
+    fun getHomeDataCatchError() = runTest {
+
+        val testQuery = HomeDataQuery()
+//        apolloClient.enqueueTestResponse(testQuery, )
+        val data = apolloClient.query(testQuery).execute()
+        assertEquals(data, ApolloNetworkException())
+//        assertEquals(data?.movies?.media?.first()?.homeMedia?.id, Unit)
     }
 }

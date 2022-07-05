@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.domain.use_cases.GetAnimeDetailsUseCase
-import com.kl3jvi.animity.domain.use_cases.GetGogoUrlFromAniListId
-import com.kl3jvi.animity.domain.use_cases.MarkAnimeAsFavoriteUseCase
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
@@ -20,12 +20,11 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-    private val getAnimeDetailsUseCase: GetAnimeDetailsUseCase,
-    private val markAnimeAsFavoriteUseCase: MarkAnimeAsFavoriteUseCase,
-    private val getGogoUrlFromAniListId: GetGogoUrlFromAniListId,
+    private val detailsRepository: DetailsRepository,
+    private val userRepository: UserRepository,
+    private val favoriteRepository: FavoriteRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
-
 
     val animeMetaModel = MutableStateFlow<AniListMedia?>(null)
 
@@ -48,7 +47,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             animeMetaModel.collect { animeDetails ->
                 animeDetails?.let { animeMetaModel ->
-                    getGogoUrlFromAniListId(animeMetaModel.idAniList).asResult()
+                    favoriteRepository.getGogoUrlFromAniListId(animeMetaModel.idAniList).asResult()
                         .flatMapLatest { result ->
                             when (result) {
                                 is Result.Error -> emptyFlow()
@@ -62,8 +61,8 @@ class DetailsViewModel @Inject constructor(
                                             )
                                         },
                                         async {
-                                            getAnimeDetailsUseCase.fetchAnimeInfo(
-                                                result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
+                                            detailsRepository.fetchAnimeInfo(
+                                                episodeUrl = result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
                                             ).asResult()
                                         }
                                     )
@@ -77,12 +76,12 @@ class DetailsViewModel @Inject constructor(
     }
 
     private suspend fun fetchEpisodeList(url: String, malId: Int) {
-        return getAnimeDetailsUseCase.fetchAnimeInfo(url).flatMapLatest { info ->
-            getAnimeDetailsUseCase.fetchEpisodeList(
-                info.id,
-                info.endEpisode,
-                info.alias,
-                malId
+        return detailsRepository.fetchAnimeInfo(episodeUrl = url).flatMapLatest { info ->
+            detailsRepository.fetchEpisodeList(
+                id = info.id,
+                endEpisode = info.endEpisode,
+                alias = info.alias,
+                malId = malId
             )
         }.asResult()
             .catch { e -> logError(e) }
@@ -102,7 +101,7 @@ class DetailsViewModel @Inject constructor(
     fun updateAnimeFavorite() {
         viewModelScope.launch(ioDispatcher) {
             animeMetaModel.collect {
-                markAnimeAsFavoriteUseCase(it?.idAniList)
+                userRepository.markAnimeAsFavorite(it?.idAniList)
                     .catch { error -> logError(error) }
                     .collect {}
             }

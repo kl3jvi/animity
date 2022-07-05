@@ -20,7 +20,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
 import com.kl3jvi.animity.utils.addChuckerOnDebug
-import com.kl3jvi.animity.utils.addGoogleDns
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -70,14 +69,7 @@ object NetworkModule {
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BASIC
                 }
-            ).apply {
-                addGoogleDns()
-//                when (localStorage.dns) {
-//                    1 -> addGoogleDns()
-//                    2 -> addCloudFlareDns()
-//                    3 -> addAdGuardDns()
-//                }
-            }
+            )
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)

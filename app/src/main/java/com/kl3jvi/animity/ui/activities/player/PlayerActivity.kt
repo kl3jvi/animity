@@ -40,7 +40,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.Result
-import com.kl3jvi.animity.utils.observeLiveData
+import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Cache
@@ -96,7 +96,8 @@ class PlayerActivity : AppCompatActivity() {
             episodeNum.text = getIntentData?.episodeNumber
 
             initialisePlayerLayout()
-            viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
+//            viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
+            viewModel.episodeUrl.value = getIntentData?.episodeUrl.toString()
             hideSystemUi()
         }
     }
@@ -144,7 +145,7 @@ class PlayerActivity : AppCompatActivity() {
 
     @ExperimentalCoroutinesApi
     private fun initializePlayer() {
-        observeLiveData(viewModel.videoUrlLiveData, this) { res ->
+        collectFlow(viewModel.videoUrlLiveData) { res ->
             when (res) {
                 is Result.Error -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
@@ -153,7 +154,7 @@ class PlayerActivity : AppCompatActivity() {
                     binding.loadingOverlay.visibility = View.VISIBLE
                 }
                 is Result.Success -> {
-                    val videoM3U8Url = getSafeString(res.data)
+                    val videoM3U8Url = getSafeString(res.data.last())
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
                             setParameters(buildUponParameters().setMaxVideoSizeSd())
@@ -206,17 +207,16 @@ class PlayerActivity : AppCompatActivity() {
 
                         val skipIntro =
                             binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-                        viewModel.audioProgress(player).observe(this) { currentProgress ->
-                            currentProgress?.let {
-                                currentTime = it
-                                if (currentTime < 300000) {
-                                    skipIntro.setOnClickListener {
-                                        player?.seekTo(currentTime + INTRO_SKIP_TIME)
-                                        skipIntro.visibility = View.GONE
-                                    }
-                                } else {
+
+                        collectFlow(viewModel.audioProgress(player)) { currentProgress ->
+                            currentTime = currentProgress
+                            if (currentTime < 300000) {
+                                skipIntro.setOnClickListener {
+                                    player?.seekTo(currentTime + INTRO_SKIP_TIME)
                                     skipIntro.visibility = View.GONE
                                 }
+                            } else {
+                                skipIntro.visibility = View.GONE
                             }
                         }
 
@@ -227,7 +227,6 @@ class PlayerActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                     binding.loadingOverlay.visibility = View.GONE
-
                 }
             }
 

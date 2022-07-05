@@ -7,16 +7,19 @@ import com.kl3jvi.animity.*
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.LocalStorage
 import com.kl3jvi.animity.utils.logError
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val storage: LocalStorage,
     private val apolloClient: ApolloClient,
+    private val ioDispatcher: CoroutineDispatcher
 ) : UserRepository {
 
     override val bearerToken: String?
@@ -118,6 +121,7 @@ class UserRepositoryImpl @Inject constructor(
                         Optional.Present(animeId)
                     )
                 ).toFlow().catch { e -> logError(e) }
+                    .flowOn(ioDispatcher)
             }
         } catch (e: Exception) {
             logError(e)

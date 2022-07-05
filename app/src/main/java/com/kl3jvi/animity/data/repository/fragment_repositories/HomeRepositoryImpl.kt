@@ -20,7 +20,8 @@ class HomeRepositoryImpl @Inject constructor(
 ) : HomeRepository {
 
     override fun getHomeData(): Flow<HomeData> {
-        return apiClient.getHomeData().catch { e -> logError(e) }
+        return apiClient.getHomeData()
+            .catch { e -> logError(e) }
             .mapNotNull {
                 var data = HomeData()
                 if (!it.hasErrors() && it.data != null) {
