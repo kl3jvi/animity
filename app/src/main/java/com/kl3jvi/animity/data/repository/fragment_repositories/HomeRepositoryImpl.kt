@@ -32,7 +32,7 @@ class HomeRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getEncryptionKeys() = flow {
+    override fun getEncryptionKeys() = flow {
         try {
             emit(apiClient.getEncryptionKeys())
         } catch (e: Exception) {

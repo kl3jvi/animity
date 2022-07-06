@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface HomeRepository {
     val parser: Parser
     fun getHomeData(): Flow<HomeData>
-    suspend fun getEncryptionKeys(): Flow<GogoAnimeKeys>
+    fun getEncryptionKeys(): Flow<GogoAnimeKeys>
 }

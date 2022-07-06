@@ -12,7 +12,6 @@ class ResultKtTest {
 
     @Test
     fun Result_catches_errors() = runTest {
-
         flow {
             emit("Animes are the best")
             throw Exception("Test Finished")
@@ -33,5 +32,4 @@ class ResultKtTest {
             awaitComplete()
         }
     }
-
 }

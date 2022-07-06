@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface DetailsRepository {
     val parser: Parser
-    suspend fun fetchAnimeInfo(header: Map<String, String> = getNetworkHeader(), episodeUrl: String): Flow<AnimeInfoModel>
-    suspend fun getEpisodeTitles(id: Int): Flow<EpisodeWithTitle>
-    suspend fun fetchEpisodeList(
+    fun fetchAnimeInfo(header: Map<String, String> = getNetworkHeader(), episodeUrl: String): Flow<AnimeInfoModel>
+    fun getEpisodeTitles(id: Int): Flow<EpisodeWithTitle>
+    fun fetchEpisodeList(
         header: Map<String, String> = getNetworkHeader(),
         id: String,
         endEpisode: String,

@@ -42,10 +42,8 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindLoginRepository(repository: LoginRepositoryImpl): LoginRepository
 
-
     @Binds
     abstract fun bindProfileRepository(repository: ProfileRepositoryImpl): ProfileRepository
-
 
     @Binds
     abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository

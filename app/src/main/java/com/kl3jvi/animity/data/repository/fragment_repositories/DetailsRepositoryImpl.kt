@@ -20,7 +20,7 @@ class DetailsRepositoryImpl @Inject constructor(
     override val parser: Parser
 ) : DetailsRepository {
 
-    override suspend fun fetchAnimeInfo(
+    override fun fetchAnimeInfo(
         header: Map<String, String>,
         episodeUrl: String
     ) = flow {
@@ -32,7 +32,7 @@ class DetailsRepositoryImpl @Inject constructor(
         } else emptyFlow<AnimeInfoModel>()
     }.flowOn(ioDispatcher)
 
-    override suspend fun fetchEpisodeList(
+    override fun fetchEpisodeList(
         header: Map<String, String>,
         id: String,
         endEpisode: String,
@@ -66,7 +66,7 @@ class DetailsRepositoryImpl @Inject constructor(
     }.flowOn(ioDispatcher)
 
 
-    override suspend fun getEpisodeTitles(id: Int) = flow {
+    override fun getEpisodeTitles(id: Int) = flow {
         val response = apiClient.getEpisodeTitles(id)
         emit(response)
     }.flowOn(ioDispatcher)
