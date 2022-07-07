@@ -6,7 +6,6 @@ import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
-    val parser: Parser
     fun getHomeData(): Flow<HomeData>
     fun getEncryptionKeys(): Flow<GogoAnimeKeys>
 }

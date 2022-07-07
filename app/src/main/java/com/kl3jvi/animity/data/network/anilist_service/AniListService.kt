@@ -15,9 +15,4 @@ interface AniListService {
     )
     @POST(AUTH_URL)
     suspend fun getAccessToken(@Body aniListAuth: AniListAuth): AuthResponse
-
-
-    @Headers()
-    @POST()
-    suspend fun getEpisodesFromKitsu()
 }

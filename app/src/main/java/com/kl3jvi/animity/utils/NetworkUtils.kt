@@ -6,11 +6,14 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kl3jvi.animity.BuildConfig
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
@@ -84,7 +87,6 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
         getNetworkLiveData(context = this).observe(owner) {
             observer(it)
         }
-
     }
 }
 

@@ -18,6 +18,7 @@ import com.kl3jvi.animity.domain.repositories.persistence_repositories.Persisten
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
+import com.kl3jvi.animity.utils.GoGoAnime
 import com.kl3jvi.animity.utils.RetrofitClient
 import com.kl3jvi.animity.utils.addChuckerOnDebug
 import dagger.Module
@@ -25,6 +26,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -60,9 +62,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @RetrofitClient
-    fun provideRetrofitOkHttpClient(
-        /*localStorage: PersistenceRepository*/
-    ): OkHttpClient {
+    fun provideRetrofitOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
@@ -119,11 +119,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @GoGoAnime
     fun provideGogoAnimeApiClient(
         gogoAnimeService: GogoAnimeService,
-        apolloClient: ApolloClient
-    ): GogoAnimeApiClient {
-        return GogoAnimeApiClient(gogoAnimeService, apolloClient)
+
+        ): GogoAnimeApiClient {
+        return GogoAnimeApiClient(gogoAnimeService)
     }
 
     @Singleton
@@ -136,10 +137,22 @@ object NetworkModule {
     @Singleton
     fun provideNineAnimeApiClient(
         nineAnimeService: NineAnimeService,
-        apolloClient: ApolloClient
+//        apolloClient: ApolloClient
     ): NineAnimeApiClient {
-        return NineAnimeApiClient(nineAnimeService, apolloClient)
+        return NineAnimeApiClient(nineAnimeService)
     }
+
+    @Provides
+    @Singleton
+    fun provideAniListClient(
+        aniListService: AniListService,
+        apolloClient: ApolloClient,
+        ioDispatcher: CoroutineDispatcher
+    ): AniListClient {
+        return AniListClient(aniListService, apolloClient,ioDispatcher)
+    }
+
+
 
     @Singleton
     @Provides
@@ -147,11 +160,7 @@ object NetworkModule {
         return retrofit.create(AniListService::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideAniListClient(aniListService: AniListService): AniListClient {
-        return AniListClient(aniListService)
-    }
+
 
     @Provides
     @Singleton

@@ -106,6 +106,9 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="network_settings">Network Settings</string>
+    <string name="provider_title">Select Provider</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
 
 
 </resources>

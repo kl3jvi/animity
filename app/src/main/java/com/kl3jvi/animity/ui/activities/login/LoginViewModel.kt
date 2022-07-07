@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryImpl
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
+import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val userRepository: UserRepositoryImpl
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
 
@@ -70,6 +71,10 @@ class LoginViewModel @Inject constructor(
      */
     fun getToken(): String? {
         return userRepository.bearerToken
+    }
+
+    fun setSelectedProvider(provider: String) {
+        userRepository.setProvider(provider = provider)
     }
 
 }

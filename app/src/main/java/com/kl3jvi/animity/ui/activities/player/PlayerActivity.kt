@@ -180,10 +180,13 @@ class PlayerActivity : AppCompatActivity() {
                                 exoPlayer.playWhenReady = playWhenReady
                                 exoPlayer.prepare()
                             }
+                        /* Using the collectFlow function to collect the playback position from the
+                        viewModel and then seek to that position. */
+
                         viewModel.getPlaybackPosition(episodeUrlLocal)
-                            .observe(this@PlayerActivity) {
-                                player?.seekTo(it)
-                            }
+                        collectFlow(viewModel.playBackPosition) {
+                            player?.seekTo(it)
+                        }
 
 
                         player!!.addListener(object : Player.Listener {

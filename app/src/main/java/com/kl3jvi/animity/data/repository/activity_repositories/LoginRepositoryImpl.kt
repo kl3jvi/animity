@@ -1,6 +1,6 @@
 package com.kl3jvi.animity.data.repository.activity_repositories
 
-import com.kl3jvi.animity.data.network.anilist_service.AniListClient
+import com.kl3jvi.animity.data.network.anilist_service.AuthClient
 import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
@@ -9,7 +9,8 @@ import javax.inject.Inject
 
 
 class LoginRepositoryImpl @Inject constructor(
-    private val aniListClient: AniListClient,
+//    private val aniListClient: AniListClient,
+    private val authClient: AuthClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : LoginRepository {
     override fun getAccessToken(
@@ -20,7 +21,7 @@ class LoginRepositoryImpl @Inject constructor(
         code: String
     ) = flow {
         emit(
-            aniListClient.getAccessToken(
+            authClient.getAccessToken(
                 grantType,
                 clientId,
                 clientSecret,

@@ -10,3 +10,8 @@ annotation class RetrofitClient
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Apollo
 
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class GoGoAnime
+

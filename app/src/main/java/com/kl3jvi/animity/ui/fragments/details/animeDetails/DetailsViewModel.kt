@@ -8,6 +8,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
+import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
@@ -23,7 +24,8 @@ class DetailsViewModel @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val userRepository: UserRepository,
     private val favoriteRepository: FavoriteRepository,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
+    private val persistenceRepository: PersistenceRepository
 ) : ViewModel() {
 
     val animeMetaModel = MutableStateFlow<AniListMedia?>(null)

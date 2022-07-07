@@ -1,30 +1,38 @@
 package com.kl3jvi.animity.data.mapper
 
+import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.data.model.ui_models.*
-
 import com.kl3jvi.animity.fragment.HomeMedia
 
 
-fun HomeDataQuery.Data.convert(): HomeData {
-    val trendingAnime =
-        trendingAnime?.media?.mapNotNull {
-            it?.homeMedia?.convert()
+fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
+    val data = this.data
+    var homeData = HomeData()
+    if (!this.hasErrors() && this.data != null) {
+        val trendingAnime =
+            data?.trendingAnime?.media?.mapNotNull {
+                it?.homeMedia?.convert()
+            } ?: listOf()
+        val popularAnime =
+            data?.popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+        val movies =
+            data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+        val review = data?.review?.reviews?.mapNotNull {
+            it.convert()
+
         } ?: listOf()
-    val popularAnime = popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
-    val movies =
-        movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
-    val review = review?.reviews?.mapNotNull {
-        it.convert()
 
-    } ?: listOf()
+        homeData = HomeData(
+            trendingAnime = trendingAnime,
+            popularAnime = popularAnime,
+            movies = movies,
+            review = review
+        )
+    }
 
-    return HomeData(
-        trendingAnime = trendingAnime,
-        popularAnime = popularAnime,
-        movies = movies,
-        review = review
-    )
+    return homeData
+
 }
 
 fun HomeDataQuery.Review1?.convert(): Review {

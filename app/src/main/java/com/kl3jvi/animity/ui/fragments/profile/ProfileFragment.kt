@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
+import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment

@@ -52,7 +52,9 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         val isLoggedInWithAuth = viewModel.getToken().run { this.isNotNullOrEmpty() }
         if (isLoggedInWithAuth) {
             binding.progressBar.show()
-            launchActivity<MainActivity> {}
+            launchActivity<MainActivity> {
+                viewModel.setSelectedProvider("gogoAnime")
+            }
             finish()
         }
         return isLoggedInWithAuth
@@ -132,6 +134,9 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         val aniListLogin = binding.aniListLogin
         val aniListRegister = binding.aniListSignUp
         val privacy = binding.privacy
+
+
+
 
         aniListLogin.launchBrowser(getAuthorizationUrl())
         aniListRegister.launchBrowser(Uri.parse(SIGNUP_URL))

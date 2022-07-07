@@ -1,28 +1,12 @@
 package com.kl3jvi.animity.parsers
 
+import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.utils.RetrofitClient
-import okhttp3.OkHttpClient
 import org.jsoup.Jsoup
-import retrofit2.Retrofit
 import javax.inject.Inject
 
-class GoGoParser @Inject constructor(
-    private val retrofit: Retrofit,
-    @RetrofitClient val okHttpClient: OkHttpClient
-) : BaseParser() {
+class GoGoParser @Inject constructor() : BaseParser() {
 
-    fun retrofit(): Retrofit {
-        return retrofit.newBuilder()
-            .client(okHttpClient)
-            .build()
-    }
-
-    override val name: String
-        get() = "GoGoAnime"
-
-    override val url: String
-        get() = "https://gogoanime.gg"
 
     override suspend fun fetchEpisodeList(response: String): List<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
@@ -44,6 +28,10 @@ class GoGoParser @Inject constructor(
     }
 
     override suspend fun getMediaUrls(response: String): List<String> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun parseAnimeInfo(response: String): AnimeInfoModel {
         TODO("Not yet implemented")
     }
 }

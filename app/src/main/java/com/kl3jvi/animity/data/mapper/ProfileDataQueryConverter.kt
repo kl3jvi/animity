@@ -1,31 +1,38 @@
 package com.kl3jvi.animity.data.mapper
 
+import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.UserQuery
 import com.kl3jvi.animity.data.model.ui_models.*
 
-fun UserQuery.Data.convert(): ProfileData {
-    return if (user != null) ProfileData(
-        User(
-            user.id,
-            user.name,
-            user.about.orEmpty(),
-            UserAvatar(
-                user.avatar?.large.orEmpty(),
-                user.avatar?.medium.orEmpty()
-            ),
-            user.bannerImage.orEmpty(),
+fun ApolloResponse<UserQuery.Data>.convert(): ProfileData {
+    val data = this.data
+    var profileData = ProfileData()
+    if (data?.user != null)
+        profileData = ProfileData(
+            User(
+                data.user.id,
+                data.user.name,
+                data.user.about.orEmpty(),
+                UserAvatar(
+                    data.user.avatar?.large.orEmpty(),
+                    data.user.avatar?.medium.orEmpty()
+                ),
+                data.user.bannerImage.orEmpty(),
+            )
         )
-    ) else ProfileData()
+    return profileData
 }
 
-fun AnimeListCollectionQuery.Data.convert(): List<ProfileRow> {
-    return this.media?.lists?.mapNotNull {
+fun ApolloResponse<AnimeListCollectionQuery.Data>.convert(): List<ProfileRow> {
+    val data = this.data
+    val list: List<ProfileRow> = data?.media?.lists?.mapNotNull {
         ProfileRow(
             it?.name.orEmpty(),
             it?.entries.convert()
         )
-    } ?: listOf()
+    } ?: emptyList()
+    return list
 }
 
 private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia> {
