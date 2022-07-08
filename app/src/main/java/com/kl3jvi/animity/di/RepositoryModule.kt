@@ -1,8 +1,5 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.data.network.anime_service.BaseClient
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
-import com.kl3jvi.animity.data.network.anime_service.NineAnimeApiClient
 import com.kl3jvi.animity.data.repository.activity_repositories.LoginRepositoryImpl
 import com.kl3jvi.animity.data.repository.activity_repositories.PlayerRepositoryImpl
 import com.kl3jvi.animity.data.repository.fragment_repositories.*
@@ -11,7 +8,6 @@ import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginReposit
 import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.*
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
-import com.kl3jvi.animity.utils.GoGoAnime
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import com.kl3jvi.animity.utils.parser.Parser
 import dagger.Binds
@@ -55,15 +51,9 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindParser(parser: HtmlParser): Parser
 
-    /* A way to bind an implementation to an interface. */
-    @Binds
-    abstract fun bindGogoClient(
-        @GoGoAnime gogoClient: GogoAnimeApiClient
-    ): BaseClient
-
-//    @Binds
-//    abstract fun bindNineAnimeClient(
-//        nineAnimeApiClient: NineAnimeApiClient
-//    ): BaseClient
 
 }
+
+
+
+

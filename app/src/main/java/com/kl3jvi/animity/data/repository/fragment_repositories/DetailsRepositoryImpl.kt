@@ -3,8 +3,6 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
-import com.kl3jvi.animity.utils.GoGoAnime
 import com.kl3jvi.animity.utils.parser.HtmlParser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.emptyFlow
@@ -16,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DetailsRepositoryImpl @Inject constructor(
-    @GoGoAnime private val apiClient: GogoAnimeApiClient,
+    private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
     override val parser: HtmlParser
 ) : DetailsRepository {

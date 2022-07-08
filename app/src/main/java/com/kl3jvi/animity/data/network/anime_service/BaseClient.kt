@@ -1,17 +1,33 @@
 package com.kl3jvi.animity.data.network.anime_service
 
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
-import kotlinx.coroutines.flow.Flow
+import okhttp3.ResponseBody
 
-abstract class BaseClient {
-    abstract suspend fun getGogoUrlFromAniListId(id: Int): DetailedAnimeInfo
-    abstract suspend fun getEncryptionKeys(): GogoAnimeKeys
-//    abstract fun getFavoriteAnimesFromAniList(
-//        userId: Int?,
-//        page: Int?
-//    ): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
 
-}
+//abstract class BaseClient {
+//    abstract suspend fun getGogoUrlFromAniListId(id: Int): DetailedAnimeInfo
+//    abstract suspend fun getEncryptionKeys(): GogoAnimeKeys
+//    abstract suspend fun fetchAnimeInfo(
+//        header: Map<String, String>,
+//        episodeUrl: String
+//    ): ResponseBody
+//
+//    abstract suspend fun fetchEpisodeList(
+//        header: Map<String, String>,
+//        id: String,
+//        endEpisode: String,
+//        alias: String
+//    ): ResponseBody
+//
+//    abstract suspend fun fetchEpisodeMediaUrl(
+//        header: Map<String, String>,
+//        episodeUrl: String
+//    ): ResponseBody
+//
+//    abstract suspend fun fetchM3u8Url(header: Map<String, String>, url: String): ResponseBody
+//    abstract suspend fun fetchM3u8PreProcessor(
+//        header: Map<String, String>,
+//        url: String
+//    ): ResponseBody
+//}

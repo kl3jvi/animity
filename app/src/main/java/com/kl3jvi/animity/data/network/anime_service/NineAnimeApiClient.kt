@@ -10,14 +10,7 @@ import javax.inject.Inject
 
 class NineAnimeApiClient @Inject constructor(
     private val nineAnimeService: NineAnimeService,
-) : BaseClient() {
-    override suspend fun getGogoUrlFromAniListId(id: Int): DetailedAnimeInfo {
-        TODO("Not yet implemented")
+) {
 
-    }
-
-    override suspend fun getEncryptionKeys(): GogoAnimeKeys {
-        TODO("Not yet implemented")
-    }
 
 }

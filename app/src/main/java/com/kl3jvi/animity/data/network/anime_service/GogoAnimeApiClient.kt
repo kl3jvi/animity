@@ -2,9 +2,10 @@ package com.kl3jvi.animity.data.network.anime_service
 
 import javax.inject.Inject
 
+
 class GogoAnimeApiClient @Inject constructor(
     private val gogoAnimeService: GogoAnimeService,
-) : BaseClient() {
+) {
 
     suspend fun fetchAnimeInfo(
         header: Map<String, String>,
@@ -33,14 +34,14 @@ class GogoAnimeApiClient @Inject constructor(
         url: String
     ) = gogoAnimeService.fetchM3u8Url(header, url)
 
-    override suspend fun getEncryptionKeys() = gogoAnimeService.getKeys()
+    suspend fun getEncryptionKeys() = gogoAnimeService.getKeys()
 
     suspend fun fetchM3u8PreProcessor(
         header: Map<String, String>,
         url: String
     ) = gogoAnimeService.fetchM3u8PreProcessor(header, url)
 
-    override suspend fun getGogoUrlFromAniListId(id: Int) =
+    suspend fun getGogoUrlFromAniListId(id: Int) =
         gogoAnimeService.getGogoUrlFromAniListId(id)
 
     suspend fun getEpisodeTitles(id: Int) =

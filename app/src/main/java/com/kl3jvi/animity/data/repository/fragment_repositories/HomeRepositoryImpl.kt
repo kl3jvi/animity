@@ -8,7 +8,6 @@ import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
-import com.kl3jvi.animity.utils.GoGoAnime
 import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
@@ -18,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class HomeRepositoryImpl @Inject constructor(
     private val aniListGraphQlClient: AniListGraphQlClient,
-    @GoGoAnime private val animeClient: GogoAnimeApiClient,
+    private val animeClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
 ) : HomeRepository {
 
@@ -28,7 +27,6 @@ class HomeRepositoryImpl @Inject constructor(
             .mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
             .flowOn(ioDispatcher)
     }
-
 
     override fun getEncryptionKeys() = flow {
         try {

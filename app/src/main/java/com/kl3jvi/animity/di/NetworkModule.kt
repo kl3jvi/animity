@@ -6,8 +6,8 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
+import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
 import com.kl3jvi.animity.data.network.anime_service.NineAnimeApiClient
@@ -18,7 +18,6 @@ import com.kl3jvi.animity.domain.repositories.persistence_repositories.Persisten
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
-import com.kl3jvi.animity.utils.GoGoAnime
 import com.kl3jvi.animity.utils.RetrofitClient
 import com.kl3jvi.animity.utils.addChuckerOnDebug
 import dagger.Module
@@ -88,12 +87,7 @@ object NetworkModule {
             .build()
     }
 
-    /**
-     * Provide an ApolloClient instance with the given OkHttpClient instance.
-     *
-     * @param okHttpClient The OkHttpClient instance that will be used to make the network requests.
-     * @return ApolloClient
-     */
+
     @Provides
     @Singleton
     fun provideApolloClient(
@@ -119,13 +113,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @GoGoAnime
     fun provideGogoAnimeApiClient(
-        gogoAnimeService: GogoAnimeService,
-
-        ): GogoAnimeApiClient {
+        gogoAnimeService: GogoAnimeService
+    ): GogoAnimeApiClient {
         return GogoAnimeApiClient(gogoAnimeService)
     }
+
 
     @Singleton
     @Provides
@@ -136,30 +129,26 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideNineAnimeApiClient(
-        nineAnimeService: NineAnimeService,
-//        apolloClient: ApolloClient
+        nineAnimeService: NineAnimeService
     ): NineAnimeApiClient {
         return NineAnimeApiClient(nineAnimeService)
     }
 
     @Provides
     @Singleton
-    fun provideAniListClient(
-        aniListAuthService: AniListAuthService,
+    fun provideAniListGraphQlClient(
         apolloClient: ApolloClient,
         ioDispatcher: CoroutineDispatcher
     ): AniListGraphQlClient {
-        return AniListGraphQlClient(aniListAuthService, apolloClient,ioDispatcher)
+        return AniListGraphQlClient(apolloClient, ioDispatcher)
     }
-
 
 
     @Singleton
     @Provides
-    fun provideAniListService(retrofit: Retrofit): AniListAuthService {
+    fun provideAniListAuthService(retrofit: Retrofit): AniListAuthService {
         return retrofit.create(AniListAuthService::class.java)
     }
-
 
 
     @Provides
@@ -174,6 +163,8 @@ object NetworkModule {
             .alwaysReadResponseBody(false)
             .build()
     }
+
+
 }
 
 

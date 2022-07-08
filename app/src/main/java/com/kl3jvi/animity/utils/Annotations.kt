@@ -11,7 +11,7 @@ annotation class RetrofitClient
 annotation class Apollo
 
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class GoGoAnime
+
+
+
 

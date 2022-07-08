@@ -27,24 +27,6 @@ class HtmlParser @Inject constructor(
      */
     override fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
-        val animeInfo = document.getElementsByClass("anime_info_body_bg")
-        val animeUrl = animeInfo.select("img").first().absUrl("src").orEmpty()
-        val animeTitle = animeInfo.select("h1").first().text()
-        val lists = document?.getElementsByClass("type")
-        lateinit var type: String
-        lateinit var releaseTime: String
-        lateinit var status: String
-        lateinit var plotSummary: String
-        val genre: ArrayList<GenreModel> = ArrayList()
-        lists?.forEachIndexed { index, element ->
-            when (index) {
-                0 -> type = element.text()
-                1 -> plotSummary = element.text()
-                2 -> genre.addAll(getGenreList(element.select("a")))
-                3 -> releaseTime = element.text()
-                4 -> status = element.text()
-            }
-        }
         val episodeInfo = document.getElementById("episode_page")
         val episodeList = episodeInfo.select("a").last()
         val endEpisode = episodeList.attr("ep_end")
@@ -52,13 +34,6 @@ class HtmlParser @Inject constructor(
         val id = document.getElementById("movie_id").attr("value")
         return AnimeInfoModel(
             id = id,
-            animeTitle = animeTitle,
-            imageUrl = animeUrl,
-            type = formatInfoValues(type),
-            releasedTime = formatInfoValues(releaseTime),
-            status = formatInfoValues(status),
-            genre = genre,
-            plotSummary = formatInfoValues(plotSummary).trim(),
             alias = alias,
             endEpisode = endEpisode
         )
@@ -191,6 +166,7 @@ class HtmlParser @Inject constructor(
         }
     }
 
+
     /**
      * It takes a string as input, parses it using Jsoup, and returns an object of type EpisodeInfo
      *
@@ -222,7 +198,7 @@ class HtmlParser @Inject constructor(
      * @param response The response from the server
      * @return an arraylist of urls.
      */
-    override fun parseEncryptedUrls(response: String): ArrayList<String> {
+    override fun parseEncryptedUrls(response: String): List<String> {
         val urls: ArrayList<String> = ArrayList()
         var i = 0
         val data = JSONObject(response).getString("data")
@@ -241,11 +217,9 @@ class HtmlParser @Inject constructor(
                 i++
             }
             urls
-        } catch (exp: java.lang.NullPointerException) {
+        } catch (exp: NullPointerException) {
             urls
         }
-
-
     }
 }
 
