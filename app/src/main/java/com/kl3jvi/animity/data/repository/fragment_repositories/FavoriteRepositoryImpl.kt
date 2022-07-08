@@ -4,7 +4,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.data.network.anilist_service.AniListClient
+import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.BaseClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class FavoriteRepositoryImpl @Inject constructor(
     private val apiClient: BaseClient,
-    private val aniListClient: AniListClient,
+    private val aniListGraphQlClient: AniListGraphQlClient,
     private val ioDispatcher: CoroutineDispatcher,
     localStorage: PersistenceRepository,
 ) : FavoriteRepository {
@@ -39,7 +39,7 @@ class FavoriteRepositoryImpl @Inject constructor(
         userId: Int?,
         page: Int?
     ): Flow<List<AniListMedia>> {
-        return aniListClient.getFavoriteAnimesFromAniList(userId, page)
+        return aniListGraphQlClient.getFavoriteAnimesFromAniList(userId, page)
             .catch { e -> logError(e) }
             .mapNotNull(ApolloResponse<FavoritesAnimeQuery.Data>::convert)
 

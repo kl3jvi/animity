@@ -5,7 +5,7 @@ import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
 import com.kl3jvi.animity.data.model.ui_models.HomeData
-import com.kl3jvi.animity.data.network.anilist_service.AniListClient
+import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
 import com.kl3jvi.animity.utils.GoGoAnime
@@ -17,13 +17,13 @@ import javax.inject.Singleton
 
 @Singleton
 class HomeRepositoryImpl @Inject constructor(
-    private val aniListClient: AniListClient,
+    private val aniListGraphQlClient: AniListGraphQlClient,
     @GoGoAnime private val animeClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
 ) : HomeRepository {
 
     override fun getHomeData(): Flow<HomeData> {
-        return aniListClient.getHomeData()
+        return aniListGraphQlClient.getHomeData()
             .catch { e -> logError(e) }
             .mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
             .flowOn(ioDispatcher)

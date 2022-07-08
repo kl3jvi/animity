@@ -6,8 +6,8 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kl3jvi.animity.data.network.anilist_service.AniListClient
-import com.kl3jvi.animity.data.network.anilist_service.AniListService
+import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
+import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
 import com.kl3jvi.animity.data.network.anime_service.NineAnimeApiClient
@@ -145,19 +145,19 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAniListClient(
-        aniListService: AniListService,
+        aniListAuthService: AniListAuthService,
         apolloClient: ApolloClient,
         ioDispatcher: CoroutineDispatcher
-    ): AniListClient {
-        return AniListClient(aniListService, apolloClient,ioDispatcher)
+    ): AniListGraphQlClient {
+        return AniListGraphQlClient(aniListAuthService, apolloClient,ioDispatcher)
     }
 
 
 
     @Singleton
     @Provides
-    fun provideAniListService(retrofit: Retrofit): AniListService {
-        return retrofit.create(AniListService::class.java)
+    fun provideAniListService(retrofit: Retrofit): AniListAuthService {
+        return retrofit.create(AniListAuthService::class.java)
     }
 
 

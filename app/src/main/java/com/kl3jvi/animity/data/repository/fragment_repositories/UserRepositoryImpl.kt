@@ -3,7 +3,7 @@ package com.kl3jvi.animity.data.repository.fragment_repositories
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
-import com.kl3jvi.animity.data.network.anilist_service.AniListClient
+import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
 import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
 import com.kl3jvi.animity.parsers.Providers
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val storage: PersistenceRepository,
-    private val aniListClient: AniListClient
+    private val aniListGraphQlClient: AniListGraphQlClient
 ) : UserRepository {
 
     override val bearerToken: String?
@@ -56,11 +56,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>> {
-        return aniListClient.getSessionForUser()
+        return aniListGraphQlClient.getSessionForUser()
     }
 
     override fun markAnimeAsFavorite(idAniList: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
-        return aniListClient.markAnimeAsFavorite(idAniList)
+        return aniListGraphQlClient.markAnimeAsFavorite(idAniList)
     }
 
 

@@ -4,7 +4,6 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.*
-import com.kl3jvi.animity.data.model.auth_models.AniListAuth
 import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -13,12 +12,10 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class AniListClient @Inject constructor(
-    private val aniListService: AniListService,
+class AniListGraphQlClient @Inject constructor(
     private val apolloClient: ApolloClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : AniListSync {
-
 
 
     override fun getHomeData() = apolloClient.query(

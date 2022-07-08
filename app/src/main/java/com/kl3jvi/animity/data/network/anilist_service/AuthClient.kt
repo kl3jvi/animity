@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
 import com.kl3jvi.animity.data.model.auth_models.AniListAuth
+import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import javax.inject.Inject
 
 interface Authenticator {
@@ -11,11 +12,11 @@ interface Authenticator {
         clientSecret: String,
         redirectUri: String,
         code: String
-    ): Any
+    ): AuthResponse
 }
 
 class AuthClient @Inject constructor(
-    private val aniListService: AniListService
+    private val aniListService: AniListAuthService
 ) : Authenticator {
     override suspend fun getAccessToken(
         grantType: String,
