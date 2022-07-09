@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.ProfileRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.ProfileRepository
+import com.kl3jvi.animity.domain.repositories.UserRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage

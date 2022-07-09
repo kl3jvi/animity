@@ -1,8 +1,9 @@
-package com.kl3jvi.animity.data.repository.persistence_repository
+package com.kl3jvi.animity.data.repository
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.kl3jvi.animity.data.model.ui_models.Content
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.parsers.Providers
 import com.kl3jvi.animity.persistence.EpisodeDao
 import kotlinx.coroutines.flow.Flow
@@ -104,5 +105,13 @@ class PersistenceRepositoryImpl @Inject constructor(
         sharedPreferences.edit().clear().apply()
     }
 
+    inline fun <reified T> String?.fromJson(): T {
+        return Gson().fromJson(this.orEmpty(), T::class.java)
+    }
+
+    inline fun <reified T> T?.toJson(): String? {
+        return Gson().toJson(this)
+    }
 
 }
+

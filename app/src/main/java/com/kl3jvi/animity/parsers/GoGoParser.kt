@@ -4,7 +4,7 @@ import android.os.Build
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import java.util.*
@@ -160,4 +160,29 @@ class GoGoParser @Inject constructor(
             )
         }
     }
+
+    override fun parseEncryptedUrls(response: String): List<String> {
+        val urls: ArrayList<String> = ArrayList()
+        var i = 0
+        val data = JSONObject(response).getString("data")
+        val decryptedData = decryptAES(
+            data,
+            preferences.secondKey.toString(),
+            preferences.iv.toString()
+        ).replace(
+            """o"<P{#meme":""",
+            """e":[{"file":"""
+        )
+        val res = JSONObject(decryptedData).getJSONArray("source")
+        return try {
+            while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
+                urls.add(res.getJSONObject(i).getString("file"))
+                i++
+            }
+            urls
+        } catch (exp: NullPointerException) {
+            urls
+        }
+    }
+
 }

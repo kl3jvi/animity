@@ -3,8 +3,8 @@ package com.kl3jvi.animity.ui.fragments.favorites
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.FavoriteRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError

@@ -1,15 +1,7 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.data.repository.activity_repositories.LoginRepositoryImpl
-import com.kl3jvi.animity.data.repository.activity_repositories.PlayerRepositoryImpl
-import com.kl3jvi.animity.data.repository.fragment_repositories.*
-import com.kl3jvi.animity.data.repository.persistence_repository.PersistenceRepositoryImpl
-import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
-import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.*
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
-import com.kl3jvi.animity.utils.parser.HtmlParser
-import com.kl3jvi.animity.utils.parser.Parser
+import com.kl3jvi.animity.data.repository.*
+import com.kl3jvi.animity.domain.repositories.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -47,10 +39,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository
-
-    @Binds
-    abstract fun bindParser(parser: HtmlParser): Parser
-
 
 }
 

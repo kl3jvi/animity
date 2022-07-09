@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories.fragment_repositories
+package com.kl3jvi.animity.domain.repositories
 
 import androidx.paging.PagingData
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia

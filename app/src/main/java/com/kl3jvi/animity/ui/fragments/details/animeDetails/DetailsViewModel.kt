@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.DetailsRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.FavoriteRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.DetailsRepository
+import com.kl3jvi.animity.domain.repositories.FavoriteRepository
+import com.kl3jvi.animity.domain.repositories.UserRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError

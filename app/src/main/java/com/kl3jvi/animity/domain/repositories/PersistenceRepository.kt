@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories.persistence_repositories
+package com.kl3jvi.animity.domain.repositories
 
 import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.parsers.Providers

@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.repository.fragment_repositories
+package com.kl3jvi.animity.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.paging.SearchAniListPagingSource
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.SearchRepository
+import com.kl3jvi.animity.domain.repositories.SearchRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

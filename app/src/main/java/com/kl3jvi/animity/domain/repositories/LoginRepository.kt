@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories.activity_repositories
+package com.kl3jvi.animity.domain.repositories
 
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import kotlinx.coroutines.flow.Flow

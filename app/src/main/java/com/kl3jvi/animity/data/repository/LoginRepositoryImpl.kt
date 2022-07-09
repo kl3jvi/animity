@@ -1,7 +1,7 @@
-package com.kl3jvi.animity.data.repository.activity_repositories
+package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.network.anilist_service.AuthClient
-import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
+import com.kl3jvi.animity.domain.repositories.LoginRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

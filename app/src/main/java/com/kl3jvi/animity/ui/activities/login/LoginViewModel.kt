@@ -2,9 +2,8 @@ package com.kl3jvi.animity.ui.activities.login
 
 import androidx.lifecycle.ViewModel
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
-import com.kl3jvi.animity.data.repository.fragment_repositories.UserRepositoryImpl
-import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
+import com.kl3jvi.animity.domain.repositories.LoginRepository
+import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel

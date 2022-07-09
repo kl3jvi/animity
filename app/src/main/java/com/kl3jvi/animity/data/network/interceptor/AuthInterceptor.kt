@@ -1,8 +1,8 @@
 package com.kl3jvi.animity.data.network.interceptor
 
 import com.kl3jvi.animity.BuildConfig.*
-import com.kl3jvi.animity.domain.repositories.activity_repositories.LoginRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.LoginRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult

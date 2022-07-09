@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.ui_models.Content
-import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
+import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult

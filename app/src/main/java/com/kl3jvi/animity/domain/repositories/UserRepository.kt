@@ -1,8 +1,9 @@
-package com.kl3jvi.animity.domain.repositories.fragment_repositories
+package com.kl3jvi.animity.domain.repositories
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
+import com.kl3jvi.animity.data.model.ui_models.SessionData
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

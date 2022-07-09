@@ -1,12 +1,12 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.kl3jvi.animity.data.repository.activity_repositories
+package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
-import com.kl3jvi.animity.domain.repositories.activity_repositories.PlayerRepository
+import com.kl3jvi.animity.domain.repositories.PlayerRepository
+import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.logError
-import com.kl3jvi.animity.utils.parser.Parser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class PlayerRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
-    override val parser: Parser
+    override val parser: GoGoParser
 ) : PlayerRepository {
 
     override fun getMediaUrl(

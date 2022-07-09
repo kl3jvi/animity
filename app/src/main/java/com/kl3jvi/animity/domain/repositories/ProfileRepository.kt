@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.domain.repositories.fragment_repositories
+package com.kl3jvi.animity.domain.repositories
 
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow

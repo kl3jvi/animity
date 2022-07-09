@@ -7,6 +7,7 @@ import javax.inject.Inject
 class NineAnimeParser @Inject constructor() : BaseParser() {
     override fun fetchEpisodeList(response: String): List<EpisodeModel> {
         TODO("Not yet implemented")
+
     }
 
     override fun getMediaUrls(response: String): List<String> {
@@ -14,6 +15,10 @@ class NineAnimeParser @Inject constructor() : BaseParser() {
     }
 
     override fun parseAnimeInfo(response: String): AnimeInfoModel {
+        TODO("Not yet implemented")
+    }
+
+    override fun parseEncryptedUrls(response: String): List<String> {
         TODO("Not yet implemented")
     }
 

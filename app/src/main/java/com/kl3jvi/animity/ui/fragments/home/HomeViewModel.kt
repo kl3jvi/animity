@@ -3,7 +3,7 @@ package com.kl3jvi.animity.ui.fragments.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.HomeData
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
+import com.kl3jvi.animity.domain.repositories.HomeRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage

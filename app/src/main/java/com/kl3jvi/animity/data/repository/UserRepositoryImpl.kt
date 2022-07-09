@@ -1,18 +1,24 @@
-package com.kl3jvi.animity.data.repository.fragment_repositories
+package com.kl3jvi.animity.data.repository
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
+import com.kl3jvi.animity.data.mapper.convert
+import com.kl3jvi.animity.data.model.ui_models.SessionData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.parsers.Providers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val storage: PersistenceRepository,
-    private val aniListGraphQlClient: AniListGraphQlClient
+    private val aniListGraphQlClient: AniListGraphQlClient,
+    private val ioDispatcher: CoroutineDispatcher
 ) : UserRepository {
 
     override val bearerToken: String?
@@ -56,11 +62,11 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>> {
-        return aniListGraphQlClient.getSessionForUser()
+        return aniListGraphQlClient.getSessionForUser().flowOn(ioDispatcher)
     }
 
     override fun markAnimeAsFavorite(idAniList: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
-        return aniListGraphQlClient.markAnimeAsFavorite(idAniList)
+        return aniListGraphQlClient.markAnimeAsFavorite(idAniList).flowOn(ioDispatcher)
     }
 
 

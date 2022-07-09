@@ -3,9 +3,9 @@ package com.kl3jvi.animity.ui.activities.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.HomeRepository
-import com.kl3jvi.animity.domain.repositories.fragment_repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.persistence_repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.HomeRepository
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
+import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
@@ -31,7 +31,6 @@ class MainViewModel @Inject constructor(
         updateEncryptionKeys()
     }
 
-    /* Used to notify the activity that the view model is ready to be used. */
 
     /**
      * It gets the user session from the server and sets the user id in the repository.
