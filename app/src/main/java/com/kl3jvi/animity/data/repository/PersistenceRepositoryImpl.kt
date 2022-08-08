@@ -16,7 +16,6 @@ class PersistenceRepositoryImpl @Inject constructor(
 
     override suspend fun insertEpisode(content: Content) = episodeDao.insertEpisode(content)
 
-
     override suspend fun updateEpisode(content: Content) = episodeDao.updateEpisode(content)
 
     override suspend fun getEpisodeContent(episodeUrl: String): Flow<Content> =

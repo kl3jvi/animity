@@ -11,6 +11,7 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.createFragmentMenu
@@ -44,11 +45,24 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun fetchHomeData() {
-        collectFlow(viewModel.homeData) { result ->
-            binding.mainRv.withModels {
-                binding.loadingIndicator.isVisible = result.popularAnime.isEmpty()
-                buildHome(result, firebaseAnalytics)
+        collectFlow(viewModel.homeDataUiState) { result ->
+            when (result) {
+                is HomeDataUiState.Error -> showSnack(
+                    binding.root,
+                    result.exception?.message ?: "Error occurred"
+                )
+
+                HomeDataUiState.Loading -> binding.loadingIndicator.isVisible = true
+
+                is HomeDataUiState.Success -> {
+                    binding.mainRv.withModels {
+                        binding.loadingIndicator.isVisible = false
+                        buildHome(result.data, firebaseAnalytics)
+                    }
+                }
             }
+
+
         }
     }
 

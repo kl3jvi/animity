@@ -135,9 +135,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         val aniListRegister = binding.aniListSignUp
         val privacy = binding.privacy
 
-
-
-
         aniListLogin.launchBrowser(getAuthorizationUrl())
         aniListRegister.launchBrowser(Uri.parse(SIGNUP_URL))
         privacy.launchBrowser(Uri.parse(TERMS_AND_PRIVACY_LINK))

@@ -2,6 +2,8 @@ package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apollographql.apollo3.api.ApolloResponse
+import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -78,7 +80,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private suspend fun fetchEpisodeList(url: String, malId: Int) {
-        return detailsRepository.fetchAnimeInfo(episodeUrl = url).flatMapLatest { info ->
+        detailsRepository.fetchAnimeInfo(episodeUrl = url).flatMapLatest { info ->
             detailsRepository.fetchEpisodeList(
                 id = info.id,
                 endEpisode = info.endEpisode,
@@ -105,7 +107,7 @@ class DetailsViewModel @Inject constructor(
             animeMetaModel.collect {
                 userRepository.markAnimeAsFavorite(it?.idAniList)
                     .catch { error -> logError(error) }
-                    .collect {}
+                    .flatMapLatest { emptyFlow<ApolloResponse<ToggleFavouriteMutation.Data>>() }
             }
         }
     }

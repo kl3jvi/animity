@@ -10,8 +10,8 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
-import com.kl3jvi.animity.data.network.anime_service.NineAnimeApiClient
-import com.kl3jvi.animity.data.network.anime_service.NineAnimeService
+import com.kl3jvi.animity.data.network.anime_service.YugenApiClient
+import com.kl3jvi.animity.data.network.anime_service.YugenService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
@@ -122,16 +122,16 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNineAnimeService(retrofit: Retrofit): NineAnimeService {
-        return retrofit.create(NineAnimeService::class.java)
+    fun provideNineAnimeService(retrofit: Retrofit): YugenService {
+        return retrofit.create(YugenService::class.java)
     }
 
     @Provides
     @Singleton
     fun provideNineAnimeApiClient(
-        nineAnimeService: NineAnimeService
-    ): NineAnimeApiClient {
-        return NineAnimeApiClient(nineAnimeService)
+        yugenService: YugenService
+    ): YugenApiClient {
+        return YugenApiClient(yugenService)
     }
 
     @Provides

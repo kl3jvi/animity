@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         /* Setting up the action bar with the navigation controller. */
         setupActionBarWithNavController(navController, appBarConfiguration)
         /* Setting up the bottom navigation bar with the navigation controller. */
+        /* Setting up the bottom navigation bar with the navigation controller. */
         navView.setupWithNavController(navController)
     }
 

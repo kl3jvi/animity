@@ -7,8 +7,10 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.concurrent.CountDownLatch
@@ -66,7 +68,9 @@ class HeaderInterceptor @Inject constructor(
                     }
                 }
                 /* Waiting for the count to reach zero. */
-                countDownLatch.await()
+                withContext(Dispatchers.IO) {
+                    countDownLatch.await()
+                }
                 /* Adding the new access token to the header and then proceeding with the request. */
                 proceed(
                     request().newBuilder()

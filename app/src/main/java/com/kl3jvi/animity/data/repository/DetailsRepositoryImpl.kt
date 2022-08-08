@@ -31,7 +31,6 @@ class DetailsRepositoryImpl @Inject constructor(
                     apiClient.fetchAnimeInfo(header = header, episodeUrl = episodeUrl).string()
                 )
             }
-
             emit(response)
         } else emptyFlow<AnimeInfoModel>()
     }.flowOn(ioDispatcher)

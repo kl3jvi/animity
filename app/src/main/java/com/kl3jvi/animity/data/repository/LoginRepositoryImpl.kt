@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 
 class LoginRepositoryImpl @Inject constructor(
-//    private val aniListClient: AniListClient,
     private val authClient: AuthClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : LoginRepository {

@@ -9,35 +9,31 @@ import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    homeRepository: HomeRepository
 ) : ViewModel() {
 
-    private var _homeData = MutableStateFlow(HomeData())
-    var homeData = _homeData.asStateFlow()
-
-    init {
-        getHomePageData()
-    }
-
-    /**
-     * It fetches data from the server and updates the UI.
-     */
-    private fun getHomePageData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            homeRepository.getHomeData().asResult().collect {
-                when (it) {
-                    is Result.Error -> logMessage(it.exception?.message)
-                    Result.Loading -> {}
-                    is Result.Success -> _homeData.value = it.data
-                }
-            }
+    val homeDataUiState = homeRepository.getHomeData().asResult().map {
+        when (it) {
+            is Result.Error -> HomeDataUiState.Error(it.exception)
+            Result.Loading -> HomeDataUiState.Loading
+            is Result.Success -> HomeDataUiState.Success(it.data)
         }
-    }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        HomeDataUiState.Loading
+    )
+
+}
+
+sealed interface HomeDataUiState {
+    data class Success(val data: HomeData) : HomeDataUiState
+    object Loading : HomeDataUiState
+    data class Error(val exception: Throwable?) : HomeDataUiState
 }

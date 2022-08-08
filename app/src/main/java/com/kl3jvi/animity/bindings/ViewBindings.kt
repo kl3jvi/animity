@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -101,8 +102,7 @@ object ViewBindings {
     @JvmStatic
     @BindingAdapter("android:visibility")
     fun setVisibility(view: View, value: Boolean) {
-        if (value) view.show()
-        else view.hide()
+        view.isVisible = value
     }
 
 
