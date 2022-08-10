@@ -24,6 +24,7 @@ import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
+import com.kl3jvi.animity.ui.fragments.favorites.FavoritesUiState
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
@@ -163,14 +164,14 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      * It observes the database for changes and updates the menu icon accordingly.
      */
     private fun observeDatabase() {
-        collectFlow(favoritesViewModel.favoriteAniListAnimeList) { mediaList ->
-            check = mediaList?.any { media ->
-                media.idAniList == animeDetails.idAniList
-            } ?: false
-            menu[0].setIcon(
-                if (!check) R.drawable.ic_favorite_uncomplete
-                else R.drawable.ic_favorite_complete
-            )
+        collectFlow(favoritesViewModel.favoritesList) { mediaList ->
+            if (mediaList is FavoritesUiState.Success) {
+                check = mediaList.data.any { media -> media.idAniList == animeDetails.idAniList }
+                menu[0].setIcon(
+                    if (!check) R.drawable.ic_favorite_uncomplete
+                    else R.drawable.ic_favorite_complete
+                )
+            } else check = false
         }
         binding.setType.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)
@@ -191,9 +192,11 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 R.id.option_1 -> {
                     binding.setType.text = requireContext().getText(R.string.completed)
                 }
+
                 R.id.option_2 -> {
                     binding.setType.text = requireContext().getText(R.string.watching)
                 }
+
                 R.id.option_3 -> {
                     binding.setType.text = requireContext().getText(R.string.planning)
                 }
@@ -212,62 +215,74 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
         collectFlow(viewModel.episodeList) { episodeListResponse ->
-            episodeListResponse?.let { episodeList ->
-                binding.detailsProgress.visibility = GONE
-                binding.episodeListRecycler.withModels {
-                    episodeList.forEachIndexed { index, episodeModel ->
-                        episodeLarge {
-                            id(episodeModel.episodeNumber)
-                            clickListener { _ ->
-                                requireContext().launchActivity<PlayerActivity> {
-                                    putExtra(Constants.EPISODE_DETAILS, episodeModel)
-                                    putExtra(
-                                        Constants.ANIME_TITLE,
-                                        animeDetails.title.userPreferred
-                                    )
+            when (episodeListResponse) {
+                EpisodeListUiState.Error -> {}
+                EpisodeListUiState.Loading -> {}
+                is EpisodeListUiState.Success -> {
+                    binding.detailsProgress.visibility = GONE
+                    binding.episodeListRecycler.withModels {
+                        episodeListResponse.data.forEachIndexed { index, episodeModel ->
+                            episodeLarge {
+                                id(episodeModel.episodeNumber)
+                                clickListener { _ ->
+                                    requireContext().launchActivity<PlayerActivity> {
+                                        putExtra(Constants.EPISODE_DETAILS, episodeModel)
+                                        putExtra(
+                                            Constants.ANIME_TITLE,
+                                            animeDetails.title.userPreferred
+                                        )
+                                        putExtra(
+                                            Constants.MAL_ID,
+                                            animeDetails.idMal
+                                        )
+                                    }
                                 }
-                            }
-                            showTitle(episodeModel.episodeName.isNotEmpty())
-                            isFiller(episodeModel.isFiller)
-                            imageUrl(
-                                when {
-                                    animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
-                                        animeDetails.bannerImage.ifEmpty {
+                                showTitle(episodeModel.episodeName.isNotEmpty())
+                                isFiller(episodeModel.isFiller)
+                                imageUrl(
+                                    when {
+                                        animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
+                                            animeDetails.bannerImage.ifEmpty {
+                                                animeDetails.coverImage.large
+                                            }
+                                        }
+
+                                        animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
+                                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
+                                        }
+
+                                        else -> {
                                             animeDetails.coverImage.large
                                         }
                                     }
-                                    animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
-                                        animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
-                                    }
-                                    else -> {
-                                        animeDetails.coverImage.large
-                                    }
-                                }
-                            )
-                            episodeInfo(episodeModel)
+                                )
+                                episodeInfo(episodeModel)
+                            }
                         }
                     }
-                }
-                binding.resultEpisodesText.text =
-                    requireContext().getString(
-                        R.string.total_episodes,
-                        episodeList.size.toString()
-                    )
-                if (episodeList.isNotEmpty()) {
-                    binding.resultPlayMovie.setOnClickListener {
-                        requireActivity().launchActivity<PlayerActivity> {
-                            putExtra(
-                                Constants.EPISODE_DETAILS,
-                                episodeList.first()
-                            )
-                            putExtra(Constants.ANIME_TITLE, title)
+                    binding.resultEpisodesText.text =
+                        requireContext().getString(
+                            R.string.total_episodes,
+                            episodeListResponse.data.size.toString()
+                        )
+                    if (episodeListResponse.data.isNotEmpty()) {
+                        binding.resultPlayMovie.setOnClickListener {
+                            requireActivity().launchActivity<PlayerActivity> {
+                                putExtra(
+                                    Constants.EPISODE_DETAILS,
+                                    episodeListResponse.data.first()
+                                )
+                                putExtra(Constants.ANIME_TITLE, title)
+                            }
+                            binding.resultPlayMovie.visibility = VISIBLE
                         }
-                        binding.resultPlayMovie.visibility = VISIBLE
+                    } else {
+                        binding.resultPlayMovie.visibility = GONE
                     }
-                } else {
-                    binding.resultPlayMovie.visibility = GONE
                 }
+
             }
+
         }
     }
 

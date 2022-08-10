@@ -4,6 +4,7 @@
     <item
         android:id="@+id/add_to_favorites"
         android:icon="@drawable/ic_favorite_uncomplete"
+        android:checkable="true"
         android:title="@string/favorite"
         app:showAsAction="always" />
 

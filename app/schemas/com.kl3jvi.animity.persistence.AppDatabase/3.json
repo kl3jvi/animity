@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "e14ae7ed9db23bba57c4b49534b8b321",
+    "identityHash": "fad5d645ddabe545faa44eba0b1e69e9",
     "entities": [
       {
         "tableName": "anime_table",
@@ -86,7 +86,7 @@
       },
       {
         "tableName": "Content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeUrl` TEXT NOT NULL, `animeName` TEXT NOT NULL, `episodeNumber` TEXT, `watchedDuration` INTEGER NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY(`episodeUrl`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeUrl` TEXT NOT NULL, `animeName` TEXT NOT NULL, `malId` INTEGER NOT NULL, `episodeNumber` TEXT, `watchedDuration` INTEGER NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY(`episodeUrl`))",
         "fields": [
           {
             "fieldPath": "episodeUrl",
@@ -98,6 +98,12 @@
             "fieldPath": "animeName",
             "columnName": "animeName",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "malId",
+            "columnName": "malId",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -132,7 +138,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e14ae7ed9db23bba57c4b49534b8b321')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fad5d645ddabe545faa44eba0b1e69e9')"
     ]
   }
 }

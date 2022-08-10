@@ -7,53 +7,45 @@ import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
-import com.kl3jvi.animity.utils.logError
-import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val favoriteRepository: FavoriteRepository,
-    private val localStorage: PersistenceRepository,
-    private val ioDispatcher: CoroutineDispatcher,
+    favoriteRepository: FavoriteRepository,
+    localStorage: PersistenceRepository,
+    ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private var _favoriteAniListAnimeList =
-        MutableStateFlow<List<AniListMedia>?>(null)
-    val favoriteAniListAnimeList = _favoriteAniListAnimeList.asStateFlow()
-    val shouldRefresh = MutableStateFlow(true)
 
-    init {
-        getFavoriteAnimes()
-    }
+    val favoritesList: StateFlow<FavoritesUiState> =
+        favoriteRepository.getFavoriteAnimesFromAniList(localStorage.aniListUserId?.toInt(), 1)
+            .asResult().map {
+                when (it) {
+                    is Result.Error -> FavoritesUiState.Error()
+                    Result.Loading -> FavoritesUiState.Loading
+                    is Result.Success -> FavoritesUiState.Success(it.data)
+                }
+            }.stateIn(
+                viewModelScope.plus(context = ioDispatcher),
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = FavoritesUiState.Loading
+            )
+}
 
-    /**
-     * It gets the favorite animes from the AniList API.
-     */
-    private fun getFavoriteAnimes() {
-        viewModelScope.launch(ioDispatcher) {
-            shouldRefresh.collectLatest { _ ->
-                favoriteRepository.getFavoriteAnimesFromAniList(localStorage.aniListUserId?.toInt(), 1)
-                    .flowOn(ioDispatcher)
-                    .catch { e -> logError(e) }
-                    .asResult()
-                    .collect {
-                        when (it) {
-                            is Result.Error -> logMessage(it.exception?.message)
-                            Result.Loading -> {}
-                            is Result.Success -> _favoriteAniListAnimeList.value = it.data
-                        }
-                    }
-            }
-        }
-    }
 
+sealed interface FavoritesUiState {
+    object Loading : FavoritesUiState
+    data class Success(val data: List<AniListMedia>) : FavoritesUiState
+    data class Error(val error: Throwable? = null) : FavoritesUiState
 }
 
 

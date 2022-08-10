@@ -2,7 +2,6 @@ package com.kl3jvi.animity.persistence
 
 import androidx.room.*
 import com.kl3jvi.animity.data.model.ui_models.Content
-import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,6 +15,9 @@ interface EpisodeDao {
 
     @Query("SELECT * FROM Content WHERE episodeUrl =:episodeUrl")
     fun getEpisodeContent(episodeUrl: String): Flow<Content>
+
+    @Query("SELECT * FROM Content WHERE lower(animeName) = lower(:malId)")
+    fun getEpisodesByAnime(malId: Int): Flow<List<Content>>
 
 
     @Query("SELECT EXISTS(SELECT * FROM Content WHERE episodeUrl = :episodeUrl)")

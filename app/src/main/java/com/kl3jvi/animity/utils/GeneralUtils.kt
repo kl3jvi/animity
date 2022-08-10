@@ -49,4 +49,6 @@ fun TextView.setMarkdownText(string: String) {
     Markwon.create(this.context).setMarkdown(this, string)
 }
 
+fun Int?.or1() = this ?: 1
+
 

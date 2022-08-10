@@ -22,14 +22,10 @@ class PlayerViewModel @Inject constructor(
 ) : ViewModel() {
 
     var episodeUrl = MutableStateFlow("")
-    var videoUrlLiveData = MutableStateFlow<Result<List<String>>>(Result.Loading)
 
     private var _playBackPosition = MutableStateFlow<Long>(0)
     var playBackPosition = _playBackPosition.asStateFlow()
 
-    init {
-        getEpisodeUrl()
-    }
 
     /**
      * It creates a flow that emits the current position of the exoPlayer every second.
@@ -45,15 +41,20 @@ class PlayerViewModel @Inject constructor(
         }
     }.flowOn(Dispatchers.IO + viewModelScope.coroutineContext)
 
-    private fun getEpisodeUrl() {
-        viewModelScope.launch(ioDispatcher) {
-            episodeUrl.collectLatest { url ->
-                playerRepository.getMediaUrl(url = url).asResult().collect {
-                    videoUrlLiveData.value = it
-                }
+
+    val episodeMediaUrl = episodeUrl.flatMapLatest {
+        playerRepository.getMediaUrl(url = it).asResult().map { result ->
+            when (result) {
+                is Result.Error -> EpisodeUrlUiState.Error
+                Result.Loading -> EpisodeUrlUiState.Loading
+                is Result.Success -> EpisodeUrlUiState.Success(result.data)
             }
         }
-    }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        EpisodeUrlUiState.Loading
+    )
 
     fun insertOrUpdate(content: Content) {
         viewModelScope.launch(ioDispatcher) {
@@ -76,10 +77,15 @@ class PlayerViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             if (episodeDao.isEpisodeOnDatabase(episodeUrl)) {
                 episodeDao.getEpisodeContent(episodeUrl).collectLatest {
-
                     _playBackPosition.value = it.watchedDuration
                 }
             }
         }
     }
+}
+
+sealed interface EpisodeUrlUiState {
+    data class Success(val data: List<String>) : EpisodeUrlUiState
+    object Loading : EpisodeUrlUiState
+    object Error : EpisodeUrlUiState
 }

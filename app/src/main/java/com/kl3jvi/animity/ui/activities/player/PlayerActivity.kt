@@ -36,10 +36,10 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
 import com.kl3jvi.animity.utils.Constants.Companion.INTRO_SKIP_TIME
+import com.kl3jvi.animity.utils.Constants.Companion.MAL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,6 +77,7 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
     lateinit var content: Content
+    var aniListId: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,9 +86,12 @@ class PlayerActivity : AppCompatActivity() {
         firebaseAnalytics = Firebase.analytics
         if (intent.hasExtra(EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(EPISODE_DETAILS)
+
+            aniListId = intent.getIntExtra(MAL_ID, 0)
             animeTitlePassed = intent.getStringExtra(ANIME_TITLE).toString()
             episodeNumberLocal = getIntentData?.episodeNumber.toString()
             episodeUrlLocal = getIntentData?.episodeUrl.toString()
+
 
             val title = binding.videoView.findViewById<TextView>(R.id.episodeName)
             val episodeNum = binding.videoView.findViewById<TextView>(R.id.episodeNum)
@@ -145,15 +149,17 @@ class PlayerActivity : AppCompatActivity() {
 
     @ExperimentalCoroutinesApi
     private fun initializePlayer() {
-        collectFlow(viewModel.videoUrlLiveData) { res ->
+        collectFlow(viewModel.episodeMediaUrl) { res ->
             when (res) {
-                is Result.Error -> {
+                is EpisodeUrlUiState.Error -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
                 }
-                Result.Loading -> {
+
+                EpisodeUrlUiState.Loading -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
                 }
-                is Result.Success -> {
+
+                is EpisodeUrlUiState.Success -> {
                     val videoM3U8Url = getSafeString(res.data.last())
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
@@ -197,6 +203,7 @@ class PlayerActivity : AppCompatActivity() {
                                 if (playbackState == ExoPlayer.STATE_READY) {
                                     val realDurationMillis: Long = player!!.duration
                                     content = Content().apply {
+                                        malId = aniListId
                                         episodeUrl = episodeUrlLocal
                                         animeName = animeTitlePassed
                                         episodeNumber = episodeNumberLocal

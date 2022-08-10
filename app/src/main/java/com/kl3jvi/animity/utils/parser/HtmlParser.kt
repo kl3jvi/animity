@@ -45,8 +45,8 @@ class HtmlParser @Inject constructor(
      * @param genreHtmlList The list of genres in the HTML document.
      * @return An ArrayList of GenreModel objects.
      */
-    override fun getGenreList(genreHtmlList: Elements): ArrayList<GenreModel> {
-        val genreList = ArrayList<GenreModel>()
+    override fun getGenreList(genreHtmlList: Elements): List<GenreModel> {
+        val genreList = mutableListOf<GenreModel>()
         genreHtmlList.forEach {
             val genreUrl = it.attr("href")
             val genreName = it.text()
@@ -68,8 +68,8 @@ class HtmlParser @Inject constructor(
      * @param response The response from the server.
      * @return An ArrayList of EpisodeModel objects.
      */
-    override fun fetchEpisodeList(response: String): ArrayList<EpisodeModel> {
-        val episodeList = ArrayList<EpisodeModel>()
+    override fun fetchEpisodeList(response: String): List<EpisodeModel> {
+        val episodeList = mutableListOf<EpisodeModel>()
         val document = Jsoup.parse(response)
         val lists = document?.select("li")
         lists?.forEach {
@@ -199,7 +199,7 @@ class HtmlParser @Inject constructor(
      * @return an arraylist of urls.
      */
     override fun parseEncryptedUrls(response: String): List<String> {
-        val urls: ArrayList<String> = ArrayList()
+        val urls = mutableListOf<String>()
         var i = 0
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
@@ -223,21 +223,6 @@ class HtmlParser @Inject constructor(
     }
 }
 
-/**
- * It takes a url as a parameter and returns the category url
- *
- * @param url The URL of the page to be scraped.
- * @return The categoryUrl is being returned.
- */
-private fun getCategoryUrl(url: String): String {
-    return try {
-        var categoryUrl = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'))
-        categoryUrl = "/category/$categoryUrl"
-        categoryUrl
-    } catch (exception: StringIndexOutOfBoundsException) {
-        exception.message
-    }.toString()
-}
 
 /**
  * If the genre name contains a comma, return the substring after the comma, otherwise return the genre
@@ -252,16 +237,6 @@ private fun filterGenreName(genreName: String): String {
     } else {
         genreName
     }
-}
-
-/**
- * It takes a string, finds the first colon, and returns the substring after the colon
- *
- * @param infoValue The value of the info field.
- * @return the substring of the infoValue parameter.
- */
-private fun formatInfoValues(infoValue: String): String {
-    return infoValue.substring(infoValue.indexOf(':') + 1, infoValue.length)
 }
 
 

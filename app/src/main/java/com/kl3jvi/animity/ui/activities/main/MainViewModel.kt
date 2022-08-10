@@ -9,7 +9,6 @@ import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
-import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,12 +38,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             userRepository.getSessionForUser().asResult().collect {
                 when (it) {
-                    is Result.Error -> {
-                        logError(it.exception)
-                    }
-                    Result.Loading -> {
-
-                    }
+                    is Result.Error -> logError(it.exception)
+                    Result.Loading -> {}
                     is Result.Success -> {
                         if (!it.data.hasErrors())
                             userRepository.setAniListUserId(it.data.data?.viewer?.id.toString())
@@ -61,18 +56,12 @@ class MainViewModel @Inject constructor(
     private fun updateEncryptionKeys() {
         viewModelScope.launch(Dispatchers.IO) {
             homeRepository.getEncryptionKeys().asResult().collect {
-                when (it) {
-                    is Result.Error -> {
-                        logMessage(it.exception?.message)
-                    }
-                    Result.Loading -> {}
-                    is Result.Success -> {
-                        val data = it.data
-                        localStorage.iv = data.iv
-                        localStorage.key = data.key
-                        localStorage.secondKey = data.secondKey
-                    }
-                }
+                if (it is Result.Success) {
+                    val data = it.data
+                    localStorage.iv = data.iv
+                    localStorage.key = data.key
+                    localStorage.secondKey = data.secondKey
+                } else return@collect
             }
         }
     }

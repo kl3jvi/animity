@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_skip_next_24.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.334375" />
+        <entry key="app/src/main/res/drawable/ic_bookmark.xml" value="0.289" />
         <entry key="app/src/main/res/drawable/ic_cast.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/drawable/ic_down_arrow.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/drawable/ic_download_error.xml" value="0.140625" />
@@ -83,7 +84,7 @@
         <entry key="app/src/main/res/layout/item_big_card_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/item_card_anime.xml" value="0.4933920704845815" />
         <entry key="app/src/main/res/layout/item_card_anime_experimental.xml" value="0.1875" />
-        <entry key="app/src/main/res/layout/item_episode_large.xml" value="0.33470648815653964" />
+        <entry key="app/src/main/res/layout/item_episode_large.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_episode_list.xml" value="0.2572944297082228" />
         <entry key="app/src/main/res/layout/item_episode_number.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_favorite_anime.xml" value="0.2828282828282828" />

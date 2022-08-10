@@ -1,8 +1,6 @@
 package com.kl3jvi.animity.domain.repositories
 
-import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
-import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
-import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
+import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.parsers.BaseParser
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.utils.Constants.Companion.getNetworkHeader
@@ -16,7 +14,7 @@ interface DetailsRepository {
         episodeUrl: String
     ): Flow<AnimeInfoModel>
 
-    fun getEpisodeTitles(id: Int): Flow<EpisodeWithTitle>
+    fun getEpisodeTitles(id: Int): Flow<List<Episode>>
     fun fetchEpisodeList(
         header: Map<String, String> = getNetworkHeader(),
         id: String,
@@ -24,4 +22,6 @@ interface DetailsRepository {
         alias: String,
         malId: Int
     ): Flow<List<EpisodeModel>>
+
+    fun getEpisodesPercentage(malId: Int): Flow<List<Content>>
 }

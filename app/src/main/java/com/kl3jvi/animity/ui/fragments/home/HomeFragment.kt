@@ -13,7 +13,7 @@ import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collectLatestFlow
 import com.kl3jvi.animity.utils.createFragmentMenu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,13 +39,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 R.id.action_settings -> {
                     findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment());true
                 }
+
                 else -> false
             }
         }
     }
 
     private fun fetchHomeData() {
-        collectFlow(viewModel.homeDataUiState) { result ->
+        collectLatestFlow(viewModel.homeDataUiState) { result ->
             when (result) {
                 is HomeDataUiState.Error -> showSnack(
                     binding.root,
@@ -61,8 +62,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                     }
                 }
             }
-
-
         }
     }
 

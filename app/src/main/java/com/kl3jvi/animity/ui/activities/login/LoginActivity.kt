@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -120,8 +121,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
             viewModel.saveTokens(authToken, refreshToken)
             launchActivity<MainActivity> {
-                val bundle = Bundle()
-                bundle.putString(FirebaseAnalytics.Param.METHOD, "login")
+                val bundle = bundleOf(FirebaseAnalytics.Param.METHOD to "login")
                 firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
             }
             finish()

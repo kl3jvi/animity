@@ -20,7 +20,7 @@ data class EpisodeModel(
 
 data class EpisodeWithTitle(
     @SerializedName("episodes")
-    val episodes: List<Episode>? = emptyList(),
+    val episodes: List<Episode> = emptyList(),
 )
 
 data class Episode(

@@ -20,6 +20,7 @@ class Constants {
         const val DATABASE_NAME = "anime_database"
         const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
         const val STARTING_PAGE_INDEX = 1
+        const val MAL_ID = "anilist_id"
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
@@ -40,7 +41,7 @@ class Constants {
             "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
 
 
-        /* Used to get the gogoanime keys from the github repo. Thanks to https://github.com/justfoolingaround */
+        /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
         const val GOGO_KEYS_URL =
             "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
 
