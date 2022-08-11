@@ -11,8 +11,10 @@ data class DetailedAnimeInfo(
 data class Pages(
     @SerializedName("Gogoanime")
     val data: Map<String, SubInfo>?
-){
-
+) {
+    fun getGogoUrl(): String {
+        return data?.entries?.first()?.value?.url.orEmpty()
+    }
 }
 
 data class SubInfo(

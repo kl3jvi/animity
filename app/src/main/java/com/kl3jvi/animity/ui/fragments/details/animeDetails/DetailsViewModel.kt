@@ -40,23 +40,24 @@ class DetailsViewModel @Inject constructor(
                     /* Fetching the episode list from the anime url and then combining it with the percentage of the
                         episodes watched. */
                     val episodeListFlow = detailsRepository.fetchAnimeInfo(
-                        episodeUrl = result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
-                    ).flatMapLatest { info ->
+                        episodeUrl = result.data.pages?.getGogoUrl().orEmpty()
+                    ).flatMapLatest { animeInfo ->
                         detailsRepository.fetchEpisodeList(
-                            id = info.id,
-                            endEpisode = info.endEpisode,
-                            alias = info.alias,
+                            id = animeInfo.id,
+                            endEpisode = animeInfo.endEpisode,
+                            alias = animeInfo.alias,
                             malId = media?.idMal.or1()
-                        ).combine(detailsRepository.getEpisodesPercentage(media?.idMal.or1())) { list, test ->
-                            list.map { episode ->
-                                val contentEpisode =
-                                    test.firstOrNull { it.episodeUrl == episode.episodeUrl }
-                                if (contentEpisode != null) {
-                                    episode.percentage = contentEpisode.getWatchedPercentage()
+                        )
+                            .combine(detailsRepository.getEpisodesPercentage(media?.idMal.or1())) { networkEpisodeList, episodeListFromDataBase ->
+                                networkEpisodeList.map { episode ->
+                                    val contentEpisode =
+                                        episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
+                                    if (contentEpisode != null) {
+                                        episode.percentage = contentEpisode.getWatchedPercentage()
+                                    }
+                                    episode
                                 }
-                                episode
                             }
-                        }
                     }.catch { e -> logError(e) }
                         .mapNotNull { episodeModelList ->
                             episodeModelList.ifEmpty { emptyList() }
