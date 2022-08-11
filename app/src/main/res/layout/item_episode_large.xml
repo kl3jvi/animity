@@ -85,7 +85,7 @@
                         android:layout_marginBottom="-1.5dp"
                         android:progress="@{episodeInfo.percentage}"
                         android:progressBackgroundTint="?attr/colorPrimary"
-                        android:progressTint="?attr/colorPrimary"
+                        android:progressTint="@color/white"
                         tools:progress="50" />
                 </androidx.cardview.widget.CardView>
 

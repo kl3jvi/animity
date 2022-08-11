@@ -66,7 +66,6 @@ class DetailsRepositoryImpl @Inject constructor(
             } else {
                 episodeModel.episodeName = ""
             }
-
         }
 
 

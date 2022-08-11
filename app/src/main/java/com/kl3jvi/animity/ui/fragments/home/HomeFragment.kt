@@ -43,6 +43,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 else -> false
             }
         }
+        fetchHomeData()
     }
 
     private fun fetchHomeData() {
@@ -58,7 +59,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
                 is HomeDataUiState.Success -> {
                     binding.mainRv.withModels {
                         binding.loadingIndicator.isVisible = false
-                        buildHome(result.data, firebaseAnalytics)
+                        buildHome(
+                            result.data,
+                            firebaseAnalytics
+                        )
                     }
                 }
             }
@@ -73,7 +77,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     private fun handleNetworkChanges() {
         requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            if (isConnected) fetchHomeData()
+            if (isConnected)
             binding.apply {
                 mainRv.isVisible = isConnected
                 loadingIndicator.isVisible = isConnected

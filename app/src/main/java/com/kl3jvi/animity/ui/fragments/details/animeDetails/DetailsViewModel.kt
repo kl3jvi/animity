@@ -31,14 +31,14 @@ class DetailsViewModel @Inject constructor(
 
     val animeMetaModel = MutableStateFlow<AniListMedia?>(null)
 
-
     val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
         favoriteRepository.getGogoUrlFromAniListId(media?.idAniList.or1()).asResult().map { result ->
             when (result) {
                 is Result.Error -> EpisodeListUiState.Error
                 Result.Loading -> EpisodeListUiState.Loading
                 is Result.Success -> {
-
+                    /* Fetching the episode list from the anime url and then combining it with the percentage of the
+                        episodes watched. */
                     val episodeListFlow = detailsRepository.fetchAnimeInfo(
                         episodeUrl = result.data.pages?.data?.entries?.first()?.value?.url.orEmpty()
                     ).flatMapLatest { info ->
@@ -47,13 +47,20 @@ class DetailsViewModel @Inject constructor(
                             endEpisode = info.endEpisode,
                             alias = info.alias,
                             malId = media?.idMal.or1()
-                        )
-                    }.catch { e ->
-                        logError(e)
-                    }.mapNotNull { list ->
-                        list.ifEmpty { emptyList() }
-                    }
-
+                        ).combine(detailsRepository.getEpisodesPercentage(media?.idMal.or1())) { list, test ->
+                            list.map { episode ->
+                                val contentEpisode =
+                                    test.firstOrNull { it.episodeUrl == episode.episodeUrl }
+                                if (contentEpisode != null) {
+                                    episode.percentage = contentEpisode.getWatchedPercentage()
+                                }
+                                episode
+                            }
+                        }
+                    }.catch { e -> logError(e) }
+                        .mapNotNull { episodeModelList ->
+                            episodeModelList.ifEmpty { emptyList() }
+                        }
                     EpisodeListUiState.Success(episodeListFlow.firstOrNull() ?: emptyList())
                 }
             }
@@ -66,7 +73,7 @@ class DetailsViewModel @Inject constructor(
 
 
     /**
-     * > The function updates the anime as favorite in the anilist website
+     * > The function updates the anime as favorite in the AniList website
      */
     fun updateAnimeFavorite() {
         viewModelScope.launch(ioDispatcher) {

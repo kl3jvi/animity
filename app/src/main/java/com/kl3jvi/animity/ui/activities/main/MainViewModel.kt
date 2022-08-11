@@ -61,7 +61,7 @@ class MainViewModel @Inject constructor(
                     localStorage.iv = data.iv
                     localStorage.key = data.key
                     localStorage.secondKey = data.secondKey
-                } else return@collect
+                } else throw return@collect
             }
         }
     }

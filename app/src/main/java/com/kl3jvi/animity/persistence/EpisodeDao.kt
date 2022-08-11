@@ -16,7 +16,7 @@ interface EpisodeDao {
     @Query("SELECT * FROM Content WHERE episodeUrl =:episodeUrl")
     fun getEpisodeContent(episodeUrl: String): Flow<Content>
 
-    @Query("SELECT * FROM Content WHERE lower(animeName) = lower(:malId)")
+    @Query("SELECT * FROM Content WHERE malId = :malId")
     fun getEpisodesByAnime(malId: Int): Flow<List<Content>>
 
 
