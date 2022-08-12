@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
-import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +16,6 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class PlayerViewModel @Inject constructor(
     private val playerRepository: PlayerRepository,
-    private val episodeDao: EpisodeDao,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -39,7 +37,7 @@ class PlayerViewModel @Inject constructor(
                 delay(1000)
             }
         }
-    }.flowOn(Dispatchers.IO + viewModelScope.coroutineContext)
+    }.flowOn(Dispatchers.Main)
 
 
     val episodeMediaUrl = episodeUrl.flatMapLatest {
@@ -57,13 +55,7 @@ class PlayerViewModel @Inject constructor(
     )
 
     fun insertOrUpdate(content: Content) {
-        viewModelScope.launch(ioDispatcher) {
-            if (episodeDao.isEpisodeOnDatabase(content.episodeUrl) && content.watchedDuration > 0) {
-                episodeDao.updateEpisode(content)
-            } else {
-                episodeDao.insertEpisode(content)
-            }
-        }
+        viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(content) }
     }
 
     /**
@@ -75,10 +67,8 @@ class PlayerViewModel @Inject constructor(
      */
     fun getPlaybackPosition(episodeUrl: String) {
         viewModelScope.launch(ioDispatcher) {
-            if (episodeDao.isEpisodeOnDatabase(episodeUrl)) {
-                episodeDao.getEpisodeContent(episodeUrl).collectLatest {
-                    _playBackPosition.value = it.watchedDuration
-                }
+            playerRepository.getPlaybackPosition(episodeUrl).collect { content ->
+                _playBackPosition.value = content.watchedDuration
             }
         }
     }

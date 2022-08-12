@@ -25,7 +25,6 @@ class HomeRepositoryImpl @Inject constructor(
 
     override fun getEncryptionKeys() = flow {
         emit(animeClient.getEncryptionKeys())
-
     }.flowOn(ioDispatcher)
 
 }

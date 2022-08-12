@@ -2,14 +2,17 @@
 
 package com.kl3jvi.animity.data.repository
 
+import com.kl3jvi.animity.data.model.ui_models.Content
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.parsers.GoGoParser
+import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,6 +21,7 @@ import javax.inject.Singleton
 class PlayerRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
+    private val episodeDao: EpisodeDao,
     override val parser: GoGoParser
 ) : PlayerRepository {
 
@@ -51,6 +55,25 @@ class PlayerRepositoryImpl @Inject constructor(
             )
             emit(response)
         }.catch { e -> logError(e) }
+    }
+
+    override suspend fun upsertEpisode(content: Content) {
+        return withContext(ioDispatcher) {
+            val exists = episodeDao.isEpisodeOnDatabase(content.episodeUrl) && content.watchedDuration > 0
+            if (exists)
+                episodeDao.updateEpisode(content)
+            else episodeDao.insertEpisode(content)
+        }
+    }
+
+    override suspend fun getPlaybackPosition(episodeUrl: String): Flow<Content> {
+        return withContext(ioDispatcher) {
+            val exists = episodeDao.isEpisodeOnDatabase(episodeUrl)
+            if (exists)
+                episodeDao.getEpisodeContent(episodeUrl)
+            else
+                emptyFlow()
+        }
     }
 }
 

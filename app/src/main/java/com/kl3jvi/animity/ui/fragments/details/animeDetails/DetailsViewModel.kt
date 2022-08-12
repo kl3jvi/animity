@@ -29,10 +29,11 @@ class DetailsViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    val animeMetaModel = MutableStateFlow<AniListMedia?>(null)
+    val animeMetaModel = MutableStateFlow(AniListMedia())
+
 
     val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
-        favoriteRepository.getGogoUrlFromAniListId(media?.idAniList.or1()).asResult().map { result ->
+        favoriteRepository.getGogoUrlFromAniListId(media.idAniList).asResult().map { result ->
             when (result) {
                 is Result.Error -> EpisodeListUiState.Error
                 Result.Loading -> EpisodeListUiState.Loading
@@ -46,22 +47,24 @@ class DetailsViewModel @Inject constructor(
                             id = animeInfo.id,
                             endEpisode = animeInfo.endEpisode,
                             alias = animeInfo.alias,
-                            malId = media?.idMal.or1()
-                        )
-                            .combine(detailsRepository.getEpisodesPercentage(media?.idMal.or1())) { networkEpisodeList, episodeListFromDataBase ->
-                                networkEpisodeList.map { episode ->
-                                    val contentEpisode =
-                                        episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
-                                    if (contentEpisode != null) {
-                                        episode.percentage = contentEpisode.getWatchedPercentage()
-                                    }
-                                    episode
+                            malId = media.idMal.or1()
+                        ).combine(
+                            detailsRepository.getEpisodesPercentage(media.idMal.or1())
+                        ) { networkEpisodeList, episodeListFromDataBase ->
+                            networkEpisodeList.map { episode ->
+                                val contentEpisode =
+                                    episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
+                                if (contentEpisode != null) {
+                                    episode.percentage = contentEpisode.getWatchedPercentage()
                                 }
+                                episode
                             }
-                    }.catch { e -> logError(e) }
-                        .mapNotNull { episodeModelList ->
-                            episodeModelList.ifEmpty { emptyList() }
                         }
+                    }.catch { e ->
+                        logError(e)
+                    }.mapNotNull { episodeModelList ->
+                        episodeModelList.ifEmpty { emptyList() }
+                    }
                     EpisodeListUiState.Success(episodeListFlow.firstOrNull() ?: emptyList())
                 }
             }
@@ -78,8 +81,8 @@ class DetailsViewModel @Inject constructor(
      */
     fun updateAnimeFavorite() {
         viewModelScope.launch(ioDispatcher) {
-            animeMetaModel.collect {
-                userRepository.markAnimeAsFavorite(it?.idAniList)
+            animeMetaModel.flatMapLatest {
+                userRepository.markAnimeAsFavorite(it.idAniList)
                     .catch { error -> logError(error) }
                     .flatMapLatest { emptyFlow<ApolloResponse<ToggleFavouriteMutation.Data>>() }
             }

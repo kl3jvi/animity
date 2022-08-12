@@ -52,7 +52,6 @@ class DetailsRepositoryImpl @Inject constructor(
             ).reversed()
         }
         val episodesWithTitle = getEpisodeTitles(malId).first()
-        val episodesPercentage = episodeDao.getEpisodesByAnime(malId)
 
         /* A loop that iterates over the list of episodes and adds the episode name and percentage to the episode model. */
         response.forEachIndexed { index, episodeModel ->
@@ -67,11 +66,6 @@ class DetailsRepositoryImpl @Inject constructor(
                 episodeModel.episodeName = ""
             }
         }
-
-
-
-
-
         emit(response)
     }.flowOn(ioDispatcher)
 

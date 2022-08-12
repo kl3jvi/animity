@@ -1,15 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000000">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#000000">
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:controller_layout_id="@layout/exo_player_custom_controls"
-        app:use_artwork="true" />
+        app:use_artwork="true"/>
 
     <FrameLayout
         android:id="@+id/loading_overlay"
@@ -26,6 +26,6 @@
             android:id="@+id/main_load"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"/>
     </FrameLayout>
 </FrameLayout>

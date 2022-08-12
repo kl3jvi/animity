@@ -5,6 +5,8 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import io.noties.markwon.Markwon
 
 
@@ -50,5 +52,10 @@ fun TextView.setMarkdownText(string: String) {
 }
 
 fun Int?.or1() = this ?: 1
+
+
+fun dismissKeyboard(view: View) {
+    ViewCompat.getWindowInsetsController(view)?.hide(WindowInsetsCompat.Type.ime())
+}
 
 

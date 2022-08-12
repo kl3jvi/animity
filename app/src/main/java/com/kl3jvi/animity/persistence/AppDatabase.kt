@@ -14,7 +14,7 @@ import com.kl3jvi.animity.utils.Converters
  * */
 @Database(
     entities = [AnimeMetaModel::class, Content::class],
-    version = 3,
+    version = 4,
     exportSchema = true,
 //    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )

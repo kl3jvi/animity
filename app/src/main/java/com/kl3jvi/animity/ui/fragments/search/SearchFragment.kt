@@ -6,16 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.collectLatestFlow
+import com.kl3jvi.animity.utils.dismissKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
@@ -42,17 +39,23 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         binding.apply {
             searchRecycler.setController(pagingController)
             mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextChange(query: String): Boolean {
-                    search(query)
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    dismissKeyboard(binding.mainSearch)
                     return false
                 }
 
-                override fun onQueryTextSubmit(query: String): Boolean {
-//                    search(query)
+                override fun onQueryTextChange(query: String): Boolean {
+                    viewModel.onSearchQueryChanged(query)
                     return false
                 }
             })
         }
+
+    }
+
+    override fun onPause() {
+        dismissKeyboard(binding.mainSearch)
+        super.onPause()
     }
 
 
@@ -64,27 +67,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     }
 
 
-    /**
-     * It searches for the query string and updates the viewModel.
-     *
-     * @param query String - The query string to search for
-     */
-    private fun search(query: String) {
-        searchJob?.cancel()
-        searchJob = lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch{ viewModel.queryString.value = query }
-
-                launch {
-                    collectLatestFlow(viewModel.searchList) { animeData ->
-                        pagingController.submitData(animeData)
-                    }
-                }
-            }
+    override fun observeViewModel() {
+        collectLatestFlow(viewModel.searchList) { animeData ->
+            pagingController.submitData(animeData)
         }
     }
-
-    override fun observeViewModel() {}
 
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)

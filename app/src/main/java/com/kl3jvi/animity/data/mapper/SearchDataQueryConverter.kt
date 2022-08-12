@@ -24,7 +24,7 @@ fun SearchAnimeQuery.Data.convert(): List<AniListMedia> {
                 it?.coverImage?.large.orEmpty(),
                 it?.coverImage?.large.orEmpty()
             ),
-            genres = it?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: listOf(),
+            genres = it?.genres?.mapNotNull { genre -> Genre(name = genre.orEmpty()) } ?: emptyList(),
             averageScore = it?.averageScore ?: 0,
         )
     } ?: emptyList()

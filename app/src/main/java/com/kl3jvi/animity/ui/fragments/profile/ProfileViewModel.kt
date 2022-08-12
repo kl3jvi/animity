@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.mapper.ProfileRow
+import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.domain.repositories.ProfileRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
-import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
-import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,10 +23,10 @@ class ProfileViewModel @Inject constructor(
     private val localStorage: PersistenceRepository,
 ) : ViewModel() {
 
-    private val _profileData = MutableStateFlow<ProfileData?>(null)
+    private val _profileData = MutableStateFlow(ProfileData())
     val profileData = _profileData.asStateFlow()
 
-    private val _animeList = MutableStateFlow<List<ProfileRow>?>(null)
+    private val _animeList = MutableStateFlow<List<ProfileRow>>(emptyList())
     val animeList = _animeList.asStateFlow()
 
     init {
@@ -41,26 +40,19 @@ class ProfileViewModel @Inject constructor(
             val animeListDeferred =
                 async { profileRepository.getProfileAnimes(localStorage.aniListUserId?.toInt()) }
 
+
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
 
             profileData.asResult().collect {
-                when (it) {
-                    is Result.Error -> {
-                        logMessage(it.exception?.message)
-                    }
-                    Result.Loading -> {
-
-                    }
-                    is Result.Success -> _profileData.value = it.data as ProfileData
-                }
+                if (it is Result.Success)
+                    _profileData.value = it.data as ProfileData
+                else return@collect
             }
 
             animeList.asResult().collect {
-                when (it) {
-                    is Result.Error -> logMessage(it.exception?.message)
-                    Result.Loading -> {}
-                    is Result.Success -> _animeList.value = it.data as List<ProfileRow>
-                }
+                if (it is Result.Success)
+                    _animeList.value = it.data as List<ProfileRow>
+                else return@collect
             }
         }
     }

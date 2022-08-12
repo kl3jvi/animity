@@ -75,7 +75,19 @@ data class AniListMedia(
 //    val externalLinks: List<MediaExternalLink> = listOf(),
     val siteUrl: String = "",
 //    val mediaListEntry: MediaList? = null
-) : Parcelable
+) : Parcelable {
+
+
+    fun getGenresToString(): String {
+        return if (genres.size < 3) {
+            genres.joinToString { it.name }
+        } else if (genres.size > 3) {
+            genres.subList(0, 2).joinToString { it.name }
+        } else {
+            genres.joinToString { it.name }
+        }
+    }
+}
 
 @Parcelize
 data class MediaTitle(

@@ -59,7 +59,7 @@
                     android:layout_width="126dp"
                     android:layout_height="72dp"
                     android:foreground="@drawable/outline_drawable"
-                    app:cardCornerRadius="@dimen/roundedImageRadius">
+                    app:cardCornerRadius="10dp">
 
                     <ImageView
                         android:id="@+id/episode_poster"

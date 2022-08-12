@@ -10,9 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Entity
 data class Content(
     @PrimaryKey var episodeUrl: String = "",
-    @ColumnInfo var animeName: String = "",
     @ColumnInfo var malId: Int = 0,
-    @ColumnInfo var episodeNumber: String? = "",
     @ColumnInfo var watchedDuration: Long = 0,
     @ColumnInfo var duration: Long = 0,
 ) : Parcelable {
