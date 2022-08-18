@@ -12,6 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
@@ -107,7 +110,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun insertEpisodeToDatabase(content: Content) {
-        viewModel.insertOrUpdate(content = content)
+        viewModel.upsertEpisode(content = content)
     }
 
     public override fun onStart() {
@@ -216,7 +219,7 @@ class PlayerActivity : AppCompatActivity() {
                         val skipIntro =
                             binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
 
-                        collectFlow(viewModel.audioProgress(player)) { currentProgress ->
+                        collectFlow(viewModel.progress(player)) { currentProgress ->
                             currentTime = currentProgress
                             if (currentTime < 300000) {
                                 skipIntro.setOnClickListener {
@@ -440,22 +443,16 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+
     /**
-     * "Hide the system UI and make it reappear when the user swipes down from the top of the screen."
-     *
-     * The function is called in the onCreate() method of the MainActivity class
+     * Hide the system UI and make it re-appear when the user swipes down from the top of the screen.
      */
-    @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
-        binding.videoView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_LOW_PROFILE
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-
-
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, binding.videoView).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
 }

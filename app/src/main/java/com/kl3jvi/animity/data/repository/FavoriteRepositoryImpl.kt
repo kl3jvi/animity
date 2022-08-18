@@ -6,7 +6,6 @@ import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
-import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -29,7 +28,6 @@ class FavoriteRepositoryImpl @Inject constructor(
         userId: Int?,
         page: Int?
     ) = aniListGraphQlClient.getFavoriteAnimesFromAniList(userId, page)
-        .catch { e -> logError(e) }
         .mapNotNull(ApolloResponse<FavoritesAnimeQuery.Data>::convert)
         .flowOn(ioDispatcher)
 

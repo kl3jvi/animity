@@ -12,6 +12,7 @@ class LoginRepositoryImpl @Inject constructor(
     private val authClient: AuthClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : LoginRepository {
+
     override fun getAccessToken(
         grantType: String,
         clientId: Int,

@@ -51,33 +51,55 @@ class DetailsRepositoryImpl @Inject constructor(
                 ).string()
             ).reversed()
         }
-        val episodesWithTitle = getEpisodeTitles(malId).first()
-
-        /* A loop that iterates over the list of episodes and adds the episode name and percentage to the episode model. */
-        response.forEachIndexed { index, episodeModel ->
-            if (episodeModel.episodeNumber.split(" ").last() ==
-                episodesWithTitle.getOrNull(
-                    index
-                )?.number
-            ) {
-                episodeModel.episodeName = episodesWithTitle[index].title
-                episodeModel.isFiller = episodesWithTitle[index].isFiller
-            } else {
-                episodeModel.episodeName = ""
+        emit(response)
+    }.flatMapLatest { list ->
+        flow {
+            val episodesWithTitle = getEpisodeTitles(malId).first()
+            list.forEachIndexed { index, episodeModel ->
+                if (episodeModel.episodeNumber.split(" ").last() ==
+                    episodesWithTitle.getOrNull(
+                        index
+                    )?.number
+                ) {
+                    episodeModel.episodeName = episodesWithTitle[index].title
+                    episodeModel.isFiller = episodesWithTitle[index].isFiller
+                } else {
+                    episodeModel.episodeName = ""
+                }
             }
+            emit(list)
         }
-        emit(response)
-    }.flowOn(ioDispatcher)
-
-
-    override fun getEpisodeTitles(id: Int) = flow {
-        val response = apiClient.getEpisodeTitles(id).episodes
-        emit(response)
-    }.catch { emit(emptyList()) }.flowOn(ioDispatcher)
-
-
-    override fun getEpisodesPercentage(malId: Int): Flow<List<Content>> {
-        return episodeDao.getEpisodesByAnime(malId = malId)
     }
+
+//    val episodesWithTitle = getEpisodeTitles(malId).first()
+//
+//    /* A loop that iterates over the list of episodes and adds the episode name and percentage to the episode model. */
+//    response.forEachIndexed
+//    {
+//        index, episodeModel ->
+//        if (episodeModel.episodeNumber.split(" ").last() ==
+//            episodesWithTitle.getOrNull(
+//                index
+//            )?.number
+//        ) {
+//            episodeModel.episodeName = episodesWithTitle[index].title
+//            episodeModel.isFiller = episodesWithTitle[index].isFiller
+//        } else {
+//            episodeModel.episodeName = ""
+//        }
+//    }
+//    emit(response)
+//}.flowOn(ioDispatcher)
+
+
+override fun getEpisodeTitles(id: Int) = flow {
+    val response = apiClient.getEpisodeTitles(id).episodes
+    emit(response)
+}.catch { emit(emptyList()) }.flowOn(ioDispatcher)
+
+
+override fun getEpisodesPercentage(malId: Int): Flow<List<Content>> {
+    return episodeDao.getEpisodesByAnime(malId = malId)
+}
 }
 

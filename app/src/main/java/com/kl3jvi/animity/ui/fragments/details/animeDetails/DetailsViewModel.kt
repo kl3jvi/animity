@@ -30,42 +30,45 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val animeMetaModel = MutableStateFlow(AniListMedia())
+    val reverseState = MutableStateFlow(false)
 
 
     val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
-        favoriteRepository.getGogoUrlFromAniListId(media.idAniList).asResult().map { result ->
-            when (result) {
-                is Result.Error -> EpisodeListUiState.Error
-                Result.Loading -> EpisodeListUiState.Loading
-                is Result.Success -> {
-                    /* Fetching the episode list from the anime url and then combining it with the percentage of the
-                        episodes watched. */
-                    val episodeListFlow = detailsRepository.fetchAnimeInfo(
-                        episodeUrl = result.data.pages?.getGogoUrl().orEmpty()
-                    ).flatMapLatest { animeInfo ->
-                        detailsRepository.fetchEpisodeList(
-                            id = animeInfo.id,
-                            endEpisode = animeInfo.endEpisode,
-                            alias = animeInfo.alias,
-                            malId = media.idMal.or1()
-                        ).combine(
-                            detailsRepository.getEpisodesPercentage(media.idMal.or1())
-                        ) { networkEpisodeList, episodeListFromDataBase ->
-                            networkEpisodeList.map { episode ->
-                                val contentEpisode =
-                                    episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
-                                if (contentEpisode != null) {
-                                    episode.percentage = contentEpisode.getWatchedPercentage()
+        reverseState.flatMapLatest { shouldReverse ->
+            favoriteRepository.getGogoUrlFromAniListId(media.idAniList).asResult().map { result ->
+                when (result) {
+                    is Result.Error -> EpisodeListUiState.Error
+                    Result.Loading -> EpisodeListUiState.Loading
+                    is Result.Success -> {
+                        /* Fetching the episode list from the anime url and then combining it with the percentage of the
+                            episodes watched. */
+                        val episodeListFlow = detailsRepository.fetchAnimeInfo(
+                            episodeUrl = result.data.pages?.getGogoUrl().orEmpty()
+                        ).flatMapLatest { animeInfo ->
+                            detailsRepository.fetchEpisodeList(
+                                id = animeInfo.id,
+                                endEpisode = animeInfo.endEpisode,
+                                alias = animeInfo.alias,
+                                malId = media.idMal.or1()
+                            ).combine(
+                                detailsRepository.getEpisodesPercentage(media.idMal.or1())
+                            ) { networkEpisodeList, episodeListFromDataBase ->
+                                networkEpisodeList.map { episode ->
+                                    val contentEpisode =
+                                        episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
+                                    if (contentEpisode != null) {
+                                        episode.percentage = contentEpisode.getWatchedPercentage()
+                                    }
+                                    episode
                                 }
-                                episode
                             }
+                        }.catch { e ->
+                            logError(e)
                         }
-                    }.catch { e ->
-                        logError(e)
-                    }.mapNotNull { episodeModelList ->
-                        episodeModelList.ifEmpty { emptyList() }
+                        val finalList = if (!shouldReverse) episodeListFlow.firstOrNull() else episodeListFlow.firstOrNull()?.reversed()
+
+                        EpisodeListUiState.Success(finalList ?: emptyList())
                     }
-                    EpisodeListUiState.Success(episodeListFlow.firstOrNull() ?: emptyList())
                 }
             }
         }
@@ -84,8 +87,7 @@ class DetailsViewModel @Inject constructor(
             animeMetaModel.flatMapLatest {
                 userRepository.markAnimeAsFavorite(it.idAniList)
                     .catch { error -> logError(error) }
-                    .flatMapLatest { emptyFlow<ApolloResponse<ToggleFavouriteMutation.Data>>() }
-            }
+            }.collect()
         }
     }
 }

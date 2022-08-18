@@ -2,6 +2,7 @@ package com.kl3jvi.animity.di
 
 
 import android.content.Context
+import android.net.ConnectivityManager
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -25,7 +26,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -138,9 +138,8 @@ object NetworkModule {
     @Singleton
     fun provideAniListGraphQlClient(
         apolloClient: ApolloClient,
-        ioDispatcher: CoroutineDispatcher
     ): AniListGraphQlClient {
-        return AniListGraphQlClient(apolloClient, ioDispatcher)
+        return AniListGraphQlClient(apolloClient)
     }
 
 
@@ -162,6 +161,14 @@ object NetworkModule {
             .redactHeaders(emptySet())
             .alwaysReadResponseBody(false)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideConnectivityManager(
+        @ApplicationContext context: Context
+    ): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
 

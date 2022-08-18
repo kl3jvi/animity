@@ -7,7 +7,6 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -42,16 +41,17 @@ class SearchAniListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
+
             var listOfAniListMedia = listOf<AniListMedia>()
             withContext(Dispatchers.IO) {
                 apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
                     .distinctUntilChanged()
-                    .collectLatest { list -> list?.let { listOfAniListMedia = it } }
+                    .collect { list -> list?.let { listOfAniListMedia = it } }
             }
             LoadResult.Page(
                 data = listOfAniListMedia,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
-                nextKey = if (listOfAniListMedia.isNullOrEmpty()) null else page + 1
+                nextKey = if (listOfAniListMedia.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
             e.printStackTrace()

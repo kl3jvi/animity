@@ -8,7 +8,6 @@ import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants
-import com.kl3jvi.animity.utils.logError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -17,7 +16,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-@Suppress("BlockingMethodInNonBlockingContext")
 class PlayerRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val ioDispatcher: CoroutineDispatcher,
@@ -28,12 +26,12 @@ class PlayerRepositoryImpl @Inject constructor(
     override fun getMediaUrl(
         header: Map<String, String>,
         url: String
-    ): Flow<List<String>> = flow {
+    ) = flow {
         val response = parser.parseMediaUrl(
             apiClient.fetchEpisodeMediaUrl(header = header, episodeUrl = url).string()
         )
         emit(response)
-    }.flowOn(ioDispatcher).flatMapLatest { episodeInfo ->
+    }.flatMapLatest { episodeInfo ->
         flow {
             val id = Regex("id=([^&]+)").find(
                 episodeInfo.vidCdnUrl.orEmpty()
@@ -54,8 +52,8 @@ class PlayerRepositoryImpl @Inject constructor(
                 apiClient.fetchM3u8PreProcessor(header = header, url = it).string()
             )
             emit(response)
-        }.catch { e -> logError(e) }
-    }
+        }
+    }.flowOn(ioDispatcher)
 
     override suspend fun upsertEpisode(content: Content) {
         return withContext(ioDispatcher) {

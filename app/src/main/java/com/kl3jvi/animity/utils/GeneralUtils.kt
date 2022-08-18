@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import io.noties.markwon.Markwon
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun View.hide() {
@@ -58,4 +60,16 @@ fun dismissKeyboard(view: View) {
     ViewCompat.getWindowInsetsController(view)?.hide(WindowInsetsCompat.Type.ime())
 }
 
+/**
+ * It takes a number of seconds since the epoch and returns a string in the format "Day, dd Month
+ * yyyy, hh:mm a"
+ *
+ * @param seconds The number of seconds since January 1, 1970 00:00:00 UTC.
+ * @return The date in the format of Day, Date Month Year, Hour:Minute AM/PM
+ */
+fun displayInDayDateTimeFormat(seconds: Int): String {
+    val dateFormat = SimpleDateFormat("E, dd MMM yyyy, hh:mm a", Locale.getDefault())
+    val date = Date(seconds * 1000L)
+    return dateFormat.format(date)
+}
 

@@ -30,7 +30,7 @@ class PlayerViewModel @Inject constructor(
      *
      * @param exoPlayer ExoPlayer? - The ExoPlayer instance
      */
-    fun audioProgress(exoPlayer: ExoPlayer?) = flow {
+    fun progress(exoPlayer: ExoPlayer?) = flow {
         exoPlayer?.currentPosition?.let {
             while (it < 200000) {
                 emit(exoPlayer.currentPosition)
@@ -54,16 +54,15 @@ class PlayerViewModel @Inject constructor(
         EpisodeUrlUiState.Loading
     )
 
-    fun insertOrUpdate(content: Content) {
+    fun upsertEpisode(content: Content) {
         viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(content) }
     }
 
     /**
-     * It's getting the playback position of the episode from the database and posting it to the
-     * _playBackPosition
+     * The function gets the playback position of the episode from the database and sets the value of the MutableLiveData
+     * object to the playback position
      *
      * @param episodeUrl The url of the episode that is being played.
-     * @return The _playBackPosition is being returned.
      */
     fun getPlaybackPosition(episodeUrl: String) {
         viewModelScope.launch(ioDispatcher) {

@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
-import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
@@ -41,12 +40,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->
             collectFlow(viewModel.animeList) { animeCollectionResponse ->
-                animeCollectionResponse?.let {
-                    val hasNoData = animeCollectionResponse.isEmpty()
-                    binding.progressBar.isVisible = hasNoData
-                    binding.profileRv.isVisible = !hasNoData
-                    binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
-                }
+                val hasNoData = animeCollectionResponse.isEmpty()
+                binding.progressBar.isVisible = hasNoData
+                binding.profileRv.isVisible = !hasNoData
+                binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
             }
         }
     }
@@ -57,11 +54,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
         createFragmentMenu(menuLayout = R.menu.profile_menu) {
             when (it.itemId) {
                 R.id.action_log_out -> {
-                    viewModel.clearStorage()
+                    viewModel.clearStorage() // Deletes saved token
                     requireActivity().launchActivity<LoginActivity> { }
                     requireActivity().finish()
                     true
                 }
+
                 else -> false
             }
         }

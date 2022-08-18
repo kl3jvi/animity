@@ -15,6 +15,7 @@ class ProfileRepositoryImpl @Inject constructor(
     private val aniListGraphQlClient: AniListGraphQlClient,
     private val ioDispatcher: CoroutineDispatcher
 ) : ProfileRepository {
+
     override fun getProfileData(userId: Int?) =
         aniListGraphQlClient.getProfileData(userId)
             .mapNotNull(ApolloResponse<UserQuery.Data>::convert)

@@ -1,9 +1,7 @@
 package com.kl3jvi.animity.data.mapper
 
-import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.util.userFavoritesModel
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 class FavoriteMapperQueryTest {

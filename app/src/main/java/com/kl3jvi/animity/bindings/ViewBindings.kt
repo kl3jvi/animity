@@ -2,6 +2,8 @@ package com.kl3jvi.animity.bindings
 
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,8 +15,6 @@ import coil.transform.CircleCropTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.di.GlideApp
-import com.kl3jvi.animity.utils.hide
-import com.kl3jvi.animity.utils.show
 
 object ViewBindings {
 
@@ -123,5 +123,14 @@ object ViewBindings {
         view.setCardBackgroundColor(Color.parseColor(if (isFiller) "#2B2C30" else "#17293F"))
     }
 
+    @JvmStatic
+    @BindingAdapter("htmlText")
+    fun TextView.setHtml(htmlString: String) {
+        text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(htmlString)
+        }
+    }
 
 }

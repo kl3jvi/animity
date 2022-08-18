@@ -76,6 +76,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
                 resultTitle.text = animeInfo.title.userPreferred
                 title = animeInfo.title.userPreferred
+                imageButton.setOnClickListener {
+                    viewModel.reverseState.value = !viewModel.reverseState.value
+                }
             }
         }
     }

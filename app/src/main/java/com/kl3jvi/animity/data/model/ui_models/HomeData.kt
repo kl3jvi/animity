@@ -5,15 +5,16 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Parcelable
 import com.kl3jvi.animity.type.*
+import com.kl3jvi.animity.utils.displayInDayDateTimeFormat
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 
 data class HomeData(
-    val trendingAnime: List<AniListMedia> = listOf(),
-    val popularAnime: List<AniListMedia> = listOf(),
-    val movies: List<AniListMedia> = listOf(),
-    val review: List<Review> = listOf()
+    val trendingAnime: List<AniListMedia> = emptyList(),
+    val popularAnime: List<AniListMedia> = emptyList(),
+    val movies: List<AniListMedia> = emptyList(),
+    val review: List<Review> = emptyList()
 )
 
 @Parcelize
@@ -86,6 +87,12 @@ data class AniListMedia(
         } else {
             genres.joinToString { it.name }
         }
+    }
+
+    fun getDateTimeStringFormat(): String? {
+        return nextAiringEpisode.takeIf {
+            it != null
+        }?.run { displayInDayDateTimeFormat(this) }
     }
 }
 

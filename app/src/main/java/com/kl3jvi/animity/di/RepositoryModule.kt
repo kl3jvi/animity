@@ -2,6 +2,8 @@ package com.kl3jvi.animity.di
 
 import com.kl3jvi.animity.data.repository.*
 import com.kl3jvi.animity.domain.repositories.*
+import com.kl3jvi.animity.utils.network.ConnectivityObserver
+import com.kl3jvi.animity.utils.network.NetworkConnectivityObserver
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,6 +41,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository
+
+    @Binds
+    abstract fun bindNetworkManager(networkManager: NetworkConnectivityObserver): ConnectivityObserver
 
 }
 

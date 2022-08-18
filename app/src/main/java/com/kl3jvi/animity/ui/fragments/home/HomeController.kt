@@ -55,7 +55,7 @@ enum class Title(val title: String) {
 }
 
 fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): List<CardAnimeBindingModel_> {
-/* It's a function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
+    /* It's a function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
     return map { media ->
         CardAnimeBindingModel_()
             .id(Uuid.randomUUID().toString())

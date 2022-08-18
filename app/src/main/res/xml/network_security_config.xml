@@ -3,6 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">gogoanime.gg</domain>
         <domain includeSubdomains="true">gogoanime.lu</domain>
+        <domain includeSubdomains="true">gogoanime.tel</domain>
         <domain includeSubdomains="true">ajax.gogocdn.net</domain>
         <domain includeSubdomains="true">goload.pro</domain>
         <domain includeSubdomains="true">api.myanimelist.net</domain>

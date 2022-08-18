@@ -13,15 +13,15 @@ fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
         val trendingAnime =
             data?.trendingAnime?.media?.mapNotNull {
                 it?.homeMedia?.convert()
-            } ?: listOf()
+            } ?: emptyList()
         val popularAnime =
-            data?.popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+            data?.popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList()
         val movies =
-            data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: listOf()
+            data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList()
         val review = data?.review?.reviews?.mapNotNull {
             it.convert()
 
-        } ?: listOf()
+        } ?: emptyList()
 
         homeData = HomeData(
             trendingAnime = trendingAnime,
@@ -87,7 +87,7 @@ public fun HomeMedia?.convert(): AniListMedia {
             this?.coverImage?.medium.orEmpty()
         ),
         bannerImage = this?.bannerImage.orEmpty(),
-        genres = this?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: listOf(),
+        genres = this?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: emptyList(),
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0
     )

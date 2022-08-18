@@ -71,7 +71,7 @@
         <entry key="app/src/main/res/layout/error_screen_video_player.xml" value="0.3140625" />
         <entry key="app/src/main/res/layout/exo_player_custom_controls.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.16354166666666667" />
-        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.15566037735849056" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.3854166666666667" />
         <entry key="app/src/main/res/layout/fragment_downloads.xml" value="0.2056159420289855" />
         <entry key="app/src/main/res/layout/fragment_favorites.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17484008528784648" />
@@ -89,7 +89,7 @@
         <entry key="app/src/main/res/layout/item_episode_number.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_favorite_anime.xml" value="0.2828282828282828" />
         <entry key="app/src/main/res/layout/item_header.xml" value="0.24270833333333333" />
-        <entry key="app/src/main/res/layout/item_header_details.xml" value="0.24322916666666666" />
+        <entry key="app/src/main/res/layout/item_header_details.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_horizontal_recycler.xml" value="0.2703125" />
         <entry key="app/src/main/res/layout/item_horizontal_rv.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_list_recycler_view.xml" value="0.24270833333333333" />
