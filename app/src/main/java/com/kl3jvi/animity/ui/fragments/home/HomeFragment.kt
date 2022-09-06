@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.application.AnimityApplication
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.createFragmentMenu
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +47,9 @@ class HomeFragment : Fragment() {
                 else -> false
             }
         }
+        handleNetworkChanges()
+
+
     }
 
     private fun fetchHomeData() {
@@ -80,25 +82,18 @@ class HomeFragment : Fragment() {
         if (requireActivity() is MainActivity) (activity as MainActivity?)?.showBottomNavBar()
     }
 
-    /**
-     * It handles network changes.
-     */
-    override fun onStart() {
-        super.onStart()
-        handleNetworkChanges()
-    }
 
     private fun handleNetworkChanges() {
-        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            if (isConnected)
+        collectFlow(viewModel.connection) { isConnected ->
+            Log.e("Internet", isConnected.toString())
+
+            if (isConnected) fetchHomeData()
             binding.apply {
                 mainRv.isVisible = isConnected
                 noInternetStatus.noInternet.isVisible = !isConnected
             }
-            if (isConnected) fetchHomeData()
         }
     }
-
 
 }
 
