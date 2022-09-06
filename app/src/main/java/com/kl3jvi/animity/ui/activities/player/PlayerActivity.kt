@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.ui.activities.player
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -32,7 +31,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.model.ui_models.Content
+import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.utils.Constants
@@ -79,7 +78,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var animeTitlePassed: String
     lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
-    lateinit var content: Content
+    lateinit var episodeEntity: EpisodeEntity
     var aniListId: Int = 0
 
 
@@ -109,8 +108,8 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertEpisodeToDatabase(content: Content) {
-        viewModel.upsertEpisode(content = content)
+    private fun insertEpisodeToDatabase(episodeEntity: EpisodeEntity) {
+        viewModel.upsertEpisode(episodeEntity = episodeEntity)
     }
 
     public override fun onStart() {
@@ -142,10 +141,8 @@ class PlayerActivity : AppCompatActivity() {
     public override fun onStop() {
         super.onStop()
         if (Util.SDK_INT > 23 && player == null) {
-            if (player != null) {
-                player?.pause()
-                onIsPlayingChanged(isPlaying = false)
-            }
+            player?.pause()
+            onIsPlayingChanged(isPlaying = false)
             releasePlayer()
         }
     }
@@ -205,7 +202,7 @@ class PlayerActivity : AppCompatActivity() {
                             ) {
                                 if (playbackState == ExoPlayer.STATE_READY) {
                                     val realDurationMillis: Long = player!!.duration
-                                    content = Content().apply {
+                                    episodeEntity = EpisodeEntity().apply {
                                         malId = aniListId
                                         episodeUrl = episodeUrlLocal
                                         watchedDuration = 0
@@ -246,16 +243,16 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (::content.isInitialized)
-            insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
+        if (::episodeEntity.isInitialized)
+            insertEpisodeToDatabase(episodeEntity.copy(watchedDuration = player!!.currentPosition))
     }
 
     private fun initialisePlayerLayout() {
 
         val backButton = binding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
-            if (::content.isInitialized)
-                insertEpisodeToDatabase(content.copy(watchedDuration = player!!.currentPosition))
+            if (::episodeEntity.isInitialized)
+                insertEpisodeToDatabase(episodeEntity.copy(watchedDuration = player!!.currentPosition))
             finish()
         }
 

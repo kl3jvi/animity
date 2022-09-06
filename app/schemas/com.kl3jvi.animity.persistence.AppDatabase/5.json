@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "658edf2afe28840d8b096c164d5a4df6",
+    "identityHash": "445948fc248930221c818cb060afb337",
     "entities": [
       {
         "tableName": "anime_table",
@@ -85,7 +85,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "Content",
+        "tableName": "EpisodeEntity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeUrl` TEXT NOT NULL, `malId` INTEGER NOT NULL, `watchedDuration` INTEGER NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY(`episodeUrl`))",
         "fields": [
           {
@@ -126,7 +126,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '658edf2afe28840d8b096c164d5a4df6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '445948fc248930221c818cb060afb337')"
     ]
   }
 }

@@ -35,7 +35,7 @@ class DoubleTapPlayerView @JvmOverloads constructor(
         // Check whether controller is set through XML
         attrs?.let {
             val a = context.obtainStyledAttributes(attrs, R.styleable.DoubleTapPlayerView, 0, 0)
-            controllerRef = a.getResourceId(R.styleable.DoubleTapPlayerView_dtpv_controller, -1) ?: -1
+            controllerRef = a.getResourceId(R.styleable.DoubleTapPlayerView_dtpv_controller, -1)
 
             a.recycle()
         }

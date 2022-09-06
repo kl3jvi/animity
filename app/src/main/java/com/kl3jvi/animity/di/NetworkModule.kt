@@ -7,6 +7,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
@@ -79,25 +80,22 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         @RetrofitClient okHttpClient: OkHttpClient,
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(GOGO_BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(GOGO_BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
 
     @Provides
     @Singleton
     fun provideApolloClient(
         @Apollo okHttpClient: OkHttpClient,
-    ): ApolloClient {
-        return ApolloClient.Builder()
-            .serverUrl(ANILIST_API_URL)
-            .okHttpClient(okHttpClient)
-            .build()
-    }
+    ): ApolloClient = ApolloClient.Builder()
+        .serverUrl(ANILIST_API_URL)
+        .okHttpClient(okHttpClient)
+        .build()
+
 
     /**
      * > It takes a Retrofit object as an argument and returns an AnimeService object
@@ -130,17 +128,14 @@ object NetworkModule {
     @Singleton
     fun provideNineAnimeApiClient(
         yugenService: YugenService
-    ): YugenApiClient {
-        return YugenApiClient(yugenService)
-    }
+    ): YugenApiClient = YugenApiClient(yugenService)
+
 
     @Provides
     @Singleton
     fun provideAniListGraphQlClient(
         apolloClient: ApolloClient,
-    ): AniListGraphQlClient {
-        return AniListGraphQlClient(apolloClient)
-    }
+    ): AniListGraphQlClient = AniListGraphQlClient(apolloClient)
 
 
     @Singleton
@@ -171,6 +166,12 @@ object NetworkModule {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
+
+    @Singleton
+    @Provides
+    fun provideFirebaseInstance(): FirebaseRemoteConfig {
+        return FirebaseRemoteConfig.getInstance()
+    }
 
 }
 

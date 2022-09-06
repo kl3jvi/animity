@@ -1,14 +1,14 @@
 package com.kl3jvi.animity.domain.repositories
 
-import com.kl3jvi.animity.data.model.ui_models.Content
+import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.parsers.Providers
 import kotlinx.coroutines.flow.Flow
 
 interface PersistenceRepository {
 
-    suspend fun insertEpisode(content: Content)
-    suspend fun updateEpisode(content: Content)
-    suspend fun getEpisodeContent(episodeUrl: String): Flow<Content>
+    suspend fun insertEpisode(episodeEntity: EpisodeEntity)
+    suspend fun updateEpisode(episodeEntity: EpisodeEntity)
+    suspend fun getEpisodeContent(episodeUrl: String): Flow<EpisodeEntity>
     suspend fun isEpisodeOnDatabase(episodeUrl: String): Boolean
 
     var bearerToken: String?

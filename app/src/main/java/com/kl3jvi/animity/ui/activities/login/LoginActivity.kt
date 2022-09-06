@@ -22,6 +22,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
+import com.kl3jvi.animity.utils.NetworkUtils.unregisterNetworkCallback
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
@@ -75,8 +76,8 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             .appendPath("v2")
             .appendPath("oauth")
             .appendPath("authorize")
-            .appendQueryParameter("client_id", anilistid)
-            .appendQueryParameter("redirect_uri", redirecturi)
+            .appendQueryParameter("client_id", anilistId)
+            .appendQueryParameter("redirect_uri", redirectUri)
             .appendQueryParameter("response_type", "code")
             .build()
     }
@@ -84,16 +85,16 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     override fun onHandleAuthIntent(intent: Intent?) {
         if (intent != null && intent.data != null) {
             val uri = intent.data
-            if (uri.toString().startsWith(redirecturi)) {
+            if (uri.toString().startsWith(redirectUri)) {
                 val authorizationToken = uri?.getQueryParameter("code")
                 Log.e("AUTH TOKEN", authorizationToken.toString())
                 if (!authorizationToken.isNullOrEmpty()) {
                     collectFlow(
                         viewModel.getAccessToken(
                             grantType = AUTH_GRANT_TYPE,
-                            clientId = anilistid.toInt(),
-                            clientSecret = anilistsecret,
-                            redirectUri = redirecturi,
+                            clientId = anilistId.toInt(),
+                            clientSecret = anilistSecret,
+                            redirectUri = redirectUri,
                             authorizationToken = authorizationToken
                         )
                     ) { state ->
@@ -192,5 +193,11 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         onHandleAuthIntent(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkCallback(this)
+
     }
 }

@@ -3,7 +3,7 @@ package com.kl3jvi.animity.ui.activities.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
-import com.kl3jvi.animity.data.model.ui_models.Content
+import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
@@ -54,8 +54,8 @@ class PlayerViewModel @Inject constructor(
         EpisodeUrlUiState.Loading
     )
 
-    fun upsertEpisode(content: Content) {
-        viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(content) }
+    fun upsertEpisode(episodeEntity: EpisodeEntity) {
+        viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(episodeEntity) }
     }
 
     /**

@@ -2,7 +2,7 @@
 
 package com.kl3jvi.animity.data.repository
 
-import com.kl3jvi.animity.data.model.ui_models.Content
+import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.parsers.GoGoParser
@@ -55,22 +55,20 @@ class PlayerRepositoryImpl @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun upsertEpisode(content: Content) {
+    override suspend fun upsertEpisode(episodeEntity: EpisodeEntity) {
         return withContext(ioDispatcher) {
-            val exists = episodeDao.isEpisodeOnDatabase(content.episodeUrl) && content.watchedDuration > 0
-            if (exists)
-                episodeDao.updateEpisode(content)
-            else episodeDao.insertEpisode(content)
+            val exists = episodeDao.isEpisodeOnDatabase(episodeEntity.episodeUrl) && episodeEntity.watchedDuration > 0
+            if (exists) episodeDao.updateEpisode(episodeEntity)
+            else episodeDao.insertEpisode(episodeEntity)
         }
     }
 
-    override suspend fun getPlaybackPosition(episodeUrl: String): Flow<Content> {
+    override suspend fun getPlaybackPosition(episodeUrl: String): Flow<EpisodeEntity> {
         return withContext(ioDispatcher) {
             val exists = episodeDao.isEpisodeOnDatabase(episodeUrl)
             if (exists)
                 episodeDao.getEpisodeContent(episodeUrl)
-            else
-                emptyFlow()
+            else emptyFlow()
         }
     }
 }

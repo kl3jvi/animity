@@ -65,7 +65,7 @@ class DetailsViewModel @Inject constructor(
                         }.catch { e ->
                             logError(e)
                         }
-                        val finalList = if (!shouldReverse) episodeListFlow.firstOrNull() else episodeListFlow.firstOrNull()?.reversed()
+                        val finalList = if (!shouldReverse) episodeListFlow.firstOrNull() else episodeListFlow.firstOrNull()?.asReversed()
 
                         EpisodeListUiState.Success(finalList ?: emptyList())
                     }

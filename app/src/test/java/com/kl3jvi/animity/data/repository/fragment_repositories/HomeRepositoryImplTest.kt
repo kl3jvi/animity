@@ -40,7 +40,7 @@ class HomeRepositoryImplTest {
         apolloClient = ApolloClient.Builder()
             .networkTransport(QueueTestNetworkTransport())
             .build()
-        client = GogoAnimeApiClient(service, apolloClient)
+        client = GogoAnimeApiClient(service)
         repository = HomeRepositoryImpl(client, coroutinesRule.testDispatcher, parser)
     }
 

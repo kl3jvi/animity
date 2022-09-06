@@ -1,7 +1,7 @@
 package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
-import com.kl3jvi.animity.data.model.ui_models.Content
+import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
@@ -71,35 +71,14 @@ class DetailsRepositoryImpl @Inject constructor(
         }
     }
 
-//    val episodesWithTitle = getEpisodeTitles(malId).first()
-//
-//    /* A loop that iterates over the list of episodes and adds the episode name and percentage to the episode model. */
-//    response.forEachIndexed
-//    {
-//        index, episodeModel ->
-//        if (episodeModel.episodeNumber.split(" ").last() ==
-//            episodesWithTitle.getOrNull(
-//                index
-//            )?.number
-//        ) {
-//            episodeModel.episodeName = episodesWithTitle[index].title
-//            episodeModel.isFiller = episodesWithTitle[index].isFiller
-//        } else {
-//            episodeModel.episodeName = ""
-//        }
-//    }
-//    emit(response)
-//}.flowOn(ioDispatcher)
+    override fun getEpisodeTitles(id: Int) = flow {
+        val response = apiClient.getEpisodeTitles(id).episodes
+        emit(response)
+    }.catch { emit(emptyList()) }.flowOn(ioDispatcher)
 
 
-override fun getEpisodeTitles(id: Int) = flow {
-    val response = apiClient.getEpisodeTitles(id).episodes
-    emit(response)
-}.catch { emit(emptyList()) }.flowOn(ioDispatcher)
-
-
-override fun getEpisodesPercentage(malId: Int): Flow<List<Content>> {
-    return episodeDao.getEpisodesByAnime(malId = malId)
-}
+    override fun getEpisodesPercentage(malId: Int): Flow<List<EpisodeEntity>> {
+        return episodeDao.getEpisodesByAnime(malId = malId)
+    }
 }
 

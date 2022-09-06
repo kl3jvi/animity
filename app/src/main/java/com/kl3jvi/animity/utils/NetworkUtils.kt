@@ -6,18 +6,16 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kl3jvi.animity.BuildConfig
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
-import okhttp3.dnsoverhttps.DnsOverHttps
-import java.net.InetAddress
+
+
+
 
 
 /**
@@ -63,6 +61,12 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
         return networkLiveData
     }
 
+    fun unregisterNetworkCallback(context: Context) {
+//        val connectivityManager =
+//            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        connectivityManager.unregisterNetworkCallback(this)
+    }
+
 
     /**
      * It posts a value to the networkLiveData object.
@@ -84,7 +88,7 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
 
     /* An extension function that is being used to observe the networkLiveData object. */
     fun Context.isConnectedToInternet(owner: LifecycleOwner, observer: (Boolean) -> Unit) {
-        getNetworkLiveData(context = this).observe(owner) {
+        getNetworkLiveData(context = this as Context).observe(owner) {
             observer(it)
         }
     }
@@ -98,46 +102,5 @@ internal fun OkHttpClient.Builder.addChuckerOnDebug(
     }
 }
 
-
-fun OkHttpClient.Builder.addGoogleDns() = (
-        addGenericDns(
-            "https://dns.google/dns-query",
-            listOf(
-                "8.8.4.4",
-                "8.8.8.8"
-            )
-        ))
-
-fun OkHttpClient.Builder.addCloudFlareDns() = (
-        addGenericDns(
-            "https://cloudflare-dns.com/dns-query",
-            listOf(
-                "1.1.1.1",
-                "1.0.0.1",
-                "2606:4700:4700::1111",
-                "2606:4700:4700::1001"
-            )
-        ))
-
-fun OkHttpClient.Builder.addAdGuardDns() = (
-        addGenericDns(
-            "https://dns.adguard.com/dns-query",
-            listOf(
-                // "Non-filtering"
-                "94.140.14.140",
-                "94.140.14.141",
-            )
-        ))
-
-fun OkHttpClient.Builder.addGenericDns(url: String, ips: List<String>) = dns(
-    DnsOverHttps
-        .Builder()
-        .client(build())
-        .url(url.toHttpUrl())
-        .bootstrapDnsHosts(
-            ips.map { InetAddress.getByName(it) }
-        )
-        .build()
-)
 
 

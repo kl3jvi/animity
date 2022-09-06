@@ -7,8 +7,8 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id 'com.google.secrets_gradle_plugin' version("0.4")
-    id "com.apollographql.apollo3" version("3.3.2")
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id "com.apollographql.apollo3" version("3.5.0")
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 }
 
@@ -100,7 +100,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeVersion"
 
 
-    def appCompatVersion = "1.4.2"
+    def appCompatVersion = "1.5.0"
     def materialVersion = "1.6.1"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
@@ -108,34 +108,38 @@ dependencies {
     def constraintLayoutVersion = "2.1.4"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
-    def livedataVersion = "2.4.1"
-    def viewModelVersion = "2.5.0-rc02"
+    def livedataVersion = '2.5.1'
+    def viewModelVersion = '2.5.1'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = "2.5.0-rc02"
+    def navigationComponentVersion = '2.5.1'
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
 
     // Coroutines
-    def coroutinesVersion = "1.6.3"
+    def coroutinesVersion = '1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
     // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.5.0-rc02"
+    def lifecycle_version = '2.5.1'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    def analyticsVersion = "21.0.0"
+    def analyticsVersion = '21.1.0'
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
 
-    def crashlyticsVersion = "18.2.11"
+    def crashlyticsVersion = '18.2.12'
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
 
+    def remoteConfig = "21.1.1"
+    implementation "com.google.firebase:firebase-config-ktx:$remoteConfig"
+
+
     // Hilt DI
-    def hiltVersion = "2.40.5"
-    def hiltAnnotationProcessor = "2.38.1"
+    def hiltVersion = '2.43.2'
+    def hiltAnnotationProcessor = '2.43.2'
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltAnnotationProcessor"
 
@@ -153,12 +157,12 @@ dependencies {
     implementation "org.jsoup:jsoup:$jsoupVersion"
 
     //Room Library
-    def room_version = "2.4.2"
+    def room_version = "2.4.3"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     //Video Player
-    def exoplayerVersion = "2.18.0"
+    def exoplayerVersion = '2.18.1'
     implementation "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-cast:$exoplayerVersion"
     implementation "com.google.android.exoplayer:extension-okhttp:$exoplayerVersion"
@@ -170,7 +174,7 @@ dependencies {
     implementation "com.ms-square:expandableTextView:$expandableTextViewVersion"
 
     //animation lib
-    def lottieVersion = "5.1.1"
+    def lottieVersion = '5.2.0'
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // image library
@@ -182,13 +186,13 @@ dependencies {
     }
 
     //splash screen
-    def splashVersion = "1.0.0-rc01"
+    def splashVersion = '1.0.0'
     implementation "androidx.core:core-splashscreen:$splashVersion"
 
     def onesignalVersion = "4.6.2"
-//    implementation "com.onesignal:OneSignal:$onesignalVersion"
+    implementation "com.onesignal:OneSignal:$onesignalVersion"
 
-    def textUtilsVersion = "1.7"
+    def textUtilsVersion = '1.9'
     implementation "org.apache.commons:commons-text:$textUtilsVersion"
 
     // paging 3
@@ -200,20 +204,20 @@ dependencies {
     implementation "androidx.browser:browser:$inAppBrowserVersion"
 
     // Apollo GraphQl
-    def apolloVersion = "3.3.2"
+    def apolloVersion = '3.5.0'
     implementation "com.apollographql.apollo3:apollo-runtime:$apolloVersion"
 
     // DataStore
     def dataStore_version = "1.0.0"
     implementation "androidx.datastore:datastore-preferences:$dataStore_version"
 
-    def avatarView = "1.0.2"
+    def avatarView = '1.0.6'
     implementation "io.getstream:avatarview-coil:$avatarView"
 
 //    def brainTree = "6.0.2"
 //    implementation "com.braintreepayments.api:drop-in:$brainTree"
 
-    implementation 'org.mozilla:rhino:1.7.13'
+    implementation 'org.mozilla:rhino:1.7.14'
 
 
     def epoxyVersion = "5.0.0-beta03"
@@ -222,23 +226,25 @@ dependencies {
     implementation "com.airbnb.android:epoxy-paging3:$epoxyVersion"
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
 
-    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+    implementation 'com.onesignal:OneSignal:4.8.2'
     def markwonVersion = "4.6.2"
-    implementation "io.noties.markwon:core:${markwonVersion}"
+    implementation "io.noties.markwon:core:$markwonVersion"
 
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
     implementation 'com.google.code.gson:gson:2.9.0'
 
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
-    testImplementation 'app.cash.turbine:turbine:0.8.0'
+
+    testImplementation 'app.cash.turbine:turbine:0.9.0'
     testImplementation "junit:junit:4.13.2"
     testImplementation "androidx.test:core:1.4.0"
-    testImplementation "org.mockito:mockito-core:4.6.1"
+    testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    testImplementation "io.mockk:mockk:1.12.4"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
-    testImplementation("com.apollographql.apollo3:apollo-testing-support:3.3.2")
+    testImplementation 'io.mockk:mockk:1.12.7'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+    testImplementation('com.apollographql.apollo3:apollo-testing-support:3.5.0')
 
 }

@@ -51,9 +51,9 @@ class HeaderInterceptor @Inject constructor(
                 val countDownLatch = CountDownLatch(1)
                 loginRepository.getAccessToken(
                     grantType = Constants.REFRESH_GRANT_TYPE,
-                    clientId = anilistid.toInt(),
-                    clientSecret = anilistsecret,
-                    redirectUri = redirecturi,
+                    clientId = anilistId.toInt(),
+                    clientSecret = anilistSecret,
+                    redirectUri = redirectUri,
                     code = localStorage.refreshToken.orEmpty()
                 ).asResult().collectLatest {
                     when (it) {

@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.LayoutRes
+import androidx.annotation.MenuRes
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -39,7 +40,7 @@ inline fun <reified T : Any> newIntent(context: Context): Intent =
 
 
 fun Fragment.createFragmentMenu(
-    @LayoutRes menuLayout: Int,
+    @MenuRes menuLayout: Int,
     selectedItem: (menuItem: MenuItem) -> Boolean
 ) {
     val menuHost = requireActivity()

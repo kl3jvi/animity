@@ -14,6 +14,7 @@ import retrofit2.http.*
  * Used to connect to the GogoAnime page to fetch animes
  */
 
+
 interface GogoAnimeService {
 
     @GET
@@ -65,4 +66,3 @@ interface GogoAnimeService {
     @GET(GOGO_KEYS_URL)
     suspend fun getKeys(): GogoAnimeKeys
 }
-
