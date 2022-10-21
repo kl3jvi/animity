@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAnalytics = Firebase.analytics
 
-
         val navView: BottomNavigationView = binding.navView
         /* Getting the navigation controller from the navigation host fragment. */
         navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -78,5 +77,4 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
     }
-
 }

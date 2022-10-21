@@ -18,7 +18,6 @@ import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>() {
@@ -27,7 +26,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     override fun observeViewModel() {}
     override fun initViews() {}
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +33,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     ): View {
         return binding.root
     }
-
 
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->
@@ -47,7 +44,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
             }
         }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,7 +64,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
     override fun getViewBinding(): FragmentProfileBinding =
         FragmentProfileBinding.inflate(layoutInflater)
 
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
@@ -88,7 +83,4 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentProfileBinding>()
             binding.profileRv.isVisible = isConnected
         }
     }
-
-
 }
-

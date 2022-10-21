@@ -16,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
 class HtmlParser @Inject constructor(
-    private val preferences: PersistenceRepository,
+    private val preferences: PersistenceRepository
 ) : Parser {
 
     /**
@@ -80,7 +80,7 @@ class HtmlParser @Inject constructor(
                 EpisodeModel(
                     episodeNumber = episodeNumber,
                     episodeType = episodeType,
-                    episodeUrl = episodeUrl,
+                    episodeUrl = episodeUrl
                 )
             )
         }
@@ -114,7 +114,6 @@ class HtmlParser @Inject constructor(
         }
     }
 
-
     /**
      * Encrypts a string using AES encryption.
      *
@@ -138,7 +137,6 @@ class HtmlParser @Inject constructor(
         }
     }
 
-
     /**
      * It takes in a response and an id, and returns a string.
      *
@@ -157,7 +155,8 @@ class HtmlParser @Inject constructor(
                     preferences.iv.toString()
                 ).replace("\t", "").substringAfter(id)
             val encrypted = encryptAes(
-                id, preferences.key.toString(),
+                id,
+                preferences.key.toString(),
                 preferences.iv.toString()
             )
             "id=$encrypted$decrypt&alias=$id"
@@ -165,7 +164,6 @@ class HtmlParser @Inject constructor(
             e.toString()
         }
     }
-
 
     /**
      * It takes a string as input, parses it using Jsoup, and returns an object of type EpisodeInfo
@@ -223,7 +221,6 @@ class HtmlParser @Inject constructor(
     }
 }
 
-
 /**
  * If the genre name contains a comma, return the substring after the comma, otherwise return the genre
  * name
@@ -238,6 +235,3 @@ private fun filterGenreName(genreName: String): String {
         genreName
     }
 }
-
-
-

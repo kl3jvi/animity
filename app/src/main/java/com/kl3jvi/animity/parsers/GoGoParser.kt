@@ -22,7 +22,6 @@ class GoGoParser @Inject constructor(
     private val preferences: PersistenceRepository
 ) : BaseParser(), EncryptionHelpers {
 
-
     override fun fetchEpisodeList(response: String): List<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
@@ -35,7 +34,7 @@ class GoGoParser @Inject constructor(
                 EpisodeModel(
                     episodeNumber = episodeNumber,
                     episodeType = episodeType,
-                    episodeUrl = episodeUrl,
+                    episodeUrl = episodeUrl
                 )
             )
         }
@@ -105,7 +104,6 @@ class GoGoParser @Inject constructor(
         )
     }
 
-
     fun parseEncryptAjax(response: String, id: String): String {
         return try {
             val document = Jsoup.parse(response)
@@ -117,7 +115,8 @@ class GoGoParser @Inject constructor(
                     preferences.iv.toString()
                 ).replace("\t", "").substringAfter(id)
             val encrypted = encryptAes(
-                id, preferences.key.toString(),
+                id,
+                preferences.key.toString(),
                 preferences.iv.toString()
             )
             "id=$encrypted$decrypt&alias=$id"
@@ -125,7 +124,6 @@ class GoGoParser @Inject constructor(
             e.toString()
         }
     }
-
 
     override fun encryptAes(text: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
@@ -184,5 +182,4 @@ class GoGoParser @Inject constructor(
             urls
         }
     }
-
 }

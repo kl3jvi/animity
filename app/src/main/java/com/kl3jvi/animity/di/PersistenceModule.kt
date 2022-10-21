@@ -8,7 +8,6 @@ import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.utils.Constants.Companion.DATABASE_NAME
 import com.kl3jvi.animity.utils.Constants.Companion.SHARED_PREFERENCES_NAME
-import com.kl3jvi.animity.utils.Converters
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +22,7 @@ object PersistenceModule {
     @Provides
     @Singleton
     fun provideAppDatabase(
-        application: Application,
+        application: Application
     ): AppDatabase {
         return Room
             .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
@@ -31,7 +30,6 @@ object PersistenceModule {
 //            .addTypeConverter(typeResponseConverter)
             .build()
     }
-
 
     @Provides
     @Singleton

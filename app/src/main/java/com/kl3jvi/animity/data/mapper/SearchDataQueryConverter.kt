@@ -3,7 +3,6 @@ package com.kl3jvi.animity.data.mapper
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.data.model.ui_models.*
 
-
 fun SearchAnimeQuery.Data.convert(): List<AniListMedia> {
     return page?.media?.mapNotNull {
         AniListMedia(
@@ -25,7 +24,7 @@ fun SearchAnimeQuery.Data.convert(): List<AniListMedia> {
                 it?.coverImage?.large.orEmpty()
             ),
             genres = it?.genres?.mapNotNull { genre -> Genre(name = genre.orEmpty()) } ?: emptyList(),
-            averageScore = it?.averageScore ?: 0,
+            averageScore = it?.averageScore ?: 0
         )
     } ?: emptyList()
 }

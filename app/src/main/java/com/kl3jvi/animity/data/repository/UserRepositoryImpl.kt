@@ -3,8 +3,6 @@ package com.kl3jvi.animity.data.repository
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
-import com.kl3jvi.animity.data.mapper.convert
-import com.kl3jvi.animity.data.model.ui_models.SessionData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
@@ -12,7 +10,6 @@ import com.kl3jvi.animity.parsers.Providers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -39,7 +36,6 @@ class UserRepositoryImpl @Inject constructor(
     override val userId: String?
         get() = storage.aniListUserId
 
-
     override fun setBearerToken(authToken: String?) {
         storage.bearerToken = authToken
     }
@@ -47,7 +43,6 @@ class UserRepositoryImpl @Inject constructor(
     override fun setRefreshToken(refreshToken: String?) {
         storage.refreshToken = refreshToken
     }
-
 
     override fun setAniListUserId(sync: String?) {
         storage.aniListUserId = sync
@@ -68,6 +63,4 @@ class UserRepositoryImpl @Inject constructor(
     override fun markAnimeAsFavorite(idAniList: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>> {
         return aniListGraphQlClient.markAnimeAsFavorite(idAniList).flowOn(ioDispatcher)
     }
-
-
 }

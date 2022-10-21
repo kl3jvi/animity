@@ -5,7 +5,6 @@ import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.data.model.ui_models.*
 import com.kl3jvi.animity.fragment.HomeMedia
 
-
 fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
     val data = this.data
     var homeData = HomeData()
@@ -20,7 +19,6 @@ fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
             data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList()
         val review = data?.review?.reviews?.mapNotNull {
             it.convert()
-
         } ?: emptyList()
 
         homeData = HomeData(
@@ -32,7 +30,6 @@ fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
     }
 
     return homeData
-
 }
 
 fun HomeDataQuery.Review1?.convert(): Review {
@@ -98,10 +95,3 @@ fun HomeMedia.StreamingEpisode?.convert() =
         this?.title,
         this?.thumbnail
     )
-
-
-
-
-
-
-

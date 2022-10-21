@@ -14,7 +14,6 @@ import com.kl3jvi.animity.utils.setMarkdownText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
 class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetailsFragmentBinding>() {
@@ -32,7 +31,6 @@ class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetails
         savedInstanceState: Bundle?
     ): View = binding.root
 
-
     override fun observeViewModel() {}
 
     override fun initViews() {
@@ -41,13 +39,11 @@ class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetails
         binding.postContent.postBody.setMarkdownText(reviewInfo.body)
     }
 
-
     override fun getViewBinding(): ReviewDetailsFragmentBinding =
         ReviewDetailsFragmentBinding.inflate(layoutInflater)
 
     override val viewModel: ReviewDetailsViewModel
         get() = ReviewDetailsViewModel()
-
 
     override fun onResume() {
         super.onResume()
@@ -60,11 +56,8 @@ class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetails
         }
     }
 
-
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
-
-
 }

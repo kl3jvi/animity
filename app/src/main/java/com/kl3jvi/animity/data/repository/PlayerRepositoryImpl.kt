@@ -43,7 +43,7 @@ class PlayerRepositoryImpl @Inject constructor(
                 ).string(),
                 id = id.orEmpty()
             )
-            val streamUrl = "${Constants.REFERER}encrypt-ajax.php?${response}"
+            val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$response"
             emit(streamUrl)
         }
     }.flatMapLatest {
@@ -58,18 +58,22 @@ class PlayerRepositoryImpl @Inject constructor(
     override suspend fun upsertEpisode(episodeEntity: EpisodeEntity) {
         return withContext(ioDispatcher) {
             val exists = episodeDao.isEpisodeOnDatabase(episodeEntity.episodeUrl) && episodeEntity.watchedDuration > 0
-            if (exists) episodeDao.updateEpisode(episodeEntity)
-            else episodeDao.insertEpisode(episodeEntity)
+            if (exists) {
+                episodeDao.updateEpisode(episodeEntity)
+            } else {
+                episodeDao.insertEpisode(episodeEntity)
+            }
         }
     }
 
     override suspend fun getPlaybackPosition(episodeUrl: String): Flow<EpisodeEntity> {
         return withContext(ioDispatcher) {
             val exists = episodeDao.isEpisodeOnDatabase(episodeUrl)
-            if (exists)
+            if (exists) {
                 episodeDao.getEpisodeContent(episodeUrl)
-            else emptyFlow()
+            } else {
+                emptyFlow()
+            }
         }
     }
 }
-

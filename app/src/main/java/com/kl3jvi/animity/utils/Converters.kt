@@ -8,7 +8,6 @@ import com.kl3jvi.animity.data.model.ui_models.GenreModel
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-
 @ProvidedTypeConverter
 class Converters @Inject constructor() {
 
@@ -36,4 +35,3 @@ class Converters @Inject constructor() {
         return gson.toJson(list)
     }
 }
-

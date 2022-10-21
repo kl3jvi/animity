@@ -2,9 +2,8 @@ package com.kl3jvi.animity.data.network.anime_service
 
 import javax.inject.Inject
 
-
 class GogoAnimeApiClient @Inject constructor(
-    private val gogoAnimeService: GogoAnimeService,
+    private val gogoAnimeService: GogoAnimeService
 ) {
 
     suspend fun fetchAnimeInfo(
@@ -46,5 +45,4 @@ class GogoAnimeApiClient @Inject constructor(
 
     suspend fun getEpisodeTitles(id: Int) =
         gogoAnimeService.getEpisodeTitles(id)
-
 }

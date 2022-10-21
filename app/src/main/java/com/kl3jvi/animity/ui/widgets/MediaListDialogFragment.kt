@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kl3jvi.animity.databinding.BottomSheetMediaListBinding
 
-
 class MediaListDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: BottomSheetMediaListBinding

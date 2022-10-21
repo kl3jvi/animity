@@ -11,10 +11,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-
 class SearchAniListPagingSource(
     private val apiClient: AniListGraphQlClient,
-    private val query: String,
+    private val query: String
 ) : PagingSource<Int, AniListMedia>() {
 
     /**
@@ -41,7 +40,6 @@ class SearchAniListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-
             var listOfAniListMedia = listOf<AniListMedia>()
             withContext(Dispatchers.IO) {
                 apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }

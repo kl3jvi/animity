@@ -32,7 +32,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login),
+class LoginActivity :
+    BindingActivity<ActivityLoginBinding>(R.layout.activity_login),
     Authentication {
 
     private val viewModel: LoginViewModel by viewModels()
@@ -141,7 +142,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
         privacy.launchBrowser(Uri.parse(TERMS_AND_PRIVACY_LINK))
     }
 
-
     /**
      * > When the view is clicked, launch a custom tab with the given URI
      *
@@ -166,7 +166,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             binding.aniListLogin.isEnabled = isConnected
         }
     }
-
 
     /**
      * If the intent is not null, and the intent has the action of the intent filter, then call the
@@ -198,6 +197,5 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
     override fun onDestroy() {
         super.onDestroy()
         unregisterNetworkCallback(this)
-
     }
 }

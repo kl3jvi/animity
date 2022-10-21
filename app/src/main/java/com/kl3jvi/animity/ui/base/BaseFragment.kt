@@ -8,7 +8,6 @@ import androidx.viewbinding.ViewBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.utils.NetworkUtils
 import com.kl3jvi.animity.utils.NetworkUtils.unregisterNetworkCallback
 
 abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : Fragment() {
@@ -53,6 +52,6 @@ abstract class BaseFragment<VM : ViewModel, VB : ViewBinding> : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-       unregisterNetworkCallback(requireContext())
+        unregisterNetworkCallback(requireContext())
     }
 }

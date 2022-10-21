@@ -26,7 +26,6 @@ class HomeFragment : Fragment() {
     val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,15 +40,13 @@ class HomeFragment : Fragment() {
         createFragmentMenu(R.menu.settings_menu) { item ->
             when (item.itemId) {
                 R.id.action_settings -> {
-                    findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment());true
+                    findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment()); true
                 }
 
                 else -> false
             }
         }
         handleNetworkChanges()
-
-
     }
 
     private fun fetchHomeData() {
@@ -82,7 +79,6 @@ class HomeFragment : Fragment() {
         if (requireActivity() is MainActivity) (activity as MainActivity?)?.showBottomNavBar()
     }
 
-
     private fun handleNetworkChanges() {
         collectFlow(viewModel.connection) { isConnected ->
             Log.e("Internet", isConnected.toString())
@@ -94,7 +90,4 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
 }
-
-

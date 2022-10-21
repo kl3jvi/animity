@@ -31,7 +31,9 @@ class DetailsRepositoryImpl @Inject constructor(
                 )
             }
             emit(response)
-        } else emptyFlow<AnimeInfoModel>()
+        } else {
+            emptyFlow<AnimeInfoModel>()
+        }
     }.flowOn(ioDispatcher)
 
     override fun fetchEpisodeList(
@@ -58,8 +60,8 @@ class DetailsRepositoryImpl @Inject constructor(
             list.forEachIndexed { index, episodeModel ->
                 if (episodeModel.episodeNumber.split(" ").last() ==
                     episodesWithTitle.getOrNull(
-                        index
-                    )?.number
+                            index
+                        )?.number
                 ) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
@@ -76,9 +78,7 @@ class DetailsRepositoryImpl @Inject constructor(
         emit(response)
     }.catch { emit(emptyList()) }.flowOn(ioDispatcher)
 
-
     override fun getEpisodesPercentage(malId: Int): Flow<List<EpisodeEntity>> {
         return episodeDao.getEpisodesByAnime(malId = malId)
     }
 }
-

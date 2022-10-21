@@ -5,7 +5,6 @@ import com.kl3jvi.animity.util.moviesModel
 import com.kl3jvi.animity.util.popularAnimeModel
 import com.kl3jvi.animity.util.reviewModel
 import com.kl3jvi.animity.util.trendingAnimeModel
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 class HomeDataQueryConverter {
@@ -31,6 +30,5 @@ class HomeDataQueryConverter {
 //
 //        // test for reviews
 //        assertEquals("Lorem Ipsum", convertedData.review.first().summary)
-
     }
 }

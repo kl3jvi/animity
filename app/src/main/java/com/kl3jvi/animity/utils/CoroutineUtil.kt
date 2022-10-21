@@ -5,10 +5,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-
-
 
 inline fun <T> LifecycleOwner.collectFlow(
     flow: Flow<T>,
@@ -37,5 +34,3 @@ inline fun <T> Fragment.collectLatestFlow(
         }
     }
 }
-
-

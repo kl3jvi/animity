@@ -13,7 +13,6 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.randomId
 import com.kl3jvi.animity.utils.navigateSafe
 
-
 fun EpoxyController.buildProfile(
     userData: ProfileData?,
     animeCollectionResponse: List<ProfileRow>
@@ -36,10 +35,11 @@ fun EpoxyController.buildProfile(
                 models(profileRow.anime.modelCardAnimeProfile())
             }
         }
-    } else noAnime {
-        id(randomId())
+    } else {
+        noAnime {
+            id(randomId())
+        }
     }
-
 }
 
 fun List<AniListMedia>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
@@ -55,4 +55,3 @@ fun List<AniListMedia>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
             }.animeInfo(media)
     }
 }
-

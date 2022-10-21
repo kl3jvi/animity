@@ -24,7 +24,6 @@ class PlayerViewModel @Inject constructor(
     private var _playBackPosition = MutableStateFlow<Long>(0)
     var playBackPosition = _playBackPosition.asStateFlow()
 
-
     /**
      * It creates a flow that emits the current position of the exoPlayer every second.
      *
@@ -38,7 +37,6 @@ class PlayerViewModel @Inject constructor(
             }
         }
     }.flowOn(Dispatchers.Main)
-
 
     val episodeMediaUrl = episodeUrl.flatMapLatest {
         playerRepository.getMediaUrl(url = it).asResult().map { result ->

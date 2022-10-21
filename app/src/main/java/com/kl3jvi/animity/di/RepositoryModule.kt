@@ -47,9 +47,4 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindFirebaseRepository(repository: FirebaseRemoteConfigRepositoryImpl): FirebaseRemoteConfigRepository
-
 }
-
-
-
-

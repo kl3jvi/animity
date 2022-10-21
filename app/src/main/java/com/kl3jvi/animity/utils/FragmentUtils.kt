@@ -7,7 +7,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.kl3jvi.animity.R
 
-
 /* A function that is used to navigate to a destination safely. */
 fun View.navigateSafe(directions: NavDirections, navOptions: NavOptions? = null) {
     if (canNavigate()) this.findNavController().navigate(directions, navOptions)
@@ -28,4 +27,3 @@ fun View.canNavigate(): Boolean {
         false
     }
 }
-

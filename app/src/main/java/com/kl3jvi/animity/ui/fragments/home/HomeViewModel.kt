@@ -41,7 +41,6 @@ class HomeViewModel @Inject constructor(
             SharingStarted.WhileSubscribed(5_000),
             HomeDataUiState.Loading
         )
-
 }
 
 sealed interface HomeDataUiState {
@@ -49,6 +48,3 @@ sealed interface HomeDataUiState {
     object Loading : HomeDataUiState
     data class Error(val exception: Throwable?) : HomeDataUiState
 }
-
-
-

@@ -8,7 +8,6 @@ import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logMessage
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -17,10 +16,9 @@ import okhttp3.Response
 import java.util.concurrent.CountDownLatch
 import javax.inject.Inject
 
-
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val localStorage: PersistenceRepository,
+    private val localStorage: PersistenceRepository
 ) : Interceptor {
     /**
      * It intercepts the request and adds the bearer token to the header.
@@ -29,9 +27,7 @@ class HeaderInterceptor @Inject constructor(
      * through.
      */
 
-
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
-
         /* Adding the header to the request. */
         val response = proceed(
             request().newBuilder()
@@ -40,7 +36,6 @@ class HeaderInterceptor @Inject constructor(
                 .addHeader("Content-Type", "application/json")
                 .build()
         )
-
 
         /* Checking if the response code is 401, if it is, it will get a new access token and refresh
         token and then proceed with the request. */
@@ -81,8 +76,8 @@ class HeaderInterceptor @Inject constructor(
                         .build()
                 )
             }
-        } else response
+        } else {
+            response
+        }
     }
-
-
 }

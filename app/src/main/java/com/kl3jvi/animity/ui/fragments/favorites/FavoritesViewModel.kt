@@ -19,7 +19,7 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     favoriteRepository: FavoriteRepository,
     localStorage: PersistenceRepository,
-    ioDispatcher: CoroutineDispatcher,
+    ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     val favoritesList: StateFlow<FavoritesUiState> =
@@ -37,11 +37,8 @@ class FavoritesViewModel @Inject constructor(
             )
 }
 
-
 sealed interface FavoritesUiState {
     object Loading : FavoritesUiState
     data class Success(val data: List<AniListMedia>) : FavoritesUiState
     data class Error(val error: Throwable? = null) : FavoritesUiState
 }
-
-

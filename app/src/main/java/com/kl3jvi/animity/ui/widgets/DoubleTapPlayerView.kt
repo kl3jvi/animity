@@ -87,7 +87,6 @@ class DoubleTapPlayerView @JvmOverloads constructor(
         gestureListener.cancelInDoubleTapMode()
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         if (isDoubleTapEnabled) {
@@ -118,7 +117,6 @@ class DoubleTapPlayerView @JvmOverloads constructor(
                 )
             }
         }
-
     }
 
     /**
@@ -204,10 +202,12 @@ class DoubleTapPlayerView @JvmOverloads constructor(
         override fun onDoubleTapEvent(e: MotionEvent): Boolean {
             // Second tap (ACTION_UP) of both taps
             if (e.actionMasked == MotionEvent.ACTION_UP && isDoubleTapping) {
-                if (DEBUG) Log.d(
-                    TAG,
-                    "onDoubleTapEvent, ACTION_UP"
-                )
+                if (DEBUG) {
+                    Log.d(
+                        TAG,
+                        "onDoubleTapEvent, ACTION_UP"
+                    )
+                }
                 controls?.onDoubleTapProgressUp(e.x, e.y)
                 return true
             }

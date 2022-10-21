@@ -18,7 +18,6 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-
     /**
      * `getAccessToken` is a function that returns a `Flow` of `Result<AuthResponse>`
      *
@@ -75,5 +74,4 @@ class LoginViewModel @Inject constructor(
     fun setSelectedProvider(provider: String) {
         userRepository.setProvider(provider = provider)
     }
-
 }

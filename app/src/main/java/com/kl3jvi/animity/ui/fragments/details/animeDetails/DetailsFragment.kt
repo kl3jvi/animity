@@ -62,7 +62,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         savedInstanceState: Bundle?
     ): View = binding.root
 
-
     override fun observeViewModel() {
         fetchAnimeInfo()
         fetchEpisodeList()
@@ -82,7 +81,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             }
         }
     }
-
 
     /**
      * It fetches the anime info and displays it on the screen.
@@ -171,10 +169,15 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             if (mediaList is FavoritesUiState.Success) {
                 check = mediaList.data.any { media -> media.idAniList == animeDetails.idAniList }
                 menu[0].setIcon(
-                    if (!check) R.drawable.ic_favorite_uncomplete
-                    else R.drawable.ic_favorite_complete
+                    if (!check) {
+                        R.drawable.ic_favorite_uncomplete
+                    } else {
+                        R.drawable.ic_favorite_complete
+                    }
                 )
-            } else check = false
+            } else {
+                check = false
+            }
         }
         binding.setType.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)
@@ -209,7 +212,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         // Show the popup menu.
         popup.show()
     }
-
 
     /**
      * It fetches the episode list from the view model and then populates the recycler view with the
@@ -283,9 +285,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                         binding.resultPlayMovie.visibility = GONE
                     }
                 }
-
             }
-
         }
     }
 
@@ -310,7 +310,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             ""
         }
     }
-
 
     /**
      * When the user clicks on the add to favorites icon, the icon changes to a filled heart and the
@@ -345,6 +344,3 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     override fun getViewBinding(): FragmentDetailsBinding =
         FragmentDetailsBinding.inflate(layoutInflater)
 }
-
-
-

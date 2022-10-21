@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val profileRepository: ProfileRepository,
-    private val localStorage: PersistenceRepository,
+    private val localStorage: PersistenceRepository
 ) : ViewModel() {
 
     private val _profileData = MutableStateFlow(ProfileData())
@@ -40,19 +40,22 @@ class ProfileViewModel @Inject constructor(
             val animeListDeferred =
                 async { profileRepository.getProfileAnimes(localStorage.aniListUserId?.toInt()) }
 
-
             val (profileData, animeList) = awaitAll(profileDeferred, animeListDeferred)
 
             profileData.asResult().collect {
-                if (it is Result.Success)
+                if (it is Result.Success) {
                     _profileData.value = it.data as ProfileData
-                else return@collect
+                } else {
+                    return@collect
+                }
             }
 
             animeList.asResult().collect {
-                if (it is Result.Success)
+                if (it is Result.Success) {
                     _animeList.value = it.data as List<ProfileRow>
-                else return@collect
+                } else {
+                    return@collect
+                }
             }
         }
     }
@@ -61,5 +64,3 @@ class ProfileViewModel @Inject constructor(
         userRepository.clearStorage()
     }
 }
-
-

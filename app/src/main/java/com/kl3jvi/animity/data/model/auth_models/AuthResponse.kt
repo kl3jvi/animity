@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.model.auth_models
 
-
 import com.google.gson.annotations.SerializedName
 
 /**

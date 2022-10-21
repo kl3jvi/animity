@@ -14,7 +14,6 @@ import coil.transform.CircleCropTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.di.GlideApp
 
-
 /**
  * A binding adapter that loads an image from a url into an ImageView.
  *
@@ -51,7 +50,6 @@ fun ImageView.setAvatarImage(url: String?) {
 fun View.setVisibility(value: Boolean) {
     isVisible = value
 }
-
 
 /**
  * "If the isFiller boolean is true, set the background color of the CardView to #2B2C30, otherwise

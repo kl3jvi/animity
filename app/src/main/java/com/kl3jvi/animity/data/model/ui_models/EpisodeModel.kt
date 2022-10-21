@@ -5,7 +5,6 @@ import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-
 @Entity
 @Parcelize
 data class EpisodeModel(
@@ -17,10 +16,9 @@ data class EpisodeModel(
     var isFiller: Boolean = false
 ) : Parcelable
 
-
 data class EpisodeWithTitle(
     @SerializedName("episodes")
-    val episodes: List<Episode> = emptyList(),
+    val episodes: List<Episode> = emptyList()
 )
 
 data class Episode(
@@ -29,5 +27,5 @@ data class Episode(
     @SerializedName("title")
     val title: String,
     @SerializedName("filler-bool")
-    val isFiller: Boolean,
+    val isFiller: Boolean
 )

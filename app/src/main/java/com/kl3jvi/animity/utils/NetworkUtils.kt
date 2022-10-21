@@ -11,12 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kl3jvi.animity.BuildConfig
-import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
-
-
-
-
 
 /**
  * Network Utility to detect availability or unavailability of Internet connection
@@ -67,7 +62,6 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
 //        connectivityManager.unregisterNetworkCallback(this)
     }
 
-
     /**
      * It posts a value to the networkLiveData object.
      *
@@ -101,6 +95,3 @@ internal fun OkHttpClient.Builder.addChuckerOnDebug(
         addInterceptor(chuckerInterceptor)
     }
 }
-
-
-

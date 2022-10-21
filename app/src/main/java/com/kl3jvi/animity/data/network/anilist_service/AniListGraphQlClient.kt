@@ -6,7 +6,7 @@ import com.kl3jvi.animity.*
 import javax.inject.Inject
 
 class AniListGraphQlClient @Inject constructor(
-    private val apolloClient: ApolloClient,
+    private val apolloClient: ApolloClient
 ) : AniListSync {
 
     override fun getHomeData() =
@@ -24,12 +24,11 @@ class AniListGraphQlClient @Inject constructor(
             AnimeListCollectionQuery(Optional.presentIfNotNull(userId))
         ).toFlow()
 
-
     override fun fetchSearchAniListData(query: String, page: Int) =
         apolloClient.query(
             SearchAnimeQuery(
                 Optional.presentIfNotNull(query),
-                Optional.presentIfNotNull(page),
+                Optional.presentIfNotNull(page)
             )
         ).toFlow()
 
@@ -48,7 +47,6 @@ class AniListGraphQlClient @Inject constructor(
     override fun getUserData(id: Int?) =
         apolloClient.query(UserQuery(Optional.Present(id))).toFlow()
 
-
     override fun getFavoriteAnimes(
         userId: Int?,
         page: Int?
@@ -60,7 +58,6 @@ class AniListGraphQlClient @Inject constructor(
     ).toFlow()
 
     override fun getTopTenTrending() = apolloClient.query(TrendingMediaQuery()).toFlow()
-
 
     override fun markAnimeAsFavorite(animeId: Int?) = apolloClient.mutation(
         ToggleFavouriteMutation(

@@ -7,7 +7,6 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.utils.Converters
 
-
 /**
  *  It's a database class that has two tables, one for anime metadata and one for episode metadata
  *
@@ -15,7 +14,7 @@ import com.kl3jvi.animity.utils.Converters
 @Database(
     entities = [AnimeMetaModel::class, EpisodeEntity::class],
     version = 5,
-    exportSchema = true,
+    exportSchema = true
 //    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
 @TypeConverters(Converters::class)

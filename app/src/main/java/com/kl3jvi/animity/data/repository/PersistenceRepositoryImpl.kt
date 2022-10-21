@@ -73,7 +73,6 @@ class PersistenceRepositoryImpl @Inject constructor(
             setData(SELECTED_PROVIDER, value.toJson())
         }
 
-
     override var iv: String?
         get() = getData(ORIGIN)
         set(value) {
@@ -111,6 +110,4 @@ class PersistenceRepositoryImpl @Inject constructor(
     inline fun <reified T> T?.toJson(): String? {
         return Gson().toJson(this)
     }
-
 }
-

@@ -2,8 +2,6 @@ package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
@@ -26,12 +24,11 @@ class DetailsViewModel @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val userRepository: UserRepository,
     private val favoriteRepository: FavoriteRepository,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     val animeMetaModel = MutableStateFlow(AniListMedia())
     val reverseState = MutableStateFlow(false)
-
 
     val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
         reverseState.flatMapLatest { shouldReverse ->
@@ -78,7 +75,6 @@ class DetailsViewModel @Inject constructor(
         EpisodeListUiState.Loading
     )
 
-
     /**
      * > The function updates the anime as favorite in the AniList website
      */
@@ -91,7 +87,6 @@ class DetailsViewModel @Inject constructor(
         }
     }
 }
-
 
 sealed interface EpisodeListUiState {
     object Loading : EpisodeListUiState

@@ -43,7 +43,6 @@ class NetworkConnectivityObserver @Inject constructor(
                         send(false)
                     }
                 }
-
             }
             connectivityManager.registerNetworkCallback(NetworkRequest.Builder().build(), callback)
             awaitClose { connectivityManager.unregisterNetworkCallback(callback) }

@@ -22,7 +22,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
     private var searchJob: Job? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +49,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
                 }
             })
         }
-
     }
 
     override fun onPause() {
@@ -58,14 +56,12 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         super.onPause()
     }
 
-
     override fun onResume() {
         super.onResume()
         if (requireActivity() is MainActivity) {
             (activity as MainActivity?)?.showBottomNavBar()
         }
     }
-
 
     override fun observeViewModel() {
         collectLatestFlow(viewModel.searchList) { animeData ->
@@ -76,4 +72,3 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)
 }
-

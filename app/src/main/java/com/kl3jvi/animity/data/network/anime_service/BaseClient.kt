@@ -1,11 +1,6 @@
 package com.kl3jvi.animity.data.network.anime_service
 
-import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
-import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
-import okhttp3.ResponseBody
-
-
-//abstract class BaseClient {
+// abstract class BaseClient {
 //    abstract suspend fun getGogoUrlFromAniListId(id: Int): DetailedAnimeInfo
 //    abstract suspend fun getEncryptionKeys(): GogoAnimeKeys
 //    abstract suspend fun fetchAnimeInfo(
@@ -30,4 +25,4 @@ import okhttp3.ResponseBody
 //        header: Map<String, String>,
 //        url: String
 //    ): ResponseBody
-//}
+// }

@@ -19,8 +19,6 @@ interface EpisodeDao {
     @Query("SELECT * FROM EpisodeEntity WHERE malId = :malId")
     fun getEpisodesByAnime(malId: Int): Flow<List<EpisodeEntity>>
 
-
     @Query("SELECT EXISTS(SELECT * FROM EpisodeEntity WHERE episodeUrl = :episodeUrl)")
     suspend fun isEpisodeOnDatabase(episodeUrl: String): Boolean
-
 }
