@@ -21,6 +21,4 @@ interface UserRepository {
     fun clearStorage()
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
     fun markAnimeAsFavorite(idAniList: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>>
-
-
 }
