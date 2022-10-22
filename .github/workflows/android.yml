@@ -14,7 +14,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-
+      - name: build release
+        run: ./gradlew assembleRelease
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
