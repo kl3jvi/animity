@@ -17,7 +17,7 @@ plugins {
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/kl3jvi/StudioProjects/animity/animity')
+            storeFile file('animity')
             storePassword 'klejvi123'
             keyPassword 'klejvi123'
             keyAlias 'key0'
