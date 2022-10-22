@@ -15,9 +15,6 @@ jobs:
         with:
           java-version: 11
 
-      - name: build release
-        run: ./gradlew assembleRelease
-
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
@@ -34,3 +31,4 @@ jobs:
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
           file: app/build/outputs/apk/release/app-release-signed.apk
+
