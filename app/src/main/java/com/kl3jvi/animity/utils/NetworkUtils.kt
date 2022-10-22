@@ -82,7 +82,7 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
 
     /* An extension function that is being used to observe the networkLiveData object. */
     fun Context.isConnectedToInternet(owner: LifecycleOwner, observer: (Boolean) -> Unit) {
-        getNetworkLiveData(context = this as Context).observe(owner) {
+        getNetworkLiveData(context = this).observe(owner) {
             observer(it)
         }
     }
