@@ -15,14 +15,14 @@ plugins {
 
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('/Users/klejvii/AndroidStudioProjects/animity/animity')
-            storePassword 'klejvi123'
-            keyPassword 'klejvi123'
-            keyAlias 'key0'
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('/Users/klejvii/AndroidStudioProjects/animity/animity')
+//            storePassword 'klejvi123'
+//            keyPassword 'klejvi123'
+//            keyAlias 'key0'
+//        }
+//    }
     compileSdk 32
     defaultConfig {
         applicationId "com.kl3jvi.animity"
@@ -34,14 +34,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable true
-            signingConfig signingConfigs.release
-        }
-    }
+//    buildTypes {
+////        release {
+////            minifyEnabled true
+////            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+////            debuggable true
+////            signingConfig signingConfigs.release
+////        }
+//    }
     kapt {
         useBuildCache true
         arguments {
