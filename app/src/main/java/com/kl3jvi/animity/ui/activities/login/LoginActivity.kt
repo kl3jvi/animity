@@ -88,7 +88,6 @@ class LoginActivity :
             val uri = intent.data
             if (uri.toString().startsWith(redirectUri)) {
                 val authorizationToken = uri?.getQueryParameter("code")
-                Log.e("AUTH TOKEN", authorizationToken.toString())
                 if (!authorizationToken.isNullOrEmpty()) {
                     collectFlow(
                         viewModel.getAccessToken(

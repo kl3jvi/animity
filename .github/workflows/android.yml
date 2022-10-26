@@ -4,7 +4,6 @@ on: [ push ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -16,6 +15,10 @@ jobs:
           java-version: 11
       - name: build release
         run: ./gradlew assembleRelease
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
