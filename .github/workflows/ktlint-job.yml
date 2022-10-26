@@ -16,7 +16,7 @@ jobs:
           curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.44.0/ktlint && chmod a+x ktlint && sudo mv ktlint /usr/local/bin/
       - name: run ktlint
         run: |
-          ktlint -F --reporter=checkstyle,output=build/ktlint-report.xml
+          ktlint -F --disabled_rules=no-wildcard-imports --reporter=checkstyle,output=build/ktlint-report.xml
         continue-on-error: true
       - uses: yutailang0119/action-ktlint@v3
         with:
