@@ -11,9 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.favoriteAnime
-import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
 import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -62,11 +60,8 @@ class FavoritesFragment : Fragment() {
                         binding.nothingSaved.isVisible = true
                     }
 
-                    FavoritesUiState.Loading -> showLoading(true)
-
-
+                    FavoritesUiState.Loading -> {}
                     is FavoritesUiState.Success -> {
-                        showLoading(false)
                         favoritesUiState.data.forEach { media ->
                             favoriteAnime {
                                 id(media.idAniList)
@@ -86,30 +81,5 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        binding.swipeLayout.isRefreshing = isLoading
-        binding.favoritesRecycler.isVisible = !isLoading
-    }
 
-
-    override fun onResume() {
-        super.onResume()
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.showBottomNavBar()
-        }
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        handleNetworkChanges()
-    }
-
-    private fun handleNetworkChanges() {
-        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            if (isConnected) observeAniList()
-            binding.noInternetResult.noInternet.isVisible = !isConnected
-            binding.favoritesRecycler.isVisible = isConnected
-        }
-    }
 }

@@ -14,6 +14,7 @@ plugins {
 
 
 android {
+
     signingConfigs {
         release {
             storeFile file('/Users/kl3jvi/StudioProjects/animity/animity')
@@ -22,11 +23,12 @@ android {
             keyAlias 'key0'
         }
     }
-    compileSdk 32
+    compileSdk 33
     defaultConfig {
+        namespace "com.kl3jvi.animity"
         applicationId "com.kl3jvi.animity"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 12
         versionName "1.1.1"
         archivesBaseName = "Animity-v$versionName"
@@ -93,14 +95,14 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def coordinatorLayoutVersion = "1.2.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
-    def androidCoreVersion = "1.8.0"
+    def androidCoreVersion = "1.9.0"
     implementation "androidx.core:core-ktx:$androidCoreVersion"
 
     def swipeVersion = "1.1.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeVersion"
 
 
-    def appCompatVersion = "1.5.0"
+    def appCompatVersion = "1.5.1"
     def materialVersion = "1.6.1"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
@@ -113,7 +115,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$livedataVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModelVersion"
 
-    def navigationComponentVersion = '2.5.1'
+    def navigationComponentVersion = '2.5.2'
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationComponentVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationComponentVersion"
@@ -127,13 +129,13 @@ dependencies {
     def lifecycle_version = '2.5.1'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    def analyticsVersion = '21.1.0'
+    def analyticsVersion = '21.1.1'
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
 
-    def crashlyticsVersion = '18.2.12'
+    def crashlyticsVersion = '18.2.13'
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
 
-    def remoteConfig = "21.1.1"
+    def remoteConfig = "21.1.2"
     implementation "com.google.firebase:firebase-config-ktx:$remoteConfig"
 
 

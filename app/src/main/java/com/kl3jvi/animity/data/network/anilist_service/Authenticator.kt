@@ -1,14 +1,13 @@
-package com.kl3jvi.animity.domain.repositories
+package com.kl3jvi.animity.data.network.anilist_service
 
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
-import kotlinx.coroutines.flow.Flow
 
-interface LoginRepository {
-    fun getAccessToken(
+interface Authenticator {
+    suspend fun getAccessToken(
         grantType: String,
         clientId: Int,
         clientSecret: String,
         redirectUri: String,
         code: String
-    ): Flow<Result<AuthResponse>>
+    ): Result<AuthResponse>
 }

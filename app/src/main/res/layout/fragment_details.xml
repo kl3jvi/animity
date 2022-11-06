@@ -205,7 +205,7 @@
                     android:paddingEnd="@dimen/dp_20"
 
                     android:text="@string/add_to_list"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:icon="@drawable/ic_down_arrow"
                     tools:visibility="visible" />
 

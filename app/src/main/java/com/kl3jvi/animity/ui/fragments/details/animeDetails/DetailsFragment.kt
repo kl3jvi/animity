@@ -1,17 +1,27 @@
+@file:OptIn(FlowPreview::class)
+
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.chip.Chip
@@ -21,7 +31,6 @@ import com.kl3jvi.animity.data.model.ui_models.getHexColor
 import com.kl3jvi.animity.data.model.ui_models.toStateListColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeLarge
-import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesUiState
@@ -34,9 +43,15 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.DEFAULT_CONCURRENCY
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -50,6 +65,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     private lateinit var menu: Menu
     private lateinit var title: String
     private var check = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +104,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      * It fetches the anime info and displays it on the screen.
      */
     private fun fetchAnimeInfo() {
+
+
         animeDetails.let { info ->
             binding.apply {
                 animeInfoLayout.textOverview.setHtmlText(info.description)
@@ -217,14 +235,16 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      */
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
-        collectFlow(viewModel.episodeList) { episodeListResponse ->
-            when (episodeListResponse) {
-                EpisodeListUiState.Error -> {}
-                EpisodeListUiState.Loading -> {}
-                is EpisodeListUiState.Success -> {
-                    binding.detailsProgress.visibility = GONE
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.episodeList.flatMapMerge(DEFAULT_CONCURRENCY) { episodeUiState ->
+                    if (episodeUiState is EpisodeListUiState.Success) {
+                        binding.detailsProgress.visibility = GONE
+                        episodeUiState.data // This is a flow of episodes we are merging with the main flow above to collect only once
+                    } else emptyFlow()
+                }.collect { listOfEpisodeModel ->
                     binding.episodeListRecycler.withModels {
-                        episodeListResponse.data.forEachIndexed { index, episodeModel ->
+                        listOfEpisodeModel.forEachIndexed { index, episodeModel ->
                             episodeLarge {
                                 id(episodeModel.episodeNumber)
                                 clickListener { _ ->
@@ -263,17 +283,18 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                             }
                         }
                     }
+
                     binding.resultEpisodesText.text =
                         requireContext().getString(
                             R.string.total_episodes,
-                            episodeListResponse.data.size.toString()
+                            listOfEpisodeModel.size.toString()
                         )
-                    if (episodeListResponse.data.isNotEmpty()) {
+                    if (listOfEpisodeModel.isNotEmpty()) {
                         binding.resultPlayMovie.setOnClickListener {
                             requireActivity().launchActivity<PlayerActivity> {
                                 putExtra(
                                     Constants.EPISODE_DETAILS,
-                                    episodeListResponse.data.first()
+                                    listOfEpisodeModel.first()
                                 )
                                 putExtra(Constants.ANIME_TITLE, title)
                             }
@@ -285,14 +306,6 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 }
 
             }
-
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.hideBottomNavBar()
         }
     }
 

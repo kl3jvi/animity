@@ -9,5 +9,5 @@ interface Authentication {
     fun checkIfUserLoggedIn(): Boolean
     fun getAuthorizationUrl(): Uri
     fun onHandleAuthIntent(intent: Intent?)
-    fun onTokenResponse(response: AuthResponse)
+    fun AuthResponse.onTokenResponse()
 }

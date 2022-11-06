@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.kl3jvi.animity.databinding.ReviewDetailsFragmentBinding
-import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.setMarkdownText
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,13 +50,7 @@ class ReviewDetailsFragment : BaseFragment<ReviewDetailsViewModel, ReviewDetails
 
     override fun onResume() {
         super.onResume()
-        if (requireActivity() is MainActivity) {
-            val activity = activity as MainActivity?
-            activity?.let {
-                it.hideBottomNavBar()
-                it.supportActionBar!!.hide()
-            }
-        }
+
     }
 
 

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
-import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.collectLatestFlow
 import com.kl3jvi.animity.utils.dismissKeyboard
@@ -61,9 +60,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (requireActivity() is MainActivity) {
-            (activity as MainActivity?)?.showBottomNavBar()
-        }
     }
 
 

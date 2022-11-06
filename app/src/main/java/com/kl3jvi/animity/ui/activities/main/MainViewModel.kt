@@ -9,9 +9,12 @@ import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.logError
+import com.kl3jvi.animity.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,10 +23,19 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val userRepository: UserRepository,
-    private val localStorage: PersistenceRepository
+    private val localStorage: PersistenceRepository,
+    network: NetworkMonitor
 ) : ViewModel() {
 
     val initialise = MutableLiveData<Unit>()
+
+    val isConnectedToNetwork = network.isConnected
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            false
+        )
+
 
     init {
         getUserSession()
@@ -61,7 +73,7 @@ class MainViewModel @Inject constructor(
                     localStorage.iv = data.iv
                     localStorage.key = data.key
                     localStorage.secondKey = data.secondKey
-                } else throw return@collect
+                }
             }
         }
     }

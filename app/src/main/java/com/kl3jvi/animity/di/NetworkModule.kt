@@ -21,7 +21,6 @@ import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
-import com.kl3jvi.animity.utils.addChuckerOnDebug
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,7 +46,6 @@ object NetworkModule {
         chuckerInterceptor: ChuckerInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addChuckerOnDebug(chuckerInterceptor)
             .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC
