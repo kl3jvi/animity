@@ -1,7 +1,14 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
 import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.*
+import com.kl3jvi.animity.AnimeListCollectionQuery
+import com.kl3jvi.animity.FavoritesAnimeQuery
+import com.kl3jvi.animity.HomeDataQuery
+import com.kl3jvi.animity.SearchAnimeQuery
+import com.kl3jvi.animity.SessionQuery
+import com.kl3jvi.animity.ToggleFavouriteMutation
+import com.kl3jvi.animity.TrendingMediaQuery
+import com.kl3jvi.animity.UserQuery
 import kotlinx.coroutines.flow.Flow
 
 interface AniListSync {
@@ -24,4 +31,5 @@ interface AniListSync {
     fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
     fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>>
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
+    fun saveMediaListEntry(): Any
 }

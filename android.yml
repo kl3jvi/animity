@@ -1,0 +1,11 @@
+appId: com.volaris.android.debug
+---
+- launchApp
+- assertVisible: Where would you like to go?
+- tapOn: Origin
+- assertVisible: Nearby airports
+- tapOn: Search
+- inputText: "mex"
+- assertVisible: Mexico City (AICM) (MEX)
+- tapOn: Mexico City (AICM) (MEX)
+- tapOn: Select your destination/

@@ -1,9 +1,12 @@
 package com.kl3jvi.animity.ui.activities.main
 
 import android.os.Bundle
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,8 +19,7 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
-import com.kl3jvi.animity.utils.hide
-import com.kl3jvi.animity.utils.show
+import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -32,12 +34,9 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    var isGuestLogin: Boolean = true
-    var isConnected: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-
         viewModel.initialise // just to initialise the viewmodel
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -62,19 +61,57 @@ class MainActivity : AppCompatActivity() {
         /* Setting up the bottom navigation bar with the navigation controller. */
         /* Setting up the bottom navigation bar with the navigation controller. */
         navView.setupWithNavController(navController)
+
+        bottomBarVisibility()
     }
 
-    fun hideBottomNavBar() {
-        binding.navView.animate().translationY(binding.navView.height.toFloat()).duration = 500
-        binding.navView.hide()
+    private fun hideBottomNavBar() {
+        /* Hiding the bottom navigation bar. */
+        binding.navView
+            .animate()
+            .translationY(binding.navView.height.toFloat())
+            .setInterpolator(AccelerateInterpolator())
+            .duration = 400
     }
 
-    fun showBottomNavBar() {
-        binding.navView.show()
-        binding.navView.animate().translationY(0f).duration = 500
+    private fun showBottomNavBar() {
+        binding.navView
+            .animate()
+            .translationY(0f)
+            .setInterpolator(DecelerateInterpolator())
+            .duration = 400
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
     }
+
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
+
+    private fun handleNetworkChanges() {
+        collectFlow(viewModel.isConnectedToNetwork) { isConnected ->
+            binding.wrapper.isVisible = isConnected
+            binding.noInternetStatus.noInternet.isVisible = !isConnected
+        }
+    }
+
+
+    /**
+     * When the destination changes, if the destination is the details fragment or the review details
+     * fragment, hide the bottom nav bar, otherwise show it.
+     */
+    private fun bottomBarVisibility() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.navigation_details || destination.id == R.id.reviewDetailsFragment) {
+                hideBottomNavBar()
+            } else {
+                showBottomNavBar()
+            }
+        }
+    }
+
 }
+

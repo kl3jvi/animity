@@ -21,9 +21,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.NetworkUtils.isConnectedToInternet
-import com.kl3jvi.animity.utils.NetworkUtils.unregisterNetworkCallback
-import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.show
@@ -98,10 +95,10 @@ class LoginActivity :
                             authorizationToken = authorizationToken
                         )
                     ) { state ->
-                        when (state) {
-                            is Result.Error -> showSnack(binding.root, "Error Logging In")
-                            Result.Loading -> binding.progressBar.show() // TODO Check this if this raises na issue.
-                            is Result.Success -> onTokenResponse(state.data)
+                        state.onSuccess {
+                            it.onTokenResponse()
+                        }.onFailure {
+                            showSnack(binding.root, "Error Logging In")
                         }
                     }
                 }
@@ -116,9 +113,9 @@ class LoginActivity :
      * refresh token.
      * @return The response from the server is being returned.
      */
-    override fun onTokenResponse(response: AuthResponse) {
-        val authToken: String? = response.accessToken
-        val refreshToken: String? = response.refreshToken
+    override fun AuthResponse.onTokenResponse() {
+        val authToken: String? = accessToken
+        val refreshToken: String? = refreshToken
         if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
             viewModel.saveTokens(authToken, refreshToken)
             launchActivity<MainActivity> {
@@ -152,6 +149,7 @@ class LoginActivity :
                 .build()
                 .launchUrl(this.context, uri)
         }
+
     }
 
     /**
@@ -159,11 +157,12 @@ class LoginActivity :
      * buttons accordingly.
      */
     private fun handleNetworkChanges() {
-        isConnectedToInternet(this) { isConnected ->
-            if (!isConnected) showSnack(binding.root, "No Internet Connection!")
-            binding.aniListSignUp.isEnabled = isConnected
-            binding.aniListLogin.isEnabled = isConnected
-        }
+
+//        internetConnection(this) { isConnected ->
+//            if (!isConnected) showSnack(binding.root, "No Internet Connection!")
+//            binding.aniListSignUp.isEnabled = isConnected
+//            binding.aniListLogin.isEnabled = isConnected
+//        }
     }
 
     /**
@@ -191,10 +190,5 @@ class LoginActivity :
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         onHandleAuthIntent(intent)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterNetworkCallback(this)
     }
 }

@@ -30,7 +30,16 @@ class GlideModule : AppGlideModule() {
         }
     }
 
+    /**
+     * We're replacing the default GlideUrl class with our own OkHttpUrlLoader class
+     *
+     * @param context Context
+     * @param glide Glide instance
+     * @param registry The registry that you can use to register components.
+     */
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+        super.registerComponents(context, glide, registry)
+
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
@@ -42,12 +51,12 @@ class GlideModule : AppGlideModule() {
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
 
+        val factory = OkHttpUrlLoader.Factory(okHttpClient)
+
         registry.replace(
             GlideUrl::class.java,
             InputStream::class.java,
-            OkHttpUrlLoader.Factory(okHttpClient)
+            factory
         )
-
-        super.registerComponents(context, glide, registry)
     }
 }
