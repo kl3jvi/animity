@@ -3,7 +3,7 @@ name: Build & upload to Firebase App Distribution
 on:
   push:
     paths:
-      - .github/workflows/ktlint-job.yml
+      - .github/workflows/lint-and-build-job.yml
       - 'src/**/*.kt'
       - '**.kts'
 
