@@ -1,6 +1,11 @@
 name: Build & upload to Firebase App Distribution
 
-on: [ push ]
+on:
+  push:
+    paths:
+      - .github/workflows/ktlint-job.yml
+      - 'src/**/*.kt'
+      - '**.kts'
 
 jobs:
   ktlint:
@@ -21,7 +26,6 @@ jobs:
   build:
     needs: ktlint
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,6 +46,10 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
