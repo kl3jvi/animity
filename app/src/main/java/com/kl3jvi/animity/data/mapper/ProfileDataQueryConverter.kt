@@ -8,7 +8,7 @@ import com.kl3jvi.animity.data.model.ui_models.*
 fun ApolloResponse<UserQuery.Data>.convert(): ProfileData {
     val data = this.data
     var profileData = ProfileData()
-    if (data?.user != null)
+    if (data?.user != null) {
         profileData = ProfileData(
             User(
                 data.user.id,
@@ -18,9 +18,10 @@ fun ApolloResponse<UserQuery.Data>.convert(): ProfileData {
                     data.user.avatar?.large.orEmpty(),
                     data.user.avatar?.medium.orEmpty()
                 ),
-                data.user.bannerImage.orEmpty(),
+                data.user.bannerImage.orEmpty()
             )
         )
+    }
     return profileData
 }
 
@@ -60,11 +61,10 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia>
                 it?.media?.coverImage?.large.orEmpty()
             ),
             genres = it?.media?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: listOf(),
-            averageScore = it?.media?.averageScore ?: 0,
+            averageScore = it?.media?.averageScore ?: 0
         )
     } ?: listOf()
 }
-
 
 data class ProfileData(
     val userData: User = User(),
@@ -75,4 +75,3 @@ data class ProfileRow(
     val title: String = "",
     val anime: List<AniListMedia> = listOf()
 )
-

@@ -40,14 +40,12 @@ class Constants {
         const val EPISODE_TITLES =
             "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
 
-
         /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
         const val GOGO_KEYS_URL =
             "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
 
         /* The default cover image for the profile. */
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
-
 
         // Model Type
         const val TYPE_RECENT_SUB = 1
@@ -56,7 +54,6 @@ class Constants {
         const val TYPE_MOVIE = 4
         const val TYPE_NEW_SEASON = 5
         const val TYPE_SEARCH = 6
-
 
         const val SAVED_STATE_KEY = "animeDetails"
 
@@ -78,7 +75,7 @@ class Constants {
 //            )
 //        }
 
-        //Gogoanime Secrets
+        // Gogoanime Secrets
 //        {"key": "37911490979715163134003223491201", "second_key": "54674138327930866480207815084989", "iv": "3134003223491201"}
         var GogoSecretkey = "37911490979715163134003223491201"
         var GogoSecretIV = "3134003223491201"
@@ -107,12 +104,10 @@ class Constants {
             return ColorStateList.valueOf(color)
         }
 
-
         fun getVerticalAdapterBackgroundColor(): ColorStateList {
             val color: Int = Color.argb(255, 17, 17, 17)
             return ColorStateList.valueOf(color)
         }
-
 
         /**
          * It creates a factory for the data source.
@@ -149,7 +144,6 @@ class Constants {
             }
         }
 
-
         /**
          * It returns a map of the network headers.
          *
@@ -172,7 +166,5 @@ class Constants {
 
         inline fun <reified T> Gson.readValue(content: String): T =
             this.fromJson(content, T::class.java)
-
     }
 }
-

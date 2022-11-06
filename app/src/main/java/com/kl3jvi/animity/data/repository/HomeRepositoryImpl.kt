@@ -15,18 +15,14 @@ import javax.inject.Singleton
 class HomeRepositoryImpl @Inject constructor(
     private val aniListGraphQlClient: AniListGraphQlClient,
     private val animeClient: GogoAnimeApiClient,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : HomeRepository {
 
     override fun getHomeData() = aniListGraphQlClient.getHomeData()
         .mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
         .flowOn(ioDispatcher)
 
-
     override fun getEncryptionKeys() = flow {
         emit(animeClient.getEncryptionKeys())
     }.flowOn(ioDispatcher)
-
-
-
 }

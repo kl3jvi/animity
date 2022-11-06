@@ -15,14 +15,12 @@ import javax.inject.Inject
 class FavoriteRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val aniListGraphQlClient: AniListGraphQlClient,
-    private val ioDispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher
 ) : FavoriteRepository {
-
 
     override fun getGogoUrlFromAniListId(id: Int) = flow {
         emit(apiClient.getGogoUrlFromAniListId(id))
     }.flowOn(ioDispatcher)
-
 
     override fun getFavoriteAnimesFromAniList(
         userId: Int?,
@@ -30,7 +28,4 @@ class FavoriteRepositoryImpl @Inject constructor(
     ) = aniListGraphQlClient.getFavoriteAnimesFromAniList(userId, page)
         .mapNotNull(ApolloResponse<FavoritesAnimeQuery.Data>::convert)
         .flowOn(ioDispatcher)
-
 }
-
-

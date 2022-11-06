@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-
 class LoginRepositoryImpl @Inject constructor(
     private val authClient: AuthClient,
     private val ioDispatcher: CoroutineDispatcher

@@ -27,12 +27,10 @@ val trendingAnimeModel = HomeDataQuery.TrendingAnime(
                     medium = "https://example.com",
                     extraLarge = "https://example.com"
                 ),
-                streamingEpisodes = listOf<HomeMedia.StreamingEpisode>(
-
-                ),
+                streamingEpisodes = listOf<HomeMedia.StreamingEpisode>(),
                 nextAiringEpisode = HomeMedia.NextAiringEpisode(
                     airingAt = 1,
-                    episode = 2,
+                    episode = 2
                 ),
                 "https://github.com",
                 genres = listOf<String>("Action", "Fantasy"),
@@ -64,12 +62,10 @@ val moviesModel = HomeDataQuery.Movies(
                     medium = "https://naruto.com",
                     extraLarge = "https://naruto.com"
                 ),
-                streamingEpisodes = listOf<HomeMedia.StreamingEpisode>(
-
-                ),
+                streamingEpisodes = listOf<HomeMedia.StreamingEpisode>(),
                 nextAiringEpisode = HomeMedia.NextAiringEpisode(
                     airingAt = 1,
-                    episode = 2,
+                    episode = 2
                 ),
                 "https://naruto.com",
                 genres = listOf<String>("Fantasy", "Animation"),
@@ -101,12 +97,10 @@ val popularAnimeModel = HomeDataQuery.PopularAnime(
                     medium = "https://AOT.com",
                     extraLarge = "https://AOT.com"
                 ),
-                streamingEpisodes = listOf<HomeMedia.StreamingEpisode>(
-
-                ),
+                streamingEpisodes = listOf<HomeMedia.StreamingEpisode>(),
                 nextAiringEpisode = HomeMedia.NextAiringEpisode(
                     airingAt = 1,
-                    episode = 2,
+                    episode = 2
                 ),
                 "https://AOT.com",
                 genres = listOf<String>("ATTACK", "FIGHT"),
@@ -151,7 +145,6 @@ val reviewModel = HomeDataQuery.Review(
         )
     )
 )
-
 
 val userFavoritesModel = FavoritesAnimeQuery.User(
     id = 1,

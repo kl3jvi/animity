@@ -19,8 +19,11 @@
 
     <color name="itemBackground">#161616</color>
     <color name="nav_tab">#9ba0a4</color>
-    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true" >@color/background_color</color>
-    <color name="m3_button_outline_color_selector" tools:override="true">@color/background_color</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">
+        @color/background_color
+    </color>
+    <color name="m3_button_outline_color_selector" tools:override="true">@color/background_color
+    </color>
 
 
     <color name="iconGrayBackground">#262626</color>

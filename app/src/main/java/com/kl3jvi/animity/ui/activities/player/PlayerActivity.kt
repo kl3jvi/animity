@@ -52,7 +52,6 @@ import okhttp3.dnsoverhttps.DnsOverHttps
 import java.io.File
 import java.net.InetAddress
 
-
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
@@ -81,7 +80,6 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var episodeEntity: EpisodeEntity
     var aniListId: Int = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -93,7 +91,6 @@ class PlayerActivity : AppCompatActivity() {
             animeTitlePassed = intent.getStringExtra(ANIME_TITLE).toString()
             episodeNumberLocal = getIntentData?.episodeNumber.toString()
             episodeUrlLocal = getIntentData?.episodeUrl.toString()
-
 
             val title = binding.videoView.findViewById<TextView>(R.id.episodeName)
             val episodeNum = binding.videoView.findViewById<TextView>(R.id.episodeNum)
@@ -194,7 +191,6 @@ class PlayerActivity : AppCompatActivity() {
                             player?.seekTo(it)
                         }
 
-
                         player!!.addListener(object : Player.Listener {
                             override fun onPlayerStateChanged(
                                 playWhenReady: Boolean,
@@ -212,7 +208,6 @@ class PlayerActivity : AppCompatActivity() {
                             }
                         })
 
-
                         val skipIntro =
                             binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
 
@@ -227,7 +222,6 @@ class PlayerActivity : AppCompatActivity() {
                                 skipIntro.visibility = View.GONE
                             }
                         }
-
                     } catch (e: ExoPlaybackException) {
                         e.printStackTrace()
                         showSnack(binding.root, e.localizedMessage)
@@ -237,22 +231,22 @@ class PlayerActivity : AppCompatActivity() {
                     binding.loadingOverlay.visibility = View.GONE
                 }
             }
-
         }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (::episodeEntity.isInitialized)
+        if (::episodeEntity.isInitialized) {
             insertEpisodeToDatabase(episodeEntity.copy(watchedDuration = player!!.currentPosition))
+        }
     }
 
     private fun initialisePlayerLayout() {
-
         val backButton = binding.videoView.findViewById<ImageView>(R.id.back)
         backButton.setOnClickListener {
-            if (::episodeEntity.isInitialized)
+            if (::episodeEntity.isInitialized) {
                 insertEpisodeToDatabase(episodeEntity.copy(watchedDuration = player!!.currentPosition))
+            }
             finish()
         }
 
@@ -316,7 +310,6 @@ class PlayerActivity : AppCompatActivity() {
                     .setUserAgent(Constants.USER_AGENT)
                     .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
                 dataSource.createDataSource()
-
             }
             HlsMediaSource.Factory(dataSource)
                 .setAllowChunklessPreparation(true)
@@ -333,7 +326,6 @@ class PlayerActivity : AppCompatActivity() {
                 .createMediaSource(mediaItem)
         }
     }
-
 
     /**
      * It releases the player.
@@ -356,7 +348,6 @@ class PlayerActivity : AppCompatActivity() {
     private fun onIsPlayingChanged(isPlaying: Boolean) {
         binding.videoView.keepScreenOn = isPlaying
     }
-
 
     /**
      * It shows a dialog for speed selection.
@@ -440,7 +431,6 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-
     /**
      * Hide the system UI and make it re-appear when the user swipes down from the top of the screen.
      */
@@ -451,5 +441,4 @@ class PlayerActivity : AppCompatActivity() {
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
-
 }

@@ -23,7 +23,6 @@ class HomeFragment : Fragment() {
     val viewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +37,7 @@ class HomeFragment : Fragment() {
         createFragmentMenu(R.menu.settings_menu) { item ->
             when (item.itemId) {
                 R.id.action_settings -> {
-                    findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment());true
+                    findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment()); true
                 }
 
                 else -> false
@@ -75,5 +74,3 @@ class HomeFragment : Fragment() {
         super.onResume()
     }
 }
-
-

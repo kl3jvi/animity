@@ -14,7 +14,6 @@ import retrofit2.http.*
  * Used to connect to the GogoAnime page to fetch animes
  */
 
-
 interface GogoAnimeService {
 
     @GET
@@ -35,7 +34,6 @@ interface GogoAnimeService {
         @HeaderMap header: Map<String, String>,
         @Url url: String
     ): ResponseBody
-
 
     @GET
     @Headers("X-Requested-With:XMLHttpRequest")
@@ -61,7 +59,6 @@ interface GogoAnimeService {
 
     @GET("$EPISODE_TITLES/{id}.json")
     suspend fun getEpisodeTitles(@Path("id") id: Int = 1): EpisodeWithTitle
-
 
     @GET(GOGO_KEYS_URL)
     suspend fun getKeys(): GogoAnimeKeys

@@ -32,14 +32,12 @@ class FavoritesFragment : Fragment() {
         .also { binding = it }
         .run { root }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
     }
 
     private var shouldRefreshFavorites: Boolean = false
-
 
     private fun initViews() {
         binding.swipeLayout.setOnRefreshListener {
@@ -48,13 +46,11 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-
     private fun observeAniList() {
         collectFlow(viewModel.favoritesList) { favoritesUiState ->
             binding.favoritesRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
             binding.favoritesRecycler.withModels {
                 when (favoritesUiState) {
-
                     is FavoritesUiState.Error -> {
                         showSnack(binding.root, "Error getting favorites")
                         binding.nothingSaved.isVisible = true

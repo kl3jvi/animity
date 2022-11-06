@@ -11,7 +11,6 @@ import io.noties.markwon.Markwon
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 fun View.hide() {
     visibility = View.GONE
 }
@@ -55,7 +54,6 @@ fun TextView.setMarkdownText(string: String) {
 
 fun Int?.or1() = this ?: 1
 
-
 fun dismissKeyboard(view: View) {
     ViewCompat.getWindowInsetsController(view)?.hide(WindowInsetsCompat.Type.ime())
 }
@@ -72,4 +70,3 @@ fun displayInDayDateTimeFormat(seconds: Int): String {
     val date = Date(seconds * 1000L)
     return dateFormat.format(date)
 }
-

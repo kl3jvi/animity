@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -38,23 +37,21 @@ inline fun <reified T : Any> Context.launchActivity(
 inline fun <reified T : Any> newIntent(context: Context): Intent =
     Intent(context, T::class.java)
 
-
 fun Fragment.createFragmentMenu(
     @MenuRes menuLayout: Int,
     selectedItem: (menuItem: MenuItem) -> Boolean
 ) {
     val menuHost = requireActivity()
-    menuHost.addMenuProvider(object : MenuProvider {
-        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-            menuInflater.inflate(menuLayout, menu)
-        }
+    menuHost.addMenuProvider(
+        object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(menuLayout, menu)
+            }
 
-        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-            return selectedItem(menuItem)
-        }
-    }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return selectedItem(menuItem)
+            }
+        },
+        viewLifecycleOwner, Lifecycle.State.RESUMED
+    )
 }
-
-
-
-

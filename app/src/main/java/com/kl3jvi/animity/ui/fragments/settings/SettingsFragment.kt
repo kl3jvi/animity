@@ -13,4 +13,3 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
     }
 }
-

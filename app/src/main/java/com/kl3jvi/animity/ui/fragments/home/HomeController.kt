@@ -12,7 +12,6 @@ import com.kl3jvi.animity.title
 import com.kl3jvi.animity.utils.navigateSafe
 import com.kl3jvi.animity.vertical
 
-
 fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAnalytics) {
     val (trendingAnime, newAnime, movies, reviews) = homeData
     listOf(
@@ -45,7 +44,6 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAna
     }
 }
 
-
 enum class Title(val title: String) {
     TRENDING_ANIME(title = "Trending"),
     NEW_ANIME(title = "Popular"),
@@ -75,8 +73,3 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): Lis
             .animeInfo(media)
     }
 }
-
-
-
-
-

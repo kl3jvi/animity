@@ -20,7 +20,7 @@ class PagingSearchController(private val firebaseAnalytics: FirebaseAnalytics) :
      */
     override fun buildItemModel(
         currentPosition: Int,
-        item: AniListMedia?,
+        item: AniListMedia?
     ): EpoxyModel<*> {
         return SearchLayoutBindingModel_().id(item?.idAniList).clickListener { view ->
             try {
@@ -30,10 +30,12 @@ class PagingSearchController(private val firebaseAnalytics: FirebaseAnalytics) :
                     view.findNavController().navigate(directions)
                     val params = Bundle()
                     params.putString(
-                        "genre", item.genres.firstOrNull()?.name ?: "empty"
+                        "genre",
+                        item.genres.firstOrNull()?.name ?: "empty"
                     )
                     firebaseAnalytics.logEvent(
-                        item.title.userPreferred.replace("\\s".toRegex(), ""), params
+                        item.title.userPreferred.replace("\\s".toRegex(), ""),
+                        params
                     )
                 }
             } catch (e: Exception) {

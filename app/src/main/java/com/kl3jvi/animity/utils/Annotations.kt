@@ -9,9 +9,3 @@ annotation class RetrofitClient
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Apollo
-
-
-
-
-
-

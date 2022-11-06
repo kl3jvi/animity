@@ -11,7 +11,6 @@ class FavoriteMapperQueryTest {
             user = userFavoritesModel
         )
 
-
 //
 //
 //        assertEquals(1, convertedData.data.first().idAniList)

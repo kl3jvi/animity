@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.model.ui_models
 
-
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Parcelable
@@ -8,7 +7,6 @@ import com.kl3jvi.animity.type.*
 import com.kl3jvi.animity.utils.displayInDayDateTimeFormat
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-
 
 data class HomeData(
     val trendingAnime: List<AniListMedia> = emptyList(),
@@ -35,7 +33,6 @@ data class Review(
     val user: User = User(),
     val aniListMedia: AniListMedia = AniListMedia()
 ) : Parcelable
-
 
 @Parcelize
 data class AniListMedia(
@@ -74,10 +71,9 @@ data class AniListMedia(
     val isAdult: Boolean = false,
 //    val nextAiringEpisode: AiringSchedule? = null,
 //    val externalLinks: List<MediaExternalLink> = listOf(),
-    val siteUrl: String = "",
+    val siteUrl: String = ""
 //    val mediaListEntry: MediaList? = null
 ) : Parcelable {
-
 
     fun getGenresToString(): String {
         return if (genres.size < 3) {
@@ -179,9 +175,11 @@ data class FuzzyDate(
     }
 
     fun getDate(): String {
-        return if (!isNull())
+        return if (!isNull()) {
             "$year/$month/$day"
-        else "Unknown"
+        } else {
+            "Unknown"
+        }
     }
 }
 
@@ -195,5 +193,5 @@ data class MediaCoverImage(
 @Parcelize
 data class Episodes(
     val title: String? = "",
-    val thumbnail: String? = "",
+    val thumbnail: String? = ""
 ) : Parcelable

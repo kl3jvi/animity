@@ -56,5 +56,4 @@ class LoginViewModel @Inject constructor(
     fun setSelectedProvider(provider: String) {
         userRepository.setProvider(provider = provider)
     }
-
 }

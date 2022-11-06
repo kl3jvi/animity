@@ -21,21 +21,8 @@ class ProfileRepositoryImpl @Inject constructor(
             .mapNotNull(ApolloResponse<UserQuery.Data>::convert)
             .flowOn(ioDispatcher)
 
-
     override fun getProfileAnimes(userId: Int?) =
         aniListGraphQlClient.getAnimeListData(userId)
             .mapNotNull(ApolloResponse<AnimeListCollectionQuery.Data>::convert)
             .flowOn(ioDispatcher)
-
 }
-
-
-
-
-
-
-
-
-
-
-

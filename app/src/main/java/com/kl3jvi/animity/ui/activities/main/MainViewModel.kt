@@ -42,7 +42,6 @@ class MainViewModel @Inject constructor(
         updateEncryptionKeys()
     }
 
-
     /**
      * It gets the user session from the server and sets the user id in the repository.
      */
@@ -53,14 +52,14 @@ class MainViewModel @Inject constructor(
                     is Result.Error -> logError(it.exception)
                     Result.Loading -> {}
                     is Result.Success -> {
-                        if (!it.data.hasErrors())
+                        if (!it.data.hasErrors()) {
                             userRepository.setAniListUserId(it.data.data?.viewer?.id.toString())
+                        }
                     }
                 }
             }
         }
     }
-
 
     /**
      * > It gets the encryption keys from the server and saves them to the local storage

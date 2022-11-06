@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository,
+    private val searchRepository: SearchRepository
 ) : ViewModel() {
 
     private val _searchList = MutableStateFlow<PagingData<AniListMedia>>(PagingData.empty())
@@ -24,7 +24,6 @@ class SearchViewModel @Inject constructor(
 
     private var textQuery = ""
     private var searchJob: Job? = null
-
 
     fun onSearchQueryChanged(query: String) {
         val newQuery = query.trim().takeIf { it.length >= 2 } ?: ""

@@ -15,4 +15,3 @@ interface AniListAuthService {
     @POST(AUTH_URL)
     suspend fun getAccessToken(@Body aniListAuth: AniListAuth): AuthResponse
 }
-

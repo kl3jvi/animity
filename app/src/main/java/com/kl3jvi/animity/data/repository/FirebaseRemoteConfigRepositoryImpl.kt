@@ -21,7 +21,9 @@ class FirebaseRemoteConfigRepositoryImpl @Inject constructor(
         instance.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.e("Successfully Retrieved", "Firebase Config Url")
-            } else logError(task.exception)
+            } else {
+                logError(task.exception)
+            }
         }
     }
 

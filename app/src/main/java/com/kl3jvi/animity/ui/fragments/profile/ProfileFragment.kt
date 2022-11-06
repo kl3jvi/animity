@@ -16,14 +16,12 @@ import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var binding: FragmentProfileBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +61,6 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
 //        if (requireActivity() is MainActivity) {
@@ -71,5 +68,18 @@ class ProfileFragment : Fragment() {
 //        }
     }
 
-}
+    override fun onStart() {
+        super.onStart()
+        handleNetworkChanges()
+    }
 
+    private fun handleNetworkChanges() {
+        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
+            if (isConnected) getProfileData()
+            binding.noInternetResult.noInternet.isVisible = !isConnected
+            binding.profileRv.isVisible = isConnected
+        }
+    }
+
+
+}

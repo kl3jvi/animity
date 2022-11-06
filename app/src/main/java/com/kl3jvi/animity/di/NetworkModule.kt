@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.di
 
-
 import android.content.Context
 import android.net.ConnectivityManager
 import com.apollographql.apollo3.ApolloClient
@@ -47,15 +46,16 @@ object NetworkModule {
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            })
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BASIC
+                }
+            )
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
     }
-
 
     @Provides
     @Singleton
@@ -73,27 +73,24 @@ object NetworkModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideRetrofit(
-        @RetrofitClient okHttpClient: OkHttpClient,
+        @RetrofitClient okHttpClient: OkHttpClient
     ): Retrofit = Retrofit.Builder()
         .baseUrl(GOGO_BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-
     @Provides
     @Singleton
     fun provideApolloClient(
-        @Apollo okHttpClient: OkHttpClient,
+        @Apollo okHttpClient: OkHttpClient
     ): ApolloClient = ApolloClient.Builder()
         .serverUrl(ANILIST_API_URL)
         .okHttpClient(okHttpClient)
         .build()
-
 
     /**
      * > It takes a Retrofit object as an argument and returns an AnimeService object
@@ -115,7 +112,6 @@ object NetworkModule {
         return GogoAnimeApiClient(gogoAnimeService)
     }
 
-
     @Singleton
     @Provides
     fun provideNineAnimeService(retrofit: Retrofit): YugenService {
@@ -128,20 +124,17 @@ object NetworkModule {
         yugenService: YugenService
     ): YugenApiClient = YugenApiClient(yugenService)
 
-
     @Provides
     @Singleton
     fun provideAniListGraphQlClient(
-        apolloClient: ApolloClient,
+        apolloClient: ApolloClient
     ): AniListGraphQlClient = AniListGraphQlClient(apolloClient)
-
 
     @Singleton
     @Provides
     fun provideAniListAuthService(retrofit: Retrofit): AniListAuthService {
         return retrofit.create(AniListAuthService::class.java)
     }
-
 
     @Provides
     @Singleton
@@ -164,16 +157,9 @@ object NetworkModule {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
-
     @Singleton
     @Provides
     fun provideFirebaseInstance(): FirebaseRemoteConfig {
         return FirebaseRemoteConfig.getInstance()
     }
-
 }
-
-
-
-
-

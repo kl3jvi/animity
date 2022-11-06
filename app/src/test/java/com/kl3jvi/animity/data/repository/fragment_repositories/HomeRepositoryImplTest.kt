@@ -31,7 +31,6 @@ class HomeRepositoryImplTest {
     private val parser: Parser = mock()
     private val service: GogoAnimeService = mock()
 
-
     @get:Rule
     val coroutinesRule = MainCoroutinesRule()
 
@@ -63,7 +62,6 @@ class HomeRepositoryImplTest {
 
     @Test
     fun getHomeDataCatchError() = runTest {
-
         val testQuery = HomeDataQuery()
 //        apolloClient.enqueueTestResponse(testQuery, )
         val data = apolloClient.query(testQuery).execute()
