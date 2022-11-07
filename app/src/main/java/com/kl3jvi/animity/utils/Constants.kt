@@ -136,11 +136,13 @@ class Constants {
          * @param view View - The view to show the snackbar on
          * @param message The message to be displayed in the snackbar.
          */
-        fun showSnack(view: View, message: String?) {
-            val snack =
-                Snackbar.make(view, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
-            if (!snack.isShown) {
-                snack.show()
+        fun showSnack(view: View?, message: String?) {
+            view?.let {
+                val snack =
+                    Snackbar.make(view, message ?: "Error Occurred", Snackbar.LENGTH_LONG)
+                if (!snack.isShown) {
+                    snack.show()
+                }
             }
         }
 

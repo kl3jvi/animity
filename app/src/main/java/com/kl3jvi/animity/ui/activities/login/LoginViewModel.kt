@@ -28,7 +28,6 @@ class LoginViewModel @Inject constructor(
         authorizationToken
     )
 
-
     /**
      * > The function `saveTokens` takes two strings, `authToken` and `refreshToken`, and saves them to
      * the `userRepository` object

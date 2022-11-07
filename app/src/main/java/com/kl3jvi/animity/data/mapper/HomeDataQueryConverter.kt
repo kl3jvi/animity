@@ -62,7 +62,7 @@ fun HomeDataQuery.Review1?.convert(): Review {
     )
 }
 
-public fun HomeMedia?.convert(): AniListMedia {
+fun HomeMedia?.convert(): AniListMedia {
     return AniListMedia(
         idAniList = this?.id ?: 0,
         idMal = this?.idMal,

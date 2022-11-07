@@ -25,7 +25,6 @@ fun ApolloResponse<UserQuery.Data>.convert(): User {
             ),
             data.user.bannerImage.orEmpty()
         )
-
     }
     return user
 }

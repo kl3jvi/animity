@@ -36,7 +36,6 @@ class MainViewModel @Inject constructor(
             false
         )
 
-
     init {
         getUserSession()
         updateEncryptionKeys()

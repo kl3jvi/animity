@@ -1,44 +1,41 @@
 package com.kl3jvi.animity.ui.fragments.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
-import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.utils.collectLatestFlow
 import com.kl3jvi.animity.utils.dismissKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
 
-    override val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
     private lateinit var pagingController: PagingSearchController
+    private var binding: FragmentSearchBinding? = null
 
-    private var searchJob: Job? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        pagingController = PagingSearchController(firebaseAnalytics)
-        return binding.root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentSearchBinding.bind(view)
+        pagingController = PagingSearchController(FirebaseAnalytics.getInstance(requireContext()))
+        initViews()
+        observeViewModel()
     }
 
     /**
      * It sets up the search view and recycler view.
      */
-    override fun initViews() {
-        binding.apply {
+    private fun initViews() {
+        binding?.apply {
             searchRecycler.setController(pagingController)
             mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    dismissKeyboard(binding.mainSearch)
+                    dismissKeyboard(binding?.mainSearch)
                     return false
                 }
 
@@ -50,21 +47,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // letting go of the resources to avoid memory leak.
+        binding = null
+    }
+
     override fun onPause() {
-        dismissKeyboard(binding.mainSearch)
+        dismissKeyboard(binding?.mainSearch)
         super.onPause()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun observeViewModel() {
+    private fun observeViewModel() {
         collectLatestFlow(viewModel.searchList) { animeData ->
             pagingController.submitData(animeData)
         }
     }
-
-    override fun getViewBinding(): FragmentSearchBinding =
-        FragmentSearchBinding.inflate(layoutInflater)
 }

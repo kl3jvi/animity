@@ -43,7 +43,6 @@ class NetworkMonitor @Inject constructor(
                 trySend(true)
                 super.onCapabilitiesChanged(network, networkCapabilities)
             }
-
         }
         val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -63,6 +62,3 @@ class NetworkMonitor @Inject constructor(
         }
     }
 }
-
-
-

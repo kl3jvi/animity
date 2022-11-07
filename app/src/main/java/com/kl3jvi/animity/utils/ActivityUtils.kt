@@ -52,6 +52,7 @@ fun Fragment.createFragmentMenu(
                 return selectedItem(menuItem)
             }
         },
-        viewLifecycleOwner, Lifecycle.State.RESUMED
+        viewLifecycleOwner,
+        Lifecycle.State.RESUMED
     )
 }

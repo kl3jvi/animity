@@ -13,7 +13,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.randomId
 import com.kl3jvi.animity.utils.navigateSafe
 
 fun EpoxyController.buildProfile(
-    userData: ProfileData?,
+    userData: ProfileData?
 ) {
     profileCard {
         id(randomId())

@@ -5,19 +5,17 @@ package com.kl3jvi.animity.ui.fragments.details.animeDetails
 import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.get
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -32,7 +30,6 @@ import com.kl3jvi.animity.data.model.ui_models.toStateListColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.base.BaseFragment
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesUiState
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.Constants
@@ -55,39 +52,40 @@ import java.util.Locale
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>() {
+class DetailsFragment : Fragment(R.layout.fragment_details) {
 
-    override val viewModel: DetailsViewModel by viewModels()
-    private val favoritesViewModel: FavoritesViewModel by activityViewModels()
+    private val viewModel: DetailsViewModel by viewModels()
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
+    private var binding: FragmentDetailsBinding? = null
 
     private lateinit var menu: Menu
     private lateinit var title: String
     private var check = false
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentDetailsBinding.bind(view)
+        observeViewModel()
+        initViews()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = binding.root
-
-    override fun observeViewModel() {
+    private fun observeViewModel() {
         fetchAnimeInfo()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
     }
 
-    override fun initViews() {
+    private fun initViews() {
         animeDetails.let { animeInfo ->
             viewModel.animeMetaModel.value = animeInfo
-            binding.apply {
+            binding?.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
                 resultTitle.text = animeInfo.title.userPreferred
                 title = animeInfo.title.userPreferred
@@ -102,10 +100,8 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      * It fetches the anime info and displays it on the screen.
      */
     private fun fetchAnimeInfo() {
-
-
         animeDetails.let { info ->
-            binding.apply {
+            binding?.apply {
                 animeInfoLayout.textOverview.setHtmlText(info.description)
                 releaseDate.text = info.startDate?.getDate()
                 status.text = info.status?.name
@@ -150,7 +146,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
      * @param genre List<Genre> - The list of genres that we want to display.
      */
     private fun createGenreChips(genre: List<Genre>) {
-        binding.genreGroup.removeAllViews()
+        binding?.genreGroup?.removeAllViews()
         genre.forEach { data ->
             val chip = Chip(requireContext())
             chip.apply {
@@ -161,7 +157,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 chipStrokeWidth = 3f
                 chipBackgroundColor = color
             }
-            binding.genreGroup.addView(chip)
+            binding?.genreGroup?.addView(chip)
         }
     }
 
@@ -197,7 +193,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                 check = false
             }
         }
-        binding.setType.setOnClickListener { v ->
+        binding?.setType?.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)
         }
     }
@@ -214,15 +210,15 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.option_1 -> {
-                    binding.setType.text = requireContext().getText(R.string.completed)
+                    binding?.setType?.text = requireContext().getText(R.string.completed)
                 }
 
                 R.id.option_2 -> {
-                    binding.setType.text = requireContext().getText(R.string.watching)
+                    binding?.setType?.text = requireContext().getText(R.string.watching)
                 }
 
                 R.id.option_3 -> {
-                    binding.setType.text = requireContext().getText(R.string.planning)
+                    binding?.setType?.text = requireContext().getText(R.string.planning)
                 }
             }
             false
@@ -241,11 +237,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.episodeList.flatMapMerge(DEFAULT_CONCURRENCY) { episodeUiState ->
                     if (episodeUiState is EpisodeListUiState.Success) {
-                        binding.detailsProgress.visibility = GONE
+                        binding?.detailsProgress?.visibility = GONE
                         episodeUiState.data // This is a flow of episodes we are merging with the main flow above to collect only once
-                    } else emptyFlow()
+                    } else {
+                        emptyFlow()
+                    }
                 }.collect { listOfEpisodeModel ->
-                    binding.episodeListRecycler.withModels {
+                    binding?.episodeListRecycler?.withModels {
                         listOfEpisodeModel.forEachIndexed { index, episodeModel ->
                             episodeLarge {
                                 id(episodeModel.episodeNumber)
@@ -286,13 +284,13 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                         }
                     }
 
-                    binding.resultEpisodesText.text =
+                    binding?.resultEpisodesText?.text =
                         requireContext().getString(
                             R.string.total_episodes,
                             listOfEpisodeModel.size.toString()
                         )
                     if (listOfEpisodeModel.isNotEmpty()) {
-                        binding.resultPlayMovie.setOnClickListener {
+                        binding?.resultPlayMovie?.setOnClickListener {
                             requireActivity().launchActivity<PlayerActivity> {
                                 putExtra(
                                     Constants.EPISODE_DETAILS,
@@ -300,10 +298,10 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                                 )
                                 putExtra(Constants.ANIME_TITLE, title)
                             }
-                            binding.resultPlayMovie.visibility = VISIBLE
+                            binding?.resultPlayMovie?.visibility = VISIBLE
                         }
                     } else {
-                        binding.resultPlayMovie.visibility = GONE
+                        binding?.resultPlayMovie?.visibility = GONE
                     }
                 }
             }
@@ -311,7 +309,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
     }
 
     private fun showLatestEpisodeReleaseTime() {
-        binding.releaseTime.text = animeDetails.nextAiringEpisode?.parseTime()
+        binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime()
     }
 
     private fun Int.parseTime(): CharSequence {
@@ -320,7 +318,7 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
             DateUtils.getRelativeTimeSpanString(now, toLong(), DateUtils.MINUTE_IN_MILLIS)
         } catch (e: ParseException) {
             e.printStackTrace()
-            binding.nextEpisodeContainer.isVisible = false
+            binding?.nextEpisodeContainer?.isVisible = false
             ""
         }
     }
@@ -339,11 +337,11 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
                     /* Setting the icon of the menu item at index 0 to the icon with the id
                     `R.drawable.ic_favorite_complete`. */
                     menu[0].setIcon(R.drawable.ic_favorite_complete)
-                    showSnack(binding.root, "Anime added to Favorites")
+                    showSnack(binding?.root, "Anime added to Favorites")
                     true
                 } else {
                     menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
-                    showSnack(binding.root, "Anime removed from Favorites")
+                    showSnack(binding?.root, "Anime removed from Favorites")
                     false
                 }
                 viewModel.updateAnimeFavorite()
@@ -352,9 +350,9 @@ class DetailsFragment : BaseFragment<DetailsViewModel, FragmentDetailsBinding>()
         return super.onOptionsItemSelected(item)
     }
 
-    /**
-     * It inflates the layout and returns the binding object.
-     */
-    override fun getViewBinding(): FragmentDetailsBinding =
-        FragmentDetailsBinding.inflate(layoutInflater)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // letting go of the resources to avoid memory leak.
+        binding = null
+    }
 }

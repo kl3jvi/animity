@@ -28,7 +28,6 @@ object ConnectedCompat {
         @Suppress("DEPRECATION")
         override fun isConnected(connectivityManager: ConnectivityManager): Boolean =
             connectivityManager.activeNetworkInfo?.isConnected ?: false
-
     }
 
     object MarshMallowImpl : ConnectedCompatImpl {

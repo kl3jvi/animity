@@ -3,9 +3,9 @@ package com.kl3jvi.animity.ui.activities.login
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -16,7 +16,6 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.ui.base.BindingActivity
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
@@ -29,15 +28,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class LoginActivity :
-    BindingActivity<ActivityLoginBinding>(R.layout.activity_login),
-    Authentication {
+class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication {
 
     private val viewModel: LoginViewModel by viewModels()
     lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         firebaseAnalytics = Firebase.analytics
         checkIfUserLoggedIn()
         initViews()
@@ -149,7 +150,6 @@ class LoginActivity :
                 .build()
                 .launchUrl(this.context, uri)
         }
-
     }
 
     /**
@@ -157,7 +157,6 @@ class LoginActivity :
      * buttons accordingly.
      */
     private fun handleNetworkChanges() {
-
 //        internetConnection(this) { isConnected ->
 //            if (!isConnected) showSnack(binding.root, "No Internet Connection!")
 //            binding.aniListSignUp.isEnabled = isConnected

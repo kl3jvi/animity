@@ -54,7 +54,7 @@ interface GogoAnimeService {
 
     @GET("$MAL_SYNC_URL/{id}.json")
     suspend fun getGogoUrlFromAniListId(
-        @Path("id") id: Int = 1
+        @Path("id") id: Int
     ): DetailedAnimeInfo
 
     @GET("$EPISODE_TITLES/{id}.json")

@@ -65,30 +65,32 @@ class MainActivity : AppCompatActivity() {
         bottomBarVisibility()
     }
 
+    /* Hiding the bottom navigation bar. */
     private fun hideBottomNavBar() {
-        /* Hiding the bottom navigation bar. */
         binding.navView
             .animate()
             .translationY(binding.navView.height.toFloat())
             .setInterpolator(AccelerateInterpolator())
             .setInterpolator {
-                if (it == 1F)
+                if (it == 1F) {
                     binding.navView.isVisible = false
+                }
                 it
             }.duration = 400
     }
 
+    /* Showing the bottom navigation bar. */
     private fun showBottomNavBar() {
         binding.navView
             .animate()
             .translationY(0f)
             .setInterpolator(DecelerateInterpolator())
             .setInterpolator {
-                if (it == 0F)
+                if (it == 0F) {
                     binding.navView.isVisible = true
+                }
                 it
             }.duration = 400
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -107,7 +109,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     /**
      * When the destination changes, if the destination is the details fragment or the review details
      * fragment, hide the bottom nav bar, otherwise show it.
@@ -121,6 +122,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
-

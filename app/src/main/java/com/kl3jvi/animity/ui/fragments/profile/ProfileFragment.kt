@@ -1,9 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.profile
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,42 +16,34 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val viewModel: ProfileViewModel by viewModels()
-    private lateinit var binding: FragmentProfileBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = FragmentProfileBinding
-        .inflate(inflater)
-        .also { binding = it }
-        .run { root }
-
+    private var binding: FragmentProfileBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentProfileBinding.bind(view)
+
         createFragmentMenu(menuLayout = R.menu.profile_menu) {
             when (it.itemId) {
                 R.id.action_log_out -> {
                     viewModel.clearStorage() // Deletes saved token
-                    requireActivity().launchActivity<LoginActivity> { }
+                    requireActivity().launchActivity<LoginActivity> {
+                        binding = null
+                    }
                     requireActivity().finish()
                     true
                 }
-
                 else -> false
             }
-
         }
         getProfileData()
     }
 
     private fun getProfileData() {
-        collectFlow(viewModel.profileData) { userData ->
-            binding.profileRv.withModels {
+        viewLifecycleOwner.collectFlow(viewModel.profileData) { userData ->
+            binding?.profileRv?.withModels {
                 when (userData) {
                     is ProfileDataUiState.Error -> {
                         Toast.makeText(
@@ -71,5 +61,11 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // letting go of the resources to avoid memory leak.
+        binding = null
     }
 }

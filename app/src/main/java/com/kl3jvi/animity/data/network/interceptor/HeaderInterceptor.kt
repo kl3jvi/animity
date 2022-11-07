@@ -13,10 +13,9 @@ import okhttp3.Response
 import javax.inject.Inject
 import kotlin.coroutines.suspendCoroutine
 
-
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val localStorage: PersistenceRepository,
+    private val localStorage: PersistenceRepository
 ) : Interceptor {
 
     /**
@@ -26,7 +25,6 @@ class HeaderInterceptor @Inject constructor(
      * through.
      */
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
-
         /* Adding the header to the request. */
         val response = proceed(
             request().newBuilder()
@@ -35,7 +33,6 @@ class HeaderInterceptor @Inject constructor(
                 .addHeader("Content-Type", "application/json")
                 .build()
         )
-
 
         /* Checking if the response code is 401, if it is, it will get a new access token and refresh
         token and then proceed with the request. */
@@ -55,10 +52,8 @@ class HeaderInterceptor @Inject constructor(
                     }
                 }
 
-
                 /* A synchronization aid that allows one or more threads to wait until a set of
                 operations being performed in other threads completes. */
-
 
                 /* Adding the new access token to the header and then proceeding with the request. */
                 proceed(
@@ -69,9 +64,8 @@ class HeaderInterceptor @Inject constructor(
                         .build()
                 )
             }
-        } else response
-
+        } else {
+            response
+        }
     }
 }
-
-

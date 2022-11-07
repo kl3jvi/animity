@@ -11,8 +11,6 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
-import com.kl3jvi.animity.data.network.anime_service.YugenApiClient
-import com.kl3jvi.animity.data.network.anime_service.YugenService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
@@ -41,7 +39,7 @@ object NetworkModule {
     @Apollo
     fun provideOkHttpClient(
         localStorage: PersistenceRepository,
-        loginRepository: LoginRepository,
+        loginRepository: LoginRepository
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
@@ -110,18 +108,6 @@ object NetworkModule {
     ): GogoAnimeApiClient {
         return GogoAnimeApiClient(gogoAnimeService)
     }
-
-    @Singleton
-    @Provides
-    fun provideNineAnimeService(retrofit: Retrofit): YugenService {
-        return retrofit.create(YugenService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNineAnimeApiClient(
-        yugenService: YugenService
-    ): YugenApiClient = YugenApiClient(yugenService)
 
     @Provides
     @Singleton

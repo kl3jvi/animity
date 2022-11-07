@@ -23,7 +23,6 @@ class ProfileViewModel @Inject constructor(
     localStorage: PersistenceRepository
 ) : ViewModel() {
 
-
     val profileData = profileRepository
         .getProfileData(localStorage.aniListUserId?.toInt())
         .asResult()
@@ -40,7 +39,6 @@ class ProfileViewModel @Inject constructor(
         )
 
     fun clearStorage() = userRepository.clearStorage()
-
 }
 
 sealed interface ProfileDataUiState {
@@ -48,4 +46,3 @@ sealed interface ProfileDataUiState {
     object Loading : ProfileDataUiState
     data class Error(val exception: Throwable?) : ProfileDataUiState
 }
-

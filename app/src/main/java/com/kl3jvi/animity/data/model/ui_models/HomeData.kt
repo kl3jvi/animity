@@ -6,7 +6,6 @@ import android.os.Parcelable
 import com.kl3jvi.animity.type.*
 import com.kl3jvi.animity.utils.displayInDayDateTimeFormat
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 data class HomeData(
     val trendingAnime: List<AniListMedia> = emptyList(),
@@ -14,25 +13,6 @@ data class HomeData(
     val movies: List<AniListMedia> = emptyList(),
     val review: List<Review> = emptyList()
 )
-
-@Parcelize
-data class Review(
-    val id: Int = 0,
-    val userId: Int = 0,
-    val mediaId: Int = 0,
-    val mediaType: MediaType? = null,
-    val summary: String = "",
-    val body: String = "",
-    val rating: Int = 0,
-    val ratingAmount: Int = 0,
-    val score: Int = 0,
-    val private: Boolean = false,
-    val siteUrl: String = "",
-    val createdAt: Int = 0,
-    val updatedAt: Int = 0,
-    val user: User = User(),
-    val aniListMedia: AniListMedia = AniListMedia()
-) : Parcelable
 
 @Parcelize
 data class AniListMedia(
@@ -92,19 +72,6 @@ data class AniListMedia(
     }
 }
 
-@Parcelize
-data class MediaTitle(
-    val romaji: String = "",
-    val english: String = "",
-    val native: String = "",
-    val userPreferred: String = ""
-) : Parcelable
-
-@Parcelize
-data class Genre(
-    val name: String = ""
-) : Parcelable
-
 fun Genre.getHexColor(): String {
     return when (name) {
         "Action" -> "#24687B"
@@ -133,65 +100,3 @@ fun Genre.getHexColor(): String {
 fun String.toStateListColor(): ColorStateList {
     return ColorStateList.valueOf(Color.parseColor(this))
 }
-
-@Parcelize
-data class User(
-    val id: Int = 0,
-    val name: String = "",
-    val about: String = "",
-    val avatar: UserAvatar = UserAvatar(),
-    val bannerImage: String = "",
-    var isFollowing: Boolean = false,
-    val isFollower: Boolean = false,
-    val isBlocked: Boolean = false,
-    val mediaListOptions: @RawValue MediaListOptions = MediaListOptions(),
-    val favourites: @RawValue Favourites = Favourites(),
-    val statistics: @RawValue UserStatisticTypes = UserStatisticTypes(),
-    val unreadNotificationCount: Int = 0,
-    val siteUrl: String = "",
-    val donatorTier: Int = 0,
-    val donatorBadge: String = "",
-    val moderatorRoles: List<ModRole> = listOf()
-) : Parcelable
-
-@Parcelize
-data class UserAvatar(
-    val large: String = "",
-    val medium: String = ""
-) : Parcelable {
-    fun getImageUrl(): String {
-        return large
-    }
-}
-
-@Parcelize
-data class FuzzyDate(
-    val year: Int? = null,
-    val month: Int? = null,
-    val day: Int? = null
-) : Parcelable {
-    fun isNull(): Boolean {
-        return year == null || month == null || day == null
-    }
-
-    fun getDate(): String {
-        return if (!isNull()) {
-            "$year/$month/$day"
-        } else {
-            "Unknown"
-        }
-    }
-}
-
-@Parcelize
-data class MediaCoverImage(
-    val extraLarge: String = "",
-    val large: String = "",
-    val medium: String = ""
-) : Parcelable
-
-@Parcelize
-data class Episodes(
-    val title: String? = "",
-    val thumbnail: String? = ""
-) : Parcelable

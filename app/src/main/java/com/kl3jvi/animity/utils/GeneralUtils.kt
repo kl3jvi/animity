@@ -54,8 +54,10 @@ fun TextView.setMarkdownText(string: String) {
 
 fun Int?.or1() = this ?: 1
 
-fun dismissKeyboard(view: View) {
-    ViewCompat.getWindowInsetsController(view)?.hide(WindowInsetsCompat.Type.ime())
+fun dismissKeyboard(view: View?) {
+    view?.let {
+        ViewCompat.getWindowInsetsController(view)?.hide(WindowInsetsCompat.Type.ime())
+    }
 }
 
 /**

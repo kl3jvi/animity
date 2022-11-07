@@ -450,6 +450,23 @@ fragment HomeMedia on Media {
     }
 }
 
+query Notifications($page: Int) {
+    page:Page (page: $page, perPage: 30) {
+        notifications(type_in: AIRING, resetNotificationCount: false) {
+            ... on AiringNotification {
+                id,
+                episode,
+                contexts,
+                media {
+                    title {
+                        romaji,
+                        userPreferred
+                    }
+                }
+            }
+        }
+    }
+}
 mutation AnimeListEntryMutation(
     $id: Int,
     $mediaId: Int,
