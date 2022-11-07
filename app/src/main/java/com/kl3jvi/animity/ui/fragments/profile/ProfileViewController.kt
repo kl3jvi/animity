@@ -4,7 +4,6 @@ import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.kl3jvi.animity.CardAnimeBindingModel_
 import com.kl3jvi.animity.data.mapper.ProfileData
-import com.kl3jvi.animity.data.mapper.ProfileRow
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.noAnime
 import com.kl3jvi.animity.profileCard
@@ -15,7 +14,6 @@ import com.kl3jvi.animity.utils.navigateSafe
 
 fun EpoxyController.buildProfile(
     userData: ProfileData?,
-    animeCollectionResponse: List<ProfileRow>
 ) {
     profileCard {
         id(randomId())
@@ -24,8 +22,8 @@ fun EpoxyController.buildProfile(
             userData(it)
         }
     }
-    if (animeCollectionResponse.isNotEmpty()) {
-        animeCollectionResponse.map { profileRow ->
+    if (userData?.profileRow?.isNotEmpty() == true) {
+        userData.profileRow.map { profileRow ->
             title {
                 id(randomId())
                 title(profileRow.title)

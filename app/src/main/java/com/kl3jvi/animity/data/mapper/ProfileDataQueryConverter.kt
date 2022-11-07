@@ -3,26 +3,31 @@ package com.kl3jvi.animity.data.mapper
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.UserQuery
-import com.kl3jvi.animity.data.model.ui_models.*
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.model.ui_models.FuzzyDate
+import com.kl3jvi.animity.data.model.ui_models.Genre
+import com.kl3jvi.animity.data.model.ui_models.MediaCoverImage
+import com.kl3jvi.animity.data.model.ui_models.MediaTitle
+import com.kl3jvi.animity.data.model.ui_models.User
+import com.kl3jvi.animity.data.model.ui_models.UserAvatar
 
-fun ApolloResponse<UserQuery.Data>.convert(): ProfileData {
+fun ApolloResponse<UserQuery.Data>.convert(): User {
     val data = this.data
-    var profileData = ProfileData()
+    var user = User()
     if (data?.user != null) {
-        profileData = ProfileData(
-            User(
-                data.user.id,
-                data.user.name,
-                data.user.about.orEmpty(),
-                UserAvatar(
-                    data.user.avatar?.large.orEmpty(),
-                    data.user.avatar?.medium.orEmpty()
-                ),
-                data.user.bannerImage.orEmpty()
-            )
+        user = User(
+            data.user.id,
+            data.user.name,
+            data.user.about.orEmpty(),
+            UserAvatar(
+                data.user.avatar?.large.orEmpty(),
+                data.user.avatar?.medium.orEmpty()
+            ),
+            data.user.bannerImage.orEmpty()
         )
+
     }
-    return profileData
+    return user
 }
 
 fun ApolloResponse<AnimeListCollectionQuery.Data>.convert(): List<ProfileRow> {
@@ -68,10 +73,10 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia>
 
 data class ProfileData(
     val userData: User = User(),
-    val profileRow: List<ProfileRow> = listOf()
+    val profileRow: List<ProfileRow> = emptyList()
 )
 
 data class ProfileRow(
     val title: String = "",
-    val anime: List<AniListMedia> = listOf()
+    val anime: List<AniListMedia> = emptyList()
 )

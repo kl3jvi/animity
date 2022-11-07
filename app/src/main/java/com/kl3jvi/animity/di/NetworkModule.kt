@@ -42,7 +42,6 @@ object NetworkModule {
     fun provideOkHttpClient(
         localStorage: PersistenceRepository,
         loginRepository: LoginRepository,
-        chuckerInterceptor: ChuckerInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor(loginRepository, localStorage))

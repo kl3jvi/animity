@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
@@ -33,7 +33,6 @@ class ProfileFragment : Fragment() {
         .run { root }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createFragmentMenu(menuLayout = R.menu.profile_menu) {
@@ -47,39 +46,28 @@ class ProfileFragment : Fragment() {
 
                 else -> false
             }
+
         }
+        getProfileData()
     }
 
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->
-            collectFlow(viewModel.animeList) { animeCollectionResponse ->
-                val hasNoData = animeCollectionResponse.isEmpty()
-                binding.progressBar.isVisible = hasNoData
-                binding.profileRv.isVisible = !hasNoData
-                binding.profileRv.withModels { buildProfile(userData, animeCollectionResponse) }
+            when (userData) {
+                is ProfileDataUiState.Error -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "${userData.exception?.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                ProfileDataUiState.Loading -> {}
+
+                is ProfileDataUiState.Success -> {
+                    binding.profileRv.withModels { buildProfile(userData = userData.data) }
+                }
             }
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-//        if (requireActivity() is MainActivity) {
-//            (activity as MainActivity?)?.showBottomNavBar()
-//        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        handleNetworkChanges()
-    }
-
-    private fun handleNetworkChanges() {
-        requireActivity().isConnectedToInternet(viewLifecycleOwner) { isConnected ->
-            if (isConnected) getProfileData()
-            binding.noInternetResult.noInternet.isVisible = !isConnected
-            binding.profileRv.isVisible = isConnected
-        }
-    }
-
-
 }
