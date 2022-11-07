@@ -53,19 +53,21 @@ class ProfileFragment : Fragment() {
 
     private fun getProfileData() {
         collectFlow(viewModel.profileData) { userData ->
-            when (userData) {
-                is ProfileDataUiState.Error -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "${userData.exception?.localizedMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+            binding.profileRv.withModels {
+                when (userData) {
+                    is ProfileDataUiState.Error -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "${userData.exception?.localizedMessage}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
 
-                ProfileDataUiState.Loading -> {}
+                    ProfileDataUiState.Loading -> {}
 
-                is ProfileDataUiState.Success -> {
-                    binding.profileRv.withModels { buildProfile(userData = userData.data) }
+                    is ProfileDataUiState.Success -> {
+                        buildProfile(userData = userData.data)
+                    }
                 }
             }
         }

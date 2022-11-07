@@ -71,7 +71,11 @@ class MainActivity : AppCompatActivity() {
             .animate()
             .translationY(binding.navView.height.toFloat())
             .setInterpolator(AccelerateInterpolator())
-            .duration = 400
+            .setInterpolator {
+                if (it == 1F)
+                    binding.navView.isVisible = false
+                it
+            }.duration = 400
     }
 
     private fun showBottomNavBar() {
@@ -79,7 +83,12 @@ class MainActivity : AppCompatActivity() {
             .animate()
             .translationY(0f)
             .setInterpolator(DecelerateInterpolator())
-            .duration = 400
+            .setInterpolator {
+                if (it == 0F)
+                    binding.navView.isVisible = true
+                it
+            }.duration = 400
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

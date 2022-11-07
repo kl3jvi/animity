@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collectFlow
-import com.kl3jvi.animity.utils.createFragmentMenu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -34,15 +31,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        createFragmentMenu(R.menu.settings_menu) { item ->
-            when (item.itemId) {
-                R.id.action_settings -> {
-                    findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToSettingsFragment()); true
-                }
-
-                else -> false
-            }
-        }
         fetchHomeData()
     }
 
