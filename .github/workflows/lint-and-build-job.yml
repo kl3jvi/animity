@@ -1,11 +1,6 @@
 name: Build & upload to Firebase App Distribution
 
-on:
-  push:
-    paths:
-      - .github/workflows/lint-and-build-job.yml
-      - 'src/**/*.kt'
-      - '**.kts'
+on: [push]
 
 jobs:
   ktlint:
