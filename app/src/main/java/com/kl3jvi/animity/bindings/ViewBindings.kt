@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.bindings
 
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -74,4 +76,12 @@ fun TextView.setHtml(htmlString: String) {
     } else {
         Html.fromHtml(htmlString)
     }
+}
+
+
+@BindingAdapter("animatedProgress")
+fun ContentLoadingProgressBar.setProgress(progress: Int) {
+    ObjectAnimator.ofInt(this, "progress", progress)
+        .setDuration(400)
+        .start()
 }

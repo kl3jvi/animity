@@ -37,6 +37,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.runIfFragmentIsAttached
 import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,7 +61,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private val animeDetails get() = args.animeDetails
     private var binding: FragmentDetailsBinding? = null
 
-    private lateinit var menu: Menu
+    private lateinit var bookMarkMenuItem: MenuItem
     private lateinit var title: String
     private var check = false
 
@@ -170,19 +171,19 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
-        this.menu = menu
-        observeDatabase()
+        bookMarkMenuItem = menu[0]
+        updateFavoriteStatus()
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     /**
      * It observes the database for changes and updates the menu icon accordingly.
      */
-    private fun observeDatabase() {
+    private fun updateFavoriteStatus() = runIfFragmentIsAttached {
         collectFlow(favoritesViewModel.favoritesList) { mediaList ->
             if (mediaList is FavoritesUiState.Success) {
                 check = mediaList.data.any { media -> media.idAniList == animeDetails.idAniList }
-                menu[0].setIcon(
+                bookMarkMenuItem.setIcon(
                     if (!check) {
                         R.drawable.ic_favorite_uncomplete
                     } else {
@@ -235,73 +236,74 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun fetchEpisodeList() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.episodeList.flatMapMerge(DEFAULT_CONCURRENCY) { episodeUiState ->
-                    if (episodeUiState is EpisodeListUiState.Success) {
-                        binding?.detailsProgress?.visibility = GONE
-                        episodeUiState.data // This is a flow of episodes we are merging with the main flow above to collect only once
-                    } else {
-                        emptyFlow()
-                    }
-                }.collect { listOfEpisodeModel ->
-                    binding?.episodeListRecycler?.withModels {
-                        listOfEpisodeModel.forEachIndexed { index, episodeModel ->
-                            episodeLarge {
-                                id(episodeModel.episodeNumber)
-                                clickListener { _ ->
-                                    requireContext().launchActivity<PlayerActivity> {
-                                        putExtra(Constants.EPISODE_DETAILS, episodeModel)
-                                        putExtra(
-                                            Constants.ANIME_TITLE,
-                                            animeDetails.title.userPreferred
-                                        )
-                                        putExtra(
-                                            Constants.MAL_ID,
-                                            animeDetails.idMal
-                                        )
+                runIfFragmentIsAttached {
+                    viewModel.episodeList.flatMapMerge(DEFAULT_CONCURRENCY) { episodeUiState ->
+                        if (episodeUiState is EpisodeListUiState.Success) {
+                            binding?.detailsProgress?.visibility = GONE
+                            episodeUiState.data // This is a flow of episodes we are merging with the main flow above to collect only once
+                        } else {
+                            emptyFlow()
+                        }
+                    }.collect { listOfEpisodeModel ->
+                        binding?.episodeListRecycler?.withModels {
+                            listOfEpisodeModel.forEachIndexed { index, episodeModel ->
+                                episodeLarge {
+                                    id(episodeModel.episodeNumber)
+                                    clickListener { _ ->
+                                        requireContext().launchActivity<PlayerActivity> {
+                                            putExtra(Constants.EPISODE_DETAILS, episodeModel)
+                                            putExtra(
+                                                Constants.ANIME_TITLE,
+                                                animeDetails.title.userPreferred
+                                            )
+                                            putExtra(
+                                                Constants.MAL_ID,
+                                                animeDetails.idMal
+                                            )
+                                        }
                                     }
-                                }
-                                showTitle(episodeModel.episodeName.isNotEmpty())
-                                isFiller(episodeModel.isFiller)
-                                imageUrl(
-                                    when {
-                                        animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
-                                            animeDetails.bannerImage.ifEmpty {
+                                    showTitle(episodeModel.episodeName.isNotEmpty())
+                                    isFiller(episodeModel.isFiller)
+                                    imageUrl(
+                                        when {
+                                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
+                                                animeDetails.bannerImage.ifEmpty {
+                                                    animeDetails.coverImage.large
+                                                }
+                                            }
+
+                                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
+                                                animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
+                                            }
+
+                                            else -> {
                                                 animeDetails.coverImage.large
                                             }
                                         }
-
-                                        animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
-                                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
-                                        }
-
-                                        else -> {
-                                            animeDetails.coverImage.large
-                                        }
-                                    }
-                                )
-                                episodeInfo(episodeModel)
+                                    )
+                                    episodeInfo(episodeModel)
+                                }
                             }
                         }
-                    }
-
-                    binding?.resultEpisodesText?.text =
-                        requireContext().getString(
-                            R.string.total_episodes,
-                            listOfEpisodeModel.size.toString()
-                        )
-                    if (listOfEpisodeModel.isNotEmpty()) {
-                        binding?.resultPlayMovie?.setOnClickListener {
-                            requireActivity().launchActivity<PlayerActivity> {
-                                putExtra(
-                                    Constants.EPISODE_DETAILS,
-                                    listOfEpisodeModel.first()
-                                )
-                                putExtra(Constants.ANIME_TITLE, title)
+                        binding?.resultEpisodesText?.text =
+                            requireContext().getString(
+                                R.string.total_episodes,
+                                listOfEpisodeModel.size.toString()
+                            )
+                        if (listOfEpisodeModel.isNotEmpty()) {
+                            binding?.resultPlayMovie?.setOnClickListener {
+                                requireActivity().launchActivity<PlayerActivity> {
+                                    putExtra(
+                                        Constants.EPISODE_DETAILS,
+                                        listOfEpisodeModel.first()
+                                    )
+                                    putExtra(Constants.ANIME_TITLE, title)
+                                }
+                                binding?.resultPlayMovie?.visibility = VISIBLE
                             }
-                            binding?.resultPlayMovie?.visibility = VISIBLE
+                        } else {
+                            binding?.resultPlayMovie?.visibility = GONE
                         }
-                    } else {
-                        binding?.resultPlayMovie?.visibility = GONE
                     }
                 }
             }
@@ -336,11 +338,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 check = if (!check) {
                     /* Setting the icon of the menu item at index 0 to the icon with the id
                     `R.drawable.ic_favorite_complete`. */
-                    menu[0].setIcon(R.drawable.ic_favorite_complete)
+                    bookMarkMenuItem.setIcon(R.drawable.ic_favorite_complete)
                     showSnack(binding?.root, "Anime added to Favorites")
                     true
                 } else {
-                    menu[0].setIcon(R.drawable.ic_favorite_uncomplete)
+                    bookMarkMenuItem.setIcon(R.drawable.ic_favorite_uncomplete)
                     showSnack(binding?.root, "Anime removed from Favorites")
                     false
                 }

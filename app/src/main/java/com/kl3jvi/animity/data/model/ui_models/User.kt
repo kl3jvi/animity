@@ -1,9 +1,9 @@
 package com.kl3jvi.animity.data.model.ui_models
 
 import android.os.Parcelable
+import com.kl3jvi.animity.type.*
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import com.kl3jvi.animity.type.*
 
 @Parcelize
 data class User(

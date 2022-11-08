@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -53,18 +52,7 @@ class DetailsViewModel @Inject constructor(
                             endEpisode = animeInfo.endEpisode,
                             alias = animeInfo.alias,
                             malId = media.idMal.or1()
-                        ).combine(
-                            detailsRepository.getEpisodesPercentage(media.idMal.or1())
-                        ) { networkEpisodeList, episodeListFromDataBase ->
-                            networkEpisodeList.map { episode ->
-                                val contentEpisode =
-                                    episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
-                                if (contentEpisode != null) {
-                                    episode.percentage = contentEpisode.getWatchedPercentage()
-                                }
-                                episode
-                            }
-                        }
+                        )
                     }.catch { e -> logError(e) }
 
                     EpisodeListUiState.Success(episodeListFlow)

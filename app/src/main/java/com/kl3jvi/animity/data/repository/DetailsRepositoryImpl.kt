@@ -2,12 +2,18 @@ package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
+import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,9 +48,9 @@ class DetailsRepositoryImpl @Inject constructor(
         endEpisode: String,
         alias: String,
         malId: Int
-    ) = flow {
-        val response = withContext(ioDispatcher) {
-            parser.fetchEpisodeList(
+    ): Flow<List<EpisodeModel>> {
+        return flow {
+            val response = parser.fetchEpisodeList(
                 apiClient.fetchEpisodeList(
                     header = header,
                     id = id,
@@ -52,16 +58,11 @@ class DetailsRepositoryImpl @Inject constructor(
                     alias = alias
                 ).string()
             ).reversed()
-        }
-        emit(response)
-    }.flatMapLatest { list ->
-        flow {
-            val episodesWithTitle = getEpisodeTitles(malId).first()
-            list.forEachIndexed { index, episodeModel ->
-                if (episodeModel.episodeNumber.split(" ").last() ==
-                    episodesWithTitle.getOrNull(
-                            index
-                        )?.number
+            emit(response)
+        }.combine(getEpisodeTitles(malId)) { episodesWithoutTitles, episodesWithTitle -> // In this combine we add title to the episodes
+            episodesWithoutTitles.forEachIndexed { index, episodeModel ->
+                if (episodeModel.episodeNumber.split(" ")
+                        .last() == episodesWithTitle.getOrNull(index)?.number
                 ) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
@@ -69,16 +70,26 @@ class DetailsRepositoryImpl @Inject constructor(
                     episodeModel.episodeName = ""
                 }
             }
-            emit(list)
+            episodesWithoutTitles
         }
+            .combine(getEpisodesPercentage(malId)) { networkEpisodeList, episodeListFromDataBase -> // In this combine we add watched percentage to the episodes
+                networkEpisodeList.map { episode ->
+                    val contentEpisode =
+                        episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
+                    if (contentEpisode != null) {
+                        episode.percentage = contentEpisode.getWatchedPercentage()
+                    }
+                    episode
+                }
+            }.flowOn(ioDispatcher)
     }
 
-    override fun getEpisodeTitles(id: Int) = flow {
+    private fun getEpisodeTitles(id: Int) = flow {
         val response = apiClient.getEpisodeTitles(id).episodes
         emit(response)
     }.catch { emit(emptyList()) }.flowOn(ioDispatcher)
 
-    override fun getEpisodesPercentage(malId: Int): Flow<List<EpisodeEntity>> {
+    private fun getEpisodesPercentage(malId: Int): Flow<List<EpisodeEntity>> {
         return episodeDao.getEpisodesByAnime(malId = malId)
     }
 }

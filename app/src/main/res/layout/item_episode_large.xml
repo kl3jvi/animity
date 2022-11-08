@@ -18,9 +18,11 @@
         <variable
             name="imageUrl"
             type="String" />
+
         <variable
             name="showTitle"
             type="Boolean" />
+
         <variable
             name="isFiller"
             type="Boolean" />
@@ -36,11 +38,11 @@
         android:id="@+id/episode_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:isFiller="@{isFiller}"
         android:layout_marginBottom="10dp"
         android:foreground="@drawable/outline_drawable"
         android:nextFocusLeft="@id/episode_poster"
-        app:cardCornerRadius="@dimen/roundedImageRadius">
+        app:cardCornerRadius="@dimen/roundedImageRadius"
+        app:isFiller="@{isFiller}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,11 +81,11 @@
                     <androidx.core.widget.ContentLoadingProgressBar
                         android:id="@+id/episode_progress"
                         style="@android:style/Widget.Material.ProgressBar.Horizontal"
+                        animatedProgress="@{episodeInfo.percentage}"
                         android:layout_width="match_parent"
                         android:layout_height="5dp"
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="-1.5dp"
-                        android:progress="@{episodeInfo.percentage}"
                         android:progressBackgroundTint="?attr/colorPrimary"
                         android:progressTint="@color/white"
                         tools:progress="50" />
@@ -110,23 +112,23 @@
                         android:id="@+id/episode_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="@{showTitle}"
                         android:text="@{String.valueOf(episodeInfo.episodeName)}"
                         android:textColor="@color/grayTextColor"
+                        android:visibility="@{showTitle}"
                         tools:text="Rated: 8.8" />
                 </LinearLayout>
 
 
-
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:text="@string/filler"
                 android:textColor="@color/white"
-                android:visibility="@{isFiller}"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="@{isFiller}" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -2,6 +2,7 @@ package com.kl3jvi.animity.utils
 
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -26,4 +27,8 @@ fun View.canNavigate(): Boolean {
         Log.d("NAVIGATION", "May not navigate: current destination is not the current fragment.")
         false
     }
+}
+
+internal inline fun Fragment.runIfFragmentIsAttached(block: () -> Unit) {
+    context?.let { block() }
 }

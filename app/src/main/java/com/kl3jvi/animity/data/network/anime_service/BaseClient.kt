@@ -1,5 +1,5 @@
 package com.kl3jvi.animity.data.network.anime_service
-
+//
 // abstract class BaseClient {
 //    abstract suspend fun getGogoUrlFromAniListId(id: Int): DetailedAnimeInfo
 //    abstract suspend fun getEncryptionKeys(): GogoAnimeKeys
