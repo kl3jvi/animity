@@ -15,9 +15,9 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:scrimVisibleHeightTrigger="0dp"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimVisibleHeightTrigger="0dp"
             app:toolbarId="@+id/toolbar">
 
             <LinearLayout
@@ -188,8 +188,6 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
-
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -203,9 +201,8 @@
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="5dp"
                     android:paddingEnd="@dimen/dp_20"
-
                     android:text="@string/add_to_list"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:icon="@drawable/ic_down_arrow"
                     tools:visibility="visible" />
 

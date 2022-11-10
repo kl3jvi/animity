@@ -24,6 +24,7 @@ android {
             keyAlias 'key0'
         }
     }
+
     compileSdk 33
     defaultConfig {
         namespace "com.kl3jvi.animity"

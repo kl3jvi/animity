@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kl3jvi.animity.data.mapper.convert
@@ -7,9 +8,13 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class SearchAniListPagingSource(
     private val apiClient: AniListGraphQlClient,
@@ -40,12 +45,19 @@ class SearchAniListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            var listOfAniListMedia = listOf<AniListMedia>()
-            withContext(Dispatchers.IO) {
-                apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
-                    .distinctUntilChanged()
-                    .collect { list -> list?.let { listOfAniListMedia = it } }
+            val listOfAniListMedia = withContext(Dispatchers.IO) {
+                suspendCoroutine { continuation ->
+                    this.launch {
+                        apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
+                            .distinctUntilChanged()
+                            .collectLatest {
+                                Log.e("List", it.toString())
+                                continuation.resume(it ?: emptyList())
+                            }
+                    }
+                }
             }
+
             LoadResult.Page(
                 data = listOfAniListMedia,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
