@@ -69,6 +69,7 @@ fun HomeMedia?.convert(): AniListMedia {
         title = MediaTitle(userPreferred = this?.title?.userPreferred.orEmpty()),
         type = this?.type,
         format = this?.format,
+        isFavourite = this?.isFavourite?:false,
         streamingEpisode = this?.streamingEpisodes?.mapNotNull { it.convert() },
         nextAiringEpisode = this?.nextAiringEpisode?.airingAt,
         status = this?.status,

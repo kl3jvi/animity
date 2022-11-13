@@ -8,7 +8,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
-    id "com.apollographql.apollo3" version("3.5.0")
+    id "com.apollographql.apollo3" version("3.7.0")
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
     id "org.jlleitschuh.gradle.ktlint" version("11.0.0")
 }
@@ -217,7 +217,7 @@ dependencies {
     implementation "androidx.browser:browser:$inAppBrowserVersion"
 
     // Apollo GraphQl
-    def apolloVersion = '3.5.0'
+    def apolloVersion = '3.7.0'
     implementation "com.apollographql.apollo3:apollo-runtime:$apolloVersion"
 
     // DataStore
@@ -246,9 +246,8 @@ dependencies {
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10'
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.9.1"
 
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
@@ -256,13 +255,13 @@ dependencies {
 
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
-    testImplementation 'app.cash.turbine:turbine:0.9.0'
+    testImplementation 'app.cash.turbine:turbine:0.12.1'
     testImplementation "junit:junit:4.13.2"
-    testImplementation "androidx.test:core:1.4.0"
-    testImplementation 'org.mockito:mockito-core:4.7.0'
+    testImplementation "androidx.test:core:1.5.0"
+    testImplementation 'org.mockito:mockito-core:4.8.1'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
-    testImplementation 'io.mockk:mockk:1.12.7'
+    testImplementation 'io.mockk:mockk:1.13.2'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
-    testImplementation('com.apollographql.apollo3:apollo-testing-support:3.5.0')
+    testImplementation('com.apollographql.apollo3:apollo-testing-support:3.7.0')
 
 }

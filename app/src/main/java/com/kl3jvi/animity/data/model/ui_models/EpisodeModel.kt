@@ -14,7 +14,11 @@ data class EpisodeModel(
     var episodeType: String = "",
     var percentage: Int = 0,
     var isFiller: Boolean = false
-) : Parcelable
+) : Parcelable{
+    fun getEpisodeNumberOnly(): String {
+        return episodeNumber.split(" ").last()
+    }
+}
 
 data class EpisodeWithTitle(
     @SerializedName("episodes")

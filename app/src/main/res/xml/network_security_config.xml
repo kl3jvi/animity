@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">gogoanime.gg</domain>
+        <domain includeSubdomains="true">gogoanime.ar</domain>
         <domain includeSubdomains="true">gogoanime.lu</domain>
         <domain includeSubdomains="true">gogoanime.tel</domain>
         <domain includeSubdomains="true">ajax.gogocdn.net</domain>

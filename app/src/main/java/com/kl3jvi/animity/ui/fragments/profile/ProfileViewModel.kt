@@ -2,7 +2,7 @@ package com.kl3jvi.animity.ui.fragments.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kl3jvi.animity.data.mapper.ProfileData
+import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.domain.repositories.ProfileRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
@@ -23,8 +23,7 @@ class ProfileViewModel @Inject constructor(
     localStorage: PersistenceRepository
 ) : ViewModel() {
 
-    val profileData = profileRepository
-        .getProfileData(localStorage.aniListUserId?.toInt())
+    val profileData = profileRepository.getProfileData(localStorage.aniListUserId?.toInt())
         .asResult()
         .map {
             when (it) {

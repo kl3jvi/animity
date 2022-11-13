@@ -33,10 +33,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         binding?.root,
                         result.exception?.message ?: "Error occurred"
                     )
-
-                    HomeDataUiState.Loading -> {
-                    }
-
+                    HomeDataUiState.Loading -> {}
                     is HomeDataUiState.Success -> {
                         buildHome(
                             result.data,

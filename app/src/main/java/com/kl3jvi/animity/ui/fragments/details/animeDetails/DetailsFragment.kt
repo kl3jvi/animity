@@ -30,15 +30,10 @@ import com.kl3jvi.animity.data.model.ui_models.toStateListColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.fragments.favorites.FavoritesUiState
 import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
-import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.collectFlow
-import com.kl3jvi.animity.utils.launchActivity
-import com.kl3jvi.animity.utils.runIfFragmentIsAttached
-import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -48,8 +43,7 @@ import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.launch
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -118,7 +112,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 releaseDate.visibility = VISIBLE
                 status.visibility = VISIBLE
                 type.visibility = VISIBLE
-                detailsProgress.visibility = GONE
 
                 resultEpisodesText.visibility = VISIBLE
                 resultPlayMovie.visibility = GONE
@@ -180,20 +173,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
      * It observes the database for changes and updates the menu icon accordingly.
      */
     private fun updateFavoriteStatus() = runIfFragmentIsAttached {
-        collectFlow(favoritesViewModel.favoritesList) { mediaList ->
-            if (mediaList is FavoritesUiState.Success) {
-                check = mediaList.data.any { media -> media.idAniList == animeDetails.idAniList }
-                bookMarkMenuItem.setIcon(
-                    if (!check) {
-                        R.drawable.ic_favorite_uncomplete
-                    } else {
-                        R.drawable.ic_favorite_complete
-                    }
-                )
+        check = animeDetails.isFavourite
+        bookMarkMenuItem.setIcon(
+            if (!check) {
+                R.drawable.ic_favorite_uncomplete
             } else {
-                check = false
+                R.drawable.ic_favorite_complete
             }
-        }
+        )
         binding?.setType?.setOnClickListener { v ->
             showMenu(v, R.menu.popup_menu)
         }
@@ -239,7 +226,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 runIfFragmentIsAttached {
                     viewModel.episodeList.flatMapMerge(DEFAULT_CONCURRENCY) { episodeUiState ->
                         if (episodeUiState is EpisodeListUiState.Success) {
-                            binding?.detailsProgress?.visibility = GONE
                             episodeUiState.data // This is a flow of episodes we are merging with the main flow above to collect only once
                         } else {
                             emptyFlow()

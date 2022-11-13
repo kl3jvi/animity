@@ -37,22 +37,3 @@ inline fun <reified T : Any> Context.launchActivity(
 inline fun <reified T : Any> newIntent(context: Context): Intent =
     Intent(context, T::class.java)
 
-fun Fragment.createFragmentMenu(
-    @MenuRes menuLayout: Int,
-    selectedItem: (menuItem: MenuItem) -> Boolean
-) {
-    val menuHost = requireActivity()
-    menuHost.addMenuProvider(
-        object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(menuLayout, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return selectedItem(menuItem)
-            }
-        },
-        viewLifecycleOwner,
-        Lifecycle.State.RESUMED
-    )
-}

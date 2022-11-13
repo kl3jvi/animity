@@ -54,7 +54,6 @@ class DetailsViewModel @Inject constructor(
                             malId = media.idMal.or1()
                         )
                     }.catch { e -> logError(e) }
-
                     EpisodeListUiState.Success(episodeListFlow)
                 }
             }

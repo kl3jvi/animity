@@ -3,8 +3,8 @@ package com.kl3jvi.animity.ui.fragments.profile
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.kl3jvi.animity.CardAnimeBindingModel_
-import com.kl3jvi.animity.data.mapper.ProfileData
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.noAnime
 import com.kl3jvi.animity.profileCard
 import com.kl3jvi.animity.title
@@ -40,6 +40,7 @@ fun EpoxyController.buildProfile(
     }
 }
 
+/* A function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
 fun List<AniListMedia>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
     return map { media ->
         CardAnimeBindingModel_()

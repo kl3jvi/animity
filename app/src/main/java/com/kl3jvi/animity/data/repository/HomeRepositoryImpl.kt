@@ -35,7 +35,7 @@ class HomeRepositoryImpl @Inject constructor(
             .setConstraints(constraints)
             .build()
 
-        workManager.enqueue(work)
+//        workManager.enqueue(work)
     }
 
     override fun getHomeData() =

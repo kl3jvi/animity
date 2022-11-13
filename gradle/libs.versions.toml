@@ -1,0 +1,357 @@
+[versions]
+androidx-activity = "1.5.1"
+androidx-annotation = "1.3.0"
+androidx-appcompat = "1.5.1"
+androidx-arch-core = "2.1.0"
+androidx-databinding = "7.3.0"
+androidx-emoji2 = "1.2.0"
+androidx-fragment = "1.5.4"
+androidx-hilt = "1.0.0"
+androidx-legacy = "1.0.0"
+androidx-paging = "3.1.1"
+androidx-palette = "1.0.0"
+androidx-preference = "1.2.0"
+androidx-room = "2.4.3"
+androidx-savedstate = "1.2.0"
+androidx-sqlite = "2.2.0"
+androidx-vectordrawable = "1.1.0"
+androidx-work = "2.7.1"
+com-apollographql-apollo3 = "3.5.0"
+com-benasher44 = "0.3.1"
+com-github-bumptech-glide = "4.13.2"
+com-github-chuckerteam-chucker = "3.5.2"
+com-google-android-exoplayer = "2.18.1"
+com-squareup-leakcanary = "2.9.1"
+com-squareup-okio = "3.1.0"
+com-squareup-retrofit2 = "2.9.0"
+io-coil-kt = "2.1.0"
+io-getstream = "1.0.6"
+org-jetbrains-kotlin = "1.7.10"
+org-jetbrains-kotlinx = "1.6.4"
+
+[libraries]
+androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
+androidx-activity-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
+androidx-annotation-annotation-experimental = { module = "androidx.annotation:annotation-experimental", version.ref = "androidx-annotation" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-appcompat-appcompat-resources = { module = "androidx.appcompat:appcompat-resources", version.ref = "androidx-appcompat" }
+androidx-arch-core-core-common = { module = "androidx.arch.core:core-common", version.ref = "androidx-arch-core" }
+androidx-arch-core-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
+androidx-asynclayoutinflater = "androidx.asynclayoutinflater:asynclayoutinflater:1.0.0"
+androidx-browser = "androidx.browser:browser:1.4.0"
+androidx-cardview = "androidx.cardview:cardview:1.0.0"
+androidx-collection = "androidx.collection:collection:1.2.0"
+androidx-collection-collection-ktx = "androidx.collection:collection-ktx:1.1.0"
+androidx-concurrent-concurrent-futures = "androidx.concurrent:concurrent-futures:1.0.0"
+androidx-constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
+androidx-constraintlayout-constraintlayout-core = "androidx.constraintlayout:constraintlayout-core:1.0.4"
+androidx-coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
+androidx-core = "androidx.core:core:1.9.0"
+androidx-core-core-ktx = "androidx.core:core-ktx:1.9.0"
+androidx-core-core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
+androidx-cursoradapter = "androidx.cursoradapter:cursoradapter:1.0.0"
+androidx-customview = "androidx.customview:customview:1.1.0"
+androidx-databinding-databinding-adapters = { module = "androidx.databinding:databinding-adapters", version.ref = "androidx-databinding" }
+androidx-databinding-databinding-common = { module = "androidx.databinding:databinding-common", version.ref = "androidx-databinding" }
+androidx-databinding-databinding-compiler = { module = "androidx.databinding:databinding-compiler", version.ref = "androidx-databinding" }
+androidx-databinding-databinding-ktx = { module = "androidx.databinding:databinding-ktx", version.ref = "androidx-databinding" }
+androidx-databinding-databinding-runtime = { module = "androidx.databinding:databinding-runtime", version.ref = "androidx-databinding" }
+androidx-databinding-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "androidx-databinding" }
+androidx-documentfile = "androidx.documentfile:documentfile:1.0.0"
+androidx-drawerlayout = "androidx.drawerlayout:drawerlayout:1.1.1"
+androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
+androidx-emoji2 = { module = "androidx.emoji2:emoji2", version.ref = "androidx-emoji2" }
+androidx-emoji2-emoji2-views-helper = { module = "androidx.emoji2:emoji2-views-helper", version.ref = "androidx-emoji2" }
+androidx-exifinterface = "androidx.exifinterface:exifinterface:1.3.3"
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
+androidx-fragment-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
+androidx-hilt-hilt-common = { module = "androidx.hilt:hilt-common", version.ref = "androidx-hilt" }
+androidx-hilt-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidx-hilt" }
+androidx-hilt-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "androidx-hilt" }
+androidx-interpolator = "androidx.interpolator:interpolator:1.0.0"
+androidx-legacy-legacy-support-core-ui = { module = "androidx.legacy:legacy-support-core-ui", version.ref = "androidx-legacy" }
+androidx-legacy-legacy-support-core-utils = { module = "androidx.legacy:legacy-support-core-utils", version.ref = "androidx-legacy" }
+androidx-legacy-legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version.ref = "androidx-legacy" }
+androidx-lifecycle-lifecycle-common = "androidx.lifecycle:lifecycle-common:2.5.1"
+androidx-lifecycle-lifecycle-livedata = "androidx.lifecycle:lifecycle-livedata:2.5.1"
+androidx-lifecycle-lifecycle-livedata-core = "androidx.lifecycle:lifecycle-livedata-core:2.5.1"
+androidx-lifecycle-lifecycle-livedata-core-ktx = "androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1"
+androidx-lifecycle-lifecycle-livedata-ktx = "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+androidx-lifecycle-lifecycle-process = "androidx.lifecycle:lifecycle-process:2.4.1"
+androidx-lifecycle-lifecycle-runtime = "androidx.lifecycle:lifecycle-runtime:2.5.1"
+androidx-lifecycle-lifecycle-runtime-ktx = "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+androidx-lifecycle-lifecycle-service = "androidx.lifecycle:lifecycle-service:2.4.0"
+androidx-lifecycle-lifecycle-viewmodel = "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
+androidx-lifecycle-lifecycle-viewmodel-ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+androidx-lifecycle-lifecycle-viewmodel-savedstate = "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1"
+androidx-loader = "androidx.loader:loader:1.0.0"
+androidx-localbroadcastmanager = "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
+androidx-media = "androidx.media:media:1.4.3"
+androidx-mediarouter = "androidx.mediarouter:mediarouter:1.2.2"
+androidx-navigation-navigation-common = "androidx.navigation:navigation-common:2.5.3"
+androidx-navigation-navigation-common-ktx = "androidx.navigation:navigation-common-ktx:2.5.3"
+androidx-navigation-navigation-fragment = "androidx.navigation:navigation-fragment:2.5.3"
+androidx-navigation-navigation-fragment-ktx = "androidx.navigation:navigation-fragment-ktx:2.5.3"
+androidx-navigation-navigation-runtime = "androidx.navigation:navigation-runtime:2.5.3"
+androidx-navigation-navigation-runtime-ktx = "androidx.navigation:navigation-runtime-ktx:2.5.3"
+androidx-navigation-navigation-safe-args-gradle-plugin = "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1"
+androidx-navigation-navigation-ui = "androidx.navigation:navigation-ui:2.5.3"
+androidx-navigation-navigation-ui-ktx = "androidx.navigation:navigation-ui-ktx:2.5.3"
+androidx-paging-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
+androidx-paging-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
+androidx-paging-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
+androidx-paging-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "androidx-paging" }
+androidx-palette = { module = "androidx.palette:palette", version.ref = "androidx-palette" }
+androidx-palette-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "androidx-palette" }
+androidx-preference = { module = "androidx.preference:preference", version.ref = "androidx-preference" }
+androidx-preference-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
+androidx-print = "androidx.print:print:1.0.0"
+androidx-recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
+androidx-resourceinspection-resourceinspection-annotation = "androidx.resourceinspection:resourceinspection-annotation:1.0.1"
+androidx-room-room-common = { module = "androidx.room:room-common", version.ref = "androidx-room" }
+androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+androidx-room-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
+androidx-room-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
+androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
+androidx-savedstate-savedstate-ktx = { module = "androidx.savedstate:savedstate-ktx", version.ref = "androidx-savedstate" }
+androidx-slidingpanelayout = "androidx.slidingpanelayout:slidingpanelayout:1.2.0"
+androidx-sqlite = { module = "androidx.sqlite:sqlite", version.ref = "androidx-sqlite" }
+androidx-sqlite-sqlite-framework = { module = "androidx.sqlite:sqlite-framework", version.ref = "androidx-sqlite" }
+androidx-startup-startup-runtime = "androidx.startup:startup-runtime:1.1.1"
+androidx-swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+androidx-test-core = "androidx.test:core:1.5.0"
+androidx-tracing = "androidx.tracing:tracing:1.0.0"
+androidx-transition = "androidx.transition:transition:1.4.1"
+androidx-vectordrawable = { module = "androidx.vectordrawable:vectordrawable", version.ref = "androidx-vectordrawable" }
+androidx-vectordrawable-vectordrawable-animated = { module = "androidx.vectordrawable:vectordrawable-animated", version.ref = "androidx-vectordrawable" }
+androidx-versionedparcelable = "androidx.versionedparcelable:versionedparcelable:1.1.1"
+androidx-viewpager = "androidx.viewpager:viewpager:1.0.0"
+androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
+androidx-window = "androidx.window:window:1.0.0"
+androidx-work-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidx-work" }
+androidx-work-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
+app-cash-turbine = "app.cash.turbine:turbine:0.12.1"
+com-airbnb-android-epoxy = "com.airbnb.android:epoxy:5.0.0-beta03"
+com-airbnb-android-epoxy-annotations = "com.airbnb.android:epoxy-annotations:5.0.0-beta03"
+com-airbnb-android-epoxy-databinding = "com.airbnb.android:epoxy-databinding:5.0.0-beta03"
+com-airbnb-android-epoxy-paging3 = "com.airbnb.android:epoxy-paging3:5.0.0-beta03"
+com-airbnb-android-epoxy-processor = "com.airbnb.android:epoxy-processor:5.0.0-beta03"
+com-airbnb-android-lottie = "com.airbnb.android:lottie:5.2.0"
+com-android-tools-build-gradle = "com.android.tools.build:gradle:7.3.0"
+com-apollographql-apollo3-apollo-annotations = { module = "com.apollographql.apollo3:apollo-annotations", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-annotations-jvm = { module = "com.apollographql.apollo3:apollo-annotations-jvm", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-api-jvm = { module = "com.apollographql.apollo3:apollo-api-jvm", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-mpp-utils = { module = "com.apollographql.apollo3:apollo-mpp-utils", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-mpp-utils-jvm = { module = "com.apollographql.apollo3:apollo-mpp-utils-jvm", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-runtime-jvm = { module = "com.apollographql.apollo3:apollo-runtime-jvm", version.ref = "com-apollographql-apollo3" }
+com-apollographql-apollo3-apollo-testing-support = { module = "com.apollographql.apollo3:apollo-testing-support", version.ref = "com-apollographql-apollo3" }
+com-atlassian-commonmark = "com.atlassian.commonmark:commonmark:0.13.0"
+com-benasher44-uuid = { module = "com.benasher44:uuid", version.ref = "com-benasher44" }
+com-benasher44-uuid-jvm = { module = "com.benasher44:uuid-jvm", version.ref = "com-benasher44" }
+com-github-bumptech-glide = { module = "com.github.bumptech.glide:glide", version.ref = "com-github-bumptech-glide" }
+com-github-bumptech-glide-annotations = { module = "com.github.bumptech.glide:annotations", version.ref = "com-github-bumptech-glide" }
+com-github-bumptech-glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "com-github-bumptech-glide" }
+com-github-bumptech-glide-disklrucache = { module = "com.github.bumptech.glide:disklrucache", version.ref = "com-github-bumptech-glide" }
+com-github-bumptech-glide-gifdecoder = { module = "com.github.bumptech.glide:gifdecoder", version.ref = "com-github-bumptech-glide" }
+com-github-bumptech-glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "com-github-bumptech-glide" }
+com-github-chuckerteam-chucker-library = { module = "com.github.chuckerteam.chucker:library", version.ref = "com-github-chuckerteam-chucker" }
+com-github-chuckerteam-chucker-library-no-op = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "com-github-chuckerteam-chucker" }
+com-google-android-datatransport-transport-api = "com.google.android.datatransport:transport-api:3.0.0"
+com-google-android-datatransport-transport-backend-cct = "com.google.android.datatransport:transport-backend-cct:3.1.8"
+com-google-android-datatransport-transport-runtime = "com.google.android.datatransport:transport-runtime:3.1.8"
+com-google-android-exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-common = { module = "com.google.android.exoplayer:exoplayer-common", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-dash = { module = "com.google.android.exoplayer:exoplayer-dash", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-database = { module = "com.google.android.exoplayer:exoplayer-database", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-datasource = { module = "com.google.android.exoplayer:exoplayer-datasource", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-decoder = { module = "com.google.android.exoplayer:exoplayer-decoder", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-extractor = { module = "com.google.android.exoplayer:exoplayer-extractor", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-hls = { module = "com.google.android.exoplayer:exoplayer-hls", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-rtsp = { module = "com.google.android.exoplayer:exoplayer-rtsp", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-smoothstreaming = { module = "com.google.android.exoplayer:exoplayer-smoothstreaming", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-extension-cast = { module = "com.google.android.exoplayer:extension-cast", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-extension-mediasession = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "com-google-android-exoplayer" }
+com-google-android-exoplayer-extension-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "com-google-android-exoplayer" }
+com-google-android-gms-play-services-ads-identifier = "com.google.android.gms:play-services-ads-identifier:18.0.0"
+com-google-android-gms-play-services-base = "com.google.android.gms:play-services-base:18.0.1"
+com-google-android-gms-play-services-basement = "com.google.android.gms:play-services-basement:18.1.0"
+com-google-android-gms-play-services-cast = "com.google.android.gms:play-services-cast:21.0.1"
+com-google-android-gms-play-services-cast-framework = "com.google.android.gms:play-services-cast-framework:21.0.1"
+com-google-android-gms-play-services-flags = "com.google.android.gms:play-services-flags:18.0.1"
+com-google-android-gms-play-services-measurement = "com.google.android.gms:play-services-measurement:21.2.0"
+com-google-android-gms-play-services-measurement-api = "com.google.android.gms:play-services-measurement-api:21.2.0"
+com-google-android-gms-play-services-measurement-base = "com.google.android.gms:play-services-measurement-base:21.2.0"
+com-google-android-gms-play-services-measurement-impl = "com.google.android.gms:play-services-measurement-impl:21.2.0"
+com-google-android-gms-play-services-measurement-sdk = "com.google.android.gms:play-services-measurement-sdk:21.2.0"
+com-google-android-gms-play-services-measurement-sdk-api = "com.google.android.gms:play-services-measurement-sdk-api:21.2.0"
+com-google-android-gms-play-services-stats = "com.google.android.gms:play-services-stats:17.0.2"
+com-google-android-gms-play-services-tasks = "com.google.android.gms:play-services-tasks:18.0.1"
+com-google-android-libraries-mapsplatform-secrets-gradle-plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
+com-google-android-material = "com.google.android.material:material:1.7.0"
+com-google-code-findbugs-jsr305 = "com.google.code.findbugs:jsr305:3.0.2"
+com-google-code-gson = "com.google.code.gson:gson:2.9.0"
+com-google-dagger = "com.google.dagger:dagger:2.44"
+com-google-dagger-dagger-lint-aar = "com.google.dagger:dagger-lint-aar:2.44"
+com-google-dagger-hilt-android = "com.google.dagger:hilt-android:2.44"
+com-google-dagger-hilt-android-compiler = "com.google.dagger:hilt-android-compiler:2.44"
+com-google-dagger-hilt-android-gradle-plugin = "com.google.dagger:hilt-android-gradle-plugin:2.43.2"
+com-google-dagger-hilt-core = "com.google.dagger:hilt-core:2.44"
+com-google-errorprone-error_prone_annotations = "com.google.errorprone:error_prone_annotations:2.9.0"
+com-google-firebase-firebase-abt = "com.google.firebase:firebase-abt:21.0.2"
+com-google-firebase-firebase-analytics = "com.google.firebase:firebase-analytics:21.2.0"
+com-google-firebase-firebase-analytics-ktx = "com.google.firebase:firebase-analytics-ktx:21.2.0"
+com-google-firebase-firebase-annotations = "com.google.firebase:firebase-annotations:16.1.0"
+com-google-firebase-firebase-common = "com.google.firebase:firebase-common:20.2.0"
+com-google-firebase-firebase-common-ktx = "com.google.firebase:firebase-common-ktx:20.2.0"
+com-google-firebase-firebase-components = "com.google.firebase:firebase-components:17.0.1"
+com-google-firebase-firebase-config = "com.google.firebase:firebase-config:21.2.0"
+com-google-firebase-firebase-config-ktx = "com.google.firebase:firebase-config-ktx:21.2.0"
+com-google-firebase-firebase-crashlytics = "com.google.firebase:firebase-crashlytics:18.3.1"
+com-google-firebase-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.2"
+com-google-firebase-firebase-crashlytics-ktx = "com.google.firebase:firebase-crashlytics-ktx:18.3.1"
+com-google-firebase-firebase-encoders = "com.google.firebase:firebase-encoders:17.0.0"
+com-google-firebase-firebase-encoders-json = "com.google.firebase:firebase-encoders-json:18.0.0"
+com-google-firebase-firebase-encoders-proto = "com.google.firebase:firebase-encoders-proto:16.0.0"
+com-google-firebase-firebase-iid = "com.google.firebase:firebase-iid:19.0.0"
+com-google-firebase-firebase-iid-interop = "com.google.firebase:firebase-iid-interop:17.0.0"
+com-google-firebase-firebase-installations = "com.google.firebase:firebase-installations:17.0.3"
+com-google-firebase-firebase-installations-interop = "com.google.firebase:firebase-installations-interop:17.0.2"
+com-google-firebase-firebase-measurement-connector = "com.google.firebase:firebase-measurement-connector:19.0.0"
+com-google-firebase-firebase-messaging = "com.google.firebase:firebase-messaging:19.0.0"
+com-google-gms-google-services = "com.google.gms:google-services:4.3.14"
+com-google-guava = "com.google.guava:guava:31.0.1-android"
+com-google-guava-failureaccess = "com.google.guava:failureaccess:1.0.1"
+com-google-guava-listenablefuture = "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava"
+com-ms-square-expandableTextView = "com.ms-square:expandableTextView:0.1.4"
+com-onesignal-OneSignal = "com.onesignal:OneSignal:4.8.2"
+com-pinterest-ktlint = "com.pinterest:ktlint:0.43.2"
+com-pinterest-ktlint-ktlint-reporter-baseline = "com.pinterest.ktlint:ktlint-reporter-baseline:0.43.2"
+com-squareup-curtains = "com.squareup.curtains:curtains:1.2.4"
+com-squareup-leakcanary-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-android-core = { module = "com.squareup.leakcanary:leakcanary-android-core", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-android-utils = { module = "com.squareup.leakcanary:leakcanary-android-utils", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-object-watcher = { module = "com.squareup.leakcanary:leakcanary-object-watcher", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-object-watcher-android = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-object-watcher-android-androidx = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android-androidx", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-object-watcher-android-core = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android-core", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-leakcanary-object-watcher-android-support-fragments = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android-support-fragments", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-plumber-android = { module = "com.squareup.leakcanary:plumber-android", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-plumber-android-core = { module = "com.squareup.leakcanary:plumber-android-core", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-shark = { module = "com.squareup.leakcanary:shark", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-shark-android = { module = "com.squareup.leakcanary:shark-android", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-shark-graph = { module = "com.squareup.leakcanary:shark-graph", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-shark-hprof = { module = "com.squareup.leakcanary:shark-hprof", version.ref = "com-squareup-leakcanary" }
+com-squareup-leakcanary-shark-log = { module = "com.squareup.leakcanary:shark-log", version.ref = "com-squareup-leakcanary" }
+com-squareup-okhttp3-logging-interceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.4"
+com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.6"
+com-squareup-okhttp3-okhttp-bom = "com.squareup.okhttp3:okhttp-bom:3.12.10"
+com-squareup-okhttp3-okhttp-dnsoverhttps = "com.squareup.okhttp3:okhttp-dnsoverhttps:5.0.0-alpha.6"
+com-squareup-okhttp3-okhttp-jvm = "com.squareup.okhttp3:okhttp-jvm:5.0.0-alpha.6"
+com-squareup-okio = { module = "com.squareup.okio:okio", version.ref = "com-squareup-okio" }
+com-squareup-okio-okio-jvm = { module = "com.squareup.okio:okio-jvm", version.ref = "com-squareup-okio" }
+com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "com-squareup-retrofit2" }
+com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "com-squareup-retrofit2" }
+gradle-plugin-com-onesignal-onesignal-gradle-plugin = "gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.13.4"
+io-coil-kt-coil = { module = "io.coil-kt:coil", version.ref = "io-coil-kt" }
+io-coil-kt-coil-base = { module = "io.coil-kt:coil-base", version.ref = "io-coil-kt" }
+io-coil-kt-coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "io-coil-kt" }
+io-getstream-avatarview = { module = "io.getstream:avatarview", version.ref = "io-getstream" }
+io-getstream-avatarview-coil = { module = "io.getstream:avatarview-coil", version.ref = "io-getstream" }
+io-mockk = "io.mockk:mockk:1.12.7"
+io-noties-markwon-core = "io.noties.markwon:core:4.6.2"
+javax-inject-javax-inject = "javax.inject:javax.inject:1"
+junit = "junit:junit:4.13.2"
+org-apache-commons-commons-lang3 = "org.apache.commons:commons-lang3:3.11"
+org-apache-commons-commons-text = "org.apache.commons:commons-text:1.9"
+org-apache-logging-log4j-log4j-core = "org.apache.logging.log4j:log4j-core:2.17.1"
+org-jacoco-org-jacoco-ant = "org.jacoco:org.jacoco.ant:0.8.7"
+org-jetbrains-annotations = "org.jetbrains:annotations:13.0"
+org-jetbrains-kotlin-kotlin-android-extensions-runtime = { module = "org.jetbrains.kotlin:kotlin-android-extensions-runtime", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-annotation-processing-gradle = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-gradle", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-parcelize-compiler = { module = "org.jetbrains.kotlin:kotlin-parcelize-compiler", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-parcelize-runtime = { module = "org.jetbrains.kotlin:kotlin-parcelize-runtime", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-stdlib-common = { module = "org.jetbrains.kotlin:kotlin-stdlib-common", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlin-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "org-jetbrains-kotlin" }
+org-jetbrains-kotlinx-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "org-jetbrains-kotlinx" }
+org-jetbrains-kotlinx-kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "org-jetbrains-kotlinx" }
+org-jetbrains-kotlinx-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "org-jetbrains-kotlinx" }
+org-jetbrains-kotlinx-kotlinx-coroutines-core-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "org-jetbrains-kotlinx" }
+org-jetbrains-kotlinx-kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "org-jetbrains-kotlinx" }
+org-jetbrains-kotlinx-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "org-jetbrains-kotlinx" }
+org-jsoup = "org.jsoup:jsoup:1.13.1"
+org-mockito-kotlin-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
+org-mockito-mockito-core = "org.mockito:mockito-core:4.7.0"
+org-mozilla-rhino = "org.mozilla:rhino:1.7.14"
+
+[plugins]
+
+android = "android:7.3.0"
+android-library = "android-library:7.3.0"
+android-reporting = "android-reporting:7.3.0"
+androidx-navigation-safeargs = "androidx.navigation.safeargs:2.4.1"
+androidx-navigation-safeargs-kotlin = "androidx.navigation.safeargs.kotlin:2.4.1"
+com-android-application = "com.android.application:7.3.0"
+com-android-asset-pack = "com.android.asset-pack:7.3.0"
+com-android-asset-pack-bundle = "com.android.asset-pack-bundle:7.3.0"
+com-android-base = "com.android.base:7.3.0"
+com-android-dynamic-feature = "com.android.dynamic-feature:7.3.0"
+com-android-fused-library = "com.android.fused-library:7.3.0"
+com-android-internal-application = "com.android.internal.application:7.3.0"
+com-android-internal-asset-pack = "com.android.internal.asset-pack:7.3.0"
+com-android-internal-asset-pack-bundle = "com.android.internal.asset-pack-bundle:7.3.0"
+com-android-internal-dynamic-feature = "com.android.internal.dynamic-feature:7.3.0"
+com-android-internal-fused-library = "com.android.internal.fused-library:7.3.0"
+com-android-internal-library = "com.android.internal.library:7.3.0"
+com-android-internal-reporting = "com.android.internal.reporting:7.3.0"
+com-android-internal-test = "com.android.internal.test:7.3.0"
+com-android-internal-version-check = "com.android.internal.version-check:7.3.0"
+com-android-library = "com.android.library:7.3.0"
+com-android-lint = "com.android.lint:7.3.0"
+com-android-reporting = "com.android.reporting:7.3.0"
+com-android-test = "com.android.test:7.3.0"
+com-apollographql-apollo3 = "com.apollographql.apollo3:3.5.0"
+com-github-ben-manes-versions = "com.github.ben-manes.versions:0.41.0"
+com-google-android-libraries-mapsplatform-secrets-gradle-plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:2.0.1"
+com-google-dagger-hilt-android = "com.google.dagger.hilt.android:2.43.2"
+com-google-firebase-crashlytics = "com.google.firebase.crashlytics:2.9.2"
+com-google-gms-google-services = "com.google.gms.google-services:4.3.14"
+com-onesignal-androidsdk-onesignal-gradle-plugin = "com.onesignal.androidsdk.onesignal-gradle-plugin:0.13.4"
+dagger-hilt-android-plugin = "dagger.hilt.android.plugin:2.43.2"
+kotlin = "kotlin:1.7.10"
+kotlin-android = "kotlin-android:1.7.10"
+kotlin-android-extensions = "kotlin-android-extensions:1.7.10"
+kotlin-kapt = "kotlin-kapt:1.7.10"
+kotlin-multiplatform = "kotlin-multiplatform:1.7.10"
+kotlin-native-cocoapods = "kotlin-native-cocoapods:1.7.10"
+kotlin-native-performance = "kotlin-native-performance:1.7.10"
+kotlin-parcelize = "kotlin-parcelize:1.7.10"
+kotlin-platform-android = "kotlin-platform-android:1.7.10"
+kotlin-platform-common = "kotlin-platform-common:1.7.10"
+kotlin-platform-js = "kotlin-platform-js:1.7.10"
+kotlin-platform-jvm = "kotlin-platform-jvm:1.7.10"
+kotlin-scripting = "kotlin-scripting:1.7.10"
+nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
+org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.7.10"
+org-jetbrains-kotlin-android-extensions = "org.jetbrains.kotlin.android.extensions:1.7.10"
+org-jetbrains-kotlin-js = "org.jetbrains.kotlin.js:1.7.10"
+org-jetbrains-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.7.10"
+org-jetbrains-kotlin-kapt = "org.jetbrains.kotlin.kapt:1.7.10"
+org-jetbrains-kotlin-multiplatform = "org.jetbrains.kotlin.multiplatform:1.7.10"
+org-jetbrains-kotlin-multiplatform-pm20 = "org.jetbrains.kotlin.multiplatform.pm20:1.7.10"
+org-jetbrains-kotlin-native-cocoapods = "org.jetbrains.kotlin.native.cocoapods:1.7.10"
+org-jetbrains-kotlin-native-performance = "org.jetbrains.kotlin.native.performance:1.7.10"
+org-jetbrains-kotlin-platform-android = "org.jetbrains.kotlin.platform.android:1.7.10"
+org-jetbrains-kotlin-platform-common = "org.jetbrains.kotlin.platform.common:1.7.10"
+org-jetbrains-kotlin-platform-js = "org.jetbrains.kotlin.platform.js:1.7.10"
+org-jetbrains-kotlin-platform-jvm = "org.jetbrains.kotlin.platform.jvm:1.7.10"
+org-jetbrains-kotlin-plugin-parcelize = "org.jetbrains.kotlin.plugin.parcelize:1.7.10"
+org-jetbrains-kotlin-plugin-scripting = "org.jetbrains.kotlin.plugin.scripting:1.7.10"
+org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"

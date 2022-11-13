@@ -3,8 +3,9 @@ package com.kl3jvi.animity.data.repository
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.UserQuery
-import com.kl3jvi.animity.data.mapper.ProfileData
+
 import com.kl3jvi.animity.data.mapper.convert
+import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.domain.repositories.ProfileRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,10 +28,10 @@ class ProfileRepositoryImpl @Inject constructor(
     override fun getProfileData(userId: Int?) =
         aniListGraphQlClient.getProfileData(userId)
             .mapNotNull(ApolloResponse<UserQuery.Data>::convert)
-            .combine(getProfileAnimes(userId)) { profileData, profileRow ->
+            .combine(getProfileAnimes(userId)) { userData, profileRow ->
                 ProfileData(
-                    profileData,
-                    profileRow
+                    userData = userData,
+                    profileRow = profileRow
                 )
             }.flowOn(ioDispatcher)
 

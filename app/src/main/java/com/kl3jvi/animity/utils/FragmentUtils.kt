@@ -1,8 +1,14 @@
 package com.kl3jvi.animity.utils
 
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.annotation.MenuRes
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -27,6 +33,27 @@ fun View.canNavigate(): Boolean {
         Log.d("NAVIGATION", "May not navigate: current destination is not the current fragment.")
         false
     }
+}
+
+
+fun Fragment.createFragmentMenu(
+    @MenuRes menuLayout: Int,
+    selectedItem: (menuItem: MenuItem) -> Boolean
+) {
+    val menuHost = requireActivity()
+    menuHost.addMenuProvider(
+        object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(menuLayout, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return selectedItem(menuItem)
+            }
+        },
+        viewLifecycleOwner,
+        Lifecycle.State.RESUMED
+    )
 }
 
 internal inline fun Fragment.runIfFragmentIsAttached(block: () -> Unit) {

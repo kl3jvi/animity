@@ -1,23 +1,23 @@
 package com.kl3jvi.animity.data.mapper
 
 import com.kl3jvi.animity.HomeDataQuery
-import com.kl3jvi.animity.util.moviesModel
-import com.kl3jvi.animity.util.popularAnimeModel
-import com.kl3jvi.animity.util.reviewModel
-import com.kl3jvi.animity.util.trendingAnimeModel
+//import com.kl3jvi.animity.util.moviesModel
+//import com.kl3jvi.animity.util.popularAnimeModel
+//import com.kl3jvi.animity.util.reviewModel
+//import com.kl3jvi.animity.util.trendingAnimeModel
 import org.junit.Test
 
 class HomeDataQueryConverter {
     @Test
     fun homeData_query_can_be_converted_to_Home_Media() {
-        val data = HomeDataQuery.Data(
-            trendingAnime = trendingAnimeModel,
-            movies = moviesModel,
-            popularAnime = popularAnimeModel,
-            review = reviewModel
-        )
+//        val data = HomeDataQuery.Data(
+//            trendingAnime = trendingAnimeModel,
+//            movies = moviesModel,
+//            popularAnime = popularAnimeModel,
+//            review = reviewModel
+//        )
 
-        val convertedData = data
+//        val convertedData = data
 
         // Test for trending media
 //        assertEquals("One Piece", convertedData.trendingAnime.first().title.userPreferred)
