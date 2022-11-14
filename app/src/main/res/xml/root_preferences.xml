@@ -3,11 +3,11 @@
 
     <PreferenceCategory app:title="@string/player_settings">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
+        <SeekBarPreference
+            android:max="240"
+            app:key="skip_delay"
+            app:seekBarIncrement="5"
+            app:title="@string/signature_title" />
 
         <SeekBarPreference
             android:max="60"
@@ -16,14 +16,17 @@
             app:showSeekBarValue="true"
             app:title="Seek Forward Time" />
 
+
         <SeekBarPreference
             android:max="60"
             app:key="forward"
             app:showSeekBarValue="true"
             app:title="Seek Backward Time" />
 
-    </PreferenceCategory>
-    <PreferenceCategory app:title="@string/network_settings">
+        <SwitchPreference
+            app:key="pip"
+            android:summary="Continues playback in a miniature player on top of other apps"
+            app:title="Picture-inPicture" />
 
     </PreferenceCategory>
 

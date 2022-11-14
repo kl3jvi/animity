@@ -8,12 +8,7 @@ import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -49,7 +44,7 @@ class DetailsRepositoryImpl @Inject constructor(
         alias: String,
         malId: Int
     ): Flow<List<EpisodeModel>> {
-        return flow {
+        val parsedEpisodeList = flow {
             val response = parser.fetchEpisodeList(
                 apiClient.fetchEpisodeList(
                     header = header,
@@ -59,29 +54,34 @@ class DetailsRepositoryImpl @Inject constructor(
                 ).string()
             ).reversed()
             emit(response)
-        }.combine(getEpisodeTitles(malId)) { episodesWithoutTitles, episodesWithTitle -> // In this combine we add title to the episodes
-            episodesWithoutTitles.forEachIndexed { index, episodeModel ->
-                if (episodeModel.episodeNumber.split(" ")
-                        .last() == episodesWithTitle.getOrNull(index)?.number
+        }
+
+        return combine(
+            parsedEpisodeList,
+            getEpisodeTitles(malId),
+            getEpisodesPercentage(malId)
+        ) { episodeModels, episodesWithTitle, episodeEntities ->
+            /* Adding episode title to the episode model. */
+            episodeModels.mapIndexed { index, episodeModel ->
+                if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number
                 ) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
                 } else {
                     episodeModel.episodeName = ""
+                    episodeModel.isFiller = false
                 }
+                episodeModel
+                /* Adding watched percentage to the episodes. */
+            }.map { episode ->
+                val contentEpisode =
+                    episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
+                if (contentEpisode != null) {
+                    episode.percentage = contentEpisode.getWatchedPercentage()
+                }
+                episode
             }
-            episodesWithoutTitles
-        }
-            .combine(getEpisodesPercentage(malId)) { networkEpisodeList, episodeListFromDataBase -> // In this combine we add watched percentage to the episodes
-                networkEpisodeList.map { episode ->
-                    val contentEpisode =
-                        episodeListFromDataBase.firstOrNull { it.episodeUrl == episode.episodeUrl }
-                    if (contentEpisode != null) {
-                        episode.percentage = contentEpisode.getWatchedPercentage()
-                    }
-                    episode
-                }
-            }.flowOn(ioDispatcher)
+        }.flowOn(ioDispatcher)
     }
 
     private fun getEpisodeTitles(id: Int) = flow {

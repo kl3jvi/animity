@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
+import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Constants.Companion.DATABASE_NAME
 import com.kl3jvi.animity.utils.Constants.Companion.SHARED_PREFERENCES_NAME
 import dagger.Module
@@ -39,5 +40,13 @@ object PersistenceModule {
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSettings(
+        preferences: SharedPreferences
+    ): Settings {
+        return Settings(preferences)
     }
 }

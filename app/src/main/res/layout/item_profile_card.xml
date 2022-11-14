@@ -53,7 +53,7 @@
                     android:layout_height="110dp"
                     android:padding="10dp"
                     app:avatarImage="@{userData.avatar.large}"
-                    app:avatarViewBorderColor="@color/green_theme"
+                    app:avatarViewBorderColor="@color/wrapper"
                     app:avatarViewBorderWidth="3dp"
                     app:avatarViewShape="circle"
                     app:layout_constraintEnd_toStartOf="@+id/username"

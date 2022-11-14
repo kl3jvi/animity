@@ -1,5 +1,7 @@
 package com.kl3jvi.animity.ui.activities.main
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -71,12 +73,19 @@ class MainActivity : AppCompatActivity() {
             .animate()
             .translationY(binding.navView.height.toFloat())
             .setInterpolator(AccelerateInterpolator())
-            .setInterpolator {
-                if (it == 1F) {
+            .setListener(object : AnimatorListenerAdapter() {
+                /**
+                 *
+                 * Notifies the end of the animation. This callback is not invoked
+                 * for animations with repeat count set to INFINITE.
+                 *
+                 * @param animation The animation which reached its end.
+                 */
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
                     binding.navView.isVisible = false
                 }
-                it
-            }.duration = 400
+            }).duration = 300
     }
 
     /* Showing the bottom navigation bar. */
@@ -85,12 +94,19 @@ class MainActivity : AppCompatActivity() {
             .animate()
             .translationY(0f)
             .setInterpolator(DecelerateInterpolator())
-            .setInterpolator {
-                if (it == 0F) {
+            .setListener(object : AnimatorListenerAdapter() {
+                /**
+                 *
+                 * Notifies the end of the animation. This callback is not invoked
+                 * for animations with repeat count set to INFINITE.
+                 *
+                 * @param animation The animation which reached its end.
+                 */
+                override fun onAnimationStart(animation: Animator) {
+                    super.onAnimationStart(animation)
                     binding.navView.isVisible = true
                 }
-                it
-            }.duration = 400
+            }).duration = 300
     }
 
     override fun onSupportNavigateUp(): Boolean {
