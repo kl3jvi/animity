@@ -20,13 +20,13 @@
       "filters": [
         {
           "filterType": "ABI",
-          "value": "armeabi-v7a"
+          "value": "x86_64"
         }
       ],
       "attributes": [],
       "versionCode": 12,
       "versionName": "1.1.1",
-      "outputFile": "Animity-v1.1.1-armeabi-v7a-release.apk"
+      "outputFile": "Animity-v1.1.1-x86_64-release.apk"
     },
     {
       "type": "ONE_OF_MANY",
@@ -46,6 +46,19 @@
       "filters": [
         {
           "filterType": "ABI",
+          "value": "armeabi-v7a"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 12,
+      "versionName": "1.1.1",
+      "outputFile": "Animity-v1.1.1-armeabi-v7a-release.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
           "value": "x86"
         }
       ],
@@ -53,19 +66,6 @@
       "versionCode": 12,
       "versionName": "1.1.1",
       "outputFile": "Animity-v1.1.1-x86-release.apk"
-    },
-    {
-      "type": "ONE_OF_MANY",
-      "filters": [
-        {
-          "filterType": "ABI",
-          "value": "x86_64"
-        }
-      ],
-      "attributes": [],
-      "versionCode": 12,
-      "versionName": "1.1.1",
-      "outputFile": "Animity-v1.1.1-x86_64-release.apk"
     }
   ],
   "elementType": "File"

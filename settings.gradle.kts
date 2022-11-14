@@ -10,4 +10,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Animity"
-include (":app")
+include(":app")

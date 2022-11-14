@@ -3,7 +3,6 @@ package com.kl3jvi.animity.data.repository
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.UserQuery
-
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient

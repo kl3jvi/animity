@@ -9,8 +9,8 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository

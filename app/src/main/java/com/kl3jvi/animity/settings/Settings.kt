@@ -12,6 +12,4 @@ class Settings @Inject constructor(
         Constants.SHARED_PREFERENCES_NAME,
         default = 0L
     )
-
 }
-

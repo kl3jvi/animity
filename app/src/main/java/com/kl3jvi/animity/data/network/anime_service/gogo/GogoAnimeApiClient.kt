@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.network.anime_service
+package com.kl3jvi.animity.data.network.anime_service.gogo
 
 import javax.inject.Inject
 

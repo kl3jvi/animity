@@ -3,8 +3,8 @@ package com.kl3jvi.animity.data.mapper
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.UserQuery
-import com.kl3jvi.animity.data.model.ui_models.ProfileRow
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.model.ui_models.ProfileRow
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.data.model.ui_models.UserAvatar
 
@@ -42,6 +42,3 @@ private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia>
         it?.media?.homeMedia.convert()
     } ?: listOf()
 }
-
-
-

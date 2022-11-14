@@ -2,7 +2,16 @@ package com.kl3jvi.animity.data.mapper
 
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.HomeDataQuery
-import com.kl3jvi.animity.data.model.ui_models.*
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.model.ui_models.Episodes
+import com.kl3jvi.animity.data.model.ui_models.FuzzyDate
+import com.kl3jvi.animity.data.model.ui_models.Genre
+import com.kl3jvi.animity.data.model.ui_models.HomeData
+import com.kl3jvi.animity.data.model.ui_models.MediaCoverImage
+import com.kl3jvi.animity.data.model.ui_models.MediaTitle
+import com.kl3jvi.animity.data.model.ui_models.Review
+import com.kl3jvi.animity.data.model.ui_models.User
+import com.kl3jvi.animity.data.model.ui_models.UserAvatar
 import com.kl3jvi.animity.fragment.HomeMedia
 
 fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
@@ -69,7 +78,7 @@ fun HomeMedia?.convert(): AniListMedia {
         title = MediaTitle(userPreferred = this?.title?.userPreferred.orEmpty()),
         type = this?.type,
         format = this?.format,
-        isFavourite = this?.isFavourite?:false,
+        isFavourite = this?.isFavourite ?: false,
         streamingEpisode = this?.streamingEpisodes?.mapNotNull { it.convert() },
         nextAiringEpisode = this?.nextAiringEpisode?.airingAt,
         status = this?.status,

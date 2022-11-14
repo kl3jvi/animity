@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.settings
 
 import android.os.Bundle
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import com.kl3jvi.animity.R
@@ -25,7 +24,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setupPreferences() {
         requirePreference<SeekBarPreference>(R.string.skip_intro_preference_key).apply {
-
 //            onPreferenceChangeListener =
 //                Preference.OnPreferenceChangeListener { preference, newValue ->
 //

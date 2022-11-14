@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
-
 /* It's a function that takes a resource ID and returns a string. */
 fun Fragment.getPreferenceKey(@StringRes resourceId: Int): String = getString(resourceId)
 

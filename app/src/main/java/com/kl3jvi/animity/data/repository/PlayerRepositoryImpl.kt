@@ -3,7 +3,7 @@
 package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao

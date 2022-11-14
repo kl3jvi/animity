@@ -4,7 +4,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

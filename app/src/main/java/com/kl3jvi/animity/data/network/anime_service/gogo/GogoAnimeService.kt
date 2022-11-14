@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.network.anime_service
+package com.kl3jvi.animity.data.network.anime_service.gogo
 
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle

@@ -35,7 +35,6 @@ fun View.canNavigate(): Boolean {
     }
 }
 
-
 fun Fragment.createFragmentMenu(
     @MenuRes menuLayout: Int,
     selectedItem: (menuItem: MenuItem) -> Boolean

@@ -3,10 +3,9 @@ package com.kl3jvi.animity.settings
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-
 private class BooleanPreference(
     private val key: String,
-    private val default: Boolean,
+    private val default: Boolean
 ) : ReadWriteProperty<PreferencesHolder, Boolean> {
 
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): Boolean =
@@ -18,7 +17,7 @@ private class BooleanPreference(
 
 private class FloatPreference(
     private val key: String,
-    private val default: Float,
+    private val default: Float
 ) : ReadWriteProperty<PreferencesHolder, Float> {
 
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): Float =
@@ -30,7 +29,7 @@ private class FloatPreference(
 
 private class IntPreference(
     private val key: String,
-    private val default: Int,
+    private val default: Int
 ) : ReadWriteProperty<PreferencesHolder, Int> {
 
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): Int =
@@ -42,7 +41,7 @@ private class IntPreference(
 
 private class LongPreference(
     private val key: String,
-    private val default: Long,
+    private val default: Long
 ) : ReadWriteProperty<PreferencesHolder, Long> {
 
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): Long =
@@ -55,7 +54,7 @@ private class LongPreference(
 private class StringPreference(
     private val key: String,
     private val default: String,
-    private val persistDefaultIfNotExists: Boolean = false,
+    private val persistDefaultIfNotExists: Boolean = false
 ) : ReadWriteProperty<PreferencesHolder, String> {
 
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): String {
@@ -76,7 +75,7 @@ private class StringPreference(
 
 private class StringSetPreference(
     private val key: String,
-    private val default: Set<String>,
+    private val default: Set<String>
 ) : ReadWriteProperty<PreferencesHolder, Set<String>> {
 
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): Set<String> =
@@ -86,13 +85,11 @@ private class StringSetPreference(
         thisRef.preferences.edit().putStringSet(key, value).apply()
 }
 
-
 fun booleanPreference(
     key: String,
     default: Boolean
 ): ReadWriteProperty<PreferencesHolder, Boolean> =
     BooleanPreference(key, default)
-
 
 fun floatPreference(
     key: String,
@@ -100,13 +97,11 @@ fun floatPreference(
 ): ReadWriteProperty<PreferencesHolder, Float> =
     FloatPreference(key, default)
 
-
 fun intPreference(
     key: String,
     default: Int
 ): ReadWriteProperty<PreferencesHolder, Int> =
     IntPreference(key, default)
-
 
 fun longPreference(
     key: String,
@@ -114,14 +109,12 @@ fun longPreference(
 ): ReadWriteProperty<PreferencesHolder, Long> =
     LongPreference(key, default)
 
-
 fun stringPreference(
     key: String,
     default: String,
-    persistDefaultIfNotExists: Boolean = false,
+    persistDefaultIfNotExists: Boolean = false
 ): ReadWriteProperty<PreferencesHolder, String> =
     StringPreference(key, default, persistDefaultIfNotExists)
-
 
 fun stringSetPreference(
     key: String,

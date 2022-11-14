@@ -1,10 +1,9 @@
 package com.kl3jvi.animity.data.mapper
 
-import com.kl3jvi.animity.HomeDataQuery
-//import com.kl3jvi.animity.util.moviesModel
-//import com.kl3jvi.animity.util.popularAnimeModel
-//import com.kl3jvi.animity.util.reviewModel
-//import com.kl3jvi.animity.util.trendingAnimeModel
+// import com.kl3jvi.animity.util.moviesModel
+// import com.kl3jvi.animity.util.popularAnimeModel
+// import com.kl3jvi.animity.util.reviewModel
+// import com.kl3jvi.animity.util.trendingAnimeModel
 import org.junit.Test
 
 class HomeDataQueryConverter {

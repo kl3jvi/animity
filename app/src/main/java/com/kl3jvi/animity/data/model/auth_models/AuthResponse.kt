@@ -20,4 +20,10 @@ data class AuthResponse(
     var refreshToken: String?,
     @SerializedName("token_type")
     val tokenType: String?
-)
+) {
+    fun isExpired(): Boolean {
+        return expiresIn?.let {
+            System.currentTimeMillis() > it
+        } ?: false
+    }
+}

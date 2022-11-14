@@ -6,11 +6,9 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.apollographql.apollo3.exception.ApolloNetworkException
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
-import com.apollographql.apollo3.testing.enqueueTestResponse
 import com.kl3jvi.animity.HomeDataQuery
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeApiClient
-import com.kl3jvi.animity.data.network.anime_service.GogoAnimeService
-import com.kl3jvi.animity.data.repository.HomeRepositoryImpl
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeService
 import com.kl3jvi.animity.domain.repositories.HomeRepository
 import com.kl3jvi.animity.util.*
 import com.kl3jvi.animity.utils.parser.Parser

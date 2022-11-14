@@ -1,13 +1,13 @@
-//package com.kl3jvi.animity.util
+// package com.kl3jvi.animity.util
 //
-//import com.kl3jvi.animity.FavoritesAnimeQuery
-//import com.kl3jvi.animity.HomeDataQuery
-//import com.kl3jvi.animity.fragment.HomeMedia
-//import com.kl3jvi.animity.type.MediaFormat
-//import com.kl3jvi.animity.type.MediaStatus
-//import com.kl3jvi.animity.type.MediaType
+// import com.kl3jvi.animity.FavoritesAnimeQuery
+// import com.kl3jvi.animity.HomeDataQuery
+// import com.kl3jvi.animity.fragment.HomeMedia
+// import com.kl3jvi.animity.type.MediaFormat
+// import com.kl3jvi.animity.type.MediaStatus
+// import com.kl3jvi.animity.type.MediaType
 //
-//val trendingAnimeModel = HomeDataQuery.TrendingAnime(
+// val trendingAnimeModel = HomeDataQuery.TrendingAnime(
 //    media = listOf(
 //        HomeDataQuery.Medium(
 //            __typename = "Trending Media",
@@ -40,9 +40,9 @@
 //            )
 //        )
 //    )
-//)
+// )
 //
-//val moviesModel = HomeDataQuery.Movies(
+// val moviesModel = HomeDataQuery.Movies(
 //    media = listOf(
 //        HomeDataQuery.Medium2(
 //            __typename = "Movies",
@@ -75,9 +75,9 @@
 //            )
 //        )
 //    )
-//)
+// )
 //
-//val popularAnimeModel = HomeDataQuery.PopularAnime(
+// val popularAnimeModel = HomeDataQuery.PopularAnime(
 //    media = listOf(
 //        HomeDataQuery.Medium1(
 //            __typename = "Popular Anime",
@@ -110,9 +110,9 @@
 //            )
 //        )
 //    )
-//)
+// )
 //
-//val reviewModel = HomeDataQuery.Review(
+// val reviewModel = HomeDataQuery.Review(
 //    listOf(
 //        HomeDataQuery.Review1(
 //            id = 1,
@@ -144,9 +144,9 @@
 //            )
 //        )
 //    )
-//)
+// )
 //
-//val userFavoritesModel = FavoritesAnimeQuery.User(
+// val userFavoritesModel = FavoritesAnimeQuery.User(
 //    id = 1,
 //    name = "Klejvi",
 //    favourites = FavoritesAnimeQuery.Favourites(
@@ -178,4 +178,4 @@
 //            )
 //        )
 //    )
-//)
+// )

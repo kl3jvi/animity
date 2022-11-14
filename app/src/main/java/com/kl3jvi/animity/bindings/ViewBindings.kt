@@ -78,7 +78,6 @@ fun TextView.setHtml(htmlString: String) {
     }
 }
 
-
 @BindingAdapter("animatedProgress")
 fun ContentLoadingProgressBar.setProgress(progress: Int) {
     ObjectAnimator.ofInt(this, "progress", progress)
