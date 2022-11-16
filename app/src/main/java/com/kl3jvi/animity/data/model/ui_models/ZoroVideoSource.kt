@@ -2,7 +2,6 @@ package com.kl3jvi.animity.data.model.ui_models
 
 import com.google.gson.annotations.SerializedName
 
-
 data class ZoroVideoSource(
     @SerializedName("browser")
     val browser: Boolean,

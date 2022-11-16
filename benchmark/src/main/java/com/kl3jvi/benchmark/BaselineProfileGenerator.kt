@@ -25,5 +25,4 @@ class BaselineProfileGenerator {
             device.findObject(By.text("Profile"))
         }
     )
-
 }

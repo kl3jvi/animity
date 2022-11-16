@@ -70,9 +70,6 @@ class DetailsRepositoryImpl @Inject constructor(
         ) { episodeModels, episodesWithTitle, episodeEntities ->
             /* Adding episode title to the episode model. */
 
-
-
-
             episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number
                 ) {
@@ -98,7 +95,7 @@ class DetailsRepositoryImpl @Inject constructor(
                     EpisodeModel(
                         it.title,
                         "Episode ${it.number}",
-                        enimeClient.getEnimeSource(it.sources.last().id).url,
+                        enimeClient.getEnimeSource(it.sources.last().id).url
                     )
                 }
             }

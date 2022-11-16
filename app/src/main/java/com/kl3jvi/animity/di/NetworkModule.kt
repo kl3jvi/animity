@@ -123,7 +123,6 @@ object NetworkModule {
         enimeService: EnimeService
     ) = EnimeClient(enimeService)
 
-
     @Provides
     @Singleton
     fun provideAniListGraphQlClient(

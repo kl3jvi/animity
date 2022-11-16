@@ -2,7 +2,6 @@ package com.kl3jvi.animity.data.model.ui_models
 
 import com.google.gson.annotations.SerializedName
 
-
 data class EnimeResponse(
     @SerializedName("episodes")
     val episodes: List<EnimeEpisode>
@@ -14,7 +13,7 @@ data class EnimeEpisode(
     @SerializedName("sources")
     val sources: List<Source>,
     @SerializedName("title")
-    val title: String,
+    val title: String
 )
 
 data class Source(
