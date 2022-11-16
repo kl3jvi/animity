@@ -31,20 +31,20 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 33
-        versionCode 12
-        versionName "1.1.1"
+        versionCode 13
+        versionName "1.1.2"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    buildTypes {
-////        release {
-////            minifyEnabled true
-////            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-////            debuggable true
-////            signingConfig signingConfigs.release
-////        }
-//    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
+        }
+    }
     kapt {
         useBuildCache true
         arguments {
@@ -81,6 +81,15 @@ android {
     lint {
         checkReleaseBuilds false
     }
+
+    buildTypes {
+        benchmark {
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+        }
+    }
+
 }
 kapt {
     correctErrorTypes = true

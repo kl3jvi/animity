@@ -9,6 +9,8 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
+import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
+import com.kl3jvi.animity.data.network.anime_service.enime.EnimeService
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
@@ -108,6 +110,19 @@ object NetworkModule {
     ): GogoAnimeApiClient {
         return GogoAnimeApiClient(gogoAnimeService)
     }
+
+    @Singleton
+    @Provides
+    fun provideEnimeService(retrofit: Retrofit): EnimeService {
+        return retrofit.create(EnimeService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEnimeApiClient(
+        enimeService: EnimeService
+    ) = EnimeClient(enimeService)
+
 
     @Provides
     @Singleton

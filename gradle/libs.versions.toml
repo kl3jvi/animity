@@ -138,7 +138,7 @@ com-airbnb-android-epoxy-databinding = "com.airbnb.android:epoxy-databinding:5.0
 com-airbnb-android-epoxy-paging3 = "com.airbnb.android:epoxy-paging3:5.0.0-beta03"
 com-airbnb-android-epoxy-processor = "com.airbnb.android:epoxy-processor:5.0.0-beta03"
 com-airbnb-android-lottie = "com.airbnb.android:lottie:5.2.0"
-com-android-tools-build-gradle = "com.android.tools.build:gradle:7.3.0"
+com-android-tools-build-gradle = "com.android.tools.build:gradle:7.3.1"
 com-apollographql-apollo3-apollo-annotations = { module = "com.apollographql.apollo3:apollo-annotations", version.ref = "com-apollographql-apollo3" }
 com-apollographql-apollo3-apollo-annotations-jvm = { module = "com.apollographql.apollo3:apollo-annotations-jvm", version.ref = "com-apollographql-apollo3" }
 com-apollographql-apollo3-apollo-api = { module = "com.apollographql.apollo3:apollo-api", version.ref = "com-apollographql-apollo3" }

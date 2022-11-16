@@ -6,7 +6,6 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath(libs.com.android.tools.build.gradle)
         classpath(libs.com.google.dagger.hilt.android.gradle.plugin)
         classpath(libs.com.google.gms.google.services)
         classpath(libs.com.google.firebase.firebase.crashlytics.gradle)

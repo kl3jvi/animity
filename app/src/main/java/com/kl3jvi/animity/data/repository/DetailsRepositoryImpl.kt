@@ -3,6 +3,7 @@ package com.kl3jvi.animity.data.repository
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
+import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
@@ -21,6 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class DetailsRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
+    private val enimeClient: EnimeClient,
     private val ioDispatcher: CoroutineDispatcher,
     override val parser: GoGoParser,
     private val episodeDao: EpisodeDao
@@ -67,6 +69,10 @@ class DetailsRepositoryImpl @Inject constructor(
             getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
             /* Adding episode title to the episode model. */
+
+
+
+
             episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number
                 ) {
@@ -85,6 +91,16 @@ class DetailsRepositoryImpl @Inject constructor(
                     episode.percentage = contentEpisode.getWatchedPercentage()
                 }
                 episode
+            }
+
+            episodeModels.ifEmpty {
+                enimeClient.getEnimeEpisodesIds(malId).episodes.map {
+                    EpisodeModel(
+                        it.title,
+                        "Episode ${it.number}",
+                        enimeClient.getEnimeSource(it.sources.last().id).url,
+                    )
+                }
             }
         }.flowOn(ioDispatcher)
     }
