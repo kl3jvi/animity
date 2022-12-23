@@ -13,6 +13,7 @@ import okhttp3.Response
 import javax.inject.Inject
 import kotlin.coroutines.suspendCoroutine
 
+
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
     private val localStorage: PersistenceRepository

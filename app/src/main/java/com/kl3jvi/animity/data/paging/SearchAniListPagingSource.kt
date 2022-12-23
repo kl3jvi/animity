@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
@@ -45,17 +47,12 @@ class SearchAniListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val listOfAniListMedia = withContext(Dispatchers.IO) {
-                suspendCoroutine { continuation ->
-                    this.launch {
-                        apiClient.fetchSearchAniListData(query, page).map { it.data?.convert() }
-                            .distinctUntilChanged()
-                            .collectLatest {
-                                Log.e("List", it.toString())
-                                continuation.resume(it ?: emptyList())
-                            }
-                    }
-                }
+            val listOfAniListMedia: List<AniListMedia> = withContext(Dispatchers.IO) {
+                apiClient.fetchSearchAniListData(query, page)
+                    .mapNotNull { it.data?.convert() }
+                    .distinctUntilChanged()
+                    .toList()
+                    .flatten()
             }
 
             LoadResult.Page(
@@ -68,4 +65,5 @@ class SearchAniListPagingSource(
             LoadResult.Error(e)
         }
     }
+
 }

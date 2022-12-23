@@ -46,19 +46,15 @@ class HtmlParser @Inject constructor(
      * @return An ArrayList of GenreModel objects.
      */
     override fun getGenreList(genreHtmlList: Elements): List<GenreModel> {
-        val genreList = mutableListOf<GenreModel>()
-        genreHtmlList.forEach {
+        return genreHtmlList.map {
             val genreUrl = it.attr("href")
             val genreName = it.text()
 
-            genreList.add(
-                GenreModel(
-                    genreUrl = genreUrl,
-                    genreName = filterGenreName(genreName)
-                )
+            GenreModel(
+                genreUrl = genreUrl,
+                genreName = filterGenreName(genreName)
             )
         }
-        return genreList
     }
 
     /**
@@ -69,22 +65,18 @@ class HtmlParser @Inject constructor(
      * @return An ArrayList of EpisodeModel objects.
      */
     override fun fetchEpisodeList(response: String): List<EpisodeModel> {
-        val episodeList = mutableListOf<EpisodeModel>()
         val document = Jsoup.parse(response)
         val lists = document?.select("li")
-        lists?.forEach {
+        return lists?.map {
             val episodeUrl = it.select("a").first().attr("href").trim()
             val episodeNumber = it.getElementsByClass("name").first().text()
             val episodeType = it.getElementsByClass("cate").first().text()
-            episodeList.add(
-                EpisodeModel(
-                    episodeNumber = episodeNumber,
-                    episodeType = episodeType,
-                    episodeUrl = episodeUrl
-                )
+            EpisodeModel(
+                episodeNumber = episodeNumber,
+                episodeType = episodeType,
+                episodeUrl = episodeUrl
             )
-        }
-        return episodeList
+        } ?: emptyList()
     }
 
     /**
@@ -100,26 +92,24 @@ class HtmlParser @Inject constructor(
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(Charsets.UTF_8), "AES")
         cipher.init(Cipher.DECRYPT_MODE, secretKey, ix)
+        return String(cipher.doFinal(decodeBase64(encrypted)))
+    }
+
+    private fun decodeBase64(encrypted: String): ByteArray {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String(cipher.doFinal(Base64.getDecoder().decode(encrypted)))
+            Base64.getDecoder().decode(encrypted)
         } else {
-            String(
-                cipher.doFinal(
-                    android.util.Base64.decode(
-                        encrypted,
-                        android.util.Base64.URL_SAFE
-                    )
-                )
-            )
+            android.util.Base64.decode(encrypted, android.util.Base64.URL_SAFE)
         }
     }
 
     /**
-     * Encrypts a string using AES encryption.
+     * Encrypts a string using AES
      *
      * @param text The text to be encrypted
      * @param key The key used to encrypt the data.
-     * @param iv Initialization vector. This is a random string that is used to encrypt the data.
+     * @param iv The initialization vector. This is a random string that is used to encrypt the first
+     * block of text.
      * @return The encrypted text
      */
     override fun encryptAes(text: String, key: String, iv: String): String {
@@ -127,13 +117,20 @@ class HtmlParser @Inject constructor(
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(), "AES")
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ix)
+        return encodeBase64(cipher.doFinal(text.toByteArray()))
+    }
+
+    /**
+     * It encodes the data into a base64 string.
+     *
+     * @param data The data to be encoded.
+     * @return A string of the encoded data.
+     */
+    private fun encodeBase64(data: ByteArray): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Base64.getEncoder().encodeToString(cipher.doFinal(text.toByteArray()))
+            Base64.getEncoder().encodeToString(data)
         } else {
-            android.util.Base64.encodeToString(
-                cipher.doFinal(text.toByteArray()),
-                android.util.Base64.DEFAULT
-            )
+            android.util.Base64.encodeToString(data, android.util.Base64.DEFAULT)
         }
     }
 
@@ -148,18 +145,13 @@ class HtmlParser @Inject constructor(
         return try {
             val document = Jsoup.parse(response)
             val value2 = document.select("script[data-name=\"episode\"]").attr("data-value")
-            val decrypt =
-                decryptAES(
-                    value2,
-                    preferences.key.toString(),
-                    preferences.iv.toString()
-                ).replace("\t", "").substringAfter(id)
-            val encrypted = encryptAes(
-                id,
+            val decrypted = decryptAES(
+                value2,
                 preferences.key.toString(),
                 preferences.iv.toString()
-            )
-            "id=$encrypted$decrypt&alias=$id"
+            ).replace("\t", "").substringAfter(id)
+            val encrypted = encryptAes(id, preferences.key.toString(), preferences.iv.toString())
+            "id=$encrypted$decrypted&alias=$id"
         } catch (e: java.lang.Exception) {
             e.toString()
         }
@@ -172,10 +164,9 @@ class HtmlParser @Inject constructor(
      * @return EpisodeInfo
      */
     override fun parseMediaUrl(response: String): EpisodeInfo {
-        val mediaUrl: String?
         val document = Jsoup.parse(response)
         val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
-        mediaUrl = info?.attr("data-video").toString()
+        val mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
             document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
                 ?.attr("href")
@@ -198,7 +189,6 @@ class HtmlParser @Inject constructor(
      */
     override fun parseEncryptedUrls(response: String): List<String> {
         val urls = mutableListOf<String>()
-        var i = 0
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
             data,
@@ -209,29 +199,15 @@ class HtmlParser @Inject constructor(
             """e":[{"file":"""
         )
         val res = JSONObject(decryptedData).getJSONArray("source")
-        return try {
-            while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
-                urls.add(res.getJSONObject(i).getString("file"))
-                i++
-            }
-            urls
-        } catch (exp: NullPointerException) {
-            urls
+        for (i in 0 until res.length()) {
+            val label = res.getJSONObject(i).getString("label")
+            if (label == "Auto") break
+            urls.add(res.getJSONObject(i).getString("file"))
         }
+        return urls
     }
 }
 
-/**
- * If the genre name contains a comma, return the substring after the comma, otherwise return the genre
- * name
- *
- * @param genreName The name of the genre.
- * @return The genre name is being returned.
- */
 private fun filterGenreName(genreName: String): String {
-    return if (genreName.contains(',')) {
-        genreName.substring(genreName.indexOf(',') + 1)
-    } else {
-        genreName
-    }
+    return genreName.substringAfter(',')
 }

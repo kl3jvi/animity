@@ -7,38 +7,36 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.ProfileRow
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.data.model.ui_models.UserAvatar
-
 fun ApolloResponse<UserQuery.Data>.convert(): User {
     val data = this.data
-    var user = User()
-    if (data?.user != null) {
-        user = User(
-            data.user.id,
-            data.user.name,
-            data.user.about.orEmpty(),
+    return data?.user?.let {
+        User(
+            it.id,
+            it.name,
+            it.about.orEmpty(),
             UserAvatar(
-                data.user.avatar?.large.orEmpty(),
-                data.user.avatar?.medium.orEmpty()
+                it.avatar?.large.orEmpty(),
+                it.avatar?.medium.orEmpty()
             ),
-            data.user.bannerImage.orEmpty()
+            it.bannerImage.orEmpty()
         )
-    }
-    return user
+    } ?: User()
 }
 
 fun ApolloResponse<AnimeListCollectionQuery.Data>.convert(): List<ProfileRow> {
     val data = this.data
-    val list: List<ProfileRow> = data?.media?.lists?.mapNotNull {
-        ProfileRow(
-            it?.name.orEmpty(),
-            it?.entries.convert()
-        )
+    return data?.media?.lists?.mapNotNull {
+        it?.let {
+            ProfileRow(
+                it.name.orEmpty(),
+                it.entries.convert()
+            )
+        }
     } ?: emptyList()
-    return list
 }
 
+
 private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia> {
-    return this?.mapNotNull {
-        it?.media?.homeMedia.convert()
-    } ?: listOf()
+    return this?.mapNotNull { it?.media?.homeMedia.convert() } ?: emptyList()
 }
+
