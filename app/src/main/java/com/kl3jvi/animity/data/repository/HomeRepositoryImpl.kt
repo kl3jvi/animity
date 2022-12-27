@@ -43,9 +43,8 @@ class HomeRepositoryImpl @Inject constructor(
             .mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
             .flowOn(ioDispatcher)
 
-    override fun getEncryptionKeys() = flow {
-        emit(animeClient.getEncryptionKeys())
-    }.flowOn(ioDispatcher)
+    override fun getEncryptionKeys() =
+        flow { emit(animeClient.getEncryptionKeys()) }.flowOn(ioDispatcher)
 
     override fun getNotifications(): Flow<WorkInfo> {
         return workManager.getWorkInfoByIdLiveData(work.id).asFlow()

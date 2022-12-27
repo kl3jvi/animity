@@ -15,31 +15,16 @@ import com.kl3jvi.animity.data.model.ui_models.UserAvatar
 import com.kl3jvi.animity.fragment.HomeMedia
 
 fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
-    val data = this.data
-    var homeData = HomeData()
-    if (!this.hasErrors() && this.data != null) {
-        val trendingAnime =
-            data?.trendingAnime?.media?.mapNotNull {
-                it?.homeMedia?.convert()
-            } ?: emptyList()
-        val popularAnime =
-            data?.popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList()
-        val movies =
-            data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList()
-        val review = data?.review?.reviews?.mapNotNull {
-            it.convert()
-        } ?: emptyList()
-
-        homeData = HomeData(
-            trendingAnime = trendingAnime,
-            popularAnime = popularAnime,
-            movies = movies,
-            review = review
-        )
-    }
-
-    return homeData
+    return HomeData(
+        trendingAnime = this.data?.trendingAnime?.media?.mapNotNull { it?.homeMedia?.convert() }
+            ?: emptyList(),
+        popularAnime = this.data?.popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() }
+            ?: emptyList(),
+        movies = this.data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList(),
+        review = this.data?.review?.reviews?.mapNotNull { it.convert() } ?: emptyList()
+    )
 }
+
 
 fun HomeDataQuery.Review1?.convert(): Review {
     return Review(

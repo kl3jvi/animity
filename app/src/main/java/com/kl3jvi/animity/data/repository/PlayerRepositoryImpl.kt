@@ -67,13 +67,8 @@ class PlayerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPlaybackPosition(episodeUrl: String): Flow<EpisodeEntity> {
-        return withContext(ioDispatcher) {
-            val exists = episodeDao.isEpisodeOnDatabase(episodeUrl)
-            if (exists) {
-                episodeDao.getEpisodeContent(episodeUrl)
-            } else {
-                emptyFlow()
-            }
-        }
+        return episodeDao.getEpisodeContent(episodeUrl)
+            .flowOn(ioDispatcher)
+            .filter { episodeDao.isEpisodeOnDatabase(episodeUrl) }
     }
 }
