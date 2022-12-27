@@ -23,42 +23,33 @@ class PlayerRepositoryImpl @Inject constructor(
     override val parser: GoGoParser
 ) : PlayerRepository {
 
-    override fun getMediaUrl(
-        header: Map<String, String>,
-        url: String
-    ) = flow {
-        val response = parser.parseMediaUrl(
+    override fun getMediaUrl(header: Map<String, String>, url: String): Flow<List<String>> = flow {
+        val episodeInfo = parser.parseMediaUrl(
             apiClient.fetchEpisodeMediaUrl(header = header, episodeUrl = url).string()
         )
-        emit(response)
-    }.flatMapLatest { episodeInfo ->
-        flow {
-            val id = Regex("id=([^&]+)").find(
-                episodeInfo.vidCdnUrl.orEmpty()
-            )?.value?.removePrefix("id=")
-            val response = parser.parseEncryptAjax(
-                response = apiClient.fetchM3u8Url(
-                    header = header,
-                    url = episodeInfo.vidCdnUrl.orEmpty()
-                ).string(),
-                id = id.orEmpty()
-            )
-            val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$response"
-            emit(streamUrl)
-        }
-    }.flatMapLatest {
-        flow {
-            val response = parser.parseEncryptedUrls(
-                apiClient.fetchM3u8PreProcessor(header = header, url = it).string()
-            )
-            emit(response)
-        }
+        val id =
+            Regex("id=([^&]+)").find(episodeInfo.vidCdnUrl.orEmpty())?.value?.removePrefix("id=")
+        val ajaxResponse = parser.parseEncryptAjax(
+            response = apiClient.fetchM3u8Url(
+                header = header,
+                url = episodeInfo.vidCdnUrl.orEmpty()
+            ).string(),
+            id = id.orEmpty()
+        )
+        val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$ajaxResponse"
+        val encryptedUrls = parser.parseEncryptedUrls(
+            apiClient.fetchM3u8PreProcessor(
+                header = header,
+                url = streamUrl
+            ).string()
+        )
+        emit(encryptedUrls)
     }.flowOn(ioDispatcher)
 
+
     override suspend fun upsertEpisode(episodeEntity: EpisodeEntity) {
-        return withContext(ioDispatcher) {
-            val exists = episodeDao.isEpisodeOnDatabase(episodeEntity.episodeUrl) && episodeEntity.watchedDuration > 0
-            if (exists) {
+        withContext(ioDispatcher) {
+            if (episodeDao.isEpisodeOnDatabase(episodeEntity.episodeUrl) && episodeEntity.watchedDuration > 0) {
                 episodeDao.updateEpisode(episodeEntity)
             } else {
                 episodeDao.insertEpisode(episodeEntity)

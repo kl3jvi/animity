@@ -14,13 +14,13 @@ import com.kl3jvi.animity.utils.or1
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -39,25 +39,26 @@ class DetailsViewModel @Inject constructor(
     val reverseState = MutableStateFlow(false)
 
     val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
-        favoriteRepository.getGogoUrlFromAniListId(media.idAniList).asResult().map { result ->
-            when (result) {
-                is Result.Error -> EpisodeListUiState.Error
-                Result.Loading -> EpisodeListUiState.Loading
-                is Result.Success -> {
-                    val episodeListFlow = detailsRepository.fetchAnimeInfo(
-                        episodeUrl = result.data.pages?.getGogoUrl().orEmpty()
-                    ).flatMapLatest { animeInfo ->
-                        detailsRepository.fetchEpisodeList(
-                            id = animeInfo.id,
-                            endEpisode = animeInfo.endEpisode,
-                            alias = animeInfo.alias,
-                            malId = media.idMal.or1()
-                        )
-                    }.catch { e -> logError(e) }
-                    EpisodeListUiState.Success(episodeListFlow)
+        favoriteRepository.getGogoUrlFromAniListId(media.idAniList).asResult()
+            .flatMapLatest { result ->
+                when (result) {
+                    is Result.Error -> flow<EpisodeListUiState> { emit(EpisodeListUiState.Error) }
+                    Result.Loading -> flow { emit(EpisodeListUiState.Loading) }
+                    is Result.Success -> {
+                        val episodeListFlow = detailsRepository.fetchAnimeInfo(
+                            episodeUrl = result.data.pages?.getGogoUrl().orEmpty()
+                        ).flatMapLatest { animeInfo ->
+                            detailsRepository.fetchEpisodeList(
+                                id = animeInfo.id,
+                                endEpisode = animeInfo.endEpisode,
+                                alias = animeInfo.alias,
+                                malId = media.idMal.or1()
+                            )
+                        }.catch { e -> logError(e) }
+                        episodeListFlow.map { episodes -> EpisodeListUiState.Success(episodes) }
+                    }
                 }
             }
-        }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),
@@ -80,5 +81,5 @@ class DetailsViewModel @Inject constructor(
 sealed interface EpisodeListUiState {
     object Loading : EpisodeListUiState
     object Error : EpisodeListUiState
-    data class Success(val data: Flow<List<EpisodeModel>>) : EpisodeListUiState
+    data class Success(val data: List<EpisodeModel>) : EpisodeListUiState
 }

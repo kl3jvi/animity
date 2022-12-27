@@ -38,8 +38,8 @@ class SearchAniListPagingSource(
                 nextKey = if (listOfAniListMedia.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
+            e.printStackTrace()
             LoadResult.Error(e)
         }
     }
 }
-

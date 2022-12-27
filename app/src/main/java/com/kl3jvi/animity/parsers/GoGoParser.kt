@@ -49,7 +49,6 @@ class GoGoParser @Inject constructor(
      */
     override fun getMediaUrls(response: String): List<String> {
         val urls = mutableListOf<String>()
-        var i = 0
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
             data,
@@ -60,16 +59,14 @@ class GoGoParser @Inject constructor(
             """e":[{"file":"""
         )
         val res = JSONObject(decryptedData).getJSONArray("source")
-        return try {
-            while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
-                urls.add(res.getJSONObject(i).getString("file"))
-                i++
-            }
-            urls
-        } catch (exp: NullPointerException) {
-            urls
+        for (i in 0 until res.length()) {
+            val label = res.getJSONObject(i).getString("label")
+            if (label == "Auto") break
+            urls.add(res.getJSONObject(i).getString("file"))
         }
+        return urls
     }
+
 
     override fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
@@ -160,8 +157,7 @@ class GoGoParser @Inject constructor(
     }
 
     override fun parseEncryptedUrls(response: String): List<String> {
-        val urls: ArrayList<String> = ArrayList()
-        var i = 0
+        val urls = mutableListOf<String>()
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
             data,
@@ -172,14 +168,12 @@ class GoGoParser @Inject constructor(
             """e":[{"file":"""
         )
         val res = JSONObject(decryptedData).getJSONArray("source")
-        return try {
-            while (i != res.length() && res.getJSONObject(i).getString("label") != "Auto") {
-                urls.add(res.getJSONObject(i).getString("file"))
-                i++
-            }
-            urls
-        } catch (exp: NullPointerException) {
-            urls
+        for (i in 0 until res.length()) {
+            val label = res.getJSONObject(i).getString("label")
+            if (label == "Auto") break
+            urls.add(res.getJSONObject(i).getString("file"))
         }
+        return urls
     }
+
 }
