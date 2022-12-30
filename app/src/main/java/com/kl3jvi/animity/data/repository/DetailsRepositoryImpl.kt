@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.repository
 
-import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
@@ -12,10 +11,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,51 +25,31 @@ class DetailsRepositoryImpl @Inject constructor(
     private val episodeDao: EpisodeDao
 ) : DetailsRepository {
 
-    override fun fetchAnimeInfo(
-        header: Map<String, String>,
-        episodeUrl: String
-    ) = flow {
+    override fun fetchAnimeInfo(header: Map<String, String>, episodeUrl: String) = flow {
         if (episodeUrl.isNotEmpty()) {
-            val response = withContext(ioDispatcher) {
-                parser.parseAnimeInfo(
-                    apiClient.fetchAnimeInfo(header = header, episodeUrl = episodeUrl).string()
-                )
-            }
-            emit(response)
-        } else {
-            emptyFlow<AnimeInfoModel>()
+            val response =
+                apiClient.fetchAnimeInfo(header = header, episodeUrl = episodeUrl).string()
+            val parsedResponse = parser.parseAnimeInfo(response)
+            emit(parsedResponse)
         }
     }.flowOn(ioDispatcher)
 
     override fun fetchEpisodeList(
-        header: Map<String, String>,
-        id: String,
-        endEpisode: String,
-        alias: String,
-        malId: Int
+        header: Map<String, String>, id: String, endEpisode: String, alias: String, malId: Int
     ): Flow<List<EpisodeModel>> {
         val parsedEpisodeList = flow {
-            val response = parser.fetchEpisodeList(
-                apiClient.fetchEpisodeList(
-                    header = header,
-                    id = id,
-                    endEpisode = endEpisode,
-                    alias = alias
-                ).string()
-            ).reversed()
-            emit(response)
+            val response = apiClient.fetchEpisodeList(
+                header = header, id = id, endEpisode = endEpisode, alias = alias
+            ).string()
+            val reversedEpisodeList = parser.fetchEpisodeList(response).reversed()
+            emit(reversedEpisodeList)
         }
 
         return combine(
-            parsedEpisodeList,
-            getEpisodeTitles(malId),
-            getEpisodesPercentage(malId)
+            parsedEpisodeList, getEpisodeTitles(malId), getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
-            /* Adding episode title to the episode model. */
-
-            episodeModels.mapIndexed { index, episodeModel ->
-                if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number
-                ) {
+            val updatedEpisodeModels = episodeModels.mapIndexed { index, episodeModel ->
+                if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
                 } else {
@@ -80,7 +57,6 @@ class DetailsRepositoryImpl @Inject constructor(
                     episodeModel.isFiller = false
                 }
                 episodeModel
-                /* Adding watched percentage to the episodes. */
             }.map { episode ->
                 val contentEpisode =
                     episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
@@ -90,7 +66,7 @@ class DetailsRepositoryImpl @Inject constructor(
                 episode
             }
 
-            episodeModels.ifEmpty {
+            updatedEpisodeModels.ifEmpty {
                 enimeClient.getEnimeEpisodesIds(malId).episodes.map {
                     EpisodeModel(
                         it.title,
@@ -98,6 +74,7 @@ class DetailsRepositoryImpl @Inject constructor(
                         enimeClient.getEnimeSource(it.sources.last().id).url
                     )
                 }
+
             }
         }.flowOn(ioDispatcher)
     }

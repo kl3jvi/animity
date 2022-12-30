@@ -13,13 +13,13 @@ import com.google.gson.annotations.SerializedName
  */
 data class AuthResponse(
     @SerializedName("access_token")
-    val accessToken: String?,
+    val accessToken: String? = "",
     @SerializedName("expires_in")
-    val expiresIn: Int?,
+    val expiresIn: Int? = 1,
     @SerializedName("refresh_token")
-    var refreshToken: String?,
+    var refreshToken: String? = "",
     @SerializedName("token_type")
-    val tokenType: String?
+    val tokenType: String? = ""
 ) {
     fun isExpired(): Boolean {
         return expiresIn?.let {

@@ -53,6 +53,7 @@ class GlideModule : AppGlideModule() {
 
         val factory = OkHttpUrlLoader.Factory(okHttpClient)
 
+
         registry.replace(
             GlideUrl::class.java,
             InputStream::class.java,
