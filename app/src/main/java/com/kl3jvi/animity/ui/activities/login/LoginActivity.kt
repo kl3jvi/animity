@@ -11,9 +11,9 @@ import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
-import com.kl3jvi.animity.BuildConfig.*
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
+import com.kl3jvi.animity.data.secrets.Secrets
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
@@ -189,5 +189,11 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         onHandleAuthIntent(intent)
+    }
+
+    companion object {
+        val anilistId = Secrets.getAnilistId().orEmpty()
+        val redirectUri = Secrets.getRedirectUri().orEmpty()
+        val anilistSecret = Secrets.getAnilistSecret().orEmpty()
     }
 }

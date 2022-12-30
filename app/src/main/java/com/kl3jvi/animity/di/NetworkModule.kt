@@ -47,7 +47,7 @@ object NetworkModule {
             .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
+                    level = HttpLoggingInterceptor.Level.BODY
                 }
             )
             .connectTimeout(20, TimeUnit.SECONDS)

@@ -45,6 +45,14 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+//            arguments {
+//                arg('-DANDROID_NDK_ROOT=${android.ndkDirectory}/25.1.8937393', '-DANDROID_TOOLCHAIN=clang')
+//            }
+        }
+    }
     kapt {
         useBuildCache true
         arguments {
