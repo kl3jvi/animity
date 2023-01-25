@@ -1,5 +1,5 @@
 
-<p align="center"><a href="https://github.com/kl3jvi/animity"><img src="https://github.com/kl3jvi/animity/blob/kotlin_app/app/src/main/ic_launcher-playstore.png" width="150"></a></p> 
+<p align="center"><a href="https://github.com/kl3jvi/animity"><img src="https://cdn.midjourney.com/69275306-9024-484a-8a7d-986f6420ed5f/grid_0.png" width="150"></a></p> 
 <h2 align="center"><b>Animity - Anime Streaming App </b></h2>
 <h4 align="center">An Android app to watch anime on your phone without ads.</h4>
 <p align="center"><a href="https://github.com/kl3jvi/animity/releases"><img src="https://cdn-icons-png.flaticon.com/512/892/892634.png" width="50"></a>
