@@ -15,7 +15,7 @@ jobs:
         continue-on-error: true
       - uses: yutailang0119/action-ktlint@v3
         with:
-          report-path: build/*.xml # Support glob patterns by https://www.npmjs.com/package/@actions/glob
+          report-path: build/*.xml
           continue-on-error: true
 
   build:
@@ -32,6 +32,16 @@ jobs:
       - name: build release
         run: ./gradlew assembleRelease
 
+      - name: Get latest merge commit tag
+        run: git describe --tags $(git rev-list --tags --max-count=1)
+        shell: bash
+
+      - name: Set version environment variable
+        run: echo ::set-env name=VERSION::$(git describe --tags $(git rev-list --tags --max-count=1))
+
+      - name: Rename APK file
+        run: mv app/build/outputs/apk/release/Animity-v1.1.1-arm64-v8a-release-unsigned.apk app/build/outputs/apk/release/Animity-${{ env.VERSION }}-arm64-v8a-release-unsigned.apk
+
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
@@ -46,5 +56,5 @@ jobs:
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
-          groups: animity-testers
-          file: app/build/outputs/apk/release/Animity-v1.1.1-arm64-v8a-release-unsigned.apk
+          groups: animity-tester
+          file: app/build/outputs/apk/release/Animity-${{ env.VERSION }}-arm64-v8a-release-unsigned.apk
