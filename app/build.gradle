@@ -265,7 +265,7 @@ dependencies {
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
     implementation 'com.google.code.gson:gson:2.10'
-
+    implementation 'io.github.azhon:appupdate:4.2.7'
 
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"

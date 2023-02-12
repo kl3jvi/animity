@@ -15,10 +15,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.azhon.appupdate.manager.DownloadManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.utils.collectFlow
@@ -65,6 +67,23 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         bottomBarVisibility()
+        checkUpdates()
+    }
+
+
+    private fun checkUpdates() {
+        val manager = DownloadManager.Builder(this).run {
+            apkUrl("https://github.com/kl3jvi/animity/releases/download/v0.1.7/Animity-v1.1.2-universal-release.apk")
+            apkName("animity.apk")
+            smallIcon(R.mipmap.ic_launcher)
+            apkVersionCode(2)
+            apkVersionName("v0.0.18")
+            apkSize("6.42MB")
+            apkDescription("Improved searching and trying to add personalised content.")
+            apkVersionCode(BuildConfig.VERSION_CODE + 1)
+            build()
+        }
+        manager.download()
     }
 
     /* Hiding the bottom navigation bar. */
