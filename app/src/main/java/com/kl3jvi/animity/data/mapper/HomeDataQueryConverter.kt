@@ -25,7 +25,6 @@ fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
     )
 }
 
-
 fun HomeDataQuery.Review1?.convert(): Review {
     return Review(
         id = this?.id ?: 0,

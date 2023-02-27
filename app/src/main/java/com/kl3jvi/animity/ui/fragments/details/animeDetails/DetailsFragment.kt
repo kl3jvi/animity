@@ -15,6 +15,7 @@ import androidx.annotation.MenuRes
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,13 +31,14 @@ import com.kl3jvi.animity.data.model.ui_models.toStateListColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.ui.fragments.favorites.FavoritesViewModel
 import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,8 +47,7 @@ import java.util.*
 @AndroidEntryPoint
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
-    private val viewModel: DetailsViewModel by viewModels()
-    private val favoritesViewModel: FavoritesViewModel by viewModels()
+    private val viewModel: DetailsViewModel by activityViewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
     private var binding: FragmentDetailsBinding? = null
@@ -75,13 +76,17 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun initViews() {
         animeDetails.let { animeInfo ->
-            viewModel.animeMetaModel.value = animeInfo
+            viewModel.animeMetaModel.update { animeInfo }
             binding?.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
                 resultTitle.text = animeInfo.title.userPreferred
                 title = animeInfo.title.userPreferred
                 imageButton.setOnClickListener {
-                    viewModel.reverseState.value = !viewModel.reverseState.value
+                    viewModel.reverseState.updateAndGet { !it }.also {
+                        imageButton.load(
+                            if (it) R.drawable.ic_up_arrow else R.drawable.ic_down_arrow
+                        )
+                    }
                 }
             }
         }
@@ -102,7 +107,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 the displayInDayDateTimeFormat function on it. */
                 releaseTime.text = info.nextAiringEpisode.takeIf {
                     it != null
-                }?.run { displayInDayDateTimeFormat(this) }
+                }?.run(::displayInDayDateTimeFormat)
 
                 animeInfoLayout.textOverview.visibility = VISIBLE
                 releaseDate.visibility = VISIBLE
@@ -238,7 +243,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding?.episodeListRecycler?.withModels {
             episodes.forEachIndexed { index, episodeModel ->
                 episodeLarge {
-                    id(episodeModel.episodeNumber)
+                    id(UUID.randomUUID().toString())
                     clickListener { _ ->
                         requireContext().launchActivity<PlayerActivity> {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
@@ -258,9 +263,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                                 animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
                             }
 
-                            else -> {
-                                animeDetails.coverImage.large
-                            }
+                            else -> animeDetails.coverImage.large
                         }
                     )
                     episodeInfo(episodeModel)

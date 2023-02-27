@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,10 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository
+    private val searchRepository: SearchRepository,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _searchList = MutableStateFlow<PagingData<AniListMedia>>(PagingData.empty())
+    private val _searchList = MutableStateFlow(PagingData.empty<AniListMedia>())
     val searchList = _searchList.asStateFlow()
 
     private var textQuery = ""
@@ -36,11 +38,16 @@ class SearchViewModel @Inject constructor(
     private fun executeSearch() {
         // Cancel any in-flight searches
         searchJob?.cancel()
-        searchJob = viewModelScope.launch {
+        searchJob = viewModelScope.launch(ioDispatcher) {
             searchRepository.fetchAniListSearchData(textQuery)
                 .cachedIn(viewModelScope)
                 .debounce(500)
                 .collect { _searchList.value = it }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        searchJob?.cancel()
     }
 }

@@ -67,7 +67,6 @@ class GoGoParser @Inject constructor(
         return urls
     }
 
-
     override fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
         val episodeInfo = document.getElementById("episode_page")
@@ -175,5 +174,4 @@ class GoGoParser @Inject constructor(
         }
         return urls
     }
-
 }

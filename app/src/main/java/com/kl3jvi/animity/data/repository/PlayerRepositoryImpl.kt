@@ -46,7 +46,6 @@ class PlayerRepositoryImpl @Inject constructor(
         emit(encryptedUrls)
     }.flowOn(ioDispatcher)
 
-
     override suspend fun upsertEpisode(episodeEntity: EpisodeEntity) {
         withContext(ioDispatcher) {
             if (episodeDao.isEpisodeOnDatabase(episodeEntity.episodeUrl) && episodeEntity.watchedDuration > 0) {

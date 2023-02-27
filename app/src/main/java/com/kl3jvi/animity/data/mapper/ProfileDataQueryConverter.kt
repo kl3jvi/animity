@@ -31,7 +31,6 @@ fun ApolloResponse<AnimeListCollectionQuery.Data>.convert(): List<ProfileRow> {
     } ?: emptyList()
 }
 
-
 private fun List<AnimeListCollectionQuery.Entry?>?.convert(): List<AniListMedia> {
     return this?.mapNotNull {
         it?.media?.homeMedia.convert()

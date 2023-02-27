@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
+import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collectFlow
 import com.kl3jvi.animity.utils.createFragmentMenu
 import com.kl3jvi.animity.utils.launchActivity
@@ -35,6 +36,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     requireActivity().finish()
                     true
                 }
+
                 else -> false
             }
         }
@@ -45,17 +47,17 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewLifecycleOwner.collectFlow(viewModel.profileData) { userData ->
             binding?.profileRv?.withModels {
                 when (userData) {
-                    is ProfileDataUiState.Error -> {
+                    is UiResult.Error -> {
                         Toast.makeText(
                             requireContext(),
-                            "${userData.exception?.localizedMessage}",
+                            userData.throwable.localizedMessage ?: "",
                             Toast.LENGTH_LONG
                         ).show()
                     }
 
-                    ProfileDataUiState.Loading -> {}
+                    UiResult.Loading -> {}
 
-                    is ProfileDataUiState.Success -> {
+                    is UiResult.Success -> {
                         buildProfile(userData = userData.data)
                     }
                 }

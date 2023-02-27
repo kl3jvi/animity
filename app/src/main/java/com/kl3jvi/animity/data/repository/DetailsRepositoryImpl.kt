@@ -35,18 +35,27 @@ class DetailsRepositoryImpl @Inject constructor(
     }.flowOn(ioDispatcher)
 
     override fun fetchEpisodeList(
-        header: Map<String, String>, id: String, endEpisode: String, alias: String, malId: Int
+        header: Map<String, String>,
+        id: String,
+        endEpisode: String,
+        alias: String,
+        malId: Int
     ): Flow<List<EpisodeModel>> {
         val parsedEpisodeList = flow {
             val response = apiClient.fetchEpisodeList(
-                header = header, id = id, endEpisode = endEpisode, alias = alias
+                header = header,
+                id = id,
+                endEpisode = endEpisode,
+                alias = alias
             ).string()
             val reversedEpisodeList = parser.fetchEpisodeList(response).reversed()
             emit(reversedEpisodeList)
         }
 
         return combine(
-            parsedEpisodeList, getEpisodeTitles(malId), getEpisodesPercentage(malId)
+            parsedEpisodeList,
+            getEpisodeTitles(malId),
+            getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
             val updatedEpisodeModels = episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number) {
@@ -74,7 +83,6 @@ class DetailsRepositoryImpl @Inject constructor(
                         enimeClient.getEnimeSource(it.sources.last().id).url
                     )
                 }
-
             }
         }.flowOn(ioDispatcher)
     }

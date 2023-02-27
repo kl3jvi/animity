@@ -4,7 +4,8 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import javax.inject.Inject
 
-class NineAnimeParser @Inject constructor() : BaseParser() {
+class WcoFunParser @Inject constructor() : BaseParser() {
+
     override fun fetchEpisodeList(response: String): List<EpisodeModel> {
         TODO("Not yet implemented")
     }

@@ -5,11 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
-import com.kl3jvi.animity.utils.Result
-import com.kl3jvi.animity.utils.asResult
+import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,18 +47,9 @@ class PlayerViewModel @Inject constructor(
     }.flowOn(Dispatchers.Main)
 
     val episodeMediaUrl = episodeUrl.flatMapLatest {
-        playerRepository.getMediaUrl(url = it).asResult().map { result ->
-            when (result) {
-                is Result.Error -> EpisodeUrlUiState.Error
-                Result.Loading -> EpisodeUrlUiState.Loading
-                is Result.Success -> EpisodeUrlUiState.Success(result.data)
-            }
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        EpisodeUrlUiState.Loading
-    )
+        playerRepository.getMediaUrl(url = it)
+            .mapToUiState(viewModelScope + ioDispatcher)
+    }
 
     fun upsertEpisode(episodeEntity: EpisodeEntity) {
         viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(episodeEntity) }
@@ -69,10 +68,4 @@ class PlayerViewModel @Inject constructor(
             }
         }
     }
-}
-
-sealed interface EpisodeUrlUiState {
-    data class Success(val data: List<String>) : EpisodeUrlUiState
-    object Loading : EpisodeUrlUiState
-    object Error : EpisodeUrlUiState
 }

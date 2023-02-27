@@ -2,17 +2,14 @@ package com.kl3jvi.animity.ui.fragments.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.domain.repositories.ProfileRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
-import com.kl3jvi.animity.utils.Result
-import com.kl3jvi.animity.utils.asResult
+import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -20,28 +17,13 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     profileRepository: ProfileRepository,
-    localStorage: PersistenceRepository
+    localStorage: PersistenceRepository,
+    ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val profileData = profileRepository.getProfileData(localStorage.aniListUserId?.toInt())
-        .asResult()
-        .map {
-            when (it) {
-                is Result.Error -> ProfileDataUiState.Error(it.exception)
-                Result.Loading -> ProfileDataUiState.Loading
-                is Result.Success -> ProfileDataUiState.Success(it.data)
-            }
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            ProfileDataUiState.Loading
-        )
+    val profileData = profileRepository
+        .getProfileData(localStorage.aniListUserId?.toInt())
+        .mapToUiState(viewModelScope + ioDispatcher)
 
     fun clearStorage() = userRepository.clearStorage()
-}
-
-sealed interface ProfileDataUiState {
-    data class Success(val data: ProfileData) : ProfileDataUiState
-    object Loading : ProfileDataUiState
-    data class Error(val exception: Throwable?) : ProfileDataUiState
 }

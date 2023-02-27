@@ -14,7 +14,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Format
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackParameters
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.MediaSource
@@ -42,6 +48,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.MAL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -148,15 +155,15 @@ class PlayerActivity : AppCompatActivity() {
     private fun initializePlayer() {
         collectFlow(viewModel.episodeMediaUrl) { res ->
             when (res) {
-                is EpisodeUrlUiState.Error -> {
+                is UiResult.Error -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
                 }
 
-                EpisodeUrlUiState.Loading -> {
+                UiResult.Loading -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
                 }
 
-                is EpisodeUrlUiState.Success -> {
+                is UiResult.Success -> {
                     val videoM3U8Url = getSafeString(res.data.last())
                     try {
                         trackSelector = DefaultTrackSelector(this).apply {
@@ -438,7 +445,8 @@ class PlayerActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, binding.videoView).let { controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
 }

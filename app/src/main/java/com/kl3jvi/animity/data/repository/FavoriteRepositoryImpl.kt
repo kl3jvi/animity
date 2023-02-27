@@ -19,7 +19,7 @@ class FavoriteRepositoryImpl @Inject constructor(
 ) : FavoriteRepository {
 
     override fun getGogoUrlFromAniListId(id: Int) = flow {
-        emit(apiClient.getGogoUrlFromAniListId(id))
+        emit(apiClient.getGogoUrlFromAniListId(id).pages?.getGogoUrl().orEmpty())
     }.flowOn(ioDispatcher)
 
     override fun getFavoriteAnimesFromAniList(

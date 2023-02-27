@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         checkUpdates()
     }
 
-
     private fun checkUpdates() {
         val manager = DownloadManager.Builder(this).run {
             apkUrl("https://github.com/kl3jvi/animity/releases/download/v0.1.7/Animity-v1.1.2-universal-release.apk")

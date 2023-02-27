@@ -138,35 +138,6 @@
         app:srcCompat="@drawable/ic_more"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <ImageView
-        android:id="@+id/exo_full_Screen"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="24dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:padding="10dp"
-        android:src="@drawable/exo_controls_fullscreen_enter"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_duration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/exo_progress"
-        app:tint="@color/media_player_controls" />
-
-    <TextView
-        android:id="@+id/exo_position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:textColor="@color/media_player_controls"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
-        app:layout_constraintEnd_toStartOf="@id/exo_progress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/exo_progress"
-        tools:text="22:04" />
-
     <LinearLayout
         android:id="@+id/skipLayout"
         android:layout_width="wrap_content"
@@ -179,7 +150,7 @@
         android:padding="5dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/exo_progress"
+        app:layout_constraintBottom_toTopOf="@+id/progress_wrapper"
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
@@ -204,64 +175,85 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/previousEpisode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:padding="8dp"
-        android:text="@string/previous_episode"
-        android:textColor="@color/media_player_controls"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/exo_position"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/nextEpisode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:padding="8dp"
-        android:text="@string/next_episode"
-        android:textColor="@color/media_player_controls"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/exo_duration"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <com.google.android.exoplayer2.ui.DefaultTimeBar
-        android:id="@id/exo_progress"
+    <androidx.cardview.widget.CardView
+        android:id="@id/progress_wrapper"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/exo_controls_rewind_description"
-        app:bar_height="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/exo_duration"
-        app:layout_constraintStart_toEndOf="@id/exo_position"
-        app:played_color="@color/colorProgress"
-        app:scrubber_color="@color/colorProgress"
-        app:scrubber_dragged_size="20dp"
-        app:scrubber_enabled_size="15dp"
-        app:unplayed_color="@color/videoProgress" />
-
-    <TextView
-        android:id="@+id/exo_duration"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/media_player_controls"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
-        app:layout_constraintEnd_toStartOf="@+id/exo_full_Screen"
-        app:layout_constraintStart_toEndOf="@id/exo_progress"
-        app:layout_constraintTop_toTopOf="@+id/exo_progress"
-        tools:text="40:00" />
+        android:layout_gravity="center"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#4DFFFFFF"
+        app:cardCornerRadius="@dimen/dp_12"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.exoplayer2.ui.DefaultTimeBar
+                android:id="@+id/exo_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/dp_10"
+                android:layout_weight="1"
+                android:contentDescription="@string/exo_controls_rewind_description"
+                app:bar_height="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/exo_duration"
+                app:layout_constraintStart_toEndOf="@+id/exo_position"
+                app:layout_constraintTop_toTopOf="parent"
+                app:played_color="@color/colorProgress"
+                app:scrubber_color="@color/colorProgress"
+                app:scrubber_dragged_size="20dp"
+                app:scrubber_enabled_size="15dp"
+                app:unplayed_color="@color/videoProgress" />
+
+            <TextView
+                android:id="@+id/exo_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/media_player_controls"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
+                app:layout_constraintEnd_toStartOf="@+id/exo_full_Screen"
+                app:layout_constraintTop_toTopOf="@+id/exo_progress"
+                tools:text="40:00" />
+
+            <TextView
+                android:id="@+id/exo_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/media_player_controls"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/exo_progress"
+                tools:text="22:04" />
+
+            <ImageView
+                android:id="@+id/exo_full_Screen"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:src="@drawable/exo_controls_fullscreen_enter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/media_player_controls" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

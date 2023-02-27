@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 fun <T> LifecycleOwner.collectFlow(
-    flow: Flow<T>, collector: suspend (T) -> Unit
+    flow: Flow<T>,
+    collector: suspend (T) -> Unit
 ) {
     lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -21,7 +22,8 @@ fun <T> LifecycleOwner.collectFlow(
 }
 
 fun <T> Fragment.collectLatestFlow(
-    flow: Flow<T>, collector: suspend (T) -> Unit
+    flow: Flow<T>,
+    collector: suspend (T) -> Unit
 ) {
     viewLifecycleOwner.lifecycleScope.launchWhenStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {

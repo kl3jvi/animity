@@ -49,7 +49,7 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun setProvider(provider: String) {
-        storage.selectedProvider = Providers.GOGOANIME
+        storage.selectedProvider = Providers.GoGoAnime
     }
 
     override fun clearStorage() {

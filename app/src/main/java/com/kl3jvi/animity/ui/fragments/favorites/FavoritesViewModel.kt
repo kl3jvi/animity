@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
-import com.kl3jvi.animity.utils.Result
-import com.kl3jvi.animity.utils.asResult
+import com.kl3jvi.animity.utils.UiResult
+import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
@@ -22,23 +22,9 @@ class FavoritesViewModel @Inject constructor(
     ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val favoritesList: StateFlow<FavoritesUiState> =
-        favoriteRepository.getFavoriteAnimesFromAniList(localStorage.aniListUserId?.toInt(), 1)
-            .asResult().map {
-                when (it) {
-                    is Result.Error -> FavoritesUiState.Error()
-                    Result.Loading -> FavoritesUiState.Loading
-                    is Result.Success -> FavoritesUiState.Success(it.data)
-                }
-            }.stateIn(
-                viewModelScope.plus(context = ioDispatcher),
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = FavoritesUiState.Loading
-            )
-}
-
-sealed interface FavoritesUiState {
-    object Loading : FavoritesUiState
-    data class Success(val data: List<AniListMedia>) : FavoritesUiState
-    data class Error(val error: Throwable? = null) : FavoritesUiState
+    val favoritesList: StateFlow<UiResult<List<AniListMedia>>> =
+        favoriteRepository.getFavoriteAnimesFromAniList(
+            userId = localStorage.aniListUserId?.toInt(),
+            page = 1
+        ).mapToUiState(viewModelScope + ioDispatcher)
 }

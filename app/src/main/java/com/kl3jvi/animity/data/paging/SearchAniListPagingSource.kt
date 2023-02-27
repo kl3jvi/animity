@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class SearchAniListPagingSource(
-    private val apiClient: AniListGraphQlClient, private val query: String
+    private val apiClient: AniListGraphQlClient,
+    private val query: String
 ) : PagingSource<Int, AniListMedia>() {
 
     override fun getRefreshKey(state: PagingState<Int, AniListMedia>): Int? {

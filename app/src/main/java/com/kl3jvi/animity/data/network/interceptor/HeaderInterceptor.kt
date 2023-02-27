@@ -13,7 +13,6 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
     private val localStorage: PersistenceRepository
@@ -51,7 +50,6 @@ class HeaderInterceptor @Inject constructor(
             ).first()
         }.getOrDefault(AuthResponse())
 
-
         /* Adding the new access token to the header and then proceeding with the request. */
         return chain.proceed(
             chain.request().newBuilder()
@@ -62,4 +60,3 @@ class HeaderInterceptor @Inject constructor(
         )
     }
 }
-
