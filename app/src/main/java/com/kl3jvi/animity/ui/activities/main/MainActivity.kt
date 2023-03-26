@@ -2,7 +2,6 @@ package com.kl3jvi.animity.ui.activities.main
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.TimeInterpolator
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -67,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         /* Setting up the bottom navigation bar with the navigation controller. */
         navView.setupWithNavController(navController)
         setBottomBarVisibility()
-        checkUpdates()
+//        checkUpdates()
     }
 
     private fun checkUpdates() {
@@ -149,9 +148,9 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id in arrayOf(R.id.navigation_details,R.id.reviewDetailsFragment)){
+            if (destination.id in arrayOf(R.id.navigation_details, R.id.reviewDetailsFragment)) {
                 hideBottomNavBar()
-            }else {
+            } else {
                 showBottomNavBar()
             }
         }
