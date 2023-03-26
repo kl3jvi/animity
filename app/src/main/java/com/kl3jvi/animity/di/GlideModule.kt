@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.di
 
-import android.annotation.SuppressLint
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
@@ -20,36 +19,30 @@ import java.util.concurrent.TimeUnit
 @GlideModule
 class GlideModule : AppGlideModule() {
 
-    @SuppressLint("CheckResult")
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
-        builder.apply {
+        builder.setDefaultRequestOptions(
             RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .signature(ObjectKey(System.currentTimeMillis().toShort()))
-        }
+        )
     }
 
-    /**
-     * We're replacing the default GlideUrl class with our own OkHttpUrlLoader class
-     *
-     * @param context Context
-     * @param glide Glide instance
-     * @param registry The registry that you can use to register components.
-     */
-    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        super.registerComponents(context, glide, registry)
-
-        val okHttpClient = OkHttpClient.Builder()
+    companion object {
+        private val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
+                    level = HttpLoggingInterceptor.Level.BODY
                 }
             )
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .build()
+    }
+
+    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+        super.registerComponents(context, glide, registry)
 
         val factory = OkHttpUrlLoader.Factory(okHttpClient)
 

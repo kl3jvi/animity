@@ -9,7 +9,7 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -26,7 +26,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun fetchHomeData() {
-        viewLifecycleOwner.collectFlow(viewModel.homeDataUiState) { result ->
+        viewLifecycleOwner.collect(viewModel.homeDataUiState) { result ->
             binding?.mainRv?.withModels {
                 when (result) {
                     is HomeDataUiState.Error -> showSnack(

@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
-import com.kl3jvi.animity.utils.collectLatestFlow
+import com.kl3jvi.animity.utils.collectLatest
 import com.kl3jvi.animity.utils.dismissKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,7 +59,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun observeViewModel() {
-        collectLatestFlow(viewModel.searchList) { animeData ->
+        collectLatest(viewModel.searchList) { animeData ->
             pagingController.submitData(animeData)
         }
     }

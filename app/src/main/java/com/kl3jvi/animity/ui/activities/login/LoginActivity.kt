@@ -21,7 +21,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
 import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
 import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,7 +89,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
             if (uri.toString().startsWith(redirectUri)) {
                 val authorizationToken = uri?.getQueryParameter("code")
                 if (!authorizationToken.isNullOrEmpty()) {
-                    collectFlow(
+                    collect(
                         viewModel.getAccessToken(
                             grantType = AUTH_GRANT_TYPE,
                             clientId = anilistId.toInt(),
@@ -155,32 +155,12 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
     }
 
     /**
-     * It checks if the user is connected to the internet and enables/disables the login and sign up
-     * buttons accordingly.
-     */
-    private fun handleNetworkChanges() {
-//        internetConnection(this) { isConnected ->
-//            if (!isConnected) showSnack(binding.root, "No Internet Connection!")
-//            binding.aniListSignUp.isEnabled = isConnected
-//            binding.aniListLogin.isEnabled = isConnected
-//        }
-    }
-
-    /**
      * If the intent is not null, and the intent has the action of the intent filter, then call the
      * handleAuthIntent function
      */
     override fun onResume() {
         super.onResume()
         onHandleAuthIntent(intent)
-    }
-
-    /**
-     * It handles network changes.
-     */
-    override fun onStart() {
-        super.onStart()
-        handleNetworkChanges()
     }
 
     /**

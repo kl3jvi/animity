@@ -71,6 +71,4 @@ class AniListGraphQlClient @Inject constructor(
             Optional.Present(animeId)
         )
     ).toFlow()
-
-    override fun saveMediaListEntry() {}
 }

@@ -34,6 +34,22 @@ class DetailsRepositoryImpl @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
+    private fun getEpisodeList(
+        header: Map<String, String>,
+        id: String,
+        endEpisode: String,
+        alias: String
+    ) = flow {
+        val response = apiClient.fetchEpisodeList(
+            header = header,
+            id = id,
+            endEpisode = endEpisode,
+            alias = alias
+        ).string()
+        val reversedEpisodeList = parser.fetchEpisodeList(response).reversed()
+        emit(reversedEpisodeList)
+    }
+
     override fun fetchEpisodeList(
         header: Map<String, String>,
         id: String,
@@ -41,19 +57,8 @@ class DetailsRepositoryImpl @Inject constructor(
         alias: String,
         malId: Int
     ): Flow<List<EpisodeModel>> {
-        val parsedEpisodeList = flow {
-            val response = apiClient.fetchEpisodeList(
-                header = header,
-                id = id,
-                endEpisode = endEpisode,
-                alias = alias
-            ).string()
-            val reversedEpisodeList = parser.fetchEpisodeList(response).reversed()
-            emit(reversedEpisodeList)
-        }
-
         return combine(
-            parsedEpisodeList,
+            getEpisodeList(header, id, endEpisode, alias),
             getEpisodeTitles(malId),
             getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->

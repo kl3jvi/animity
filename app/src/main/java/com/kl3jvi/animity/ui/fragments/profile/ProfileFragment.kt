@@ -9,7 +9,7 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.utils.UiResult
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.createFragmentMenu
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +44,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun getProfileData() {
-        viewLifecycleOwner.collectFlow(viewModel.profileData) { userData ->
+        viewLifecycleOwner.collect(viewModel.profileData) { userData ->
             binding?.profileRv?.withModels {
                 when (userData) {
                     is UiResult.Error -> {

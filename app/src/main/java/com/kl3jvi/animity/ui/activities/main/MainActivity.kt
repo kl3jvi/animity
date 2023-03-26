@@ -2,6 +2,7 @@ package com.kl3jvi.animity.ui.activities.main
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.TimeInterpolator
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -23,7 +24,7 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -65,8 +66,7 @@ class MainActivity : AppCompatActivity() {
         /* Setting up the bottom navigation bar with the navigation controller. */
         /* Setting up the bottom navigation bar with the navigation controller. */
         navView.setupWithNavController(navController)
-
-        bottomBarVisibility()
+        setBottomBarVisibility()
         checkUpdates()
     }
 
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleNetworkChanges() {
-        collectFlow(viewModel.isConnectedToNetwork) { isConnected ->
+        collect(viewModel.isConnectedToNetwork) { isConnected ->
             binding.wrapper.isVisible = isConnected
             binding.noInternetStatus.noInternet.isVisible = !isConnected
         }
@@ -147,11 +147,11 @@ class MainActivity : AppCompatActivity() {
      * When the destination changes, if the destination is the details fragment or the review details
      * fragment, hide the bottom nav bar, otherwise show it.
      */
-    private fun bottomBarVisibility() {
+    private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_details || destination.id == R.id.reviewDetailsFragment) {
+            if (destination.id in arrayOf(R.id.navigation_details,R.id.reviewDetailsFragment)){
                 hideBottomNavBar()
-            } else {
+            }else {
                 showBottomNavBar()
             }
         }

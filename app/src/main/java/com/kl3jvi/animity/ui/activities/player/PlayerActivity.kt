@@ -49,7 +49,7 @@ import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Cache
@@ -153,7 +153,7 @@ class PlayerActivity : AppCompatActivity() {
 
     @ExperimentalCoroutinesApi
     private fun initializePlayer() {
-        collectFlow(viewModel.episodeMediaUrl) { res ->
+        collect(viewModel.episodeMediaUrl) { res ->
             when (res) {
                 is UiResult.Error -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
@@ -194,7 +194,7 @@ class PlayerActivity : AppCompatActivity() {
                         viewModel and then seek to that position. */
 
                         viewModel.getPlaybackPosition(episodeUrlLocal)
-                        collectFlow(viewModel.playBackPosition) {
+                        collect(viewModel.playBackPosition) {
                             player?.seekTo(it)
                         }
 
@@ -218,7 +218,7 @@ class PlayerActivity : AppCompatActivity() {
                         val skipIntro =
                             binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
 
-                        collectFlow(viewModel.progress(player)) { currentProgress ->
+                        collect(viewModel.progress(player)) { currentProgress ->
                             currentTime = currentProgress
                             if (currentTime < 300000) {
                                 skipIntro.setOnClickListener {

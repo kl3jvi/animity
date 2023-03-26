@@ -31,5 +31,4 @@ interface AniListSync {
     fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
     fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>>
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
-    fun saveMediaListEntry(): Any
 }

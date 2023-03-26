@@ -47,7 +47,7 @@ import java.util.*
 @AndroidEntryPoint
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
-    private val viewModel: DetailsViewModel by activityViewModels()
+    private val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
     private var binding: FragmentDetailsBinding? = null

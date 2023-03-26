@@ -9,20 +9,18 @@ import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
-import com.kl3jvi.animity.utils.ifAnyChanged
 import com.kl3jvi.animity.utils.ifChanged
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.or1
+import com.kl3jvi.animity.utils.reverseIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -59,9 +57,7 @@ class DetailsViewModel @Inject constructor(
                                 alias = animeInfo.alias,
                                 malId = media.idMal.or1()
                             )
-                        }.reverseIf {
-                            reverseState
-                        }.map { episodes ->
+                        }.reverseIf(reverseState).map { episodes ->
                             EpisodeListUiState.Success(episodes)
                         }
                     }
@@ -82,16 +78,6 @@ class DetailsViewModel @Inject constructor(
                 userRepository.markAnimeAsFavorite(it.idAniList).ifChanged()
                     .catch { error -> logError(error) }
             }.collect()
-        }
-    }
-}
-
-private fun <T> Flow<List<T>>.reverseIf(predicate: () -> MutableStateFlow<Boolean>): Flow<List<T>> {
-    return combine(this, predicate()) { list, bool ->
-        if (bool) {
-            list.asReversed()
-        } else {
-            list
         }
     }
 }

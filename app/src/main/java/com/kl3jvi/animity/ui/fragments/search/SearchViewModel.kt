@@ -10,7 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,32 +24,32 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _searchList = MutableStateFlow(PagingData.empty<AniListMedia>())
-    val searchList = _searchList.asStateFlow()
+    val searchList: StateFlow<PagingData<AniListMedia>> = _searchList.asStateFlow()
 
-    private var textQuery = ""
-    private var searchJob: Job? = null
+    private var currentSearchJob: Job? = null
+    private var currentQuery = ""
 
     fun onSearchQueryChanged(query: String) {
-        val newQuery = query.trim().takeIf { it.length >= 2 } ?: ""
-        if (textQuery != newQuery) {
-            textQuery = newQuery
+        val newQuery = query.trim()
+        if (newQuery != currentQuery && newQuery.length >= 2) {
+            currentQuery = newQuery
             executeSearch()
         }
     }
 
     private fun executeSearch() {
-        // Cancel any in-flight searches
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch(ioDispatcher) {
-            searchRepository.fetchAniListSearchData(textQuery)
+        currentSearchJob?.cancel()
+        currentSearchJob = viewModelScope.launch(ioDispatcher) {
+            searchRepository.fetchAniListSearchData(currentQuery)
                 .cachedIn(viewModelScope)
-                .debounce(500)
+                .debounce(timeoutMillis = 500)
                 .collect { _searchList.value = it }
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        searchJob?.cancel()
+        currentSearchJob?.cancel()
     }
 }
+

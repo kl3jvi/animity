@@ -10,7 +10,7 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
-import com.kl3jvi.animity.utils.collectFlow
+import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -38,7 +38,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun observeAniList() {
-        collectFlow(viewModel.favoritesList) { favoritesUiState ->
+        collect(viewModel.favoritesList) { favoritesUiState ->
             binding?.favoritesRecycler?.layoutManager = GridLayoutManager(requireContext(), 3)
             when (favoritesUiState) {
                 is UiResult.Error -> {

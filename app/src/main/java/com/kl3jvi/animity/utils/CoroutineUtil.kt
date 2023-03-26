@@ -6,11 +6,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-fun <T> LifecycleOwner.collectFlow(
+fun <T> LifecycleOwner.collect(
     flow: Flow<T>,
     collector: suspend (T) -> Unit
 ) {
@@ -21,7 +23,7 @@ fun <T> LifecycleOwner.collectFlow(
     }
 }
 
-fun <T> Fragment.collectLatestFlow(
+fun <T> Fragment.collectLatest(
     flow: Flow<T>,
     collector: suspend (T) -> Unit
 ) {
@@ -29,5 +31,11 @@ fun <T> Fragment.collectLatestFlow(
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.catch { e -> e.printStackTrace() }.collectLatest(collector)
         }
+    }
+}
+
+fun <T> Flow<List<T>>.reverseIf(predicate: MutableStateFlow<Boolean>): Flow<List<T>> {
+    return combine(predicate) { list, bool ->
+        if (bool) list.asReversed() else list
     }
 }
