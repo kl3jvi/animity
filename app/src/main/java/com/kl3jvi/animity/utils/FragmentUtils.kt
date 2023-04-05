@@ -5,13 +5,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.kl3jvi.animity.R
 
 /* A function that is used to navigate to a destination safely. */
@@ -37,7 +40,7 @@ fun View.canNavigate(): Boolean {
 
 fun Fragment.createFragmentMenu(
     @MenuRes menuLayout: Int,
-    selectedItem: (menuItem: MenuItem) -> Boolean
+    selectedItem: (menuItem: MenuItem) -> Unit
 ) {
     val menuHost = requireActivity()
     menuHost.addMenuProvider(
@@ -47,7 +50,8 @@ fun Fragment.createFragmentMenu(
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return selectedItem(menuItem)
+                selectedItem(menuItem)
+                return true
             }
         },
         viewLifecycleOwner,
@@ -57,4 +61,16 @@ fun Fragment.createFragmentMenu(
 
 internal inline fun Fragment.runIfFragmentIsAttached(block: () -> Unit) {
     context?.let { block() }
+}
+
+fun Fragment.nav(@IdRes id: Int?, directions: NavDirections, options: NavOptions? = null) {
+    findNavController().nav(id, directions, options)
+}
+
+fun NavController.nav(@IdRes id: Int?, directions: NavDirections, navOptions: NavOptions? = null) {
+    if (id == null || this.currentDestination?.id == id) {
+        this.navigate(directions, navOptions)
+    } else {
+        Log.e("Fragment id ${this.currentDestination?.id}", "did not match expected $id")
+    }
 }

@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collect
+import com.kl3jvi.animity.utils.createFragmentMenu
+import com.kl3jvi.animity.utils.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -23,7 +26,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
         fetchHomeData()
+        createFragmentMenu(R.menu.settings_menu) {
+            when (it.itemId) {
+                R.id.action_settings -> handleSettings()
+            }
+        }
     }
+
+    private fun handleSettings() = findNavController().nav(
+        R.id.navigation_home,
+        HomeFragmentDirections.actionNavigationHomeToSettingsFragment()
+    )
 
     private fun fetchHomeData() {
         viewLifecycleOwner.collect(viewModel.homeDataUiState) { result ->
@@ -33,6 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         binding?.root,
                         result.exception?.message ?: "Error occurred"
                     )
+
                     HomeDataUiState.Loading -> {}
                     is HomeDataUiState.Success -> {
                         buildHome(

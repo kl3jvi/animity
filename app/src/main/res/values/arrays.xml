@@ -9,4 +9,15 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="anime_provider_entries">
+        <item>Gogo Anime</item>
+        <item>Enime</item>
+    </string-array>
+
+    <string-array name="anime_provider_values">
+        <item>GOGO_ANIME</item>
+        <item>ENIME</item>
+    </string-array>
+
 </resources>

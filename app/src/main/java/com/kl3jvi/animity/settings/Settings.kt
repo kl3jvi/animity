@@ -1,15 +1,28 @@
 package com.kl3jvi.animity.settings
 
+import android.content.Context
 import android.content.SharedPreferences
-import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.R
+import com.kl3jvi.animity.utils.getPreferenceKey
 import javax.inject.Inject
 
 class Settings @Inject constructor(
+    appContext: Context,
     override val preferences: SharedPreferences
 ) : PreferencesHolder {
 
     var skipIntroDelay by longPreference(
-        Constants.SHARED_PREFERENCES_NAME,
+        appContext.getPreferenceKey(R.string.settings),
         default = 0L
     )
+
+    var selectedProvider by enumPreference(
+        appContext.getPreferenceKey(R.string.anime_provider),
+        AnimeTypes.GOGO_ANIME
+    )
+}
+
+enum class AnimeTypes {
+    GOGO_ANIME,
+    ENIME
 }

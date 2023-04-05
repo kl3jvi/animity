@@ -1,48 +1,72 @@
 package com.kl3jvi.animity.data.network.anime_service.gogo
 
+import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
+import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
+import com.kl3jvi.animity.data.network.anime_service.base.BaseService
+import com.kl3jvi.animity.parsers.GoGoParser
+import com.kl3jvi.animity.utils.Constants
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Suppress("UNCHECKED_CAST")
 class GogoAnimeApiClient @Inject constructor(
-    private val gogoAnimeService: GogoAnimeService
-) {
+    apiServiceSingleton: ApiServiceSingleton,
+    override val parser: GoGoParser
+) : BaseClient {
 
-    suspend fun fetchAnimeInfo(
+    override var animeService: BaseService =
+        apiServiceSingleton.run {
+            updateBaseUrl(Constants.GOGO_BASE_URL)
+            getApiService(GogoAnimeService::class.java)
+        }
+
+    private suspend fun fetchAnimeInfo(
         header: Map<String, String>,
         episodeUrl: String
-    ) = gogoAnimeService.fetchAnimeInfo(header, episodeUrl)
+    ) = withContext(Dispatchers.IO) {
+        (animeService as GogoAnimeService).fetchAnimeInfo(
+            header,
+            episodeUrl
+        ).string()
+    }
 
-    suspend fun fetchEpisodeList(
-        header: Map<String, String>,
-        id: String,
-        endEpisode: String,
-        alias: String
-    ) = gogoAnimeService.fetchEpisodeList(
-        header = header,
-        id = id,
-        endEpisode = endEpisode,
-        alias = alias
-    )
+    override suspend fun <T> fetchEpisodeList(
+        episodeUrl: String,
+        extra: List<Any?>
+    ): T {
+        val animeInfo = fetchAnimeInfo(Constants.getNetworkHeader(), episodeUrl = episodeUrl)
+            .run { parser.parseAnimeInfo(this) }
 
-    suspend fun fetchEpisodeMediaUrl(
+        return (animeService as GogoAnimeService).fetchEpisodeList(
+            header = Constants.getNetworkHeader(),
+            id = animeInfo.id,
+            endEpisode = animeInfo.endEpisode,
+            alias = animeInfo.alias
+        ) as T
+    }
+
+    override suspend fun <T> getEpisodeTitles(id: Int): T =
+        (animeService as GogoAnimeService).getEpisodeTitles(id) as T
+
+    override suspend fun <T> fetchEpisodeMediaUrl(
         header: Map<String, String>,
-        episodeUrl: String
-    ) = gogoAnimeService.fetchEpisodeMediaUrl(header, episodeUrl)
+        episodeUrl: String,
+        extra: List<Any?>
+    ): T = (animeService as GogoAnimeService).fetchEpisodeMediaUrl(header, episodeUrl) as T
 
     suspend fun fetchM3u8Url(
         header: Map<String, String>,
         url: String
-    ) = gogoAnimeService.fetchM3u8Url(header, url)
+    ) = (animeService as GogoAnimeService).fetchM3u8Url(header, url)
 
-    suspend fun getEncryptionKeys() = gogoAnimeService.getKeys()
+    suspend fun getEncryptionKeys() = (animeService as GogoAnimeService).getKeys()
 
     suspend fun fetchM3u8PreProcessor(
         header: Map<String, String>,
         url: String
-    ) = gogoAnimeService.fetchM3u8PreProcessor(header, url)
+    ) = (animeService as GogoAnimeService).fetchM3u8PreProcessor(header, url)
 
     suspend fun getGogoUrlFromAniListId(id: Int) =
-        gogoAnimeService.getGogoUrlFromAniListId(id)
-
-    suspend fun getEpisodeTitles(id: Int) =
-        gogoAnimeService.getEpisodeTitles(id)
+        (animeService as GogoAnimeService).getGogoUrlFromAniListId(id)
 }

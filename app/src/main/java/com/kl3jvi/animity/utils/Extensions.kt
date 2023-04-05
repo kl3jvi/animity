@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.utils
 
+import android.content.SharedPreferences
 import android.text.format.DateUtils
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -25,5 +26,18 @@ fun Int.parseTime(errorHappened: () -> Unit): CharSequence? {
         e.printStackTrace()
         errorHappened()
         ""
+    }
+}
+
+inline fun SharedPreferences.edit(
+    commit: Boolean = false,
+    action: SharedPreferences.Editor.() -> Unit
+) {
+    val editor = edit()
+    action(editor)
+    if (commit) {
+        editor.commit()
+    } else {
+        editor.apply()
     }
 }

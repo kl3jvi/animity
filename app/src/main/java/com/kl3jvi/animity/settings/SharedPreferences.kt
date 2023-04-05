@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.settings
 
+import com.google.gson.Gson
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -64,6 +65,7 @@ private class StringPreference(
                     thisRef.preferences.edit().putString(key, default).apply()
                     thisRef.preferences.getString(key, null)!!
                 }
+
                 false -> default
             }
         }
@@ -83,6 +85,26 @@ private class StringSetPreference(
 
     override fun setValue(thisRef: PreferencesHolder, property: KProperty<*>, value: Set<String>) =
         thisRef.preferences.edit().putStringSet(key, value).apply()
+}
+
+private class EnumPreference<T : Enum<T>>(
+    private val key: String,
+    private val default: T
+) : ReadWriteProperty<PreferencesHolder, T> {
+    private val gson = Gson()
+    override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): T {
+        val stringValue = thisRef.preferences.getString(key, null)
+        return if (stringValue != null) {
+            gson.fromJson(stringValue, default.javaClass) ?: default
+        } else {
+            default
+        }
+    }
+
+    override fun setValue(thisRef: PreferencesHolder, property: KProperty<*>, value: T) {
+        val stringValue = gson.toJson(value)
+        thisRef.preferences.edit().putString(key, stringValue).apply()
+    }
 }
 
 fun booleanPreference(
@@ -121,3 +143,17 @@ fun stringSetPreference(
     default: Set<String>
 ): ReadWriteProperty<PreferencesHolder, Set<String>> =
     StringSetPreference(key, default)
+
+fun <T : Enum<T>> enumPreference(
+    key: String,
+    default: T
+): ReadWriteProperty<PreferencesHolder, T> =
+    EnumPreference(key, default)
+
+fun Any.toStringGson(): String {
+    return Gson().toJson(this)
+}
+
+inline fun <reified T> String.toObjectGson(): T {
+    return Gson().fromJson(this, T::class.java)
+}

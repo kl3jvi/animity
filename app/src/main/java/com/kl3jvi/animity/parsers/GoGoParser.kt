@@ -7,22 +7,17 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import org.json.JSONObject
 import org.jsoup.Jsoup
-import java.util.*
+import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
-interface EncryptionHelpers {
-    fun encryptAes(text: String, key: String, iv: String): String
-    fun decryptAES(encrypted: String, key: String, iv: String): String
-}
-
 class GoGoParser @Inject constructor(
     private val preferences: PersistenceRepository
-) : BaseParser(), EncryptionHelpers {
+) : BaseParser() {
 
-    override fun fetchEpisodeList(response: String): List<EpisodeModel> {
+    fun fetchEpisodeList(response: String): List<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
         val lists = document?.select("li")
@@ -47,7 +42,7 @@ class GoGoParser @Inject constructor(
      * @param response The response from the server.
      * @return A list of urls
      */
-    override fun getMediaUrls(response: String): List<String> {
+    fun getMediaUrls(response: String): List<String> {
         val urls = mutableListOf<String>()
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
@@ -67,7 +62,7 @@ class GoGoParser @Inject constructor(
         return urls
     }
 
-    override fun parseAnimeInfo(response: String): AnimeInfoModel {
+    fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
         val episodeInfo = document.getElementById("episode_page")
         val episodeList = episodeInfo.select("a").last()
@@ -121,7 +116,7 @@ class GoGoParser @Inject constructor(
         }
     }
 
-    override fun encryptAes(text: String, key: String, iv: String): String {
+    private fun encryptAes(text: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(), "AES")
@@ -136,7 +131,7 @@ class GoGoParser @Inject constructor(
         }
     }
 
-    override fun decryptAES(encrypted: String, key: String, iv: String): String {
+    private fun decryptAES(encrypted: String, key: String, iv: String): String {
         val ix = IvParameterSpec(iv.toByteArray())
         val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         val secretKey = SecretKeySpec(key.toByteArray(Charsets.UTF_8), "AES")
@@ -155,7 +150,7 @@ class GoGoParser @Inject constructor(
         }
     }
 
-    override fun parseEncryptedUrls(response: String): List<String> {
+    fun parseEncryptedUrls(response: String): List<String> {
         val urls = mutableListOf<String>()
         val data = JSONObject(response).getString("data")
         val decryptedData = decryptAES(
@@ -174,4 +169,23 @@ class GoGoParser @Inject constructor(
         }
         return urls
     }
+
+    override suspend fun loadEpisodes(
+        response: String,
+        extra: Map<String, String>?
+    ): List<EpisodeModel> {
+        TODO()
+    }
+
+    override suspend fun loadVideoServers(
+        episodeLink: String,
+        extra: Map<String, String>?
+    ): List<String> {
+        TODO("Not yet implemented")
+    }
+}
+
+enum class Type {
+    ANIME_INFO,
+    Test
 }

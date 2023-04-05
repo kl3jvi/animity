@@ -24,9 +24,20 @@
             app:title="Seek Backward Time" />
 
         <SwitchPreference
-            app:key="pip"
             android:summary="Continues playback in a miniature player on top of other apps"
+            app:key="pip"
             app:title="Picture-inPicture" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/player_settings">
+
+        <DropDownPreference
+            android:defaultValue="GOGO_ANIME"
+            android:entries="@array/anime_provider_entries"
+            android:entryValues="@array/anime_provider_values"
+            android:key="@string/anime_provider"
+            android:title="Select Anime Provider" />
 
     </PreferenceCategory>
 

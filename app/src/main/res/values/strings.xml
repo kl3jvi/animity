@@ -113,6 +113,7 @@
     <string name="provider_title">Select Provider</string>
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
+    <string name="anime_provider">anime_provider</string>
 
 
 </resources>

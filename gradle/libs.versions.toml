@@ -16,6 +16,8 @@ androidx-savedstate = "1.2.0"
 androidx-sqlite = "2.2.0"
 androidx-vectordrawable = "1.1.0"
 androidx-work = "2.7.1"
+apolloTestingSupport = "3.7.0"
+appupdate = "4.2.7"
 com-apollographql-apollo3 = "3.5.0"
 com-benasher44 = "0.3.1"
 com-github-bumptech-glide = "4.13.2"
@@ -24,10 +26,24 @@ com-google-android-exoplayer = "2.18.1"
 com-squareup-leakcanary = "2.9.1"
 com-squareup-okio = "3.1.0"
 com-squareup-retrofit2 = "2.9.0"
-io-coil-kt = "2.1.0"
+crashlyticsVersion = "18.3.5"
+datastorePreferences = "1.0.0"
+epoxyPaging3 = "5.1.1"
+epoxyDatabinding = "5.1.1"
+epoxyVersion = "5.1.1"
+exoplayerVersion = "2.18.3"
+gson = "2.10"
+inAppBrowserVersion = "1.5.0"
+io-coil-kt = "2.3.0"
 io-getstream = "1.0.6"
-org-jetbrains-kotlin = "1.7.10"
+materialVersion = "1.6.1"
+mockk = "1.13.2"
+mockitoCore = "4.8.1"
+org-jetbrains-kotlin = "1.8.10"
 org-jetbrains-kotlinx = "1.6.4"
+remoteConfig = "21.2.1"
+roomKtx = "2.5.0"
+workRuntimeKtx = "2.8.0"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
@@ -39,7 +55,7 @@ androidx-appcompat-appcompat-resources = { module = "androidx.appcompat:appcompa
 androidx-arch-core-core-common = { module = "androidx.arch.core:core-common", version.ref = "androidx-arch-core" }
 androidx-arch-core-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidx-arch-core" }
 androidx-asynclayoutinflater = "androidx.asynclayoutinflater:asynclayoutinflater:1.0.0"
-androidx-browser = "androidx.browser:browser:1.4.0"
+androidx-browser = { module = "androidx.browser:browser", version.ref = "inAppBrowserVersion" }
 androidx-cardview = "androidx.cardview:cardview:1.0.0"
 androidx-collection = "androidx.collection:collection:1.2.0"
 androidx-collection-collection-ktx = "androidx.collection:collection-ktx:1.1.0"
@@ -58,6 +74,7 @@ androidx-databinding-databinding-compiler = { module = "androidx.databinding:dat
 androidx-databinding-databinding-ktx = { module = "androidx.databinding:databinding-ktx", version.ref = "androidx-databinding" }
 androidx-databinding-databinding-runtime = { module = "androidx.databinding:databinding-runtime", version.ref = "androidx-databinding" }
 androidx-databinding-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "androidx-databinding" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-documentfile = "androidx.documentfile:documentfile:1.0.0"
 androidx-drawerlayout = "androidx.drawerlayout:drawerlayout:1.1.1"
 androidx-dynamicanimation = "androidx.dynamicanimation:dynamicanimation:1.0.0"
@@ -109,6 +126,7 @@ androidx-preference-preference-ktx = { module = "androidx.preference:preference-
 androidx-print = "androidx.print:print:1.0.0"
 androidx-recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
 androidx-resourceinspection-resourceinspection-annotation = "androidx.resourceinspection:resourceinspection-annotation:1.0.1"
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-room-common = { module = "androidx.room:room-common", version.ref = "androidx-room" }
 androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
@@ -129,14 +147,17 @@ androidx-versionedparcelable = "androidx.versionedparcelable:versionedparcelable
 androidx-viewpager = "androidx.viewpager:viewpager:1.0.0"
 androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
 androidx-window = "androidx.window:window:1.0.0"
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 androidx-work-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidx-work" }
 androidx-work-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
+apollo-testing-support = { module = "com.apollographql.apollo3:apollo-testing-support", version.ref = "apolloTestingSupport" }
 app-cash-turbine = "app.cash.turbine:turbine:0.12.1"
-com-airbnb-android-epoxy = "com.airbnb.android:epoxy:5.0.0-beta03"
-com-airbnb-android-epoxy-annotations = "com.airbnb.android:epoxy-annotations:5.0.0-beta03"
-com-airbnb-android-epoxy-databinding = "com.airbnb.android:epoxy-databinding:5.0.0-beta03"
-com-airbnb-android-epoxy-paging3 = "com.airbnb.android:epoxy-paging3:5.0.0-beta03"
-com-airbnb-android-epoxy-processor = "com.airbnb.android:epoxy-processor:5.0.0-beta03"
+appupdate = { module = "io.github.azhon:appupdate", version.ref = "appupdate" }
+com-airbnb-android-epoxy = "com.airbnb.android:epoxy:5.1.1"
+com-airbnb-android-epoxy-annotations = "com.airbnb.android:epoxy-annotations:5.1.1"
+com-airbnb-android-epoxy-databinding = "com.airbnb.android:epoxy-databinding:5.1.1"
+com-airbnb-android-epoxy-paging3 = "com.airbnb.android:epoxy-paging3:5.1.1"
+com-airbnb-android-epoxy-processor = "com.airbnb.android:epoxy-processor:5.1.1"
 com-airbnb-android-lottie = "com.airbnb.android:lottie:5.2.0"
 com-android-tools-build-gradle = "com.android.tools.build:gradle:7.3.1"
 com-apollographql-apollo3-apollo-annotations = { module = "com.apollographql.apollo3:apollo-annotations", version.ref = "com-apollographql-apollo3" }
@@ -192,7 +213,7 @@ com-google-android-gms-play-services-measurement-sdk-api = "com.google.android.g
 com-google-android-gms-play-services-stats = "com.google.android.gms:play-services-stats:17.0.2"
 com-google-android-gms-play-services-tasks = "com.google.android.gms:play-services-tasks:18.0.1"
 com-google-android-libraries-mapsplatform-secrets-gradle-plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
-com-google-android-material = "com.google.android.material:material:1.7.0"
+com-google-android-material = "com.google.android.material:material:1.8.0"
 com-google-code-findbugs-jsr305 = "com.google.code.findbugs:jsr305:3.0.2"
 com-google-code-gson = "com.google.code.gson:gson:2.9.0"
 com-google-dagger = "com.google.dagger:dagger:2.44"
@@ -232,21 +253,6 @@ com-onesignal-OneSignal = "com.onesignal:OneSignal:4.8.2"
 com-pinterest-ktlint = "com.pinterest:ktlint:0.43.2"
 com-pinterest-ktlint-ktlint-reporter-baseline = "com.pinterest.ktlint:ktlint-reporter-baseline:0.43.2"
 com-squareup-curtains = "com.squareup.curtains:curtains:1.2.4"
-com-squareup-leakcanary-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-android-core = { module = "com.squareup.leakcanary:leakcanary-android-core", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-android-utils = { module = "com.squareup.leakcanary:leakcanary-android-utils", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-object-watcher = { module = "com.squareup.leakcanary:leakcanary-object-watcher", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-object-watcher-android = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-object-watcher-android-androidx = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android-androidx", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-object-watcher-android-core = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android-core", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-leakcanary-object-watcher-android-support-fragments = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android-support-fragments", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-plumber-android = { module = "com.squareup.leakcanary:plumber-android", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-plumber-android-core = { module = "com.squareup.leakcanary:plumber-android-core", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-shark = { module = "com.squareup.leakcanary:shark", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-shark-android = { module = "com.squareup.leakcanary:shark-android", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-shark-graph = { module = "com.squareup.leakcanary:shark-graph", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-shark-hprof = { module = "com.squareup.leakcanary:shark-hprof", version.ref = "com-squareup-leakcanary" }
-com-squareup-leakcanary-shark-log = { module = "com.squareup.leakcanary:shark-log", version.ref = "com-squareup-leakcanary" }
 com-squareup-okhttp3-logging-interceptor = "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.4"
 com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.6"
 com-squareup-okhttp3-okhttp-bom = "com.squareup.okhttp3:okhttp-bom:3.12.10"
@@ -256,7 +262,17 @@ com-squareup-okio = { module = "com.squareup.okio:okio", version.ref = "com-squa
 com-squareup-okio-okio-jvm = { module = "com.squareup.okio:okio-jvm", version.ref = "com-squareup-okio" }
 com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "com-squareup-retrofit2" }
 com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "com-squareup-retrofit2" }
+epoxy = { module = "com.airbnb.android:epoxy", version.ref = "epoxyVersion" }
+epoxy-paging3 = { module = "com.airbnb.android:epoxy-paging3", version.ref = "epoxyPaging3" }
+epoxy-databinding = { module = "com.airbnb.android:epoxy-databinding", version.ref = "epoxyDatabinding" }
+extension-mediasession = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "exoplayerVersion" }
+extension-okhttp = { module = "com.google.android.exoplayer:extension-okhttp", version.ref = "exoplayerVersion" }
+extension-cast = { module = "com.google.android.exoplayer:extension-cast", version.ref = "exoplayerVersion" }
+exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayerVersion" }
+firebase-config-ktx = { module = "com.google.firebase:firebase-config-ktx", version.ref = "remoteConfig" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "crashlyticsVersion" }
 gradle-plugin-com-onesignal-onesignal-gradle-plugin = "gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.13.4"
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 io-coil-kt-coil = { module = "io.coil-kt:coil", version.ref = "io-coil-kt" }
 io-coil-kt-coil-base = { module = "io.coil-kt:coil-base", version.ref = "io-coil-kt" }
 io-coil-kt-coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "io-coil-kt" }
@@ -266,6 +282,9 @@ io-mockk = "io.mockk:mockk:1.12.7"
 io-noties-markwon-core = "io.noties.markwon:core:4.6.2"
 javax-inject-javax-inject = "javax.inject:javax.inject:1"
 junit = "junit:junit:4.13.2"
+material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 org-apache-commons-commons-lang3 = "org.apache.commons:commons-lang3:3.11"
 org-apache-commons-commons-text = "org.apache.commons:commons-text:1.9"
 org-apache-logging-log4j-log4j-core = "org.apache.logging.log4j:log4j-core:2.17.1"
@@ -298,25 +317,6 @@ android-library = "android-library:7.3.0"
 android-reporting = "android-reporting:7.3.0"
 androidx-navigation-safeargs = "androidx.navigation.safeargs:2.4.1"
 androidx-navigation-safeargs-kotlin = "androidx.navigation.safeargs.kotlin:2.4.1"
-com-android-application = "com.android.application:7.3.0"
-com-android-asset-pack = "com.android.asset-pack:7.3.0"
-com-android-asset-pack-bundle = "com.android.asset-pack-bundle:7.3.0"
-com-android-base = "com.android.base:7.3.0"
-com-android-dynamic-feature = "com.android.dynamic-feature:7.3.0"
-com-android-fused-library = "com.android.fused-library:7.3.0"
-com-android-internal-application = "com.android.internal.application:7.3.0"
-com-android-internal-asset-pack = "com.android.internal.asset-pack:7.3.0"
-com-android-internal-asset-pack-bundle = "com.android.internal.asset-pack-bundle:7.3.0"
-com-android-internal-dynamic-feature = "com.android.internal.dynamic-feature:7.3.0"
-com-android-internal-fused-library = "com.android.internal.fused-library:7.3.0"
-com-android-internal-library = "com.android.internal.library:7.3.0"
-com-android-internal-reporting = "com.android.internal.reporting:7.3.0"
-com-android-internal-test = "com.android.internal.test:7.3.0"
-com-android-internal-version-check = "com.android.internal.version-check:7.3.0"
-com-android-library = "com.android.library:7.3.0"
-com-android-lint = "com.android.lint:7.3.0"
-com-android-reporting = "com.android.reporting:7.3.0"
-com-android-test = "com.android.test:7.3.0"
 com-apollographql-apollo3 = "com.apollographql.apollo3:3.5.0"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.41.0"
 com-google-android-libraries-mapsplatform-secrets-gradle-plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:2.0.1"
@@ -341,17 +341,4 @@ kotlin-scripting = "kotlin-scripting:1.7.10"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
 org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.7.10"
 org-jetbrains-kotlin-android-extensions = "org.jetbrains.kotlin.android.extensions:1.7.10"
-org-jetbrains-kotlin-js = "org.jetbrains.kotlin.js:1.7.10"
-org-jetbrains-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.7.10"
-org-jetbrains-kotlin-kapt = "org.jetbrains.kotlin.kapt:1.7.10"
-org-jetbrains-kotlin-multiplatform = "org.jetbrains.kotlin.multiplatform:1.7.10"
-org-jetbrains-kotlin-multiplatform-pm20 = "org.jetbrains.kotlin.multiplatform.pm20:1.7.10"
-org-jetbrains-kotlin-native-cocoapods = "org.jetbrains.kotlin.native.cocoapods:1.7.10"
-org-jetbrains-kotlin-native-performance = "org.jetbrains.kotlin.native.performance:1.7.10"
-org-jetbrains-kotlin-platform-android = "org.jetbrains.kotlin.platform.android:1.7.10"
-org-jetbrains-kotlin-platform-common = "org.jetbrains.kotlin.platform.common:1.7.10"
-org-jetbrains-kotlin-platform-js = "org.jetbrains.kotlin.platform.js:1.7.10"
-org-jetbrains-kotlin-platform-jvm = "org.jetbrains.kotlin.platform.jvm:1.7.10"
-org-jetbrains-kotlin-plugin-parcelize = "org.jetbrains.kotlin.plugin.parcelize:1.7.10"
-org-jetbrains-kotlin-plugin-scripting = "org.jetbrains.kotlin.plugin.scripting:1.7.10"
-org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.0.0"
+

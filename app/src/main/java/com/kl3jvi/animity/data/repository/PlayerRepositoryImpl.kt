@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +26,7 @@ class PlayerRepositoryImpl @Inject constructor(
 
     override fun getMediaUrl(header: Map<String, String>, url: String): Flow<List<String>> = flow {
         val episodeInfo = parser.parseMediaUrl(
-            apiClient.fetchEpisodeMediaUrl(header = header, episodeUrl = url).string()
+            apiClient.fetchEpisodeMediaUrl<ResponseBody>(header = header, episodeUrl = url).string()
         )
         val id =
             Regex("id=([^&]+)").find(episodeInfo.vidCdnUrl.orEmpty())?.value?.removePrefix("id=")

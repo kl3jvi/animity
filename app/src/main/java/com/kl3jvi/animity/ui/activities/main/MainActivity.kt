@@ -2,9 +2,11 @@ package com.kl3jvi.animity.ui.activities.main
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.os.Build
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -23,7 +25,9 @@ import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.collect
+import com.onesignal.OneSignal
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -67,6 +71,24 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         setBottomBarVisibility()
 //        checkUpdates()
+    }
+
+    private val pushNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        askForPermission(granted)
+    }
+
+    private fun askForPermission(granted: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            pushNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        if (granted) {
+            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+            OneSignal.initWithContext(this.applicationContext)
+            OneSignal.setAppId(Constants.ONESIGNAL_APP_ID)
+        }
     }
 
     private fun checkUpdates() {

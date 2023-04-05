@@ -9,10 +9,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
-import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
-import com.kl3jvi.animity.data.network.anime_service.enime.EnimeService
-import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
-import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeService
+import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
@@ -30,6 +27,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -75,12 +74,19 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        @RetrofitClient okHttpClient: OkHttpClient
+        @RetrofitClient okHttpClient: OkHttpClient,
+        @Named("base-url") url: String
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(GOGO_BASE_URL)
+        .baseUrl(url)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    @Provides
+    @Named("base-url")
+    fun provideBaseUrl(): String {
+        return GOGO_BASE_URL
+    }
 
     @Provides
     @Singleton
@@ -91,37 +97,12 @@ object NetworkModule {
         .okHttpClient(okHttpClient)
         .build()
 
-    /**
-     * > It takes a Retrofit object as an argument and returns an AnimeService object
-     *
-     * @param retrofit Retrofit - The Retrofit instance that will be used to create the service.
-     * @return A Retrofit object.
-     */
-    @Singleton
-    @Provides
-    fun provideGogoAnimeService(retrofit: Retrofit): GogoAnimeService {
-        return retrofit.create(GogoAnimeService::class.java)
-    }
-
     @Provides
     @Singleton
-    fun provideGogoAnimeApiClient(
-        gogoAnimeService: GogoAnimeService
-    ): GogoAnimeApiClient {
-        return GogoAnimeApiClient(gogoAnimeService)
-    }
-
-    @Singleton
-    @Provides
-    fun provideEnimeService(retrofit: Retrofit): EnimeService {
-        return retrofit.create(EnimeService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideEnimeApiClient(
-        enimeService: EnimeService
-    ) = EnimeClient(enimeService)
+    fun provideApiServiceSingleton(
+        @Named("base-url") baseUrlProvider: Provider<String>,
+        @RetrofitClient okHttpClient: OkHttpClient
+    ) = ApiServiceSingleton(baseUrlProvider, okHttpClient)
 
     @Provides
     @Singleton

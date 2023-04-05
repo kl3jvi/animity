@@ -48,16 +48,11 @@ class DetailsViewModel @Inject constructor(
                     is Result.Error -> flowOf(EpisodeListUiState.Error)
                     Result.Loading -> flowOf(EpisodeListUiState.Loading)
                     is Result.Success -> {
-                        detailsRepository.fetchAnimeInfo(
-                            episodeUrl = result.data
-                        ).flatMapLatest { animeInfo ->
-                            detailsRepository.fetchEpisodeList(
-                                id = animeInfo.id,
-                                endEpisode = animeInfo.endEpisode,
-                                alias = animeInfo.alias,
-                                malId = media.idMal.or1()
-                            )
-                        }.reverseIf(reverseState).map { episodes ->
+                        detailsRepository.fetchEpisodeList(
+                            episodeUrl = result.data,
+                            malId = media.idMal.or1(),
+                            extra = listOf(media.idMal)
+                        ).reverseIf(reverseState).map { episodes ->
                             EpisodeListUiState.Success(episodes)
                         }
                     }

@@ -24,8 +24,8 @@ class Constants {
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
-        const val GOGO_BASE_URL = "https://gogoanime.gg"
-        const val NINEANIME_BASE_URL = "https://9anime.pl"
+        const val GOGO_BASE_URL = "https://gogoanime.fi"
+        const val ENIME_BASE_URL = "https://api.enime.moe"
         const val ANILIST_API_URL = "https://graphql.anilist.co"
 
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
@@ -46,19 +46,6 @@ class Constants {
 
         /* The default cover image for the profile. */
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
-
-        // Model Type
-        const val TYPE_RECENT_SUB = 1
-        const val TYPE_POPULAR_ANIME = 2
-        const val TYPE_RECENT_DUB = 3
-        const val TYPE_MOVIE = 4
-        const val TYPE_NEW_SEASON = 5
-        const val TYPE_SEARCH = 6
-
-        const val SAVED_STATE_KEY = "animeDetails"
-
-        const val GUEST_LOGIN_TYPE = "guest"
-        const val AUTHENTICATED_LOGIN_TYPE = "authenticated"
 
         // Network Requests Header
         const val USER_AGENT =

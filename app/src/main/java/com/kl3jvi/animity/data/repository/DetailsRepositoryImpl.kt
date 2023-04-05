@@ -1,68 +1,53 @@
 package com.kl3jvi.animity.data.repository
 
-import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
+import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
+import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
+import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
+import com.kl3jvi.animity.settings.AnimeTypes
+import com.kl3jvi.animity.settings.Settings
+import com.kl3jvi.animity.settings.toStringGson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.ResponseBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class DetailsRepositoryImpl @Inject constructor(
-    private val apiClient: GogoAnimeApiClient,
-    private val enimeClient: EnimeClient,
+    apiClient: BaseClient,
     private val ioDispatcher: CoroutineDispatcher,
-    override val parser: GoGoParser,
-    private val episodeDao: EpisodeDao
+    private val episodeDao: EpisodeDao,
+    settings: Settings,
+    override val parser: GoGoParser
 ) : DetailsRepository {
 
-    override fun fetchAnimeInfo(header: Map<String, String>, episodeUrl: String) = flow {
-        if (episodeUrl.isNotEmpty()) {
-            val response =
-                apiClient.fetchAnimeInfo(header = header, episodeUrl = episodeUrl).string()
-            val parsedResponse = parser.parseAnimeInfo(response)
-            emit(parsedResponse)
-        }
-    }.flowOn(ioDispatcher)
-
-    private fun getEpisodeList(
-        header: Map<String, String>,
-        id: String,
-        endEpisode: String,
-        alias: String
-    ) = flow {
-        val response = apiClient.fetchEpisodeList(
-            header = header,
-            id = id,
-            endEpisode = endEpisode,
-            alias = alias
-        ).string()
-        val reversedEpisodeList = parser.fetchEpisodeList(response).reversed()
-        emit(reversedEpisodeList)
+    private val selectedAnimeProvider = when (settings.selectedProvider) {
+        AnimeTypes.GOGO_ANIME -> apiClient as GogoAnimeApiClient
+        AnimeTypes.ENIME -> apiClient as EnimeClient
     }
 
     override fun fetchEpisodeList(
         header: Map<String, String>,
-        id: String,
-        endEpisode: String,
-        alias: String,
-        malId: Int
+        extra: List<Any?>,
+        malId: Int,
+        episodeUrl: String
     ): Flow<List<EpisodeModel>> {
         return combine(
-            getEpisodeList(header, id, endEpisode, alias),
+            getListOfEpisodes(episodeUrl),
             getEpisodeTitles(malId),
             getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
-            val updatedEpisodeModels = episodeModels.mapIndexed { index, episodeModel ->
+            episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
@@ -79,25 +64,22 @@ class DetailsRepositoryImpl @Inject constructor(
                 }
                 episode
             }
-
-            updatedEpisodeModels.ifEmpty {
-                enimeClient.getEnimeEpisodesIds(malId).episodes.map {
-                    EpisodeModel(
-                        it.title,
-                        "Episode ${it.number}",
-                        enimeClient.getEnimeSource(it.sources.last().id).url
-                    )
-                }
-            }
         }.flowOn(ioDispatcher)
     }
 
+    private fun getListOfEpisodes(episodeUrl: String) = flow {
+        Log.e("Selected Provider", selectedAnimeProvider.toStringGson())
+        val response = selectedAnimeProvider.fetchEpisodeList<ResponseBody>(episodeUrl)
+        val episodeList = parser.fetchEpisodeList(response.string()).reversed()
+        emit(episodeList)
+    }.catch { emit(emptyList()) }
+        .flowOn(ioDispatcher)
+
     private fun getEpisodeTitles(id: Int) = flow {
-        val response = apiClient.getEpisodeTitles(id).episodes
+        val response = selectedAnimeProvider.getEpisodeTitles<EpisodeWithTitle>(id).episodes
         emit(response)
     }.catch { emit(emptyList()) }.flowOn(ioDispatcher)
 
-    private fun getEpisodesPercentage(malId: Int): Flow<List<EpisodeEntity>> {
-        return episodeDao.getEpisodesByAnime(malId = malId)
-    }
+    private fun getEpisodesPercentage(malId: Int) = episodeDao.getEpisodesByAnime(malId = malId)
+        .catch { emit(emptyList()) }
 }

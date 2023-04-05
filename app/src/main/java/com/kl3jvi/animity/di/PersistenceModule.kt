@@ -45,8 +45,9 @@ object PersistenceModule {
     @Singleton
     @Provides
     fun provideSettings(
+        @ApplicationContext context: Context,
         preferences: SharedPreferences
     ): Settings {
-        return Settings(preferences)
+        return Settings(context, preferences)
     }
 }

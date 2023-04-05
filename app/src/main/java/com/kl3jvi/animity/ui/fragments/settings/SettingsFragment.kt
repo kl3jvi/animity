@@ -1,10 +1,15 @@
 package com.kl3jvi.animity.ui.fragments.settings
 
 import android.os.Bundle
+import android.util.Log
+import androidx.preference.DropDownPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SeekBarPreference
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.settings.Settings
+import com.kl3jvi.animity.settings.toStringGson
+import com.kl3jvi.animity.utils.edit
+import com.kl3jvi.animity.utils.getPreferenceKey
 import com.kl3jvi.animity.utils.requirePreference
 import javax.inject.Inject
 
@@ -23,11 +28,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setupPreferences() {
-        requirePreference<SeekBarPreference>(R.string.skip_intro_preference_key).apply {
-//            onPreferenceChangeListener =
-//                Preference.OnPreferenceChangeListener { preference, newValue ->
-//
-//                }
+        requirePreference<DropDownPreference>(R.string.anime_provider).apply {
+            Log.e("VALUE", value.toString())
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                settings.preferences.edit {
+                    putString(
+                        getPreferenceKey(R.string.anime_provider),
+                        newValue.toStringGson()
+                    )
+                }
+                true
+            }
         }
     }
 }

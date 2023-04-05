@@ -3,6 +3,7 @@ package com.kl3jvi.animity.data.network.anime_service.gogo
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
+import com.kl3jvi.animity.data.network.anime_service.base.BaseService
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_LOAD_URL
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_TITLES
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_KEYS_URL
@@ -14,7 +15,7 @@ import retrofit2.http.*
  * Used to connect to the GogoAnime page to fetch animes
  */
 
-interface GogoAnimeService {
+interface GogoAnimeService : BaseService {
 
     @GET
     suspend fun fetchEpisodeMediaUrl(
