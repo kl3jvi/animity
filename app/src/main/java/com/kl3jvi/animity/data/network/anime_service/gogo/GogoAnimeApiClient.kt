@@ -53,16 +53,40 @@ class GogoAnimeApiClient @Inject constructor(
         header: Map<String, String>,
         episodeUrl: String,
         extra: List<Any?>
-    ): T = (animeService as GogoAnimeService).fetchEpisodeMediaUrl(header, episodeUrl) as T
+    ): T {
+        val episodeInfo = parser.parseMediaUrl(
+            (animeService as GogoAnimeService).fetchEpisodeMediaUrl(header, episodeUrl).toString()
+        )
+        val id =
+            Regex("id=([^&]+)").find(episodeInfo.vidCdnUrl.orEmpty())?.value?.removePrefix("id=")
 
-    suspend fun fetchM3u8Url(
+        val ajaxResponse = parser.parseEncryptAjax(
+            response = fetchM3u8Url(
+                header = header,
+                url = episodeInfo.vidCdnUrl.orEmpty()
+            ).string(),
+            id = id.orEmpty()
+        )
+
+        val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$ajaxResponse"
+        val encryptedUrls = parser.parseEncryptedUrls(
+            fetchM3u8PreProcessor(
+                header = header,
+                url = streamUrl
+            ).string()
+        )
+
+        return encryptedUrls as T
+    }
+
+    private suspend fun fetchM3u8Url(
         header: Map<String, String>,
         url: String
     ) = (animeService as GogoAnimeService).fetchM3u8Url(header, url)
 
     suspend fun getEncryptionKeys() = (animeService as GogoAnimeService).getKeys()
 
-    suspend fun fetchM3u8PreProcessor(
+    private suspend fun fetchM3u8PreProcessor(
         header: Map<String, String>,
         url: String
     ) = (animeService as GogoAnimeService).fetchM3u8PreProcessor(header, url)

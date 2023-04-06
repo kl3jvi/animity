@@ -3,7 +3,6 @@ package com.kl3jvi.animity.ui.activities.login
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -70,7 +69,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
      * @return A Uri object
      */
     override fun getAuthorizationUrl(): Uri {
-        Log.e("OAUTH VALUES = ", "$anilistId , $anilistSecret")
         return Uri.Builder().scheme("https")
             .authority("anilist.co")
             .appendPath("api")

@@ -10,6 +10,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
+import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
+import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
+import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
@@ -22,6 +25,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoMap
+import dagger.multibindings.StringKey
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -142,4 +147,16 @@ object NetworkModule {
     fun provideFirebaseInstance(): FirebaseRemoteConfig {
         return FirebaseRemoteConfig.getInstance()
     }
+
+    @JvmStatic
+    @Provides
+    @IntoMap
+    @StringKey("GOGO_ANIME")
+    fun provideGogoAnimeApiClient(client: GogoAnimeApiClient): BaseClient = client
+
+    @JvmStatic
+    @Provides
+    @IntoMap
+    @StringKey("ENIME")
+    fun provideEnimeClient(client: EnimeClient): BaseClient = client
 }

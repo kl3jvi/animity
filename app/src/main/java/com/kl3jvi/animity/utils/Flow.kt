@@ -1,8 +1,22 @@
 package com.kl3jvi.animity.utils
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.kl3jvi.animity.settings.AnimeTypes
+import com.kl3jvi.animity.settings.Settings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.launch
 
 fun <T> Flow<T>.ifChanged() = ifChanged { it }
 
@@ -106,6 +120,45 @@ fun <T, R> Flow<T>.ifAnyChanged(transform: (T) -> Array<R>): Flow<T> {
             true
         } else {
             false
+        }
+    }
+}
+
+fun <T> providerFlow(
+    settings: Settings,
+    function: suspend FlowCollector<T>.(AnimeTypes) -> Unit
+) = flow {
+    function.invoke(this, settings.selectedProvider)
+}
+
+fun <T> LifecycleOwner.collect(
+    flow: Flow<T>,
+    collector: suspend (T) -> Unit
+) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.catch { e -> logError(e) }.collect(collector)
+        }
+    }
+}
+
+fun <T> Fragment.collectLatest(
+    flow: Flow<T>,
+    collector: suspend (T) -> Unit
+) {
+    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flow.catch { e -> e.printStackTrace() }.collectLatest(collector)
+        }
+    }
+}
+
+fun <T> Flow<List<T>>.reverseIf(predicate: MutableStateFlow<Boolean>): Flow<List<T>> {
+    return transform { list ->
+        if (predicate.value) {
+            emit(list.asReversed())
+        } else {
+            emit(list)
         }
     }
 }

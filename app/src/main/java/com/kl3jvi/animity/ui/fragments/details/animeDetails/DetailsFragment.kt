@@ -37,7 +37,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -81,7 +80,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 resultTitle.text = animeInfo.title.userPreferred
                 title = animeInfo.title.userPreferred
                 imageButton.setOnClickListener {
-                    viewModel.reverseState.updateAndGet { !it }.also {
+                    viewModel.reverseState.value = !viewModel.reverseState.value.also {
                         imageButton.load(
                             if (it) R.drawable.ic_up_arrow else R.drawable.ic_down_arrow
                         )

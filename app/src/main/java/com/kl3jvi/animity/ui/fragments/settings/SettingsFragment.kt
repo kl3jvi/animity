@@ -11,8 +11,10 @@ import com.kl3jvi.animity.settings.toStringGson
 import com.kl3jvi.animity.utils.edit
 import com.kl3jvi.animity.utils.getPreferenceKey
 import com.kl3jvi.animity.utils.requirePreference
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject

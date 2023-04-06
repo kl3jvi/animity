@@ -13,7 +13,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -46,8 +45,8 @@ class PlayerViewModel @Inject constructor(
         }
     }.flowOn(Dispatchers.Main)
 
-    val episodeMediaUrl = episodeUrl.flatMapLatest {
-        playerRepository.getMediaUrl(url = it)
+    val episodeMediaUrl = episodeUrl.value.let {
+        playerRepository.getMediaUrl(url = it, extra = listOf("naruto"))
             .mapToUiState(viewModelScope + ioDispatcher)
     }
 

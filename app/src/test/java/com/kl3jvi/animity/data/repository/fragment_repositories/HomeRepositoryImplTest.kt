@@ -11,7 +11,6 @@ import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeService
 import com.kl3jvi.animity.domain.repositories.HomeRepository
 import com.kl3jvi.animity.util.*
-import com.kl3jvi.animity.utils.parser.Parser
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -23,10 +22,10 @@ import org.mockito.kotlin.mock
 @ExperimentalCoroutinesApi
 class HomeRepositoryImplTest {
     private lateinit var repository: HomeRepository
-    private lateinit var client: GogoAnimeApiClient
+    private var client: GogoAnimeApiClient? = null
     private lateinit var apolloClient: ApolloClient
 
-    private val parser: Parser = mock()
+    //    private val parser: Parser = mock()
     private val service: GogoAnimeService = mock()
 
     @get:Rule
@@ -37,7 +36,7 @@ class HomeRepositoryImplTest {
         apolloClient = ApolloClient.Builder()
             .networkTransport(QueueTestNetworkTransport())
             .build()
-        client = GogoAnimeApiClient(service)
+        client = null
 //        repository = HomeRepositoryImpl(client, coroutinesRule.testDispatcher, parser)
     }
 

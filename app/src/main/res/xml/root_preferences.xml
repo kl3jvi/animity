@@ -19,7 +19,7 @@
 
         <SeekBarPreference
             android:max="60"
-            app:key="forward"
+            app:key="backward"
             app:showSeekBarValue="true"
             app:title="Seek Backward Time" />
 
@@ -33,7 +33,6 @@
     <PreferenceCategory app:title="@string/player_settings">
 
         <DropDownPreference
-            android:defaultValue="GOGO_ANIME"
             android:entries="@array/anime_provider_entries"
             android:entryValues="@array/anime_provider_values"
             android:key="@string/anime_provider"

@@ -3,49 +3,40 @@
 package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
-import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.settings.Settings
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class PlayerRepositoryImpl @Inject constructor(
-    private val apiClient: GogoAnimeApiClient,
+    private val apiClients: Map<String, @JvmSuppressWildcards BaseClient>,
+    private val settings: Settings,
     private val ioDispatcher: CoroutineDispatcher,
     private val episodeDao: EpisodeDao,
     override val parser: GoGoParser
 ) : PlayerRepository {
 
-    override fun getMediaUrl(header: Map<String, String>, url: String): Flow<List<String>> = flow {
-        val episodeInfo = parser.parseMediaUrl(
-            apiClient.fetchEpisodeMediaUrl<ResponseBody>(header = header, episodeUrl = url).string()
-        )
-        val id =
-            Regex("id=([^&]+)").find(episodeInfo.vidCdnUrl.orEmpty())?.value?.removePrefix("id=")
-        val ajaxResponse = parser.parseEncryptAjax(
-            response = apiClient.fetchM3u8Url(
-                header = header,
-                url = episodeInfo.vidCdnUrl.orEmpty()
-            ).string(),
-            id = id.orEmpty()
-        )
-        val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$ajaxResponse"
-        val encryptedUrls = parser.parseEncryptedUrls(
-            apiClient.fetchM3u8PreProcessor(
-                header = header,
-                url = streamUrl
-            ).string()
-        )
-        emit(encryptedUrls)
-    }.flowOn(ioDispatcher)
+    private val selectedAnimeProvider: BaseClient? =
+        apiClients[settings.selectedProvider.name]
+
+    override fun getMediaUrl(
+        header: Map<String, String>,
+        url: String,
+        extra: List<Any?>
+    ): Flow<List<String>> = flow {
+        val result = selectedAnimeProvider?.fetchEpisodeMediaUrl(
+            header,
+            url,
+            extra
+        ) ?: emptyList<String>()
+        emit(result)
+    }.catch { it.printStackTrace() }
 
     override suspend fun upsertEpisode(episodeEntity: EpisodeEntity) {
         withContext(ioDispatcher) {

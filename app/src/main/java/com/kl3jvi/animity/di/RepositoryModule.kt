@@ -1,8 +1,5 @@
 package com.kl3jvi.animity.di
 
-import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
-import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
-import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.data.repository.*
 import com.kl3jvi.animity.domain.repositories.*
 import dagger.Binds
@@ -10,7 +7,6 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -46,13 +42,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindFirebaseRepository(repository: FirebaseRemoteConfigRepositoryImpl): FirebaseRemoteConfigRepository
-
-    @Binds
-    abstract fun bindGoGoClient(client: GogoAnimeApiClient): BaseClient
-
-    @Binds
-    @Named("Enime")
-    abstract fun bindEnimeClient(client: EnimeClient): BaseClient
 
 //    @Binds
 //    abstract fun bindBaseParser(parser: BaseParser): BaseParser

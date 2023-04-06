@@ -92,13 +92,13 @@ private class EnumPreference<T : Enum<T>>(
     private val default: T
 ) : ReadWriteProperty<PreferencesHolder, T> {
     private val gson = Gson()
+    private val enumClass = default.javaClass
+
     override fun getValue(thisRef: PreferencesHolder, property: KProperty<*>): T {
-        val stringValue = thisRef.preferences.getString(key, null)
-        return if (stringValue != null) {
-            gson.fromJson(stringValue, default.javaClass) ?: default
-        } else {
-            default
-        }
+        return gson.fromJson(
+            thisRef.preferences.getString(key, "GOGO_ANIME"),
+            enumClass
+        ) ?: default
     }
 
     override fun setValue(thisRef: PreferencesHolder, property: KProperty<*>, value: T) {
