@@ -10,6 +10,7 @@ import javax.inject.Inject
 class FirebaseRemoteConfigRepositoryImpl @Inject constructor(
     override val instance: FirebaseRemoteConfig
 ) : FirebaseRemoteConfigRepository {
+
     /**
      * It fetches the remote config values from the Firebase console and sets the default values.
      */

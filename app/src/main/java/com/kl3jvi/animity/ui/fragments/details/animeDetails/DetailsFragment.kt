@@ -74,7 +74,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun initViews() {
         animeDetails.let { animeInfo ->
-            viewModel.animeMetaModel.update { animeInfo }
+            viewModel.animeMetaModel.update {
+                it.copy(
+                    idAniList = animeInfo.idAniList,
+                    idMal = animeInfo.idMal
+                )
+            }
             binding?.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
                 resultTitle.text = animeInfo.title.userPreferred

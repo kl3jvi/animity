@@ -24,13 +24,11 @@ object PersistenceModule {
     @Singleton
     fun provideAppDatabase(
         application: Application
-    ): AppDatabase {
-        return Room
-            .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
-            .fallbackToDestructiveMigration()
+    ): AppDatabase = Room
+        .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
+        .fallbackToDestructiveMigration()
 //            .addTypeConverter(typeResponseConverter)
-            .build()
-    }
+        .build()
 
     @Provides
     @Singleton
@@ -38,16 +36,13 @@ object PersistenceModule {
 
     @Singleton
     @Provides
-    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-    }
+    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences =
+        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     @Singleton
     @Provides
     fun provideSettings(
         @ApplicationContext context: Context,
         preferences: SharedPreferences
-    ): Settings {
-        return Settings(context, preferences)
-    }
+    ) = Settings(context, preferences)
 }

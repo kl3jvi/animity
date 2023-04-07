@@ -24,25 +24,19 @@ class EnimeClient @Inject constructor(
         episodeUrl: String,
         extra: List<Any?>
     ): T {
-        val animeList = mutableListOf<String>().apply {
-            add(getEnimeSource("clftn6anb00d10opka5w7a1bo").url)
+        val animeList = mutableListOf<String?>().apply {
+            add((animeService as EnimeService).getEnimeSource("clftn6anb00d10opka5w7a1bo").url)
         }.toList()
-
         return animeList as T
     }
 
     override suspend fun <T> fetchEpisodeList(
         episodeUrl: String,
         extra: List<Any?>
-    ): T = getEnimeEpisodesIds(extra.first()?.toString()?.toInt().or1()) as T
+    ): T = (animeService as EnimeService).getEnimeEpisodesIds(
+        extra.first()?.toString()?.toInt().or1()
+    ) as T
 
-    override suspend fun <T> getEpisodeTitles(id: Int): T {
-        return (animeService as GogoAnimeService).getEpisodeTitles(id) as T
-    }
-
-    private suspend fun getEnimeEpisodesIds(malId: Int) =
-        (animeService as EnimeService).getEnimeEpisodesIds(malId)
-
-    private suspend fun getEnimeSource(source: String) =
-        (animeService as EnimeService).getEnimeSource(source)
+    override suspend fun <T> getEpisodeTitles(id: Int): T =
+        (animeService as GogoAnimeService).getEpisodeTitles(id) as T
 }

@@ -170,7 +170,12 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id in arrayOf(R.id.navigation_details, R.id.reviewDetailsFragment)) {
+            if (destination.id in arrayOf(
+                    R.id.navigation_details,
+                    R.id.reviewDetailsFragment,
+                    R.id.settingsFragment
+                )
+            ) {
                 hideBottomNavBar()
             } else {
                 showBottomNavBar()

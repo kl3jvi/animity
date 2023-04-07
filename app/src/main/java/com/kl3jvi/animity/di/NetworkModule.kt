@@ -16,6 +16,9 @@ import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
+import com.kl3jvi.animity.parsers.BaseParser
+import com.kl3jvi.animity.parsers.EnimeParser
+import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
@@ -148,15 +151,24 @@ object NetworkModule {
         return FirebaseRemoteConfig.getInstance()
     }
 
-    @JvmStatic
     @Provides
     @IntoMap
     @StringKey("GOGO_ANIME")
     fun provideGogoAnimeApiClient(client: GogoAnimeApiClient): BaseClient = client
 
-    @JvmStatic
     @Provides
     @IntoMap
     @StringKey("ENIME")
     fun provideEnimeClient(client: EnimeClient): BaseClient = client
+
+    @Provides
+    @IntoMap
+    @StringKey("ENIME_PARSER")
+    fun provideEnimeParser(parser: EnimeParser): BaseParser = parser
+
+    @Provides
+    @IntoMap
+    @StringKey("GOGO_ANIME_PARSER")
+    fun provideGoGoAnimeParser(parser: GoGoParser): BaseParser = parser
 }
+
