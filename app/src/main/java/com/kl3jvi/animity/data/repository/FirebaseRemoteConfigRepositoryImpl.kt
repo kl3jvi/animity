@@ -6,7 +6,6 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.domain.repositories.FirebaseRemoteConfigRepository
 import com.kl3jvi.animity.utils.logError
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class FirebaseRemoteConfigRepositoryImpl @Inject constructor(
     override val instance: FirebaseRemoteConfig

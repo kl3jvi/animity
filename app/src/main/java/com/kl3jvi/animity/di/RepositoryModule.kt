@@ -29,10 +29,8 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindDetailsRepository(repository: DetailsRepositoryImpl): DetailsRepository
 
-
     @Binds
     abstract fun bindProfileRepository(repository: ProfileRepositoryImpl): ProfileRepository
-
 
     @Binds
     abstract fun bindFirebaseRepository(repository: FirebaseRemoteConfigRepositoryImpl): FirebaseRemoteConfigRepository
@@ -40,5 +38,3 @@ abstract class RepositoryModule {
 //    @Binds
 //    abstract fun bindBaseParser(parser: BaseParser): BaseParser
 }
-
-
