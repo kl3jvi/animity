@@ -5,12 +5,10 @@ import com.kl3jvi.animity.domain.repositories.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
-@ExperimentalCoroutinesApi
+@InstallIn(ViewModelComponent::class)
 abstract class RepositoryModule {
 
     @Binds
@@ -31,14 +29,10 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindDetailsRepository(repository: DetailsRepositoryImpl): DetailsRepository
 
-    @Binds
-    abstract fun bindLoginRepository(repository: LoginRepositoryImpl): LoginRepository
 
     @Binds
     abstract fun bindProfileRepository(repository: ProfileRepositoryImpl): ProfileRepository
 
-    @Binds
-    abstract fun bindPersistenceRepository(repository: PersistenceRepositoryImpl): PersistenceRepository
 
     @Binds
     abstract fun bindFirebaseRepository(repository: FirebaseRemoteConfigRepositoryImpl): FirebaseRemoteConfigRepository
@@ -46,3 +40,5 @@ abstract class RepositoryModule {
 //    @Binds
 //    abstract fun bindBaseParser(parser: BaseParser): BaseParser
 }
+
+

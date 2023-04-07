@@ -15,11 +15,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PlayerRepositoryImpl @Inject constructor(
-    private val apiClients: Map<String, @JvmSuppressWildcards BaseClient>,
-    private val settings: Settings,
-    private val ioDispatcher: CoroutineDispatcher,
+    apiClients: Map<String, @JvmSuppressWildcards BaseClient>,
+    settings: Settings,
     private val episodeDao: EpisodeDao,
-    override val parser: GoGoParser
+    override val parser: GoGoParser,
+    private val ioDispatcher: CoroutineDispatcher
 ) : PlayerRepository {
 
     private val selectedAnimeProvider: BaseClient? =

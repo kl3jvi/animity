@@ -23,7 +23,13 @@ class EnimeClient @Inject constructor(
         header: Map<String, String>,
         episodeUrl: String,
         extra: List<Any?>
-    ): T = getEnimeSource("clfrvs0um01nmkslub8e4di19") as T
+    ): T {
+        val animeList = mutableListOf<String>().apply {
+            add(getEnimeSource("clftn6anb00d10opka5w7a1bo").url)
+        }.toList()
+
+        return animeList as T
+    }
 
     override suspend fun <T> fetchEpisodeList(
         episodeUrl: String,

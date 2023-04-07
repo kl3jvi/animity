@@ -107,7 +107,8 @@ class PlayerActivity : AppCompatActivity() {
 
             initialisePlayerLayout()
 //            viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
-            viewModel.episodeUrl.value = getIntentData?.episodeUrl.toString()
+            viewModel.episodeUrl.value =
+                getIntentData?.episodeUrl.toString()
             hideSystemUi()
         }
     }

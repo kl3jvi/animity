@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.repository
 
-import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
@@ -43,8 +42,7 @@ class DetailsRepositoryImpl @Inject constructor(
             getEpisodeTitles(malId),
             getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
-            Log.e("Episodes recieved", episodeModels.toString())
-            episodeModels?.mapIndexed { index, episodeModel ->
+            episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle?.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
@@ -53,7 +51,7 @@ class DetailsRepositoryImpl @Inject constructor(
                     episodeModel.isFiller = false
                 }
                 episodeModel
-            }?.map { episode ->
+            }.map { episode ->
                 val contentEpisode =
                     episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
                 if (contentEpisode != null) {
@@ -64,36 +62,29 @@ class DetailsRepositoryImpl @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
-    private fun getListOfEpisodes(episodeUrl: String, extra: List<Any?>) = providerFlow(settings) {
-        when (it) {
-            AnimeTypes.GOGO_ANIME -> {
-                val response = selectedAnimeProvider?.fetchEpisodeList<ResponseBody>(episodeUrl)
-                val episodeList =
-                    parser.fetchEpisodeList(response?.string().orEmpty()).reversed()
-                emit(episodeList)
-            }
+    private fun getListOfEpisodes(episodeUrl: String, extra: List<Any?>) =
+        providerFlow(settings) { provider ->
+            when (provider) {
+                AnimeTypes.GOGO_ANIME -> {
+                    val response = selectedAnimeProvider?.fetchEpisodeList<ResponseBody>(episodeUrl)
+                    val episodeList =
+                        parser.fetchEpisodeList(response?.string().orEmpty()).reversed()
+                    emit(episodeList)
+                }
 
-            AnimeTypes.ENIME -> {
-                val response = selectedAnimeProvider?.fetchEpisodeList<EnimeResponse>(
-                    episodeUrl,
-                    extra
-                )
-                val episodeList = response?.episodes
-                emit(
-                    episodeList?.map { enimeEpisode ->
-                        EpisodeModel(
-                            enimeEpisode.title,
-                            "Episode ${enimeEpisode.number}",
-                            ""
-                        )
-                    }
-                )
+                AnimeTypes.ENIME -> {
+                    val response =
+                        selectedAnimeProvider?.fetchEpisodeList<EnimeResponse>(episodeUrl, extra)
+                    val episodeList = response?.episodes?.map {
+                        EpisodeModel(it.title, "Episode ${it.number}", "")
+                    } ?: emptyList()
+                    emit(episodeList)
+                }
             }
-        }
-    }.catch {
-        logError(it)
-        emit(emptyList())
-    }.flowOn(ioDispatcher)
+        }.catch { e ->
+            logError(e)
+            emit(emptyList())
+        }.flowOn(ioDispatcher)
 
     private fun getEpisodeTitles(id: Int) = flow {
         val response =
