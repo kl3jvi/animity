@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.parsers
 
 import android.os.Build
+import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -17,7 +18,7 @@ class GoGoParser @Inject constructor(
     private val preferences: PersistenceRepository
 ) : BaseParser() {
 
-    fun fetchEpisodeList(response: String): List<EpisodeModel> {
+    override fun fetchEpisodeList(response: String): List<EpisodeModel> {
         val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
         val lists = document?.select("li")
@@ -34,32 +35,6 @@ class GoGoParser @Inject constructor(
             )
         }
         return episodeList
-    }
-
-    /**
-     * It gets the media urls from the response.
-     *
-     * @param response The response from the server.
-     * @return A list of urls
-     */
-    fun getMediaUrls(response: String): List<String> {
-        val urls = mutableListOf<String>()
-        val data = JSONObject(response).getString("data")
-        val decryptedData = decryptAES(
-            data,
-            preferences.secondKey.toString(),
-            preferences.iv.toString()
-        ).replace(
-            """o"<P{#meme":""",
-            """e":[{"file":"""
-        )
-        val res = JSONObject(decryptedData).getJSONArray("source")
-        for (i in 0 until res.length()) {
-            val label = res.getJSONObject(i).getString("label")
-            if (label == "Auto") break
-            urls.add(res.getJSONObject(i).getString("file"))
-        }
-        return urls
     }
 
     fun parseAnimeInfo(response: String): AnimeInfoModel {
@@ -79,6 +54,7 @@ class GoGoParser @Inject constructor(
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)
+        Log.e("Parsed doc", document.toString())
         val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
@@ -170,22 +146,6 @@ class GoGoParser @Inject constructor(
         return urls
     }
 
-    override suspend fun loadEpisodes(
-        response: String,
-        extra: Map<String, String>?
-    ): List<EpisodeModel> {
-        TODO()
-    }
 
-    override suspend fun loadVideoServers(
-        episodeLink: String,
-        extra: Map<String, String>?
-    ): List<String> {
-        TODO("Not yet implemented")
-    }
-}
 
-enum class Type {
-    ANIME_INFO,
-    Test
 }

@@ -114,6 +114,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">Ok</string>
     <string name="anime_provider">anime_provider</string>
+    <string name="dns_provider">dns_provider</string>
 
 
 </resources>

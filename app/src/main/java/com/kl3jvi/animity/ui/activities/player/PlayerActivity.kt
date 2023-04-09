@@ -15,7 +15,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Format
 import com.google.android.exoplayer2.MediaItem
@@ -40,6 +39,7 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
+import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
@@ -58,6 +58,7 @@ import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
 import java.io.File
 import java.net.InetAddress
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -66,6 +67,9 @@ class PlayerActivity : AppCompatActivity() {
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
+
+    @Inject
+    lateinit var settings: Settings
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private var player: ExoPlayer? = null
@@ -156,91 +160,86 @@ class PlayerActivity : AppCompatActivity() {
     private fun initializePlayer() {
         collect(viewModel.episodeMediaUrl) { res ->
             when (res) {
-                is UiResult.Error -> {
-                    binding.loadingOverlay.visibility = View.VISIBLE
-                }
-
-                UiResult.Loading -> {
+                is UiResult.Error, UiResult.Loading -> {
                     binding.loadingOverlay.visibility = View.VISIBLE
                 }
 
                 is UiResult.Success -> {
                     val videoM3U8Url = getSafeString(res.data.last())
                     try {
-                        trackSelector = DefaultTrackSelector(this).apply {
-                            setParameters(buildUponParameters().setMaxVideoSizeSd())
-                        }
-                        val audioAttributes: AudioAttributes = AudioAttributes.Builder()
-                            .setUsage(C.USAGE_MEDIA)
-                            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
-                            .build()
-
-                        player = ExoPlayer.Builder(this)
-                            .setAudioAttributes(audioAttributes, true)
-                            .setTrackSelector(trackSelector!!)
-                            .setSeekBackIncrementMs(seekForwardSeconds)
-                            .setSeekForwardIncrementMs(seekForwardSeconds)
-                            .build()
-                            .also { exoPlayer ->
-                                binding.videoView.player = exoPlayer
-                                val mdItem = MediaItem.fromUri(videoM3U8Url)
-                                val videoSource: MediaSource =
-                                    buildMediaSource(mdItem, videoM3U8Url)
-
-                                exoPlayer.setMediaSource(videoSource)
-                                exoPlayer.playWhenReady = playWhenReady
-                                exoPlayer.prepare()
-                            }
-                        /* Using the collectFlow function to collect the playback position from the
-                        viewModel and then seek to that position. */
-
+                        setupPlayer(videoM3U8Url)
                         viewModel.getPlaybackPosition(episodeUrlLocal)
                         collect(viewModel.playBackPosition) {
                             player?.seekTo(it)
                         }
-
-                        player!!.addListener(object : Player.Listener {
-                            override fun onPlayerStateChanged(
-                                playWhenReady: Boolean,
-                                playbackState: Int
-                            ) {
-                                if (playbackState == ExoPlayer.STATE_READY) {
-                                    val realDurationMillis: Long = player!!.duration
-                                    episodeEntity = EpisodeEntity().apply {
-                                        malId = aniListId
-                                        episodeUrl = episodeUrlLocal
-                                        watchedDuration = 0
-                                        duration = realDurationMillis
-                                    }
-                                }
-                            }
-                        })
-
-                        val skipIntro =
-                            binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)
-
-                        collect(viewModel.progress(player)) { currentProgress ->
-                            currentTime = currentProgress
-                            if (currentTime < 300000) {
-                                skipIntro.setOnClickListener {
-                                    player?.seekTo(currentTime + INTRO_SKIP_TIME)
-                                    skipIntro.visibility = View.GONE
-                                }
-                            } else {
-                                skipIntro.visibility = View.GONE
-                            }
-                        }
-                    } catch (e: ExoPlaybackException) {
-                        e.printStackTrace()
-                        showSnack(binding.root, e.localizedMessage)
+                        handlePlayerListener()
+                        handleSkipIntro()
                     } catch (e: Exception) {
                         e.printStackTrace()
+                        showSnack(binding.root, e.localizedMessage)
                     }
                     binding.loadingOverlay.visibility = View.GONE
                 }
             }
         }
     }
+
+    private fun setupPlayer(videoM3U8Url: String) {
+        trackSelector = DefaultTrackSelector(this).apply {
+            setParameters(buildUponParameters().setMaxVideoSizeSd())
+        }
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+            .build()
+
+        player = ExoPlayer.Builder(this)
+            .setAudioAttributes(audioAttributes, true)
+            .setTrackSelector(trackSelector!!)
+            .setSeekBackIncrementMs(seekForwardSeconds)
+            .setSeekForwardIncrementMs(seekForwardSeconds)
+            .build().apply {
+                binding.videoView.player = this
+                val mdItem = MediaItem.fromUri(videoM3U8Url)
+                val videoSource = buildMediaSource(mdItem, videoM3U8Url)
+                setMediaSource(videoSource)
+                playWhenReady = this.playWhenReady
+                prepare()
+            }
+    }
+
+    private fun handlePlayerListener() {
+        player?.addListener(object : Player.Listener {
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                if (playbackState == ExoPlayer.STATE_READY) {
+                    val realDurationMillis = player?.duration ?: 0
+                    episodeEntity = EpisodeEntity().apply {
+                        malId = aniListId
+                        episodeUrl = episodeUrlLocal
+                        watchedDuration = 0
+                        duration = realDurationMillis
+                    }
+                }
+            }
+        })
+    }
+
+    private fun handleSkipIntro() {
+        binding.videoView.findViewById<LinearLayout>(R.id.skipLayout)?.let { skipIntro ->
+            collect(viewModel.progress(player)) { currentProgress ->
+                currentTime = currentProgress
+                if (currentTime < 300000) {
+                    skipIntro.setOnClickListener {
+                        player?.seekTo(currentTime + (INTRO_SKIP_TIME - currentTime))
+                        skipIntro.visibility = View.GONE
+                    }
+                } else {
+                    skipIntro.visibility = View.GONE
+                }
+            }
+        }
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -311,6 +310,7 @@ class PlayerActivity : AppCompatActivity() {
                 .url("https://security.cloudflare-dns.com/dns-query".toHttpUrl())
                 .bootstrapDnsHosts(InetAddress.getByName("1.1.1.1"))
                 .build()
+
 
             val client = bootstrapClient.newBuilder().dns(dns).build()
             val dataSource = {
@@ -410,34 +410,32 @@ class PlayerActivity : AppCompatActivity() {
      * It toggles the full screen mode of the video player.
      */
     private fun toggleFullView() {
-        if (isFullScreen) {
-            binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-            player?.videoScalingMode = C.VIDEO_SCALING_MODE_DEFAULT
-            isFullScreen = false
-            this.let {
-                binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
-                    .setImageDrawable(
-                        ContextCompat.getDrawable(
-                            it,
-                            R.drawable.exo_controls_fullscreen_enter
-                        )
-                    )
-            }
+        val resizeMode = if (isFullScreen) {
+            AspectRatioFrameLayout.RESIZE_MODE_FIT
         } else {
-            binding.videoView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-            player?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
-            isFullScreen = true
-            this.let {
-                binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
-                    .setImageDrawable(
-                        ContextCompat.getDrawable(
-                            it,
-                            R.drawable.exo_controls_fullscreen_exit
-                        )
-                    )
-            }
+            AspectRatioFrameLayout.RESIZE_MODE_FILL
         }
+        binding.videoView.resizeMode = resizeMode
+
+        val videoScalingMode = if (isFullScreen) {
+            C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+        } else {
+            C.VIDEO_SCALING_MODE_DEFAULT
+        }
+        player?.videoScalingMode = videoScalingMode
+
+        isFullScreen = !isFullScreen
+
+        val fullScreenIcon = if (isFullScreen) {
+            R.drawable.exo_controls_fullscreen_exit
+        } else {
+            R.drawable.exo_controls_fullscreen_enter
+        }
+        val fullScreenDrawable = ContextCompat.getDrawable(this, fullScreenIcon)
+        binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
+            ?.setImageDrawable(fullScreenDrawable)
     }
+
 
     /**
      * Hide the system UI and make it re-appear when the user swipes down from the top of the screen.

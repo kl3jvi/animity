@@ -12,7 +12,7 @@ import javax.inject.Inject
 @Suppress("UNCHECKED_CAST")
 class EnimeClient @Inject constructor(
     apiServiceSingleton: ApiServiceSingleton,
-    override val parser: GoGoParser
+    override val parser: GoGoParser // Not used here
 ) : BaseClient {
     override var animeService: BaseService = apiServiceSingleton.run {
         updateBaseUrl(Constants.ENIME_BASE_URL)

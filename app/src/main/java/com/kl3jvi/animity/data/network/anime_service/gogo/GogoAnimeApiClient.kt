@@ -1,10 +1,12 @@
 package com.kl3jvi.animity.data.network.anime_service.gogo
 
+import android.util.Log
 import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.data.network.anime_service.base.BaseService
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.keysAndIv
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -55,7 +57,10 @@ class GogoAnimeApiClient @Inject constructor(
         extra: List<Any?>
     ): T {
         val episodeInfo = parser.parseMediaUrl(
-            (animeService as GogoAnimeService).fetchEpisodeMediaUrl(header, episodeUrl).toString()
+            (animeService as GogoAnimeService).fetchEpisodeMediaUrl(
+                header,
+                episodeUrl
+            ).string()
         )
         val id =
             Regex("id=([^&]+)").find(episodeInfo.vidCdnUrl.orEmpty())?.value?.removePrefix("id=")
@@ -84,7 +89,7 @@ class GogoAnimeApiClient @Inject constructor(
         url: String
     ) = (animeService as GogoAnimeService).fetchM3u8Url(header, url)
 
-    suspend fun getEncryptionKeys() = (animeService as GogoAnimeService).getKeys()
+    fun getEncryptionKeys() = keysAndIv
 
     private suspend fun fetchM3u8PreProcessor(
         header: Map<String, String>,

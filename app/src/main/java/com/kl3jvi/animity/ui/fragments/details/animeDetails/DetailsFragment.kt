@@ -250,6 +250,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     clickListener { _ ->
                         requireContext().launchActivity<PlayerActivity> {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
+
                             putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
                             putExtra(Constants.MAL_ID, animeDetails.idMal)
                         }

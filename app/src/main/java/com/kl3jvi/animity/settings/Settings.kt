@@ -3,6 +3,7 @@ package com.kl3jvi.animity.settings
 import android.content.Context
 import android.content.SharedPreferences
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.ui.activities.player.DnsTypes
 import com.kl3jvi.animity.utils.getPreferenceKey
 import javax.inject.Inject
 
@@ -19,6 +20,11 @@ class Settings @Inject constructor(
     var selectedProvider by enumPreference(
         appContext.getPreferenceKey(R.string.anime_provider),
         AnimeTypes.GOGO_ANIME
+    )
+
+    var selectedDns by enumPreference(
+        appContext.getPreferenceKey(R.string.dns_provider),
+        DnsTypes.GOOGLE_DNS
     )
 }
 

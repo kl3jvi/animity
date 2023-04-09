@@ -32,7 +32,7 @@ class GlideModule : AppGlideModule() {
         private val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
+                    level = HttpLoggingInterceptor.Level.BASIC
                 }
             )
             .connectTimeout(20, TimeUnit.SECONDS)

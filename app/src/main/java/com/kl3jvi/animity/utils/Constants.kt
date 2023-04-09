@@ -8,7 +8,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.kl3jvi.animity.BuildConfig
-import java.util.*
+import com.kl3jvi.animity.data.model.ui_models.Keys
+import java.util.UUID
 
 class Constants {
     companion object {
@@ -24,7 +25,7 @@ class Constants {
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
-        const val GOGO_BASE_URL = "https://gogoanime.fi"
+        const val GOGO_BASE_URL = "https://gogoanime.gr"
         const val ENIME_BASE_URL = "https://api.enime.moe"
         const val ANILIST_API_URL = "https://graphql.anilist.co"
 
@@ -43,6 +44,13 @@ class Constants {
         /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
         const val GOGO_KEYS_URL =
             "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
+
+        var keysAndIv: Keys =
+            Keys(
+                "37911490979715163134003223491201",
+                "54674138327930866480207815084989",
+                "3134003223491201"
+            )
 
         /* The default cover image for the profile. */
         const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
@@ -70,6 +78,8 @@ class Constants {
         val GogoPadding = byteArrayOf(0x8, 0xe, 0x3, 0x8, 0x9, 0x3, 0x4, 0x9)
 
         fun getSafeString(string: String?) = string.toString()
+
+        val String.Companion.Empty get() = ""
 
         /**
          * It returns a ColorStateList object.

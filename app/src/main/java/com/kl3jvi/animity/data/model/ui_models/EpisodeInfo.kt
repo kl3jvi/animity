@@ -9,3 +9,4 @@ data class EpisodeInfo(
     var nextEpisodeUrl: String? = null,
     var previousEpisodeUrl: String? = null
 ) : Parcelable
+

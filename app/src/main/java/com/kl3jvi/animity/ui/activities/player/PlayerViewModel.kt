@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
+import com.kl3jvi.animity.utils.Constants.Companion.Empty
 import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,6 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -26,7 +28,7 @@ class PlayerViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    var episodeUrl = MutableStateFlow("")
+    var episodeUrl = MutableStateFlow(String.Empty)
 
     private var _playBackPosition = MutableStateFlow<Long>(0)
     var playBackPosition = _playBackPosition.asStateFlow()
@@ -45,9 +47,11 @@ class PlayerViewModel @Inject constructor(
         }
     }.flowOn(Dispatchers.Main)
 
-    val episodeMediaUrl = episodeUrl.value.let {
-        playerRepository.getMediaUrl(url = it, extra = listOf("naruto"))
-            .mapToUiState(viewModelScope + ioDispatcher)
+    val episodeMediaUrl = episodeUrl.flatMapLatest {
+        playerRepository.getMediaUrl(
+            url = it,
+            extra = listOf("naruto")
+        ).mapToUiState(viewModelScope + ioDispatcher)
     }
 
     fun upsertEpisode(episodeEntity: EpisodeEntity) {

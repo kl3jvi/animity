@@ -1,4 +1,5 @@
 package com.kl3jvi.animity.utils
+
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -6,6 +7,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kl3jvi.animity.settings.AnimeTypes
 import com.kl3jvi.animity.settings.Settings
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.AbstractFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +17,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 
@@ -124,11 +126,20 @@ fun <T, R> Flow<T>.ifAnyChanged(transform: (T) -> Array<R>): Flow<T> {
     }
 }
 
+@FlowPreview
 fun <T> providerFlow(
     settings: Settings,
-    function: suspend FlowCollector<T>.(AnimeTypes) -> Unit
-) = flow {
-    function.invoke(this, settings.selectedProvider)
+    block: suspend FlowCollector<T>.(AnimeTypes) -> Unit
+) = SafeFlow(block, settings)
+
+@FlowPreview
+class SafeFlow<T>(
+    private val block: suspend FlowCollector<T>.(AnimeTypes) -> Unit,
+    private val settings: Settings
+) : AbstractFlow<T>() {
+    override suspend fun collectSafely(collector: FlowCollector<T>) {
+        collector.block(settings.selectedProvider)
+    }
 }
 
 fun <T> LifecycleOwner.collect(

@@ -16,12 +16,7 @@ sealed interface Result<out T> {
     object Loading : Result<Nothing>
 }
 
-// Ui Result
-sealed interface UiResult<out T> {
-    data class Success<T>(val data: T) : UiResult<T>
-    data class Error(val throwable: Throwable) : UiResult<Nothing>
-    object Loading : UiResult<Nothing>
-}
+
 
 /* Converting a Flow<T> to a Flow<Result<T>>. */
 /**
@@ -35,20 +30,4 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> {
     }.catch {
         emit(Result.Error(it))
     }
-}
-
-fun <T> Flow<T>.mapToUiState(
-    coroutineScope: CoroutineScope
-): StateFlow<UiResult<T>> {
-    return map<T, UiResult<T>> {
-        UiResult.Success(it)
-    }.onStart {
-        emit(UiResult.Loading)
-    }.catch {
-        emit(UiResult.Error(it))
-    }.stateIn(
-        scope = coroutineScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = UiResult.Loading
-    )
 }

@@ -15,17 +15,20 @@ import com.kl3jvi.animity.utils.or1
 import com.kl3jvi.animity.utils.reverseIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -40,29 +43,32 @@ class DetailsViewModel @Inject constructor(
     val animeMetaModel = MutableStateFlow(AniListMedia())
     val reverseState = MutableStateFlow(false)
 
-    val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
-        favoriteRepository.getGogoUrlFromAniListId(media.idAniList)
-            .asResult()
-            .flatMapLatest { result ->
-                when (result) {
-                    is Result.Error -> flowOf(EpisodeListUiState.Error)
-                    Result.Loading -> flowOf(EpisodeListUiState.Loading)
-                    is Result.Success -> {
-                        detailsRepository.fetchEpisodeList(
-                            episodeUrl = result.data,
-                            malId = media.idMal.or1(),
-                            extra = listOf(media.idMal)
-                        ).reverseIf(reverseState).map { episodes ->
-                            EpisodeListUiState.Success(episodes)
+    val episodeList: StateFlow<EpisodeListUiState> =
+        animeMetaModel.distinctUntilChanged { old, _ ->
+            old != AniListMedia()
+        }.flatMapLatest { media ->
+            favoriteRepository.getGogoUrlFromAniListId(media.idAniList)
+                .asResult()
+                .flatMapLatest { result ->
+                    when (result) {
+                        is Result.Error -> flowOf(EpisodeListUiState.Error)
+                        Result.Loading -> flowOf(EpisodeListUiState.Loading)
+                        is Result.Success -> {
+                            detailsRepository.fetchEpisodeList(
+                                episodeUrl = result.data,
+                                malId = media.idMal.or1(),
+                                extra = listOf(media.idMal)
+                            ).reverseIf(reverseState).map { episodes ->
+                                EpisodeListUiState.Success(episodes)
+                            }
                         }
                     }
                 }
-            }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        EpisodeListUiState.Loading
-    )
+        }.stateIn(
+            viewModelScope + CoroutineName("Episode List Coroutine"),
+            SharingStarted.WhileSubscribed(5_000),
+            EpisodeListUiState.Loading
+        )
 
     /**
      * > The function updates the anime as favorite in the AniList website
