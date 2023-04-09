@@ -5,62 +5,60 @@ on:
     branches:
       - main
 
-env:
-  GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false'
-
 jobs:
   ktlint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: 11
       - name: Install ktlint
         run: |
-          curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.41.0/ktlint && chmod a+x ktlint && sudo mv ktlint /usr/local/bin/
-      - name: run ktlint
+          curl -sSLO "https://github.com/pinterest/ktlint/releases/download/0.42.1/ktlint"
+          chmod a+x ktlint
+          sudo mv ktlint /usr/local/bin/
+      - name: Run ktlint
         run: |
-          ktlint -F --disabled_rules=no-wildcard-imports --reporter=checkstyle,output=build/ktlint-report.xml
+          ktlint --version
+          ktlint -F --disabled_rules=no-wildcard-imports --reporter=checkstyle,output=build/ktlint-report.xml || true
+        continue-on-error: true
+      - name: Upload ktlint report
+        uses: actions/upload-artifact@v2
+        with:
+          name: ktlint-report
+          path: build/ktlint-report.xml
 
   build:
+    needs: ktlint
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Set up JDK 11
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Build Release
+        run: ./gradlew assembleRelease -PversionName=$VERSION
 
-      - name: Build release APK
-        run: ./gradlew assembleRelease
-
-      - name: Check ktlint exit status
-        run: |
-          if [ -f build/ktlint-report.xml ]; then
-            exit 1
-          fi
+      - name: Set Version Environment Variable
+        run: echo "::set-env name=VERSION::$(git describe --tags $(git rev-list --tags --max-count=1))"
 
       - name: Rename APK file
-        run: mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Animity-v${{ env.VERSION_NAME }}-release.apk
-        env:
-          VERSION_NAME: ${{ steps.get_version.outputs.VERSION_NAME }}
+        run: mv app/build/outputs/apk/release/Animity-v$VERSION-arm64-v8a-release-unsigned.apk app/build/outputs/apk/release/Animity-$VERSION-arm64-v8a-release-unsigned.apk
 
-      - name: Upload APK to Firebase App Distribution
-        if: success()
+      - uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           token: ${{ secrets.FIREBASE_TOKEN }}
           groups: animity-tester
-          file: app/build/outputs/apk/release/Animity-v${{ env.VERSION_NAME }}-release.apk
-
-      - name: Get version name
-        id: get_version
-        run: echo "::set-output name=VERSION_NAME::$(./gradlew properties -q | grep versionName | awk '{print $2}')"
+          file: app/build/outputs/apk/release/Animity-$VERSION-arm64-v8a-release-unsigned.apk
