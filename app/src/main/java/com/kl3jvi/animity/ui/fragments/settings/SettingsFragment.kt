@@ -31,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setupPreferences() {
         requirePreference<DropDownPreference>(R.string.anime_provider).apply {
-            Log.e("VALUE", value?.toString()?:"_NUNU")
+            Log.e("VALUE", value?.toString() ?: "_NUNU")
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 settings.preferences.edit {
                     putString(

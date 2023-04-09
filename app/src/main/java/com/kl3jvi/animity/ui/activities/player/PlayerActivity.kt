@@ -240,7 +240,6 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onBackPressed() {
         super.onBackPressed()
         if (::episodeEntity.isInitialized) {
@@ -310,7 +309,6 @@ class PlayerActivity : AppCompatActivity() {
                 .url("https://security.cloudflare-dns.com/dns-query".toHttpUrl())
                 .bootstrapDnsHosts(InetAddress.getByName("1.1.1.1"))
                 .build()
-
 
             val client = bootstrapClient.newBuilder().dns(dns).build()
             val dataSource = {
@@ -435,7 +433,6 @@ class PlayerActivity : AppCompatActivity() {
         binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
             ?.setImageDrawable(fullScreenDrawable)
     }
-
 
     /**
      * Hide the system UI and make it re-appear when the user swipes down from the top of the screen.

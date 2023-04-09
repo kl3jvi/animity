@@ -165,4 +165,3 @@ object NetworkModule {
     @StringKey("GOGO_ANIME_PARSER")
     fun provideGoGoAnimeParser(parser: GoGoParser): BaseParser = parser
 }
-

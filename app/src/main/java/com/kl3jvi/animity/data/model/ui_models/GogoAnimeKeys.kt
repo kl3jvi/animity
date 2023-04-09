@@ -9,10 +9,7 @@ data class GogoAnimeKeys(
     val key: String = "",
     @SerializedName("second_key")
     val secondKey: String = ""
-) {
-
-
-}
+)
 
 data class Keys(
     val key: String,

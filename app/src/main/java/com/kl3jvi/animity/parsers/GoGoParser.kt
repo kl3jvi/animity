@@ -145,7 +145,4 @@ class GoGoParser @Inject constructor(
         }
         return urls
     }
-
-
-
 }

@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.network.anime_service.gogo
 
-import android.util.Log
 import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.data.network.anime_service.base.BaseService

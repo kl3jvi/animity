@@ -1,13 +1,9 @@
 package com.kl3jvi.animity.utils
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 
 // Network Result
 sealed interface Result<out T> {
@@ -15,8 +11,6 @@ sealed interface Result<out T> {
     data class Error(val exception: Throwable? = null) : Result<Nothing>
     object Loading : Result<Nothing>
 }
-
-
 
 /* Converting a Flow<T> to a Flow<Result<T>>. */
 /**
