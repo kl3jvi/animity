@@ -9,6 +9,21 @@ env:
   GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.parallel=false'
 
 jobs:
+  ktlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+      - name: Install ktlint
+        run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.41.0/ktlint && chmod a+x ktlint && sudo mv ktlint /usr/local/bin/
+      - name: run ktlint
+        run: |
+          ktlint -F --disabled_rules=no-wildcard-imports --reporter=checkstyle,output=build/ktlint-report.xml
+
   build:
     runs-on: ubuntu-latest
 
@@ -26,12 +41,19 @@ jobs:
       - name: Build release APK
         run: ./gradlew assembleRelease
 
+      - name: Check ktlint exit status
+        run: |
+          if [ -f build/ktlint-report.xml ]; then
+            exit 1
+          fi
+
       - name: Rename APK file
         run: mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/Animity-v${{ env.VERSION_NAME }}-release.apk
         env:
           VERSION_NAME: ${{ steps.get_version.outputs.VERSION_NAME }}
 
       - name: Upload APK to Firebase App Distribution
+        if: success()
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
