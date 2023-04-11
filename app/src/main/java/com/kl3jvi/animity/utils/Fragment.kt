@@ -40,11 +40,17 @@ fun View.canNavigate(): Boolean {
 
 fun Fragment.createFragmentMenu(
     @MenuRes menuLayout: Int,
+    menuCallback: ((Menu) -> Unit)? = null,
     selectedItem: (menuItem: MenuItem) -> Unit
 ) {
     val menuHost = requireActivity()
     menuHost.addMenuProvider(
         object : MenuProvider {
+            override fun onPrepareMenu(menu: Menu) {
+                menuCallback?.invoke(menu)
+                super.onPrepareMenu(menu)
+            }
+
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(menuLayout, menu)
             }

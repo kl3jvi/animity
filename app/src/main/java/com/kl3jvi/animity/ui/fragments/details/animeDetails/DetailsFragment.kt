@@ -4,6 +4,7 @@ package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,7 +13,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,7 +26,6 @@ import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.getHexColor
-import com.kl3jvi.animity.data.model.ui_models.toStateListColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
@@ -36,10 +35,12 @@ import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -52,11 +53,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private lateinit var bookMarkMenuItem: MenuItem
     private lateinit var title: String
-    private var check = false
+    private var check by Delegates.notNull<Boolean>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDetailsBinding.bind(view)
+        check = animeDetails.isFavourite
         observeViewModel()
         initViews()
     }
@@ -149,7 +151,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             val chip = Chip(requireContext())
             chip.apply {
                 text = data.name
-                val color = data.getHexColor().toStateListColor()
+                val color = data.getHexColor()
                 setTextColor(Color.WHITE)
                 chipStrokeColor = getColor()
                 chipStrokeWidth = 3f
@@ -159,36 +161,44 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
     }
 
-    /**
-     * We're inflating the menu, setting the menu to the menu we just inflated, and then observing the
-     * database to see if the user has favorite the current movie
-     *
-     * @param menu The menu object that you want to inflate.
-     * @param inflater The MenuInflater that can be used to inflate menu items from XML into the menu.
-     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_to_favorites -> {
+                toggleFavoriteStatus()
+                viewModel.updateAnimeFavorite()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
-        bookMarkMenuItem = menu[0]
-        updateFavoriteStatus()
+        bookMarkMenuItem = menu.findItem(R.id.add_to_favorites)
+        updateFavoriteIcon()
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    /**
-     * It observes the database for changes and updates the menu icon accordingly.
-     */
-    private fun updateFavoriteStatus() = runIfFragmentIsAttached {
-        check = animeDetails.isFavourite
-        bookMarkMenuItem.setIcon(
-            if (!check) {
-                R.drawable.ic_favorite_uncomplete
-            } else {
-                R.drawable.ic_favorite_complete
-            }
-        )
-        binding?.setType?.setOnClickListener { v ->
-            showMenu(v, R.menu.popup_menu)
+    private fun toggleFavoriteStatus() {
+        check = !check
+        updateFavoriteIcon()
+        val message = if (check) {
+            "Anime added to Favorites"
+        } else {
+            "Anime removed from Favorites"
         }
+        showSnack(binding?.root, message)
     }
+
+    private fun updateFavoriteIcon() {
+        val iconResId = if (check) {
+            R.drawable.ic_favorite_complete
+        } else {
+            R.drawable.ic_favorite_uncomplete
+        }
+        bookMarkMenuItem.setIcon(iconResId)
+    }
+
 
     /**
      * It shows a popup menu when the user clicks on the view.
@@ -228,16 +238,30 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 runIfFragmentIsAttached {
-                    viewModel.episodeList.collect { listOfEpisodeModel ->
+                    collect(viewModel.episodeList) { listOfEpisodeModel ->
                         when (listOfEpisodeModel) {
                             is EpisodeListUiState.Success -> {
                                 bindEpisodeList(listOfEpisodeModel.data)
+                                Log.e("Lista eshte", listOfEpisodeModel.data.isEmpty().toString())
                             }
+
+                            is EpisodeListUiState.Error -> startAppBarCloseTimer()
 
                             else -> {}
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun startAppBarCloseTimer() {
+        lifecycleScope.launch {
+            while (true) {
+                delay(500)
+                binding
+                    ?.appbar
+                    ?.setExpanded(true, true)
             }
         }
     }
@@ -250,7 +274,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     clickListener { _ ->
                         requireContext().launchActivity<PlayerActivity> {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
-
                             putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
                             putExtra(Constants.MAL_ID, animeDetails.idMal)
                         }
@@ -276,7 +299,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
         binding?.resultEpisodesText?.text =
             requireContext().getString(R.string.total_episodes, episodes.size.toString())
-        if (episodes.isNotEmpty()) {
+        if (episodes.isNotEmpty() && episodes.size == 1) {
             binding?.resultPlayMovie?.setOnClickListener {
                 requireActivity().launchActivity<PlayerActivity> {
                     putExtra(Constants.EPISODE_DETAILS, episodes.first())
@@ -291,32 +314,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {
             binding?.nextEpisodeContainer?.isVisible = false
         }
-    }
-
-    /**
-     * When the user clicks on the add to favorites icon, the icon changes to a filled heart and the
-     * anime is added to the favorites list
-     *
-     * @param item MenuItem - The menu item that was selected.
-     * @return The superclass method is being returned.
-     */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_to_favorites -> {
-                check = if (!check) { /* Setting the icon of the menu item at index 0 to the icon with the id
-                    `R.drawable.ic_favorite_complete`. */
-                    bookMarkMenuItem.setIcon(R.drawable.ic_favorite_complete)
-                    showSnack(binding?.root, "Anime added to Favorites")
-                    true
-                } else {
-                    bookMarkMenuItem.setIcon(R.drawable.ic_favorite_uncomplete)
-                    showSnack(binding?.root, "Anime removed from Favorites")
-                    false
-                }
-                viewModel.updateAnimeFavorite()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

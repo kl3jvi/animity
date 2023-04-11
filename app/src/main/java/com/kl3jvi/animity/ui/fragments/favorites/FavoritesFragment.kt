@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
+import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -52,6 +54,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 }
 
                 is UiResult.Success -> {
+                    Log.e("Media Status", favoritesUiState.data.map { it.isFavourite }.toString())
                     binding?.swipeLayout?.isRefreshing = false
                     binding?.favoritesRecycler?.withModels { buildFavorites(favoritesUiState.data) }
                 }

@@ -1,6 +1,9 @@
 package com.kl3jvi.animity.ui.activities.player
 
+import android.app.PictureInPictureParams
+import android.os.Build
 import android.os.Bundle
+import android.util.Rational
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -31,6 +34,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.TrackSelectionDialogBuilder
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.Util
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -43,13 +47,13 @@ import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
-import com.kl3jvi.animity.utils.Constants.Companion.INTRO_SKIP_TIME
 import com.kl3jvi.animity.utils.Constants.Companion.MAL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
+import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Cache
@@ -64,19 +68,17 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
 
-    private val binding by lazy(LazyThreadSafetyMode.NONE) {
-        ActivityPlayerBinding.inflate(layoutInflater)
-    }
-
     @Inject
     lateinit var settings: Settings
 
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityPlayerBinding.inflate(layoutInflater)
+    }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var cacheFactory: CacheDataSource.Factory
     private var player: ExoPlayer? = null
     private val viewModel: PlayerViewModel by viewModels()
-    private var playWhenReady = true
     private var playbackPosition = 0L
-    private var seekForwardSeconds = 10000L
     private val speeds = arrayOf(0.25f, 0.5f, 1f, 1.25f, 1.5f, 2f)
     private val shownSpeed = arrayOf("0.25x", "0.50x", "1x", "1.25x", "1.50x", "2x")
     private var checkedItem = 2
@@ -86,7 +88,7 @@ class PlayerActivity : AppCompatActivity() {
     private var trackSelector: DefaultTrackSelector? = null
     private var currentTime = 0L
     private lateinit var animeTitlePassed: String
-    lateinit var episodeNumberLocal: String
+    private lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
     lateinit var episodeEntity: EpisodeEntity
     var aniListId: Int = 0
@@ -110,10 +112,35 @@ class PlayerActivity : AppCompatActivity() {
             episodeNum.text = getIntentData?.episodeNumber
 
             initialisePlayerLayout()
-//            viewModel.updateEpisodeUrl(getIntentData?.episodeUrl.toString())
-            viewModel.episodeUrl.value =
-                getIntentData?.episodeUrl.toString()
+            viewModel.episodeUrl.value = getIntentData?.episodeUrl.toString()
             hideSystemUi()
+        }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        enterPipMode()
+    }
+
+    private fun enterPipMode() {
+        if (!settings.pipEnabled) return
+        try {
+            val aspectRatio = Rational(128, 72)
+            binding.videoView.useController = true
+            binding.videoView.controllerAutoShow = false
+            binding.videoView.player?.play()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                enterPictureInPictureMode(
+                    PictureInPictureParams
+                        .Builder()
+                        .setAspectRatio(aspectRatio)
+                        .build()
+                )
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                enterPictureInPictureMode()
+            }
+        } catch (e: Exception) {
+            logError(e)
         }
     }
 
@@ -194,19 +221,25 @@ class PlayerActivity : AppCompatActivity() {
             .build()
 
         player = ExoPlayer.Builder(this)
+//            .setMediaSourceFactoryIfM3u8(videoM3U8Url)
             .setAudioAttributes(audioAttributes, true)
             .setTrackSelector(trackSelector!!)
-            .setSeekBackIncrementMs(seekForwardSeconds)
-            .setSeekForwardIncrementMs(seekForwardSeconds)
+            .setSeekBackIncrementMs(settings.seekBackwardTime)
+            .setSeekForwardIncrementMs(settings.seekForwardTime)
             .build().apply {
                 binding.videoView.player = this
                 val mdItem = MediaItem.fromUri(videoM3U8Url)
                 val videoSource = buildMediaSource(mdItem, videoM3U8Url)
                 setMediaSource(videoSource)
-                playWhenReady = this.playWhenReady
+                playWhenReady = true
                 prepare()
             }
     }
+
+//    private fun ExoPlayer.Builder.setMediaSourceFactoryIfM3u8(videoM3U8Url: String) = apply {
+//        if (videoM3U8Url.contains("m3u8"))
+////            setMediaSourceFactory(DefaultMediaSourceFactory(cacheFactory))
+//    }
 
     private fun handlePlayerListener() {
         player?.addListener(object : Player.Listener {
@@ -230,7 +263,7 @@ class PlayerActivity : AppCompatActivity() {
                 currentTime = currentProgress
                 if (currentTime < 300000) {
                     skipIntro.setOnClickListener {
-                        player?.seekTo(currentTime + (INTRO_SKIP_TIME - currentTime))
+                        player?.seekTo(currentTime + settings.skipIntroDelay)
                         skipIntro.visibility = View.GONE
                     }
                 } else {
@@ -301,6 +334,7 @@ class PlayerActivity : AppCompatActivity() {
 //    }
 
     private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
+
         return if (url.contains("m3u8")) {
             val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
             val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
@@ -317,6 +351,12 @@ class PlayerActivity : AppCompatActivity() {
                     .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
                 dataSource.createDataSource()
             }
+            val simpleCache = VideoCacheManager.getInstance(this)
+            cacheFactory = CacheDataSource.Factory().apply {
+                setCache(simpleCache)
+                setUpstreamDataSourceFactory(dataSource)
+            }
+
             HlsMediaSource.Factory(dataSource)
                 .setAllowChunklessPreparation(true)
                 .createMediaSource(mediaItem)
@@ -332,6 +372,7 @@ class PlayerActivity : AppCompatActivity() {
                 .createMediaSource(mediaItem)
         }
     }
+
 
     /**
      * It releases the player.
@@ -363,14 +404,7 @@ class PlayerActivity : AppCompatActivity() {
         builder.apply {
             setTitle("Set your playback speed")
             setSingleChoiceItems(shownSpeed, checkedItem) { _, which ->
-                when (which) {
-                    0 -> setSpeed(0)
-                    1 -> setSpeed(1)
-                    2 -> setSpeed(2)
-                    3 -> setSpeed(3)
-                    4 -> setSpeed(4)
-                    5 -> setSpeed(5)
-                }
+                setSpeed(which)
             }
             setPositiveButton("OK") { dialog, _ ->
                 setPlaybackSpeed(speeds[selectedSpeed])
@@ -444,5 +478,13 @@ class PlayerActivity : AppCompatActivity() {
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
+    }
+
+    companion object {
+        val defaultHeaders = mapOf(
+            "User-Agent" to
+                    "Mozilla/5.0 (Linux; Android %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36"
+                        .format(Build.VERSION.RELEASE, Build.MODEL)
+        )
     }
 }

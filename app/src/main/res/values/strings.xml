@@ -10,8 +10,6 @@
     <string name="search">Search</string>
     <string name="settings">Settings</string>
 
-    <string name="skip_intro_preference_key">pref_skip_intro</string>
-
 
     <string name="retry">Retry</string>
     <string name="next_episode">Next Episode</string>
@@ -49,7 +47,6 @@
 
     <!-- Messages Preferences -->
     <string name="signature_title">Skip Intro Time</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
@@ -112,9 +109,14 @@
     <string name="network_settings">Network Settings</string>
     <string name="provider_title">Select Provider</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="anime_provider">anime_provider</string>
     <string name="dns_provider">dns_provider</string>
+    <string name="provider_settings">Provider Settings</string>
+    <string name="skip_delay">skip_delay</string>
+    <string name="forward_seek">forward_seek</string>
+    <string name="backward_seek">backward_seek</string>
+    <string name="pip">pip</string>
 
 
 </resources>

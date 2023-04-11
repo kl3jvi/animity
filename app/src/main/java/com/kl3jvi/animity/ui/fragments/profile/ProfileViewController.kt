@@ -8,17 +8,18 @@ import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.noAnime
 import com.kl3jvi.animity.profileCard
 import com.kl3jvi.animity.title
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.randomId
 import com.kl3jvi.animity.utils.navigateSafe
 
+
+const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 fun EpoxyController.buildProfile(
     userData: ProfileData?
 ) {
     profileCard {
         id(randomId())
         userData?.userData?.let {
-            backgroundImage(it.bannerImage.ifEmpty { Constants.DEFAULT_COVER })
+            backgroundImage(it.bannerImage.ifEmpty { DEFAULT_COVER })
             userData(it)
         }
     }

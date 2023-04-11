@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.benasher44.uuid.Uuid
@@ -33,6 +34,7 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAna
         title(Title.values()[3].title)
     }
     reviews.forEach { media ->
+        Log.e("Media", media.toString())
         vertical {
             id(Uuid.randomUUID().toString())
             animeInfo(media)

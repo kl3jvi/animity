@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.network.anime_service.base
 
+import com.kl3jvi.animity.settings.Settings
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,7 +16,8 @@ import javax.inject.Singleton
 @Singleton
 class ApiServiceSingleton @Inject constructor(
     baseUrlProvider: Provider<String>,
-    private val okHttpClient: OkHttpClient
+    private val okHttpClient: OkHttpClient,
+    private val settings: Settings
 ) {
 
     private var retrofit: Retrofit = createRetrofit(baseUrlProvider.get())

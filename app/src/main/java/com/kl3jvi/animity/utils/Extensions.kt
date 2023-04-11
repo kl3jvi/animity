@@ -18,6 +18,11 @@ fun Fragment.getPreferenceKey(@StringRes resourceId: Int): String = getString(re
 fun <T : Preference> PreferenceFragmentCompat.requirePreference(@StringRes preferenceId: Int) =
     requireNotNull(findPreference<T>(getPreferenceKey(preferenceId)))
 
+fun <T : Preference> PreferenceFragmentCompat.requirePreferences(@StringRes vararg preferenceIds: Int) =
+    preferenceIds.map { id ->
+        id to requireNotNull(findPreference<T>(getPreferenceKey(id)))
+    }
+
 fun Int.parseTime(errorHappened: () -> Unit): CharSequence? {
     return try {
         val now = System.currentTimeMillis()

@@ -18,10 +18,13 @@ import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.parsers.BaseParser
 import com.kl3jvi.animity.parsers.GoGoParser
+import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
+import com.kl3jvi.animity.utils.printAny
+import com.kl3jvi.animity.utils.setGenericDns
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -65,13 +68,16 @@ object NetworkModule {
     @Provides
     @Singleton
     @RetrofitClient
-    fun provideRetrofitOkHttpClient(): OkHttpClient {
+    fun provideRetrofitOkHttpClient(
+        settings: Settings
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BASIC
                 }
             )
+            .setGenericDns(settings)
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
@@ -108,8 +114,9 @@ object NetworkModule {
     @Singleton
     fun provideApiServiceSingleton(
         @Named("base-url") baseUrlProvider: Provider<String>,
-        @RetrofitClient okHttpClient: OkHttpClient
-    ) = ApiServiceSingleton(baseUrlProvider, okHttpClient)
+        @RetrofitClient okHttpClient: OkHttpClient,
+        settings: Settings
+    ) = ApiServiceSingleton(baseUrlProvider, okHttpClient, settings)
 
     @Provides
     @Singleton

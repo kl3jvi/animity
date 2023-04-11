@@ -4,10 +4,6 @@ import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
 import com.kl3jvi.animity.data.network.anime_service.base.BaseService
-import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_LOAD_URL
-import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_TITLES
-import com.kl3jvi.animity.utils.Constants.Companion.GOGO_KEYS_URL
-import com.kl3jvi.animity.utils.Constants.Companion.MAL_SYNC_URL
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -63,4 +59,19 @@ interface GogoAnimeService : BaseService {
 
     @GET(GOGO_KEYS_URL)
     suspend fun getKeys(): GogoAnimeKeys
+
+    companion object {
+        const val MAL_SYNC_URL =
+            "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
+
+        const val EPISODE_TITLES =
+            "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
+
+        const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
+
+        /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
+        const val GOGO_KEYS_URL =
+            "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
+
+    }
 }

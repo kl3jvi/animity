@@ -3,7 +3,11 @@ package com.kl3jvi.animity.data.model.ui_models
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Parcelable
-import com.kl3jvi.animity.type.*
+import com.kl3jvi.animity.type.MediaFormat
+import com.kl3jvi.animity.type.MediaSeason
+import com.kl3jvi.animity.type.MediaSource
+import com.kl3jvi.animity.type.MediaStatus
+import com.kl3jvi.animity.type.MediaType
 import com.kl3jvi.animity.utils.displayInDayDateTimeFormat
 import kotlinx.parcelize.Parcelize
 
@@ -68,11 +72,11 @@ data class AniListMedia(
     fun getDateTimeStringFormat(): String? {
         return nextAiringEpisode.takeIf {
             it != null
-        }?.run { displayInDayDateTimeFormat(this) }
+        }?.run(::displayInDayDateTimeFormat)
     }
 }
 
-fun Genre.getHexColor(): String {
+fun Genre.getHexColor(): ColorStateList {
     return when (name) {
         "Action" -> "#24687B"
         "Adventure" -> "#014037"
@@ -94,9 +98,9 @@ fun Genre.getHexColor(): String {
         "Supernatural" -> "#338074"
         "Thriller" -> "#224C80"
         else -> "#000000"
-    }
+    }.toStateListColor()
 }
 
-fun String.toStateListColor(): ColorStateList {
+private fun String.toStateListColor(): ColorStateList {
     return ColorStateList.valueOf(Color.parseColor(this))
 }

@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
+import android.util.Log
 import androidx.navigation.findNavController
 import com.airbnb.epoxy.EpoxyController
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
@@ -10,6 +11,7 @@ fun EpoxyController.buildFavorites(data: List<AniListMedia>) {
         favoriteAnime {
             id(media.idAniList)
             clickListener { view ->
+                Log.e("Media", media.toString())
                 val directions =
                     FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
                         media

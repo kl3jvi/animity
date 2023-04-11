@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.kl3jvi.animity.settings.AnimeTypes
+import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.settings.Settings
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.AbstractFlow
@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
@@ -152,6 +153,32 @@ fun <T> LifecycleOwner.collect(
         }
     }
 }
+
+/**
+ * Collects data from multiple flows simultaneously and applies the [collector] lambda to the collected data.
+ * Supports all types of flows.
+ *
+ * @param collector The lambda function to apply to the collected data.
+ * @param flows The vararg of flows to collect data from.
+ */
+fun <T> LifecycleOwner.collectAll(
+    vararg flows: Flow<T>,
+    collector: suspend (T) -> Unit
+) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            flows.map { flow ->
+                launch {
+                    flow.collect { data ->
+                        collector(data)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 
 fun <T> Fragment.collectLatest(
     flow: Flow<T>,

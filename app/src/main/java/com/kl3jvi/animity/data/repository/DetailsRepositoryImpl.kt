@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.repository
 
+import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
@@ -7,7 +8,6 @@ import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.settings.AnimeTypes
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.providerFlow

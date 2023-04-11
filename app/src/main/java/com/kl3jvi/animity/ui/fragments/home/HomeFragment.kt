@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -49,6 +50,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                     HomeDataUiState.Loading -> {}
                     is HomeDataUiState.Success -> {
+                        Log.e(
+                            "Media Status",
+                            result.data.popularAnime.map { it.isFavourite }.toString()
+                        )
                         buildHome(
                             result.data,
                             Firebase.analytics

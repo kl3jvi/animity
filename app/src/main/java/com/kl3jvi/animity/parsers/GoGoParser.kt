@@ -19,31 +19,28 @@ class GoGoParser @Inject constructor(
 ) : BaseParser() {
 
     override fun fetchEpisodeList(response: String): List<EpisodeModel> {
-        val episodeList = ArrayList<EpisodeModel>()
         val document = Jsoup.parse(response)
-        val lists = document?.select("li")
-        lists?.forEach {
-            val episodeUrl = it.select("a").first().attr("href").trim()
-            val episodeNumber = it.getElementsByClass("name").first().text()
-            val episodeType = it.getElementsByClass("cate").first().text()
-            episodeList.add(
-                EpisodeModel(
-                    episodeNumber = episodeNumber,
-                    episodeType = episodeType,
-                    episodeUrl = episodeUrl
-                )
+        val lists = document.select("li")
+        return lists.map {
+            val episodeUrl = it.select("a").first()?.attr("href")?.trim()
+            val episodeNumber = it.getElementsByClass("name").first()?.text()
+            val episodeType = it.getElementsByClass("cate").first()?.text()
+            EpisodeModel(
+                episodeNumber = episodeNumber ?: "",
+                episodeType = episodeType ?: "",
+                episodeUrl = episodeUrl ?: ""
             )
         }
-        return episodeList
     }
+
 
     fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
         val episodeInfo = document.getElementById("episode_page")
-        val episodeList = episodeInfo.select("a").last()
-        val endEpisode = episodeList.attr("ep_end")
-        val alias = document.getElementById("alias_anime").attr("value")
-        val id = document.getElementById("movie_id").attr("value")
+        val episodeList = episodeInfo?.select("a")?.last()
+        val endEpisode = episodeList?.attr("ep_end").orEmpty()
+        val alias = document.getElementById("alias_anime")?.attr("value").orEmpty()
+        val id = document.getElementById("movie_id")?.attr("value").orEmpty()
         return AnimeInfoModel(
             id = id,
             alias = alias,
@@ -55,7 +52,7 @@ class GoGoParser @Inject constructor(
         val mediaUrl: String?
         val document = Jsoup.parse(response)
         Log.e("Parsed doc", document.toString())
-        val info = document?.getElementsByClass("vidcdn")?.first()?.select("a")
+        val info = document.getElementsByClass("vidcdn")?.first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
             document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()

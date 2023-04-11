@@ -267,7 +267,6 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/result_play_movie"
                     style="@style/WhiteButton"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

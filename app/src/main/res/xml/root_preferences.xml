@@ -5,13 +5,16 @@
 
         <SeekBarPreference
             android:max="240"
-            app:key="skip_delay"
+            app:defaultValue="85"
+            app:key="@string/skip_delay"
             app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
             app:title="@string/signature_title" />
 
         <SeekBarPreference
             android:max="60"
-            app:key="forward"
+            app:defaultValue="30"
+            app:key="@string/forward_seek"
             app:seekBarIncrement="5"
             app:showSeekBarValue="true"
             app:title="Seek Forward Time" />
@@ -19,24 +22,35 @@
 
         <SeekBarPreference
             android:max="60"
-            app:key="backward"
+            app:defaultValue="15"
+            app:key="@string/backward_seek"
+            app:seekBarIncrement="5"
             app:showSeekBarValue="true"
             app:title="Seek Backward Time" />
 
         <SwitchPreference
             android:summary="Continues playback in a miniature player on top of other apps"
-            app:key="pip"
+            app:defaultValue="false"
+            app:key="@string/pip"
             app:title="Picture-inPicture" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/player_settings">
+    <PreferenceCategory app:title="@string/provider_settings">
 
         <DropDownPreference
             android:entries="@array/anime_provider_entries"
             android:entryValues="@array/anime_provider_values"
             android:key="@string/anime_provider"
-            android:title="Select Anime Provider" />
+            android:title="Select Anime Provider"
+            app:defaultValue="0" />
+
+        <DropDownPreference
+            android:title="Select DNS"
+            app:defaultValue="0"
+            app:entries="@array/dns_entries"
+            app:entryValues="@array/dns_values"
+            app:key="@string/dns_provider" />
 
     </PreferenceCategory>
 

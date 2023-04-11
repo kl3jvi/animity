@@ -5,17 +5,13 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.kl3jvi.animity.BuildConfig
-import com.kl3jvi.animity.data.model.ui_models.Keys
 import java.util.UUID
 
 class Constants {
     companion object {
 
         const val ONESIGNAL_APP_ID = "f8d936f4-2d9f-4c53-9f85-e2d3789d9174"
-        const val INTRO_SKIP_TIME = 85000
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val DATABASE_NAME = "anime_database"
@@ -29,31 +25,13 @@ class Constants {
         const val ENIME_BASE_URL = "https://api.enime.moe"
         const val ANILIST_API_URL = "https://graphql.anilist.co"
 
-        const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
         const val SEARCH_URL = "/search.html"
         const val ANIME_SCHEDULE = "https://animeschedule.net/anime"
         const val AUTH_GRANT_TYPE = "authorization_code"
         const val REFRESH_GRANT_TYPE = "refresh_token"
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
         const val SIGNUP_URL = "https://anilist.co/signup"
-        const val MAL_SYNC_URL =
-            "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
-        const val EPISODE_TITLES =
-            "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
 
-        /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
-        const val GOGO_KEYS_URL =
-            "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
-
-        var keysAndIv: Keys =
-            Keys(
-                "37911490979715163134003223491201",
-                "54674138327930866480207815084989",
-                "3134003223491201"
-            )
-
-        /* The default cover image for the profile. */
-        const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 
         // Network Requests Header
         const val USER_AGENT =
@@ -77,7 +55,7 @@ class Constants {
         var GogoSecretSecondKey = "54674138327930866480207815084989"
         val GogoPadding = byteArrayOf(0x8, 0xe, 0x3, 0x8, 0x9, 0x3, 0x4, 0x9)
 
-        fun getSafeString(string: String?) = string.toString()
+        fun getSafeString(string: String?) = string.orEmpty()
 
         val String.Companion.Empty get() = ""
 
@@ -88,21 +66,6 @@ class Constants {
          */
         fun getColor(): ColorStateList {
             val color: Int = Color.argb(255, 4, 138, 129)
-            return ColorStateList.valueOf(color)
-        }
-
-        /**
-         * It returns a ColorStateList object.
-         *
-         * @return A ColorStateList object.
-         */
-        fun getBackgroundColor(): ColorStateList {
-            val color: Int = Color.argb(255, 17, 17, 17)
-            return ColorStateList.valueOf(color)
-        }
-
-        fun getVerticalAdapterBackgroundColor(): ColorStateList {
-            val color: Int = Color.argb(255, 17, 17, 17)
             return ColorStateList.valueOf(color)
         }
 
@@ -160,10 +123,5 @@ class Constants {
         fun randomId(): String {
             return UUID.randomUUID().toString()
         }
-
-        val mapper = GsonBuilder().create()
-
-        inline fun <reified T> Gson.readValue(content: String): T =
-            this.fromJson(content, T::class.java)
     }
 }

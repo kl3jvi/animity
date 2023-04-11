@@ -159,7 +159,7 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
         favourites {
             anime(page: $page) {
                 edges {
-                    node{
+                    node {
                         ...HomeMedia
                     }
                     favouriteOrder
@@ -183,9 +183,7 @@ query SearchAnimeQuery(
         media (
             search: $search,
             type: ANIME
-        ) {
-            ...HomeMedia
-        }
+        ) {...HomeMedia}
     }
 }
 
@@ -241,26 +239,26 @@ mutation ToggleFavouriteMutation($animeId: Int) {
 }
 
 query HomeDataQuery {
-    trendingAnime: Page(page: 1, perPage: 30) {
+    trendingAnime: Page(page: 1, perPage: 50) {
         media(type: ANIME, status:RELEASING sort: [TRENDING_DESC], isAdult: false) {
             ...HomeMedia
         }
     }
 
-    popularAnime: Page(page: 1, perPage:30) {
+    popularAnime: Page(page: 1, perPage:50) {
         media(type: ANIME,status_in:[FINISHED]  sort: [POPULARITY_DESC], isAdult: false) {
             ...HomeMedia
         }
     }
 
-    movies: Page(page: 1, perPage:30) {
+    movies: Page(page: 1, perPage:50) {
         media(type: ANIME, format: MOVIE  status_in:[FINISHED] sort: [POPULARITY_DESC], isAdult: false) {
             ...HomeMedia
         }
     }
 
 
-    review: Page(page: 1, perPage: 15) {
+    review: Page(page: 1, perPage: 50) {
         reviews(sort: [RATING_DESC])    {
             id
             userId
@@ -280,15 +278,7 @@ query HomeDataQuery {
                 }
             }
             media {
-                id
-                title {
-                    romaji
-                    userPreferred
-                }
-                bannerImage
-                coverImage {
-                    large
-                }
+                ...HomeMedia
             }
         }
     }
@@ -305,7 +295,7 @@ fragment HomeMedia on Media {
     isFavourite
     status(version: 2)
     format
-    description(asHtml: true)
+    description(asHtml: false)
     coverImage {
         extraLarge
         large
@@ -337,12 +327,7 @@ query Notifications($page: Int) {
                 id,
                 episode,
                 contexts,
-                media {
-                    title {
-                        romaji,
-                        userPreferred
-                    }
-                }
+                media {...HomeMedia}
             }
         }
     }

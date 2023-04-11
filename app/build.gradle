@@ -36,17 +36,13 @@ android {
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        applicationVariants.all { variant ->
-            variant.buildConfigField "String", "ANILIST_ID_KEY", "\"${System.getenv("ANILIST_ID_KEY")}\""
-            variant.buildConfigField "String", "ANILIST_SECRET_KEY", "\"${System.getenv("ANILIST_SECRET_KEY")}\""
-            variant.buildConfigField "String", "REDIRECT_URI_KEY", "\"${System.getenv("REDIRECT_URI_KEY")}\""
-        }
     }
 
     ndkVersion "25.1.8937393"
 
     buildTypes {
-        debug{
+        debug
+                {
             debuggable true
         }
         release {
@@ -151,6 +147,8 @@ dependencies {
     def materialVersion = "1.6.1"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
+    implementation 'com.github.brahmkshatriya:NiceHttp:1.1.0'
+
 
     def constraintLayoutVersion = "2.1.4"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"

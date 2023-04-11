@@ -70,6 +70,7 @@ class DetailsViewModel @Inject constructor(
             EpisodeListUiState.Loading
         )
 
+
     /**
      * > The function updates the anime as favorite in the AniList website
      */

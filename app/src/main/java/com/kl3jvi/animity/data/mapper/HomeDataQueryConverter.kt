@@ -16,12 +16,26 @@ import com.kl3jvi.animity.fragment.HomeMedia
 
 fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
     return HomeData(
-        trendingAnime = this.data?.trendingAnime?.media?.mapNotNull { it?.homeMedia?.convert() }
+        trendingAnime = this.data
+            ?.trendingAnime
+            ?.media
+            ?.mapNotNull { it?.homeMedia?.convert() }
             ?: emptyList(),
-        popularAnime = this.data?.popularAnime?.media?.mapNotNull { it?.homeMedia?.convert() }
+        popularAnime = this.data
+            ?.popularAnime
+            ?.media
+            ?.mapNotNull { it?.homeMedia?.convert() }
             ?: emptyList(),
-        movies = this.data?.movies?.media?.mapNotNull { it?.homeMedia?.convert() } ?: emptyList(),
-        review = this.data?.review?.reviews?.mapNotNull { it.convert() } ?: emptyList()
+        movies = this.data
+            ?.movies
+            ?.media
+            ?.mapNotNull { it?.homeMedia?.convert() }
+            ?: emptyList(),
+        review = this.data
+            ?.review
+            ?.reviews
+            ?.mapNotNull { it.convert() }
+            ?: emptyList()
     )
 }
 
@@ -45,11 +59,11 @@ fun HomeDataQuery.Review1?.convert(): Review {
             )
         ),
         aniListMedia = AniListMedia(
-            idAniList = this?.media?.id ?: 0,
-            title = MediaTitle(userPreferred = this?.media?.title?.userPreferred.orEmpty()),
-            bannerImage = this?.media?.bannerImage.orEmpty(),
+            idAniList = this?.media?.homeMedia?.id ?: 0,
+            title = MediaTitle(userPreferred = this?.media?.homeMedia?.title?.userPreferred.orEmpty()),
+            bannerImage = this?.media?.homeMedia?.bannerImage.orEmpty(),
             coverImage = MediaCoverImage(
-                large = this?.media?.coverImage?.large.orEmpty()
+                large = this?.media?.homeMedia?.coverImage?.large.orEmpty()
             )
         )
     )

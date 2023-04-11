@@ -150,10 +150,10 @@ fun <T : Enum<T>> enumPreference(
 ): ReadWriteProperty<PreferencesHolder, T> =
     EnumPreference(key, default)
 
-fun Any.toStringGson(): String {
-    return Gson().toJson(this)
+inline fun <reified T> String?.fromJson(): T {
+    return Gson().fromJson(this.orEmpty(), T::class.java)
 }
 
-inline fun <reified T> String.toObjectGson(): T {
-    return Gson().fromJson(this, T::class.java)
+inline fun <reified T> T?.toJson(): String? {
+    return Gson().toJson(this)
 }
