@@ -199,7 +199,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         bookMarkMenuItem.setIcon(iconResId)
     }
 
-
     /**
      * It shows a popup menu when the user clicks on the view.
      *

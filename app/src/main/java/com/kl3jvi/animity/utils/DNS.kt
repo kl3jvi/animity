@@ -29,8 +29,6 @@ inline fun <reified T : Any, R : Any> T.printAny(
     return this
 }
 
-
 private fun <T : String?> T?.ifNull(function: () -> String): String {
     return this?.takeIf { it.isNotBlank() } ?: function()
 }
-

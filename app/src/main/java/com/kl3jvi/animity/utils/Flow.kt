@@ -178,8 +178,6 @@ fun <T> LifecycleOwner.collectAll(
     }
 }
 
-
-
 fun <T> Fragment.collectLatest(
     flow: Flow<T>,
     collector: suspend (T) -> Unit

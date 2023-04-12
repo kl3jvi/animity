@@ -6,6 +6,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
@@ -23,7 +24,6 @@ import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
-import com.kl3jvi.animity.utils.printAny
 import com.kl3jvi.animity.utils.setGenericDns
 import dagger.Module
 import dagger.Provides
@@ -158,17 +158,28 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     @IntoMap
     @StringKey("GOGO_ANIME")
     fun provideGogoAnimeApiClient(client: GogoAnimeApiClient): BaseClient = client
 
     @Provides
+    @Singleton
     @IntoMap
     @StringKey("ENIME")
     fun provideEnimeClient(client: EnimeClient): BaseClient = client
 
     @Provides
+    @Singleton
     @IntoMap
     @StringKey("GOGO_ANIME_PARSER")
     fun provideGoGoAnimeParser(parser: GoGoParser): BaseParser = parser
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAnalytics(
+        @ApplicationContext context: Context
+    ): FirebaseAnalytics {
+        return FirebaseAnalytics.getInstance(context)
+    }
 }

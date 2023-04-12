@@ -1,25 +1,21 @@
 package com.kl3jvi.animity.ui.fragments.home
 
-import android.os.Bundle
-import android.util.Log
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
 import com.benasher44.uuid.Uuid
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.CardAnimeBindingModel_
+import com.kl3jvi.animity.analytics.Analytics
+import com.kl3jvi.animity.data.enums.Title
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.HomeData
 import com.kl3jvi.animity.title
 import com.kl3jvi.animity.utils.navigateSafe
 import com.kl3jvi.animity.vertical
 
-fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAnalytics) {
-    val (trendingAnime, newAnime, movies, reviews) = homeData
-    listOf(
-        trendingAnime,
-        newAnime,
-        movies
-    ).forEachIndexed { index, list ->
+fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: Analytics) {
+    homeData.run {
+        listOf(trendingAnime, popularAnime, movies)
+    }.forEachIndexed { index, list ->
         title {
             id(Uuid.randomUUID().toString())
             title(Title.values()[index].title)
@@ -31,10 +27,9 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAna
     }
     title {
         id(Uuid.randomUUID().toString())
-        title(Title.values()[3].title)
+        title(Title.values().last().title)
     }
-    reviews.forEach { media ->
-        Log.e("Media", media.toString())
+    homeData.run { review }.forEach { media ->
         vertical {
             id(Uuid.randomUUID().toString())
             animeInfo(media)
@@ -46,15 +41,7 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: FirebaseAna
     }
 }
 
-enum class Title(val title: String) {
-    TRENDING_ANIME(title = "Trending"),
-    NEW_ANIME(title = "Popular"),
-    MOVIES(title = "Movies"),
-    REVIEWS(title = "Reviews")
-}
-
-fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): List<CardAnimeBindingModel_> {
-    /* It's a function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
+fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: Analytics): List<CardAnimeBindingModel_> {
     return map { media ->
         CardAnimeBindingModel_()
             .id(Uuid.randomUUID().toString())
@@ -62,16 +49,11 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: FirebaseAnalytics): Lis
                 val direction =
                     HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
                 view.navigateSafe(direction)
-                val params = Bundle()
-                params.putString(
-                    "genre",
-                    media.genres.firstOrNull()?.name ?: "empty"
-                )
+
                 firebaseAnalytics.logEvent(
                     media.title.userPreferred.replace("\\s".toRegex(), ""),
-                    params
+                    mapOf("genre" to media.genres.firstOrNull()?.name.orEmpty())
                 )
-            }
-            .animeInfo(media)
+            }.animeInfo(media)
     }
 }

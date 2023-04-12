@@ -1,11 +1,8 @@
 package com.kl3jvi.animity.utils
 
-import android.content.SharedPreferences
 import android.text.format.DateUtils
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import java.text.ParseException
 
 /* It's a function that takes a resource ID and returns a string. */
@@ -15,13 +12,6 @@ fun Fragment.getPreferenceKey(@StringRes resourceId: Int): String = getString(re
  * Find a preference with the corresponding key and throw if it does not exist.
  * @param preferenceId Resource ID from preference_keys
  */
-fun <T : Preference> PreferenceFragmentCompat.requirePreference(@StringRes preferenceId: Int) =
-    requireNotNull(findPreference<T>(getPreferenceKey(preferenceId)))
-
-fun <T : Preference> PreferenceFragmentCompat.requirePreferences(@StringRes vararg preferenceIds: Int) =
-    preferenceIds.map { id ->
-        id to requireNotNull(findPreference<T>(getPreferenceKey(id)))
-    }
 
 fun Int.parseTime(errorHappened: () -> Unit): CharSequence? {
     return try {
@@ -31,18 +21,5 @@ fun Int.parseTime(errorHappened: () -> Unit): CharSequence? {
         e.printStackTrace()
         errorHappened()
         ""
-    }
-}
-
-inline fun SharedPreferences.edit(
-    commit: Boolean = false,
-    action: SharedPreferences.Editor.() -> Unit
-) {
-    val editor = edit()
-    action(editor)
-    if (commit) {
-        editor.commit()
-    } else {
-        editor.apply()
     }
 }

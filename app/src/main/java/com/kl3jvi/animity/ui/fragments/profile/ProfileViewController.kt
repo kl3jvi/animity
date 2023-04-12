@@ -11,7 +11,6 @@ import com.kl3jvi.animity.title
 import com.kl3jvi.animity.utils.Constants.Companion.randomId
 import com.kl3jvi.animity.utils.navigateSafe
 
-
 const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
 fun EpoxyController.buildProfile(
     userData: ProfileData?

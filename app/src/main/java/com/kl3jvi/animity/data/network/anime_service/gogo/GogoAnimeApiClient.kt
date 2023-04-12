@@ -12,7 +12,8 @@ import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
 class GogoAnimeApiClient @Inject constructor(
-    apiServiceSingleton: ApiServiceSingleton, override val parser: GoGoParser
+    apiServiceSingleton: ApiServiceSingleton,
+    override val parser: GoGoParser
 ) : BaseClient {
 
     override var animeService: BaseService = apiServiceSingleton.run {
@@ -21,15 +22,18 @@ class GogoAnimeApiClient @Inject constructor(
     }
 
     private suspend fun fetchAnimeInfo(
-        header: Map<String, String>, episodeUrl: String
+        header: Map<String, String>,
+        episodeUrl: String
     ) = withContext(Dispatchers.IO) {
         (animeService as GogoAnimeService).fetchAnimeInfo(
-            header, episodeUrl
+            header,
+            episodeUrl
         ).string()
     }
 
     override suspend fun <T> fetchEpisodeList(
-        episodeUrl: String, extra: List<Any?>
+        episodeUrl: String,
+        extra: List<Any?>
     ): T {
         val animeInfo = fetchAnimeInfo(
             Constants.getNetworkHeader(),
@@ -48,11 +52,14 @@ class GogoAnimeApiClient @Inject constructor(
         (animeService as GogoAnimeService).getEpisodeTitles(id) as T
 
     override suspend fun <T> fetchEpisodeMediaUrl(
-        header: Map<String, String>, episodeUrl: String, extra: List<Any?>
+        header: Map<String, String>,
+        episodeUrl: String,
+        extra: List<Any?>
     ): T {
         val episodeInfo = parser.parseMediaUrl(
             (animeService as GogoAnimeService).fetchEpisodeMediaUrl(
-                header, episodeUrl
+                header,
+                episodeUrl
             ).string()
         )
         val id =
@@ -60,14 +67,17 @@ class GogoAnimeApiClient @Inject constructor(
 
         val ajaxResponse = parser.parseEncryptAjax(
             response = fetchM3u8Url(
-                header = header, url = episodeInfo.vidCdnUrl.orEmpty()
-            ).string(), id = id.orEmpty()
+                header = header,
+                url = episodeInfo.vidCdnUrl.orEmpty()
+            ).string(),
+            id = id.orEmpty()
         )
 
         val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$ajaxResponse"
         val encryptedUrls = parser.parseEncryptedUrls(
             fetchM3u8PreProcessor(
-                header = header, url = streamUrl
+                header = header,
+                url = streamUrl
             ).string()
         )
 
@@ -75,13 +85,15 @@ class GogoAnimeApiClient @Inject constructor(
     }
 
     private suspend fun fetchM3u8Url(
-        header: Map<String, String>, url: String
+        header: Map<String, String>,
+        url: String
     ) = (animeService as GogoAnimeService).fetchM3u8Url(header, url)
 
     fun getEncryptionKeys() = keysAndIv
 
     private suspend fun fetchM3u8PreProcessor(
-        header: Map<String, String>, url: String
+        header: Map<String, String>,
+        url: String
     ) = (animeService as GogoAnimeService).fetchM3u8PreProcessor(header, url)
 
     suspend fun getGogoUrlFromAniListId(id: Int) =

@@ -225,7 +225,9 @@ class PlayerActivity : AppCompatActivity() {
             .setAudioAttributes(audioAttributes, true)
             .setTrackSelector(trackSelector!!)
             .setSeekBackIncrementMs(settings.seekBackwardTime)
-            .setSeekForwardIncrementMs(settings.seekForwardTime)
+            .setSeekForwardIncrementMs(
+                settings.seekForwardTime
+            )
             .build().apply {
                 binding.videoView.player = this
                 val mdItem = MediaItem.fromUri(videoM3U8Url)
@@ -238,7 +240,7 @@ class PlayerActivity : AppCompatActivity() {
 
 //    private fun ExoPlayer.Builder.setMediaSourceFactoryIfM3u8(videoM3U8Url: String) = apply {
 //        if (videoM3U8Url.contains("m3u8"))
-////            setMediaSourceFactory(DefaultMediaSourceFactory(cacheFactory))
+// //            setMediaSourceFactory(DefaultMediaSourceFactory(cacheFactory))
 //    }
 
     private fun handlePlayerListener() {
@@ -334,7 +336,6 @@ class PlayerActivity : AppCompatActivity() {
 //    }
 
     private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
-
         return if (url.contains("m3u8")) {
             val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
             val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
@@ -372,7 +373,6 @@ class PlayerActivity : AppCompatActivity() {
                 .createMediaSource(mediaItem)
         }
     }
-
 
     /**
      * It releases the player.
@@ -483,8 +483,8 @@ class PlayerActivity : AppCompatActivity() {
     companion object {
         val defaultHeaders = mapOf(
             "User-Agent" to
-                    "Mozilla/5.0 (Linux; Android %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36"
-                        .format(Build.VERSION.RELEASE, Build.MODEL)
+                "Mozilla/5.0 (Linux; Android %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36"
+                    .format(Build.VERSION.RELEASE, Build.MODEL)
         )
     }
 }

@@ -12,7 +12,6 @@ import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
-import com.kl3jvi.animity.utils.logMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

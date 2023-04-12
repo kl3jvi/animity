@@ -6,7 +6,6 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.utils.UiResult
-import com.kl3jvi.animity.utils.ifChanged
 import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

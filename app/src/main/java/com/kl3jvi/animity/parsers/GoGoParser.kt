@@ -33,7 +33,6 @@ class GoGoParser @Inject constructor(
         }
     }
 
-
     fun parseAnimeInfo(response: String): AnimeInfoModel {
         val document = Jsoup.parse(response)
         val episodeInfo = document.getElementById("episode_page")

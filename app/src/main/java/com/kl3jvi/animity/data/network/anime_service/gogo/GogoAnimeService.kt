@@ -72,6 +72,5 @@ interface GogoAnimeService : BaseService {
         /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
         const val GOGO_KEYS_URL =
             "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
-
     }
 }

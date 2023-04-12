@@ -51,8 +51,4 @@ class LoginViewModel @Inject constructor(
     fun getToken(): String? {
         return userRepository.bearerToken
     }
-
-    fun setSelectedProvider(provider: String) {
-        userRepository.setProvider(provider = provider)
-    }
 }

@@ -6,8 +6,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -56,7 +54,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         )
                         buildHome(
                             result.data,
-                            Firebase.analytics
+                            viewModel.analytics
                         )
                     }
                 }

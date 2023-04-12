@@ -113,7 +113,7 @@
                         android:id="@+id/episode_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(episodeInfo.episodeName)}"
+                        android:text="@{episodeInfo.episodeName}"
                         android:textColor="@color/grayTextColor"
                         android:visibility="@{showTitle}"
                         tools:text="Rated: 8.8" />

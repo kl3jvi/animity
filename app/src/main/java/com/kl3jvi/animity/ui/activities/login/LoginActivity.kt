@@ -53,9 +53,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
         val isLoggedInWithAuth = viewModel.getToken().run { this.isNotNullOrEmpty() }
         if (isLoggedInWithAuth) {
             binding.progressBar.show()
-            launchActivity<MainActivity> {
-                viewModel.setSelectedProvider("gogoAnime")
-            }
+            launchActivity<MainActivity> {}
             finish()
         }
         return isLoggedInWithAuth
@@ -99,7 +97,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
                         state.onSuccess {
                             it.onTokenResponse()
                         }.onFailure {
-                            showSnack(binding.root, "Error Logging In")
+                            showSnack(binding.root, "Error Logging In! Reason: ${it.message}")
                         }
                     }
                 }
@@ -107,13 +105,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
         }
     }
 
-    /**
-     * It saves the tokens and launches the MainActivity.
-     *
-     * @param response AuthResponse - This is the response object that contains the access token and
-     * refresh token.
-     * @return The response from the server is being returned.
-     */
     override fun AuthResponse.onTokenResponse() {
         val authToken: String? = accessToken
         val refreshToken: String? = refreshToken

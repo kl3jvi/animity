@@ -1,4 +1,4 @@
- 
+
 package com.kl3jvi.animity.utils
 
 import android.os.Build
