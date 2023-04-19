@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
-import com.kl3jvi.animity.parsers.Providers
 import com.kl3jvi.animity.persistence.EpisodeDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -14,9 +13,11 @@ class PersistenceRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : PersistenceRepository {
 
-    override suspend fun insertEpisode(episodeEntity: EpisodeEntity) = episodeDao.insertEpisode(episodeEntity)
+    override suspend fun insertEpisode(episodeEntity: EpisodeEntity) =
+        episodeDao.insertEpisode(episodeEntity)
 
-    override suspend fun updateEpisode(episodeEntity: EpisodeEntity) = episodeDao.updateEpisode(episodeEntity)
+    override suspend fun updateEpisode(episodeEntity: EpisodeEntity) =
+        episodeDao.updateEpisode(episodeEntity)
 
     override suspend fun getEpisodeContent(episodeUrl: String): Flow<EpisodeEntity> =
         episodeDao.getEpisodeContent(episodeUrl)
@@ -65,12 +66,6 @@ class PersistenceRepositoryImpl @Inject constructor(
         get() = getData(SELECTED_DNS)?.toInt()
         set(value) {
             setData(SELECTED_DNS, value.toString())
-        }
-
-    override var selectedProvider: Providers?
-        get() = getData(SELECTED_PROVIDER)?.fromJson<Providers>()
-        set(value) {
-            setData(SELECTED_PROVIDER, value.toJson())
         }
 
     override var iv: String?

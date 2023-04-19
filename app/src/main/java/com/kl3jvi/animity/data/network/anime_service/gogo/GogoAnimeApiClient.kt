@@ -38,7 +38,7 @@ class GogoAnimeApiClient @Inject constructor(
         val animeInfo = fetchAnimeInfo(
             Constants.getNetworkHeader(),
             episodeUrl = episodeUrl
-        ).run { parser.parseAnimeInfo(this) }
+        ).run(parser::parseAnimeInfo)
 
         return (animeService as GogoAnimeService).fetchEpisodeList(
             header = Constants.getNetworkHeader(),

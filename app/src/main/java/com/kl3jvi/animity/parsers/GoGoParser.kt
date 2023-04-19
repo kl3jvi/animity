@@ -18,6 +18,9 @@ class GoGoParser @Inject constructor(
     private val preferences: PersistenceRepository
 ) : BaseParser() {
 
+    override val name: String
+        get() = "GOGO_ANIME"
+
     override fun fetchEpisodeList(response: String): List<EpisodeModel> {
         val document = Jsoup.parse(response)
         val lists = document.select("li")
@@ -51,13 +54,13 @@ class GoGoParser @Inject constructor(
         val mediaUrl: String?
         val document = Jsoup.parse(response)
         Log.e("Parsed doc", document.toString())
-        val info = document.getElementsByClass("vidcdn")?.first()?.select("a")
+        val info = document.getElementsByClass("vidcdn").first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =
-            document.getElementsByClass("anime_video_body_episodes_r")?.select("a")?.first()
+            document.getElementsByClass("anime_video_body_episodes_r").select("a").first()
                 ?.attr("href")
         val previousEpisodeUrl =
-            document.getElementsByClass("anime_video_body_episodes_l")?.select("a")?.first()
+            document.getElementsByClass("anime_video_body_episodes_l").select("a").first()
                 ?.attr("href")
 
         return EpisodeInfo(

@@ -57,6 +57,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         configurePreference<SwitchPreference>(
             R.string.pip,
             settings.preferences
-        ) {}
+        )
     }
 }

@@ -11,7 +11,7 @@ import com.kl3jvi.animity.settings.toJson
 fun <T : Preference> PreferenceFragmentCompat.configurePreference(
     @StringRes preferenceId: Int,
     preferences: SharedPreferences,
-    block: T.() -> Unit
+    block: T.() -> Unit = {}
 ): T {
     val preference = requirePreference<T>(preferenceId)
     preference.block()
@@ -30,5 +30,6 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
     return preference
 }
 
-private fun <T : Preference> PreferenceFragmentCompat.requirePreference(@StringRes preferenceId: Int) =
-    requireNotNull(findPreference<T>(getPreferenceKey(preferenceId)))
+private fun <T : Preference> PreferenceFragmentCompat.requirePreference(
+    @StringRes preferenceId: Int
+) = requireNotNull(findPreference<T>(getPreferenceKey(preferenceId)))

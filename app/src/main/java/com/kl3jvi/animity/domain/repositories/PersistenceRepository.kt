@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.domain.repositories
 
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
-import com.kl3jvi.animity.parsers.Providers
 import kotlinx.coroutines.flow.Flow
 
 interface PersistenceRepository {
@@ -20,8 +19,6 @@ interface PersistenceRepository {
     var iv: String?
     var key: String?
     var secondKey: String?
-
-    var selectedProvider: Providers?
 
     fun clearStorage()
 }

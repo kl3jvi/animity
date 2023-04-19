@@ -6,7 +6,6 @@ import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
-import com.kl3jvi.animity.parsers.Providers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -49,7 +48,6 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun setProvider(provider: String) {
-        storage.selectedProvider = Providers.GoGoAnime
     }
 
     override fun clearStorage() {
