@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.hilt.work.HiltWorker
 import androidx.navigation.NavDeepLinkBuilder
@@ -37,17 +38,11 @@ class NotificationWorker @AssistedInject constructor(
             val notifications =
                 aniListGraphQlClient.getNotifications().data?.convert()?.firstOrNull()
                     ?: Notification()
-
-            // Check if the notification is new
             if (!isNotificationIdStored(notifications.id)) {
-                Log.e("Notifications received", notifications.toString())
-
+                Log.e(TAG, "Notifications received: $notifications")
                 showNotification(notifications)
-
-                // Store the notification's id to avoid showing it again
                 storeNotificationId(notifications.id)
             }
-
             Result.success()
         } catch (e: Exception) {
             Result.failure()
@@ -56,7 +51,6 @@ class NotificationWorker @AssistedInject constructor(
 
     private fun showNotification(notification: Notification) {
         val args = bundleOf("animeDetails" to notification.media)
-
         val pendingIntent = NavDeepLinkBuilder(applicationContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.mobile_navigation)
@@ -64,13 +58,12 @@ class NotificationWorker @AssistedInject constructor(
             .setArguments(args)
             .createPendingIntent()
 
-        val builder =
-            NotificationCompat.Builder(applicationContext, ANIMITY_NOTIFICATIONS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.baseline_circle_notifications_24)
-                .setContentTitle(applicationContext.getString(R.string.notification_title))
-                .setContentText(notification.getFormattedNotification())
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
+        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_circle_notifications_24)
+            .setContentTitle(applicationContext.getString(R.string.notification_title))
+            .setContentText(notification.getFormattedNotification())
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
 
         NotificationManagerCompat.from(applicationContext).apply {
             if (ContextCompat.checkSelfPermission(
@@ -83,16 +76,14 @@ class NotificationWorker @AssistedInject constructor(
         }
     }
 
-    private fun isNotificationIdStored(id: Int?): Boolean {
-        return preferences.getBoolean(id.toString(), false)
-    }
+    private fun isNotificationIdStored(id: Int?): Boolean =
+        preferences.getBoolean(id.toString(), false)
 
-    private fun storeNotificationId(id: Int?) {
-        preferences.edit().putBoolean(id.toString(), true).apply()
-    }
+    private fun storeNotificationId(id: Int?) = preferences.edit { putBoolean(id.toString(), true) }
 
-    private companion object {
-        const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
-        const val NOTIFICATION_ID = 1
+    companion object {
+        private const val TAG = "NotificationWorker"
+        private const val CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
+        private const val NOTIFICATION_ID = 1
     }
 }
