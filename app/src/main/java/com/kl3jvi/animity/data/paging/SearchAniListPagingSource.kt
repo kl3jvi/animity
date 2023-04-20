@@ -6,11 +6,6 @@ import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class SearchAniListPagingSource(
     private val apiClient: AniListGraphQlClient,
@@ -28,10 +23,7 @@ class SearchAniListPagingSource(
         return try {
             val listOfAniListMedia =
                 apiClient.fetchSearchAniListData(query, page)
-                    .map { it.data?.convert() }
-                    .distinctUntilChanged()
-                    .flowOn(Dispatchers.IO)
-                    .firstOrNull() ?: emptyList()
+                    .data?.convert() ?: emptyList()
 
             LoadResult.Page(
                 data = listOfAniListMedia,

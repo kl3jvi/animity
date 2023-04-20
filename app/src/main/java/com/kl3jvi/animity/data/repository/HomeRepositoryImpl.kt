@@ -19,10 +19,11 @@ class HomeRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : HomeRepository {
 
-    override fun getHomeData() =
-        aniListGraphQlClient.getHomeData()
-            .mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
-            .flowOn(ioDispatcher)
+    override fun getHomeData() = flow {
+        emit(aniListGraphQlClient.getHomeData())
+    }.mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
+        .flowOn(ioDispatcher)
+
 
     override fun getEncryptionKeys() = flow {
         emit(animeClient.getEncryptionKeys())

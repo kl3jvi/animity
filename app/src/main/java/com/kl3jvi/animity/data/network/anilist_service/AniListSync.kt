@@ -10,27 +10,30 @@ import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.TrendingMediaQuery
 import com.kl3jvi.animity.UserQuery
-import kotlinx.coroutines.flow.Flow
 
 interface AniListSync {
 
-    fun getHomeData(): Flow<ApolloResponse<HomeDataQuery.Data>>
-    fun getProfileData(userId: Int?): Flow<ApolloResponse<UserQuery.Data>>
-    fun getAnimeListData(userId: Int?): Flow<ApolloResponse<AnimeListCollectionQuery.Data>>
-    fun fetchSearchAniListData(
+    suspend fun getHomeData(): ApolloResponse<HomeDataQuery.Data>
+    suspend fun getProfileData(userId: Int?): ApolloResponse<UserQuery.Data>
+    suspend fun getAnimeListData(userId: Int?): ApolloResponse<AnimeListCollectionQuery.Data>
+    suspend fun fetchSearchAniListData(
         query: String,
         page: Int
-    ): Flow<ApolloResponse<SearchAnimeQuery.Data>>
+    ): ApolloResponse<SearchAnimeQuery.Data>
 
-    fun getFavoriteAnimesFromAniList(
+    suspend fun getFavoriteAnimesFromAniList(
         userId: Int?,
         page: Int?
-    ): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
+    ): ApolloResponse<FavoritesAnimeQuery.Data>
 
-    fun markAnimeAsFavorite(animeId: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>>
-    fun getTopTenTrending(): Flow<ApolloResponse<TrendingMediaQuery.Data>>
-    fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
-    fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>>
-    fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
+    suspend fun markAnimeAsFavorite(animeId: Int?): ApolloResponse<ToggleFavouriteMutation.Data>
+    suspend fun getTopTenTrending(): ApolloResponse<TrendingMediaQuery.Data>
+    suspend fun getFavoriteAnimes(
+        userId: Int?,
+        page: Int?
+    ): ApolloResponse<FavoritesAnimeQuery.Data>
+
+    suspend fun getUserData(id: Int?): ApolloResponse<UserQuery.Data>
+    suspend fun getSessionForUser(): ApolloResponse<SessionQuery.Data>
     suspend fun getNotifications(): ApolloResponse<NotificationsQuery.Data>
 }

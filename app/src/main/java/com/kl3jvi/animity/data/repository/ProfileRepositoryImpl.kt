@@ -9,6 +9,7 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.domain.repositories.ProfileRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
@@ -24,15 +25,16 @@ class ProfileRepositoryImpl @Inject constructor(
      *
      * @param userId The user id of the user you want to get the profile data of.
      */
-    override fun getProfileData(userId: Int?) =
-        aniListGraphQlClient.getProfileData(userId)
-            .mapNotNull(ApolloResponse<UserQuery.Data>::convert)
-            .combine(getProfileAnimes(userId)) { userData, profileRow ->
-                ProfileData(
-                    userData = userData,
-                    profileRow = profileRow
-                )
-            }.flowOn(ioDispatcher)
+    override fun getProfileData(userId: Int?) = flow {
+        emit(aniListGraphQlClient.getProfileData(userId))
+    }.mapNotNull(ApolloResponse<UserQuery.Data>::convert)
+        .combine(getProfileAnimes(userId)) { userData, profileRow ->
+            ProfileData(
+                userData = userData,
+                profileRow = profileRow
+            )
+        }.flowOn(ioDispatcher)
+
 
     /**
      * We're using the `AniListGraphQlClient` to get the anime list data for a user, and then we're
@@ -40,7 +42,8 @@ class ProfileRepositoryImpl @Inject constructor(
      *
      * @param userId The user's ID.
      */
-    private fun getProfileAnimes(userId: Int?) =
-        aniListGraphQlClient.getAnimeListData(userId)
-            .mapNotNull(ApolloResponse<AnimeListCollectionQuery.Data>::convert)
+    private fun getProfileAnimes(userId: Int?) = flow {
+        emit(aniListGraphQlClient.getAnimeListData(userId))
+    }.mapNotNull(ApolloResponse<AnimeListCollectionQuery.Data>::convert)
+        .flowOn(ioDispatcher)
 }

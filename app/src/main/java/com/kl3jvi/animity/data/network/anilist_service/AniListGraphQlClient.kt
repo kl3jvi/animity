@@ -17,30 +17,30 @@ class AniListGraphQlClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : AniListSync {
 
-    override fun getHomeData() =
+    override suspend fun getHomeData() =
         apolloClient.query(
             HomeDataQuery()
-        ).toFlow()
+        ).execute()
 
-    override fun getProfileData(userId: Int?) =
+    override suspend fun getProfileData(userId: Int?) =
         apolloClient.query(
             UserQuery(Optional.presentIfNotNull(userId))
-        ).toFlow()
+        ).execute()
 
-    override fun getAnimeListData(userId: Int?) =
+    override suspend fun getAnimeListData(userId: Int?) =
         apolloClient.query(
             AnimeListCollectionQuery(Optional.presentIfNotNull(userId))
-        ).toFlow()
+        ).execute()
 
-    override fun fetchSearchAniListData(query: String, page: Int) =
+    override suspend fun fetchSearchAniListData(query: String, page: Int) =
         apolloClient.query(
             SearchAnimeQuery(
                 Optional.presentIfNotNull(query),
                 Optional.presentIfNotNull(page)
             )
-        ).toFlow()
+        ).execute()
 
-    override fun getFavoriteAnimesFromAniList(
+    override suspend fun getFavoriteAnimesFromAniList(
         userId: Int?,
         page: Int?
     ) = apolloClient.query(
@@ -48,14 +48,14 @@ class AniListGraphQlClient @Inject constructor(
             Optional.Present(userId),
             Optional.Present(page)
         )
-    ).toFlow()
+    ).execute()
 
-    override fun getSessionForUser() = apolloClient.query(SessionQuery()).toFlow()
+    override suspend fun getSessionForUser() = apolloClient.query(SessionQuery()).execute()
 
-    override fun getUserData(id: Int?) =
-        apolloClient.query(UserQuery(Optional.Present(id))).toFlow()
+    override suspend fun getUserData(id: Int?) =
+        apolloClient.query(UserQuery(Optional.Present(id))).execute()
 
-    override fun getFavoriteAnimes(
+    override suspend fun getFavoriteAnimes(
         userId: Int?,
         page: Int?
     ) = apolloClient.query(
@@ -63,15 +63,15 @@ class AniListGraphQlClient @Inject constructor(
             Optional.Present(userId),
             Optional.Present(page)
         )
-    ).toFlow()
+    ).execute()
 
-    override fun getTopTenTrending() = apolloClient.query(TrendingMediaQuery()).toFlow()
+    override suspend fun getTopTenTrending() = apolloClient.query(TrendingMediaQuery()).execute()
 
-    override fun markAnimeAsFavorite(animeId: Int?) = apolloClient.mutation(
+    override suspend fun markAnimeAsFavorite(animeId: Int?) = apolloClient.mutation(
         ToggleFavouriteMutation(
             Optional.Present(animeId)
         )
-    ).toFlow()
+    ).execute()
 
     override suspend fun getNotifications() = apolloClient.query(NotificationsQuery()).execute()
 }
