@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.hilt.work.HiltWorker
 import androidx.navigation.NavDeepLinkBuilder
@@ -45,31 +45,37 @@ class NotificationWorker @AssistedInject constructor(
         }
     }
 
-    private fun showNotification(contentText: Notification) {
-        val params = bundleOf("notificationData" to contentText)
+    private fun showNotification(notification: Notification) {
+        val args = bundleOf("animeDetails" to notification.media)
 
         val pendingIntent = NavDeepLinkBuilder(applicationContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.mobile_navigation)
             .setDestination(R.id.navigation_details)
-            .setArguments(params)
+            .setArguments(args)
             .createPendingIntent()
 
-        val builder = NotificationCompat.Builder(applicationContext, "CHANNEL_ID")
-            .setSmallIcon(R.drawable.search_icon)
-            .setContentTitle("New notification received")
-            .setContentText(contentText.getFormattedNotification())
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+        val builder =
+            NotificationCompat.Builder(applicationContext, ANIMITY_NOTIFICATIONS_CHANNEL_ID)
+                .setSmallIcon(R.drawable.baseline_circle_notifications_24)
+                .setContentTitle(applicationContext.getString(R.string.notification_title))
+                .setContentText(notification.getFormattedNotification())
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
 
-        val notificationManager = NotificationManagerCompat.from(applicationContext)
-
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationManager.notify(0x21, builder.build())
+        NotificationManagerCompat.from(applicationContext).apply {
+            if (ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                notify(NOTIFICATION_ID, builder.build())
+            }
         }
+    }
+
+    private companion object {
+        const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
+        const val NOTIFICATION_ID = 1
     }
 }

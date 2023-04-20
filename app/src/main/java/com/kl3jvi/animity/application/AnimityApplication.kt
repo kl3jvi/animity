@@ -65,17 +65,23 @@ class AnimityApplication : Application(), Configuration.Provider {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("CHANNEL_ID", name, importance).apply {
-                description = descriptionText
-            }
+            val channel =
+                NotificationChannel(ANIMITY_NOTIFICATIONS_CHANNEL_ID, name, importance).apply {
+                    description = descriptionText
+                }
             // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
+
     override fun getWorkManagerConfiguration() = Configuration.Builder()
         .setWorkerFactory(workerFactory)
         .setMinimumLoggingLevel(Log.DEBUG)
         .build()
+
+    companion object {
+        const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
+    }
 }
