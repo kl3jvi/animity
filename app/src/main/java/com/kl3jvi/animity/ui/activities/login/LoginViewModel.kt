@@ -28,13 +28,6 @@ class LoginViewModel @Inject constructor(
         authorizationToken
     )
 
-    /**
-     * > The function `saveTokens` takes two strings, `authToken` and `refreshToken`, and saves them to
-     * the `userRepository` object
-     *
-     * @param authToken The token that is used to authenticate the user.
-     * @param refreshToken The refresh token that was returned from the server.
-     */
     fun saveTokens(authToken: String, refreshToken: String) {
         userRepository.apply {
             setBearerToken(authToken)
@@ -42,12 +35,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    /**
-     * > The function `getToken()` returns the value of the `bearerToken` property of the
-     * `userRepository` object
-     *
-     * @return The bearer token
-     */
     fun getToken(): String? {
         return userRepository.bearerToken
     }

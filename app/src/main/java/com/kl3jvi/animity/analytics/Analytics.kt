@@ -7,6 +7,9 @@ import javax.inject.Inject
 class Analytics @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics
 ) {
+
+    private val pattern = "[ ,:](?!_)".toRegex()
+
     fun logEvent(event: String, params: Map<String, Any?>? = null) {
         val bundle = params?.let { createBundle(it) }
         firebaseAnalytics.logEvent(event, bundle)

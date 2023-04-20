@@ -19,7 +19,7 @@
 
     <string-array name="anime_provider_values">
         <item>GOGO_ANIME</item>
-        <item>ENIME</item>
+        <item>GOGO_ANIME</item>
     </string-array>
 
 </resources>

@@ -135,12 +135,10 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
      *
      * @param uri The URI to be opened in the browser.
      */
-    private fun View.launchBrowser(uri: Uri) {
-        setOnClickListener {
-            CustomTabsIntent.Builder()
-                .build()
-                .launchUrl(this.context, uri)
-        }
+    private fun View.launchBrowser(uri: Uri) = setOnClickListener {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(this.context, uri)
     }
 
     /**

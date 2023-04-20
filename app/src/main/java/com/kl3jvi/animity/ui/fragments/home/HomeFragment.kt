@@ -38,7 +38,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     )
 
     private fun fetchHomeData() {
-        viewLifecycleOwner.collect(viewModel.homeDataUiState) { result ->
+        collect(viewModel.homeDataUiState) { result ->
             binding?.mainRv?.withModels {
                 when (result) {
                     is HomeDataUiState.Error -> showSnack(

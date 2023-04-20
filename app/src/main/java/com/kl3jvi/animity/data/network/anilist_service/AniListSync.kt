@@ -4,6 +4,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
+import com.kl3jvi.animity.NotificationsQuery
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
@@ -31,4 +32,5 @@ interface AniListSync {
     fun getFavoriteAnimes(userId: Int?, page: Int?): Flow<ApolloResponse<FavoritesAnimeQuery.Data>>
     fun getUserData(id: Int?): Flow<ApolloResponse<UserQuery.Data>>
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
+    suspend fun getNotifications(): ApolloResponse<NotificationsQuery.Data>
 }

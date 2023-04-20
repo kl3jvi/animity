@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.model.ui_models.HomeData
+import com.kl3jvi.animity.domain.repositories.FirebaseRemoteConfigRepository
 import com.kl3jvi.animity.domain.repositories.HomeRepository
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
@@ -17,8 +18,13 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     homeRepository: HomeRepository,
-    val analytics: Analytics
+    val analytics: Analytics,
+    val firebase: FirebaseRemoteConfigRepository
 ) : ViewModel() {
+
+    init {
+        firebase.apply { init(); getBaseUrl() }
+    }
 
     val homeDataUiState: StateFlow<HomeDataUiState> = homeRepository.getHomeData()
         .asResult()

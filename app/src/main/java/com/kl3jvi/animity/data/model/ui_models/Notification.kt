@@ -13,5 +13,12 @@ data class Notification(
     /**
      * The associated media of the airing schedule
      */
-    val media: NotificationMedia
-)
+    val media: AniListMedia = AniListMedia()
+) {
+    fun getFormattedNotification(): String {
+        val contextList = contexts?.toMutableList()
+        contextList?.add(1, episode.toString())
+        contextList?.add(3, media.title.userPreferred)
+        return contextList?.joinToString("") ?: ""
+    }
+}

@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.ui.activities.main
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.repositories.HomeRepository
@@ -26,8 +25,6 @@ class MainViewModel @Inject constructor(
     private val localStorage: PersistenceRepository,
     network: NetworkMonitor
 ) : ViewModel() {
-
-    val initialise = MutableLiveData<Unit>()
 
     val isConnectedToNetwork = network.isConnected
         .stateIn(

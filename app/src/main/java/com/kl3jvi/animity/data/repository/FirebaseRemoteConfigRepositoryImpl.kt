@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.domain.repositories.FirebaseRemoteConfigRepository
+import com.kl3jvi.animity.utils.Constants.Companion.Empty
 import com.kl3jvi.animity.utils.logError
 import javax.inject.Inject
 
@@ -28,5 +29,8 @@ class FirebaseRemoteConfigRepositoryImpl @Inject constructor(
     /**
      * It returns the value of the key "BASE_URL" from the instance of the [FirebaseRemoteConfig].
      */
-    override fun getBaseUrl() = instance.getString("BASE_URL")
+    override fun getBaseUrl(): String {
+        Log.e("Received String", instance.getString("BASE_URL"))
+        return String.Empty
+    }
 }

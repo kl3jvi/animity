@@ -5,6 +5,7 @@ import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
+import com.kl3jvi.animity.NotificationsQuery
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
@@ -71,4 +72,6 @@ class AniListGraphQlClient @Inject constructor(
             Optional.Present(animeId)
         )
     ).toFlow()
+
+    override suspend fun getNotifications() = apolloClient.query(NotificationsQuery()).execute()
 }

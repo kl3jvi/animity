@@ -16,14 +16,14 @@ plugins {
 
 android {
 
-//    signingConfigs {
-//        release {
-//            storeFile file('/Users/kl3jvi/StudioProjects/animity/animity')
-//            storePassword 'klejvi123'
-//            keyPassword 'klejvi123'
-//            keyAlias 'key0'
-//        }
-//    }
+    signingConfigs {
+        release {
+            storeFile file('/Users/kl3jvi/StudioProjects/animity/animity')
+            storePassword 'klejvi123'
+            keyPassword 'klejvi123'
+            keyAlias 'key0'
+        }
+    }
 
     compileSdk 33
     defaultConfig {
@@ -172,8 +172,10 @@ dependencies {
     def lifecycle_version = '2.5.1'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
-    def analyticsVersion = '21.2.0'
+    def analyticsVersion = '21.2.2'
     implementation "com.google.firebase:firebase-analytics-ktx:$analyticsVersion"
+
+    implementation 'com.google.firebase:firebase-dynamic-links:21.1.0'
 
     def crashlyticsVersion = '18.3.5'
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
@@ -281,7 +283,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'io.github.azhon:appupdate:4.2.7'
 
-    def work_version = "2.8.0"
+    def work_version = "2.8.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation 'androidx.hilt:hilt-work:1.0.0'
 
