@@ -2,6 +2,7 @@ package com.kl3jvi.animity.workers
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -27,7 +28,8 @@ class NotificationWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val ioDispatcher: CoroutineDispatcher,
-    private val aniListGraphQlClient: AniListGraphQlClient
+    private val aniListGraphQlClient: AniListGraphQlClient,
+    private val preferences: SharedPreferences
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
@@ -35,9 +37,16 @@ class NotificationWorker @AssistedInject constructor(
             val notifications =
                 aniListGraphQlClient.getNotifications().data?.convert()?.firstOrNull()
                     ?: Notification()
-            Log.e("Notifications received", notifications.toString())
 
-            showNotification(notifications)
+            // Check if the notification is new
+            if (!isNotificationIdStored(notifications.id)) {
+                Log.e("Notifications received", notifications.toString())
+
+                showNotification(notifications)
+
+                // Store the notification's id to avoid showing it again
+                storeNotificationId(notifications.id)
+            }
 
             Result.success()
         } catch (e: Exception) {
@@ -72,6 +81,14 @@ class NotificationWorker @AssistedInject constructor(
                 notify(NOTIFICATION_ID, builder.build())
             }
         }
+    }
+
+    private fun isNotificationIdStored(id: Int?): Boolean {
+        return preferences.getBoolean(id.toString(), false)
+    }
+
+    private fun storeNotificationId(id: Int?) {
+        preferences.edit().putBoolean(id.toString(), true).apply()
     }
 
     private companion object {

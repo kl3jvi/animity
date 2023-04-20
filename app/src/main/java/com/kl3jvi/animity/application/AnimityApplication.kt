@@ -51,7 +51,7 @@ class AnimityApplication : Application(), Configuration.Provider {
             .build()
 
         val work: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<NotificationWorker>(10, TimeUnit.MINUTES).setConstraints(
+            PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES).setConstraints(
                 constraints
             ).build()
 
