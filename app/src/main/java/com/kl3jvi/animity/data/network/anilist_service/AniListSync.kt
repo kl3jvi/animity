@@ -35,5 +35,5 @@ interface AniListSync {
 
     suspend fun getUserData(id: Int?): ApolloResponse<UserQuery.Data>
     suspend fun getSessionForUser(): ApolloResponse<SessionQuery.Data>
-    suspend fun getNotifications(): ApolloResponse<NotificationsQuery.Data>
+    suspend fun getNotifications(page: Int): ApolloResponse<NotificationsQuery.Data>
 }

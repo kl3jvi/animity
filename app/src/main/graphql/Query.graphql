@@ -321,8 +321,24 @@ fragment HomeMedia on Media {
 }
 
 query Notifications($page: Int) {
-    page:Page (page: $page, perPage: 30) {
+    page:Page (page: $page, perPage: 100) {
         notifications(type_in: AIRING, resetNotificationCount: false) {
+            ... on FollowingNotification{
+                context,
+                createdAt,
+                id,
+                type,
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                },
+                userId,
+            }
+
             ... on AiringNotification {
                 id,
                 episode,
@@ -330,14 +346,39 @@ query Notifications($page: Int) {
                 media {...HomeMedia}
                 type
             }
-            ... on FollowingNotification{
+
+            ... on ActivityLikeNotification{
                 context,
                 createdAt,
                 id,
                 type,
-#                user,
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                },
                 userId,
             }
+
+            ... on ActivityMessageNotification{
+                context,
+                createdAt,
+                id,
+                type,
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                },
+                userId,
+            }
+
         }
     }
 }

@@ -73,5 +73,10 @@ class AniListGraphQlClient @Inject constructor(
         )
     ).execute()
 
-    override suspend fun getNotifications() = apolloClient.query(NotificationsQuery()).execute()
+    override suspend fun getNotifications(page: Int) =
+        apolloClient.query(
+            NotificationsQuery(
+                Optional.Present(page)
+            )
+        ).execute()
 }

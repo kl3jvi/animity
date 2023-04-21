@@ -42,7 +42,8 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
                 notificationData?.run {
                     listOf(
                         airingNotifications,
-                        followingNotifications
+                        followingNotifications,
+                        likeNotification
                     )
                 }?.forEachIndexed { index, notifications ->
                     title {

@@ -10,6 +10,8 @@ data class Notification(
      * The notification context text
      */
     val contexts: List<String?>? = emptyList(),
+
+    val user: User = User(),
     /**
      * The associated media of the airing schedule
      */
