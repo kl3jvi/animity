@@ -321,13 +321,22 @@ fragment HomeMedia on Media {
 }
 
 query Notifications($page: Int) {
-    page:Page (page: $page, perPage: 1) {
+    page:Page (page: $page, perPage: 30) {
         notifications(type_in: AIRING, resetNotificationCount: false) {
             ... on AiringNotification {
                 id,
                 episode,
                 contexts,
                 media {...HomeMedia}
+                type
+            }
+            ... on FollowingNotification{
+                context,
+                createdAt,
+                id,
+                type,
+#                user,
+                userId,
             }
         }
     }

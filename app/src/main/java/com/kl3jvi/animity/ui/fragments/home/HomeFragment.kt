@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
+import com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.createFragmentMenu
@@ -28,8 +29,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         createFragmentMenu(R.menu.settings_menu) {
             when (it.itemId) {
                 R.id.action_settings -> handleSettings()
+                R.id.action_notifications -> handleNotifications()
             }
         }
+    }
+
+    private fun handleNotifications() {
+        val bottomSheetFragment = NotificationBottomSheetFragment()
+        bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
     }
 
     private fun handleSettings() = findNavController().nav(

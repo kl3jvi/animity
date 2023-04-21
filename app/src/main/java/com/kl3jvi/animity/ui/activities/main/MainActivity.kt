@@ -24,8 +24,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.application.AnimityApplication.Companion.ONESIGNAL_APP_ID
 import com.kl3jvi.animity.databinding.ActivityMainBinding
-import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.collect
 import com.onesignal.OneSignal
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         if (granted) {
             OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
             OneSignal.initWithContext(this.applicationContext)
-            OneSignal.setAppId(Constants.ONESIGNAL_APP_ID)
+            OneSignal.setAppId(ONESIGNAL_APP_ID)
         }
     }
 

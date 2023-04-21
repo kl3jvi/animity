@@ -1,6 +1,9 @@
 package com.kl3jvi.animity.data.enums
 
-enum class DnsTypes(val url: String, var ipAddresses: List<String>) {
+enum class DnsTypes(
+    val url: String,
+    var ipAddresses: List<String>
+) {
     GOOGLE_DNS(
         url = "https://dns.google/dns-query",
         ipAddresses = listOf(
@@ -20,21 +23,18 @@ enum class DnsTypes(val url: String, var ipAddresses: List<String>) {
     AD_GUARD_DNS(
         url = "https://dns.adguard.com/dns-query",
         ipAddresses = listOf(
-            // "Non-filtering"
             "94.140.14.140",
             "94.140.14.141"
         )
     );
 
-    companion object {
-        private fun DnsTypes.toDisplayName(): String {
-            return when (this) {
-                GOOGLE_DNS -> "Google DNS"
-                CLOUD_FLARE_DNS -> "CloudFlare DNS"
-                AD_GUARD_DNS -> "AdGuard DNS"
-            }
-        }
+    fun displayName(): String = when (this) {
+        GOOGLE_DNS -> "Google DNS"
+        CLOUD_FLARE_DNS -> "CloudFlare DNS"
+        AD_GUARD_DNS -> "AdGuard DNS"
+    }
 
-        val dnsEntries = values().map { it.toDisplayName() }.toTypedArray()
+    companion object {
+        val dnsEntries = values().map { it.displayName() }.toTypedArray()
     }
 }

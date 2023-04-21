@@ -51,38 +51,34 @@ object NetworkModule {
     fun provideOkHttpClient(
         localStorage: PersistenceRepository,
         loginRepository: LoginRepository
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-            )
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .build()
-    }
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
+        .addInterceptor(
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+        )
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .build()
 
     @Provides
     @Singleton
     @RetrofitClient
     fun provideRetrofitOkHttpClient(
         settings: Settings
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BASIC
-                }
-            )
-            .setGenericDns(settings)
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .build()
-    }
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            }
+        )
+        .setGenericDns(settings)
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .build()
 
     @Provides
     @Singleton
@@ -97,9 +93,7 @@ object NetworkModule {
 
     @Provides
     @Named("base-url")
-    fun provideBaseUrl(): String {
-        return GOGO_BASE_URL
-    }
+    fun provideBaseUrl(): String = GOGO_BASE_URL
 
     @Provides
     @Singleton
@@ -126,36 +120,30 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAniListAuthService(retrofit: Retrofit): AniListAuthService {
-        return retrofit.create(AniListAuthService::class.java)
-    }
+    fun provideAniListAuthService(retrofit: Retrofit): AniListAuthService =
+        retrofit.create(AniListAuthService::class.java)
 
     @Provides
     @Singleton
     fun provideChucker(
         @ApplicationContext context: Context
-    ): ChuckerInterceptor {
-        return ChuckerInterceptor.Builder(context)
-            .collector(ChuckerCollector(context))
-            .maxContentLength(250000L)
-            .redactHeaders(emptySet())
-            .alwaysReadResponseBody(false)
-            .build()
-    }
+    ): ChuckerInterceptor = ChuckerInterceptor.Builder(context)
+        .collector(ChuckerCollector(context))
+        .maxContentLength(250000L)
+        .redactHeaders(emptySet())
+        .alwaysReadResponseBody(false)
+        .build()
 
     @Singleton
     @Provides
     fun provideConnectivityManager(
         @ApplicationContext context: Context
-    ): ConnectivityManager {
-        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
+    ): ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     @Singleton
     @Provides
-    fun provideFirebaseInstance(): FirebaseRemoteConfig {
-        return FirebaseRemoteConfig.getInstance()
-    }
+    fun provideFirebaseInstance(): FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
 
     @Provides
     @Singleton
@@ -179,7 +167,5 @@ object NetworkModule {
     @Singleton
     fun provideFirebaseAnalytics(
         @ApplicationContext context: Context
-    ): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(context)
-    }
+    ) = FirebaseAnalytics.getInstance(context)
 }

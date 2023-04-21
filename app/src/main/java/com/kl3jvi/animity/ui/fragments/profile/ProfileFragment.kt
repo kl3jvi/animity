@@ -34,10 +34,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         binding = null
                     }
                     requireActivity().finish()
-                    true
                 }
-
-                else -> false
             }
         }
         getProfileData()

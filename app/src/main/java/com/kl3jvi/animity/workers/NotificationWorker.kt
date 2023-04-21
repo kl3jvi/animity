@@ -17,6 +17,7 @@ import androidx.work.WorkerParameters
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.Notification
+import com.kl3jvi.animity.data.model.ui_models.NotificationData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import dagger.assisted.Assisted
@@ -35,9 +36,15 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         try {
+            val notificationData =
+                aniListGraphQlClient.getNotifications().data?.convert() ?: NotificationData(
+                    emptyList(),
+                    emptyList()
+                )
             val notifications =
-                aniListGraphQlClient.getNotifications().data?.convert()?.firstOrNull()
-                    ?: Notification()
+                notificationData.airingNotifications.plus(notificationData.followingNotifications)
+                    .firstOrNull() ?: Notification()
+
             if (!isNotificationIdStored(notifications.id)) {
                 Log.e(TAG, "Notifications received: $notifications")
                 showNotification(notifications)

@@ -35,5 +35,8 @@ abstract class RepositoryModule {
     abstract fun bindProfileRepository(repository: ProfileRepositoryImpl): ProfileRepository
 
     @Binds
+    abstract fun bindNotificationsRepository(repository: NotificationsRepositoryImpl): NotificationsRepository
+
+    @Binds
     abstract fun bindFirebaseRepository(repository: FirebaseRemoteConfigRepositoryImpl): FirebaseRemoteConfigRepository
 }

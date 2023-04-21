@@ -17,7 +17,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.utils.Constants.Companion.ONESIGNAL_APP_ID
 import com.kl3jvi.animity.workers.NotificationWorker
 import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
@@ -83,5 +82,6 @@ class AnimityApplication : Application(), Configuration.Provider {
 
     companion object {
         const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
+        const val ONESIGNAL_APP_ID = "f8d936f4-2d9f-4c53-9f85-e2d3789d9174"
     }
 }

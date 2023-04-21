@@ -5,20 +5,14 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
-import com.kl3jvi.animity.BuildConfig
 import java.util.UUID
 
 class Constants {
     companion object {
 
-        const val ONESIGNAL_APP_ID = "f8d936f4-2d9f-4c53-9f85-e2d3789d9174"
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
-        const val DATABASE_NAME = "anime_database"
-        const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
-        const val STARTING_PAGE_INDEX = 1
         const val MAL_ID = "anilist_id"
-        const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"
 
         // Base URLS
         const val GOGO_BASE_URL = "https://gogoanime.gr"
@@ -40,7 +34,7 @@ class Constants {
         const val ORIGIN = "https://gogoanime.gg/"
         const val REFERER = "https://goload.pro/"
 
-        //        fun getHeader(): Map<String, String> {
+//        fun getHeader(): Map<String, String> {
 //            return mapOf(
 //                "referer" to REFERER,
 //                "origin" to ORIGIN,

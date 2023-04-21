@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
-import com.kl3jvi.animity.utils.Constants.Companion.STARTING_PAGE_INDEX
 
 class SearchAniListPagingSource(
     private val apiClient: AniListGraphQlClient,
@@ -34,5 +33,9 @@ class SearchAniListPagingSource(
             e.printStackTrace()
             LoadResult.Error(e)
         }
+    }
+
+    companion object {
+        const val STARTING_PAGE_INDEX = 1
     }
 }

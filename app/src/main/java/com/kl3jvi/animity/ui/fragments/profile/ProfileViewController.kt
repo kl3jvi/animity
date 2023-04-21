@@ -22,22 +22,16 @@ fun EpoxyController.buildProfile(
             userData(it)
         }
     }
-    if (userData?.profileRow?.isNotEmpty() == true) {
-        userData.profileRow.map { profileRow ->
-            title {
-                id(randomId())
-                title(profileRow.title)
-            }
-            carousel {
-                id(randomId())
-                models(profileRow.anime.modelCardAnimeProfile())
-            }
-        }
-    } else {
-        noAnime {
+    userData?.profileRow?.forEach { profileRow ->
+        title {
             id(randomId())
+            title(profileRow.title)
         }
-    }
+        carousel {
+            id(randomId())
+            models(profileRow.anime.modelCardAnimeProfile())
+        }
+    } ?: noAnime { id(randomId()) }
 }
 
 /* A function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */

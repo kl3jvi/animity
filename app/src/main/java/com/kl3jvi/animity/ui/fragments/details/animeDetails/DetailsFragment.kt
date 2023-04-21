@@ -16,9 +16,7 @@ import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.chip.Chip
@@ -234,22 +232,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
      */
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                runIfFragmentIsAttached {
-                    collect(viewModel.episodeList) { listOfEpisodeModel ->
-                        when (listOfEpisodeModel) {
-                            is EpisodeListUiState.Success -> {
-                                bindEpisodeList(listOfEpisodeModel.data)
-                                Log.e("Lista eshte", listOfEpisodeModel.data.isEmpty().toString())
-                            }
-
-                            is EpisodeListUiState.Error -> startAppBarCloseTimer()
-
-                            else -> {}
-                        }
-                    }
+        collect(viewModel.episodeList) { listOfEpisodeModel ->
+            when (listOfEpisodeModel) {
+                is EpisodeListUiState.Success -> {
+                    bindEpisodeList(listOfEpisodeModel.data)
+                    Log.e("Lista eshte", listOfEpisodeModel.data.isEmpty().toString())
                 }
+
+                is EpisodeListUiState.Error -> startAppBarCloseTimer()
+
+                else -> {}
             }
         }
     }
