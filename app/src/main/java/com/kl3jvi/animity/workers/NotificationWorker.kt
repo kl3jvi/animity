@@ -36,7 +36,7 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         try {
-            val notificationData = aniListGraphQlClient.getNotifications()
+            val notificationData = aniListGraphQlClient.getNotifications(1)
                 .data
                 ?.convert()
                 ?: NotificationData(
