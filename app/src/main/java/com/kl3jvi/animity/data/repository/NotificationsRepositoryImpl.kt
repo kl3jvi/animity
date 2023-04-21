@@ -19,7 +19,7 @@ class NotificationsRepositoryImpl @Inject constructor(
 
     override fun getNotifications(): Flow<PagingData<Notification>> {
         val pager = Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = 20),
+            config = PagingConfig(enablePlaceholders = true, pageSize = 50),
             pagingSourceFactory = { NotificationPagingSource(aniListGraphQlClient) }
         ).flow
         return pager.flowOn(ioDispatcher)

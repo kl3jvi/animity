@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kl3jvi.animity.databinding.NotificationsBottomSheetBinding
-import com.kl3jvi.animity.notifications
-import com.kl3jvi.animity.utils.collect
+import com.kl3jvi.animity.utils.collectLatest
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,38 +28,16 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
             container,
             false
         )
-        pagingController = NotificationsController()
         return binding?.root!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pagingController = NotificationsController()
         binding?.notificationsRv?.setController(pagingController)
-        collect(viewModel.notifications) { notificationData ->
+        collectLatest(viewModel.notifications) { notificationData ->
+            Log.e("NOTIFIACTIONs", notificationData.toString())
             pagingController.submitData(notificationData)
-            Log.e("Notifications otraves", notificationData.toString())
-//            binding?.notificationsRv?.withModels {
-//
-//
-//                notificationData?.run {
-//                    listOf(
-//                        airingNotifications,
-//                        followingNotifications,
-//                        likeNotification
-//                    )
-//                }?.forEachIndexed { index, notifications ->
-//                    title {
-//                        id(randomId())
-//                        title(NotificationTitle.values()[index].title)
-//                    }
-//                    notifications.forEach {
-//                        notifications {
-//                            id(it.id)
-//                            notification(it)
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 }

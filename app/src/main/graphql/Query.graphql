@@ -321,7 +321,7 @@ fragment HomeMedia on Media {
 }
 
 query Notifications($page: Int) {
-    page:Page (page: $page, perPage: 100) {
+    page:Page (page: $page, perPage: 20) {
         notifications(type_in: AIRING, resetNotificationCount: false) {
             ... on FollowingNotification{
                 context,

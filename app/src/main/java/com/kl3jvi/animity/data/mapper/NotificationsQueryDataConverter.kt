@@ -15,6 +15,7 @@ fun NotificationsQuery.Data.convert(): NotificationData {
     val airingNotifications = mutableListOf<Notification>()
     val followingNotifications = mutableListOf<Notification>()
     val likeNotification = mutableListOf<Notification>()
+    val messageNotifications = mutableListOf<Notification>()
 
     page?.notifications?.forEach { notification ->
         when {
@@ -64,6 +65,24 @@ fun NotificationsQuery.Data.convert(): NotificationData {
                     )
                 )
             }
+
+            notification?.onActivityMessageNotification != null -> {
+                likeNotification.add(
+                    Notification(
+                        id = notification.onActivityMessageNotification.id,
+                        episode = null,
+                        user = User(
+                            id = notification.onActivityMessageNotification.user?.id ?: 0,
+                            name = notification.onActivityMessageNotification.user?.name.orEmpty(),
+                            avatar = UserAvatar(
+                                notification.onActivityMessageNotification.user?.avatar?.large.orEmpty(),
+                                notification.onActivityMessageNotification.user?.avatar?.medium.orEmpty()
+                            )
+                        ),
+                        contexts = listOf(notification.onActivityMessageNotification.context)
+                    )
+                )
+            }
         }
     }
 
@@ -71,26 +90,9 @@ fun NotificationsQuery.Data.convert(): NotificationData {
         airingNotifications = airingNotifications,
         followingNotifications = followingNotifications,
         likeNotification = likeNotification,
-        emptyList()
+        messageNotifications = messageNotifications
     )
 }
-
-// fun NotificationsQuery.Data.convert(): List<Notification> {
-//    val notifications = page?.notifications?.mapNotNull {
-//        it
-//    }
-//
-//
-//    val data = page?.notifications?.mapNotNull {
-//        Notification(
-//            it?.onAiringNotification?.id,
-//            it?.onAiringNotification?.episode,
-//            it?.onAiringNotification?.contexts,
-//            it?.onAiringNotification?.media.convert()
-//        )
-//    } ?: emptyList()
-//    return data
-// }
 
 private fun NotificationsQuery.Media?.convert(): AniListMedia {
     return AniListMedia(

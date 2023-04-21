@@ -21,12 +21,14 @@ class NotificationPagingSource(
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
             val notificationData =
-                apiClient.getNotifications(page).data?.convert() ?: NotificationData()
+                apiClient.getNotifications(page)
+                    .data
+                    ?.convert()
 
             LoadResult.Page(
-                data = notificationData.flatten(),
+                data = notificationData?.flatten() ?: emptyList(),
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
-                nextKey = if (notificationData.airingNotifications.isEmpty() && notificationData.followingNotifications.isEmpty() && notificationData.likeNotification.isEmpty() && notificationData.messageNotifications.isEmpty()) null else page + 1
+                nextKey = if (notificationData?.flatten()?.isEmpty() == true) null else page + 1
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -35,11 +37,10 @@ class NotificationPagingSource(
     }
 
     private fun NotificationData.flatten(): List<Notification> {
-        // Flatten the data into a single list
-        return airingNotifications + followingNotifications + likeNotification + messageNotifications
+        return airingNotifications
     }
 
     companion object {
-        const val STARTING_PAGE_INDEX = 1
+        const val STARTING_PAGE_INDEX = 0
     }
 }

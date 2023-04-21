@@ -4,7 +4,6 @@ import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.kl3jvi.animity.NotificationsBindingModel_
 import com.kl3jvi.animity.data.model.ui_models.Notification
-import com.kl3jvi.animity.utils.Constants.Companion.randomId
 
 class NotificationsController : PagingDataEpoxyController<Notification>() {
     override fun buildItemModel(
@@ -12,7 +11,7 @@ class NotificationsController : PagingDataEpoxyController<Notification>() {
         item: Notification?
     ): EpoxyModel<*> {
         return NotificationsBindingModel_()
-            .id(randomId())
+            .id(item?.id)
             .notification(item)
     }
 }
