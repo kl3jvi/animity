@@ -57,6 +57,7 @@
 
     <PreferenceCategory app:title="@string/donation">
         <Preference
+            android:key="@string/donation"
             android:summary="Klejvi Kapaj"
             app:icon="@drawable/baseline_paid_24"
             app:title="@string/donate_creator" />

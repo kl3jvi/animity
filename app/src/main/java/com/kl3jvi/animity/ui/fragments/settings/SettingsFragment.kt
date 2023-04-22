@@ -1,7 +1,10 @@
 package com.kl3jvi.animity.ui.fragments.settings
 
+import android.net.Uri
 import android.os.Bundle
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.preference.DropDownPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
@@ -58,5 +61,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
             R.string.pip,
             settings.preferences
         )
+
+        configurePreference<Preference>(
+            R.string.donation,
+            settings.preferences,
+            clickListener = {
+                CustomTabsIntent.Builder()
+                    .build()
+                    .launchUrl(requireContext(), Uri.parse(PAY_PAY_URL))
+                true
+            }
+        )
+    }
+
+    companion object {
+        const val PAY_PAY_URL = "https://paypal.me/kl3jvi"
     }
 }

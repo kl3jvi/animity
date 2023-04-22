@@ -114,4 +114,17 @@
             android:name="reviewDetails"
             app:argType="com.kl3jvi.animity.data.model.ui_models.Review" />
     </fragment>
+
+    <fragment
+        android:id="@+id/notificationBottomSheetFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment"
+        android:label="NotificationBottomSheetFragment">
+        <action
+            android:id="@+id/action_notificationBottomSheetFragment_to_navigation_details"
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 </navigation>

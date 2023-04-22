@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.utils
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import androidx.preference.Preference
@@ -11,6 +10,7 @@ import com.kl3jvi.animity.settings.toJson
 fun <T : Preference> PreferenceFragmentCompat.configurePreference(
     @StringRes preferenceId: Int,
     preferences: SharedPreferences,
+    clickListener: Preference.OnPreferenceClickListener? = null,
     block: T.() -> Unit = {}
 ): T {
     val preference = requirePreference<T>(preferenceId)
@@ -18,7 +18,6 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
     preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
         val key = getPreferenceKey(preferenceId)
         preferences.edit {
-            Log.e("NEW Value", newValue.toString())
             when (newValue) {
                 is Boolean -> putBoolean(key, newValue)
                 is Int -> putLong(key, newValue.toLong() * 1000)
@@ -27,7 +26,12 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
         }
         true
     }
+    preference.onPreferenceClickListener = clickListener
     return preference
+}
+
+fun blocaa(): Preference.OnPreferenceClickListener? {
+    TODO("Not yet implemented")
 }
 
 private fun <T : Preference> PreferenceFragmentCompat.requirePreference(

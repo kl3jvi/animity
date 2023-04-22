@@ -37,10 +37,10 @@ class NotificationPagingSource(
     }
 
     private fun NotificationData.flatten(): List<Notification> {
-        return airingNotifications
+        return airingNotifications + followingNotifications + likeNotification + messageNotifications
     }
 
     companion object {
-        const val STARTING_PAGE_INDEX = 0
+        const val STARTING_PAGE_INDEX = 1
     }
 }
