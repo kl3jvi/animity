@@ -2,6 +2,7 @@
 
 package com.kl3jvi.animity.data.repository
 
+import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
@@ -24,6 +25,10 @@ class PlayerRepositoryImpl @Inject constructor(
 
     private val selectedAnimeProvider: BaseClient? =
         apiClients[settings.selectedProvider.name]
+
+    init {
+        Log.e("Selected", settings.selectedProvider.name)
+    }
 
     override fun getMediaUrl(
         header: Map<String, String>,

@@ -58,12 +58,6 @@ class PlayerViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(episodeEntity) }
     }
 
-    /**
-     * The function gets the playback position of the episode from the database and sets the value of the MutableLiveData
-     * object to the playback position
-     *
-     * @param episodeUrl The url of the episode that is being played.
-     */
     fun getPlaybackPosition(episodeUrl: String) {
         viewModelScope.launch(ioDispatcher) {
             playerRepository.getPlaybackPosition(episodeUrl).collect { content ->

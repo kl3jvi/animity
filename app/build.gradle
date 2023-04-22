@@ -41,15 +41,14 @@ android {
     ndkVersion "25.1.8937393"
 
     buildTypes {
-        debug
-                {
+        debug {
             debuggable true
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable false
-//            signingConfig signingConfigs.release
+            debuggable true
+            signingConfig signingConfigs.release
         }
         benchmark {
             signingConfig signingConfigs.debug

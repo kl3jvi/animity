@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.repository
 
+import android.util.Log
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -31,7 +32,7 @@ class DetailsRepositoryImpl @Inject constructor(
 ) : DetailsRepository {
 
     private val selectedAnimeProvider: BaseClient? =
-        apiClients[settings.selectedProvider.name] as? BaseClient
+        apiClients[settings.selectedProvider.name]
 
     override fun fetchEpisodeList(
         header: Map<String, String>,
@@ -79,6 +80,8 @@ class DetailsRepositoryImpl @Inject constructor(
             AnimeTypes.ENIME -> {
                 val response =
                     selectedAnimeProvider?.fetchEpisodeList<EnimeResponse>(episodeUrl, extra)
+
+                Log.e("enime ----", response?.episodes.toString())
                 val episodeList = response?.episodes?.map {
                     EpisodeModel(it.title, "Episode ${it.number}", "")
                 } ?: emptyList()

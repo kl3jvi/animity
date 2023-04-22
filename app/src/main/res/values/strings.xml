@@ -121,6 +121,7 @@
     <string name="channel_description">Animity notifications for anime airing</string>
     <string name="notification_title">New notification received</string>
     <string name="notifications">Notifications</string>
+    <string name="quit">Quit Notifications</string>
 
 
 </resources>

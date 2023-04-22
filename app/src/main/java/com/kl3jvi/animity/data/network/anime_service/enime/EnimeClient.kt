@@ -25,7 +25,7 @@ class EnimeClient @Inject constructor(
         extra: List<Any?>
     ): T {
         val animeList = mutableListOf<String?>().apply {
-            add((animeService as EnimeService).getEnimeSource("clftn6anb00d10opka5w7a1bo").url)
+            add((animeService as EnimeService).getEnimeSource(extra.firstOrNull().toString()).url)
         }.toList()
         return animeList as T
     }
