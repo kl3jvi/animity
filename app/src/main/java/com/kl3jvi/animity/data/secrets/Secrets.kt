@@ -11,9 +11,17 @@ internal object Secrets {
     private external fun getAniListSecret(): ByteArray?
     private external fun getRedirectUri(): ByteArray?
 
-    val aniListId = decryptXOR(getAniListId() ?: ByteArray(0))
-    val aniListSecret = decryptXOR(getAniListSecret() ?: ByteArray(0))
-    val redirectUri = decryptXOR(getRedirectUri() ?: ByteArray(0))
+    val aniListId: String by lazy {
+        decryptXOR(getAniListId() ?: ByteArray(0))
+    }
+
+    val aniListSecret: String by lazy {
+        decryptXOR(getAniListSecret() ?: ByteArray(0))
+    }
+
+    val redirectUri: String by lazy {
+        decryptXOR(getRedirectUri() ?: ByteArray(0))
+    }
 }
 
 private fun decryptXOR(data: ByteArray): String {
@@ -23,6 +31,7 @@ private fun decryptXOR(data: ByteArray): String {
     for (i in data.indices) {
         result[i] = (data[i].toInt() xor keyBytes[i % keyBytes.size].toInt()).toByte()
     }
-    return result.toString(Charsets.UTF_8)
+
+    return String(result, Charsets.UTF_8)
 }
 
