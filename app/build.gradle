@@ -36,6 +36,7 @@ android {
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        buildConfigField("String", "ANILIST_KEY", "\"4b!P@ssW0rd^\"")
     }
 
     ndkVersion "25.1.8937393"
@@ -59,11 +60,9 @@ android {
     externalNativeBuild {
         ndkBuild {
             path 'src/main/jni/Android.mk'
-//            arguments {
-//                arg('-DANDROID_NDK_ROOT=${android.ndkDirectory}/25.1.8937393', '-DANDROID_TOOLCHAIN=clang')
-//            }
         }
     }
+
     kapt {
         useBuildCache true
         arguments {

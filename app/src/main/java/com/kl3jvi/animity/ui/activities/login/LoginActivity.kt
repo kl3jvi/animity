@@ -3,6 +3,7 @@ package com.kl3jvi.animity.ui.activities.login
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -64,6 +65,7 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
      * @return A Uri object
      */
     override fun getAuthorizationUrl(): Uri {
+        Log.e("Secrets", "$anilistSecret === $anilistId === $redirectUri")
         return Uri.Builder().scheme("https")
             .authority("anilist.co")
             .appendPath("api")
@@ -158,9 +160,9 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
     }
 
     companion object {
-        val anilistId = Secrets.getAnilistId().orEmpty()
-        val redirectUri = Secrets.getRedirectUri().orEmpty()
-        val anilistSecret = Secrets.getAnilistSecret().orEmpty()
+        val anilistId = Secrets.aniListId
+        val anilistSecret = Secrets.aniListSecret
+        val redirectUri = Secrets.redirectUri
 
         const val AUTH_GRANT_TYPE = "authorization_code"
         const val SIGNUP_URL = "https://anilist.co/signup"
