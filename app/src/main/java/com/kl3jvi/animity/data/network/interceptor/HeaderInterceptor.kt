@@ -6,7 +6,6 @@ import com.kl3jvi.animity.BuildConfig.redirectUri
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
-import com.kl3jvi.animity.utils.Constants
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -42,7 +41,7 @@ class HeaderInterceptor @Inject constructor(
 
         val accessToken = runBlocking {
             loginRepository.getAccessToken(
-                grantType = Constants.REFRESH_GRANT_TYPE,
+                grantType = REFRESH_GRANT_TYPE,
                 clientId = anilistId.toInt(),
                 clientSecret = anilistSecret,
                 redirectUri = redirectUri,
@@ -58,5 +57,9 @@ class HeaderInterceptor @Inject constructor(
                 .addHeader("Content-Type", "application/json")
                 .build()
         )
+    }
+
+    companion object {
+        const val REFRESH_GRANT_TYPE = "refresh_token"
     }
 }

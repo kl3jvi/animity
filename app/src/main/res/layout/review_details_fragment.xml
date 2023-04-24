@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="500dp"
         android:layout_marginBottom="30dp"
         android:fitsSystemWindows="false">
 
@@ -28,7 +28,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="500dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:transitionName="photo"

@@ -16,9 +16,6 @@ import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.data.secrets.Secrets
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.utils.Constants.Companion.AUTH_GRANT_TYPE
-import com.kl3jvi.animity.utils.Constants.Companion.SIGNUP_URL
-import com.kl3jvi.animity.utils.Constants.Companion.TERMS_AND_PRIVACY_LINK
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.launchActivity
@@ -164,5 +161,9 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
         val anilistId = Secrets.getAnilistId().orEmpty()
         val redirectUri = Secrets.getRedirectUri().orEmpty()
         val anilistSecret = Secrets.getAnilistSecret().orEmpty()
+
+        const val AUTH_GRANT_TYPE = "authorization_code"
+        const val SIGNUP_URL = "https://anilist.co/signup"
+        const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"
     }
 }
