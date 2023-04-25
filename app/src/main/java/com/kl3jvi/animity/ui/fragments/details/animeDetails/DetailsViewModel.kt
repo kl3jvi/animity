@@ -16,6 +16,7 @@ import com.kl3jvi.animity.utils.reverseIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -59,16 +61,24 @@ class DetailsViewModel @Inject constructor(
                                 malId = media.idMal.or1(),
                                 extra = listOf(media.idMal)
                             ).reverseIf(reverseState).map { episodes ->
-                                EpisodeListUiState.Success(episodes)
+                                // Split the list of episodes into chunks of 50 or less
+                                val episodeChunks = episodes.chunked(50) {
+                                    val firstEpisodeNumber =
+                                        it.first().getEpisodeNumberOnly().toInt()
+                                    val lastEpisodeNumber = it.last().getEpisodeNumberOnly().toInt()
+                                    "Episodes $firstEpisodeNumber - $lastEpisodeNumber"
+                                }
+                                EpisodeListUiState.Success(episodes.chunked(50), episodeChunks)
                             }
                         }
                     }
                 }
-        }.stateIn(
-            viewModelScope + CoroutineName("Episode List Coroutine"),
-            SharingStarted.WhileSubscribed(5_000),
-            EpisodeListUiState.Loading
-        )
+        }.flowOn(Dispatchers.Default)
+            .stateIn(
+                viewModelScope + CoroutineName("Episode List Coroutine"),
+                SharingStarted.WhileSubscribed(5_000),
+                EpisodeListUiState.Loading
+            )
 
     /**
      * > The function updates the anime as favorite in the AniList website
@@ -86,5 +96,8 @@ class DetailsViewModel @Inject constructor(
 sealed interface EpisodeListUiState {
     object Loading : EpisodeListUiState
     object Error : EpisodeListUiState
-    data class Success(val data: List<EpisodeModel>) : EpisodeListUiState
+    data class Success(
+        val episodeChunks: List<List<EpisodeModel>>,
+        val chunkTitles: List<String>
+    ) : EpisodeListUiState
 }

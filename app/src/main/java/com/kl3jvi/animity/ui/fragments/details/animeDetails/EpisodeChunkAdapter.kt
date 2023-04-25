@@ -11,13 +11,14 @@ class EpisodeChunkAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
     private var episodeChunks: List<List<EpisodeModel>>,
-    private val animeDetails: AniListMedia
+    private val animeDetails: AniListMedia,
+    private val desiredPosition: Int
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int = episodeChunks.size
 
     override fun createFragment(position: Int): Fragment {
-        return EpisodeContainer.newInstance(episodeChunks[position], animeDetails)
+        return EpisodeContainer.newInstance(episodeChunks[position], animeDetails, desiredPosition)
     }
 
     fun setData(newEpisodeChunks: List<List<EpisodeModel>>) {

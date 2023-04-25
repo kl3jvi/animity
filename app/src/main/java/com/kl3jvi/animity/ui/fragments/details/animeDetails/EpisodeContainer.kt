@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
@@ -23,14 +22,20 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         binding = FragmentEpisodeContainerBinding.bind(view)
         val episodes = requireArguments().getParcelableArrayList<EpisodeModel>(ARG_EPISODE_LIST)!!
         val animeData = requireArguments().getParcelable<AniListMedia>(ANIME_DATA)
-        Log.e("Created", episodes.toString())
-        bindEpisodeList(episodes, animeData) {
+        val desiredPosition = requireArguments().getInt(DESIRED_POSITION)
+        bindEpisodeList(episodes, animeData, desiredPosition) {
+            goToDesiredPosition()
         }
+    }
+
+    private fun goToDesiredPosition() {
+
     }
 
     private fun bindEpisodeList(
         episodes: List<EpisodeModel>,
         animeDetails: AniListMedia?,
+        desiredPosition: Int,
         listBuildCallBack: () -> Unit
     ) {
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
@@ -64,25 +69,14 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                         }
                     )
                     episodeInfo(episodeModel)
-//                    onBind { _, view, _ ->
-//                        if (index == desiredPosition) {
-//                            // Apply a translation animation to the root view of the data binding layout
-//                            view.dataBinding.root.startAnimation(animation)
-//                        }
-//                    }
+                    onBind { _, view, _ ->
+                        if (index == desiredPosition) {
+                            // Apply a translation animation to the root view of the data binding layout
+                            view.dataBinding.root.startAnimation(animation)
+                        }
+                    }
                 }
             }
-//            binding?.resultEpisodesText?.text =
-//                requireContext().getString(R.string.total_episodes, episodes.size.toString())
-//            if (episodes.isNotEmpty() && episodes.size == 1) {
-//                binding?.resultPlayMovie?.setOnClickListener {
-//                    requireActivity().launchActivity<PlayerActivity> {
-//                        putExtra(Constants.EPISODE_DETAILS, episodes.first())
-//                        putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-//                        putExtra(Constants.MAL_ID, animeDetails.idMal)
-//                    }
-//                }
-//            }
             listBuildCallBack()
         }
     }
@@ -90,15 +84,18 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
     companion object {
         private const val ARG_EPISODE_LIST = "episode_list"
         private const val ANIME_DATA = "anime_data"
+        private const val DESIRED_POSITION = "desired_position"
 
         fun newInstance(
             episodeList: List<EpisodeModel>,
-            animeDetails: AniListMedia
+            animeDetails: AniListMedia,
+            desiredPosition: Int
         ): EpisodeContainer {
             return EpisodeContainer().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_EPISODE_LIST, ArrayList(episodeList))
                     putParcelable(ANIME_DATA, animeDetails)
+                    putInt(DESIRED_POSITION, desiredPosition)
                 }
             }
         }

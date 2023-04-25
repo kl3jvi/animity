@@ -237,7 +237,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             childFragmentManager,
             lifecycle,
             emptyList(),
-            animeDetails
+            animeDetails,
+            -1
         )
         viewPager?.adapter = adapter
 
