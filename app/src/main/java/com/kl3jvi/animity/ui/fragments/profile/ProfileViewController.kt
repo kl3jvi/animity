@@ -42,8 +42,7 @@ fun List<AniListMedia>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
             .clickListener { view ->
                 val direction =
                     ProfileFragmentDirections.actionNavigationProfileToNavigationDetails(
-                        media
-                    )
+                        media, 0)
                 view.navigateSafe(direction)
             }.animeInfo(media)
     }

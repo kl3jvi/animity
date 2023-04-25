@@ -47,7 +47,7 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: Analytics): List<CardAn
             .id(Uuid.randomUUID().toString())
             .clickListener { view ->
                 val direction =
-                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media)
+                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media, 0)
                 view.navigateSafe(direction)
 
                 firebaseAnalytics.logEvent(

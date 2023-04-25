@@ -15,6 +15,7 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.databinding.NotificationsBottomSheetBinding
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.utils.collectLatest
+import com.kl3jvi.animity.utils.or1
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -63,7 +64,8 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
     private fun setupNotificationsList() {
         pagingController = NotificationsController { item ->
             val directions = HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
-                item?.media ?: AniListMedia()
+                item?.media ?: AniListMedia(),
+                item?.episode.or1()
             )
             findNavController().navigate(directions)
         }

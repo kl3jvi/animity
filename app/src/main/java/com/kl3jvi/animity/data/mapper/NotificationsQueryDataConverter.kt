@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.mapper
 
+import android.util.Log
 import com.kl3jvi.animity.NotificationsQuery
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.FuzzyDate
@@ -7,92 +8,78 @@ import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.MediaCoverImage
 import com.kl3jvi.animity.data.model.ui_models.MediaTitle
 import com.kl3jvi.animity.data.model.ui_models.Notification
-import com.kl3jvi.animity.data.model.ui_models.NotificationData
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.data.model.ui_models.UserAvatar
 
-fun NotificationsQuery.Data.convert(): NotificationData {
-    val airingNotifications = mutableListOf<Notification>()
-    val followingNotifications = mutableListOf<Notification>()
-    val likeNotification = mutableListOf<Notification>()
-    val messageNotifications = mutableListOf<Notification>()
-
+fun NotificationsQuery.Data.convert(): List<Notification> {
+    val listOfNotifications = mutableListOf<Notification>()
     page?.notifications?.forEach { notification ->
         when {
-            notification?.onAiringNotification != null -> {
-                airingNotifications.add(
-                    Notification(
-                        id = notification.onAiringNotification.id,
-                        episode = notification.onAiringNotification.episode,
-                        contexts = notification.onAiringNotification.contexts,
-                        media = notification.onAiringNotification.media.convert()
-                    )
-                )
-            }
+            notification?.onAiringNotification != null ->
+                listOfNotifications.add(notification.onAiringNotification.toNotification())
 
-            notification?.onFollowingNotification != null -> {
-                followingNotifications.add(
-                    Notification(
-                        id = notification.onFollowingNotification.id,
-                        episode = null,
-                        user = User(
-                            id = notification.onFollowingNotification.user?.id ?: 0,
-                            name = notification.onFollowingNotification.user?.name.orEmpty(),
-                            avatar = UserAvatar(
-                                notification.onFollowingNotification.user?.avatar?.large.orEmpty(),
-                                notification.onFollowingNotification.user?.avatar?.medium.orEmpty()
-                            )
-                        ),
-                        contexts = listOf(notification.onFollowingNotification.context)
-                    )
-                )
-            }
+            notification?.onFollowingNotification != null ->
+                listOfNotifications.add(notification.onFollowingNotification.toNotification())
 
-            notification?.onActivityLikeNotification != null -> {
-                likeNotification.add(
-                    Notification(
-                        id = notification.onActivityLikeNotification.id,
-                        episode = null,
-                        user = User(
-                            id = notification.onActivityLikeNotification.user?.id ?: 0,
-                            name = notification.onActivityLikeNotification.user?.name.orEmpty(),
-                            avatar = UserAvatar(
-                                notification.onActivityLikeNotification.user?.avatar?.large.orEmpty(),
-                                notification.onActivityLikeNotification.user?.avatar?.medium.orEmpty()
-                            )
-                        ),
-                        contexts = listOf(notification.onActivityLikeNotification.context)
-                    )
-                )
-            }
+            notification?.onActivityLikeNotification != null ->
+                listOfNotifications.add(notification.onActivityLikeNotification.toNotification())
 
-            notification?.onActivityMessageNotification != null -> {
-                likeNotification.add(
-                    Notification(
-                        id = notification.onActivityMessageNotification.id,
-                        episode = null,
-                        user = User(
-                            id = notification.onActivityMessageNotification.user?.id ?: 0,
-                            name = notification.onActivityMessageNotification.user?.name.orEmpty(),
-                            avatar = UserAvatar(
-                                notification.onActivityMessageNotification.user?.avatar?.large.orEmpty(),
-                                notification.onActivityMessageNotification.user?.avatar?.medium.orEmpty()
-                            )
-                        ),
-                        contexts = listOf(notification.onActivityMessageNotification.context)
-                    )
-                )
-            }
+            notification?.onActivityMessageNotification != null ->
+                listOfNotifications.add(notification.onActivityMessageNotification.toNotification())
         }
     }
-
-    return NotificationData(
-        airingNotifications = airingNotifications,
-        followingNotifications = followingNotifications,
-        likeNotification = likeNotification,
-        messageNotifications = messageNotifications
-    )
+    return listOfNotifications
 }
+
+private fun NotificationsQuery.OnAiringNotification.toNotification() = Notification(
+    id = this.id,
+    episode = this.episode,
+    contexts = this.contexts,
+    media = this.media.convert()
+)
+
+private fun NotificationsQuery.OnFollowingNotification.toNotification() = Notification(
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
+        )
+    ),
+    contexts = listOf(this.context)
+)
+
+private fun NotificationsQuery.OnActivityLikeNotification.toNotification() = Notification(
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
+        )
+    ),
+    contexts = listOf(this.context)
+)
+
+private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = Notification(
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
+        )
+    ),
+    contexts = listOf(this.context)
+)
+
 
 private fun NotificationsQuery.Media?.convert(): AniListMedia {
     return AniListMedia(

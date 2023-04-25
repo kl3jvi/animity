@@ -17,9 +17,9 @@ import androidx.work.WorkerParameters
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.Notification
-import com.kl3jvi.animity.data.model.ui_models.NotificationData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.ui.activities.main.MainActivity
+import com.kl3jvi.animity.utils.or1
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -39,15 +39,8 @@ class NotificationWorker @AssistedInject constructor(
             val notificationData = aniListGraphQlClient.getNotifications(1)
                 .data
                 ?.convert()
-                ?: NotificationData(
-                    emptyList(),
-                    emptyList(),
-                    emptyList(),
-                    emptyList()
-                )
-            val notifications =
-                notificationData.airingNotifications.plus(notificationData.followingNotifications)
-                    .firstOrNull() ?: Notification()
+
+            val notifications = notificationData?.firstOrNull() ?: Notification()
 
             if (!isNotificationIdStored(notifications.id)) {
                 Log.e(TAG, "Notifications received: $notifications")
@@ -61,7 +54,11 @@ class NotificationWorker @AssistedInject constructor(
     }
 
     private fun showNotification(notification: Notification) {
-        val args = bundleOf("animeDetails" to notification.media)
+        val args = bundleOf(
+            "animeDetails" to notification.media,
+            "desiredPosition" to notification.episode.or1()
+        )
+
         val pendingIntent = NavDeepLinkBuilder(applicationContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.mobile_navigation)
@@ -95,6 +92,6 @@ class NotificationWorker @AssistedInject constructor(
     companion object {
         private const val TAG = "NotificationWorker"
         private const val CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
-        private const val NOTIFICATION_ID = 1
+        private const val NOTIFICATION_ID = 0x1
     }
 }

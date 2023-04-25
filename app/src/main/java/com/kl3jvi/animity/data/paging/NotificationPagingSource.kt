@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.Notification
-import com.kl3jvi.animity.data.model.ui_models.NotificationData
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 
 class NotificationPagingSource(
@@ -26,9 +25,9 @@ class NotificationPagingSource(
                     ?.convert()
 
             LoadResult.Page(
-                data = notificationData?.flatten() ?: emptyList(),
+                data = notificationData ?: emptyList(),
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
-                nextKey = if (notificationData?.flatten()?.isEmpty() == true) null else page + 1
+                nextKey = if (notificationData?.isEmpty() == true) null else page + 1
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -36,9 +35,6 @@ class NotificationPagingSource(
         }
     }
 
-    private fun NotificationData.flatten(): List<Notification> {
-        return airingNotifications + followingNotifications + likeNotification + messageNotifications
-    }
 
     companion object {
         const val STARTING_PAGE_INDEX = 1

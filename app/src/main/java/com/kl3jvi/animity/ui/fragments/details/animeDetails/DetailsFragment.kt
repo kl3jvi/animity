@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
@@ -47,6 +48,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
+    private val desiredPosition: Int get() = args.desiredPosition
     private var binding: FragmentDetailsBinding? = null
 
     private lateinit var bookMarkMenuItem: MenuItem
@@ -186,6 +188,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             "Anime removed from Favorites"
         }
         showSnack(binding?.root, message)
+
     }
 
     private fun updateFavoriteIcon() {
@@ -235,7 +238,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         collect(viewModel.episodeList) { listOfEpisodeModel ->
             when (listOfEpisodeModel) {
                 is EpisodeListUiState.Success -> {
-                    bindEpisodeList(listOfEpisodeModel.data)
+                    bindEpisodeList(listOfEpisodeModel.data, ::goToDesiredPosition)
                     Log.e("Lista eshte", listOfEpisodeModel.data.isEmpty().toString())
                 }
 
@@ -257,7 +260,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
     }
 
-    private fun bindEpisodeList(episodes: List<EpisodeModel>) {
+    private fun goToDesiredPosition() {
+        if (desiredPosition != 0) {
+            binding?.appbar?.setExpanded(false, true)
+            binding?.episodeListRecycler?.scrollToPosition(desiredPosition)
+        }
+    }
+
+    private fun bindEpisodeList(episodes: List<EpisodeModel>, listBuildCallBack: () -> Unit) {
+        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
         binding?.episodeListRecycler?.withModels {
             episodes.forEachIndexed { index, episodeModel ->
                 episodeLarge {
@@ -285,27 +296,36 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         }
                     )
                     episodeInfo(episodeModel)
+                    onBind { _, view, _ ->
+                        if (index == desiredPosition) {
+                            // Apply a translation animation to the root view of the data binding layout
+                            view.dataBinding.root.startAnimation(animation)
+                        }
+                    }
                 }
             }
-        }
-        binding?.resultEpisodesText?.text =
-            requireContext().getString(R.string.total_episodes, episodes.size.toString())
-        if (episodes.isNotEmpty() && episodes.size == 1) {
-            binding?.resultPlayMovie?.setOnClickListener {
-                requireActivity().launchActivity<PlayerActivity> {
-                    putExtra(Constants.EPISODE_DETAILS, episodes.first())
-                    putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-                    putExtra(Constants.MAL_ID, animeDetails.idMal)
+            binding?.resultEpisodesText?.text =
+                requireContext().getString(R.string.total_episodes, episodes.size.toString())
+            if (episodes.isNotEmpty() && episodes.size == 1) {
+                binding?.resultPlayMovie?.setOnClickListener {
+                    requireActivity().launchActivity<PlayerActivity> {
+                        putExtra(Constants.EPISODE_DETAILS, episodes.first())
+                        putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
+                        putExtra(Constants.MAL_ID, animeDetails.idMal)
+                    }
                 }
             }
+            listBuildCallBack()
         }
     }
+
 
     private fun showLatestEpisodeReleaseTime() {
         binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {
             binding?.nextEpisodeContainer?.isVisible = false
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

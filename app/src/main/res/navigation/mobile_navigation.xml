@@ -77,6 +77,10 @@
         <argument
             android:name="animeDetails"
             app:argType="com.kl3jvi.animity.data.model.ui_models.AniListMedia" />
+
+        <argument
+            android:name="desiredPosition"
+            app:argType="integer" />
     </fragment>
 
     <fragment

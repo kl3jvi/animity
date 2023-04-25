@@ -74,7 +74,7 @@ object NetworkModule {
                 level = HttpLoggingInterceptor.Level.BASIC
             }
         )
-        .setGenericDns(settings)
+//        .setGenericDns(settings)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .writeTimeout(20, TimeUnit.SECONDS)
