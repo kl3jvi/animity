@@ -35,6 +35,8 @@ class PlayerRepositoryImpl @Inject constructor(
         url: String,
         extra: List<Any?>
     ): Flow<List<String>> = flow {
+        Log.e("Selected ANime provider", selectedAnimeProvider.toString())
+
         val result = selectedAnimeProvider?.fetchEpisodeMediaUrl(
             header,
             url,

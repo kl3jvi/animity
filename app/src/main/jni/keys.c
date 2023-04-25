@@ -22,8 +22,7 @@ static const unsigned char redirect_uri_ciphertext[] = {0x6C, 0x6F, 0x67, 0x69, 
                                                         0x2F, 0x61, 0x6E, 0x69, 0x6D, 0x69,
                                                         0x74, 0x79};
 
-jbyteArray
-xor_cipher(JNIEnv *env, const jbyte *input, int input_len, int key_len) {
+jbyteArray xor_cipher(JNIEnv *env, const jbyte *input, int input_len, int key_len) {
     jbyteArray result = (*env)->NewByteArray(env, input_len);
 
     jbyte *buffer = (jbyte *) malloc(input_len * sizeof(jbyte));
@@ -42,20 +41,20 @@ JNIEXPORT jbyteArray JNICALL
 Java_com_kl3jvi_animity_data_secrets_Secrets_getAniListId(JNIEnv *env, jobject thiz) {
     int input_len = sizeof(anilist_id_ciphertext) / sizeof(anilist_id_ciphertext[0]);
     int key_len = strlen(key);
-    return xor_cipher(env, anilist_id_ciphertext, input_len, key_len);
+    return xor_cipher(env, (const jbyte *) anilist_id_ciphertext, input_len, key_len);
 }
 
 JNIEXPORT jbyteArray JNICALL
 Java_com_kl3jvi_animity_data_secrets_Secrets_getAniListSecret(JNIEnv *env, jobject thiz) {
     int input_len = sizeof(anilist_secret_ciphertext) / sizeof(anilist_secret_ciphertext[0]);
     int key_len = strlen(key);
-    return xor_cipher(env, anilist_secret_ciphertext, input_len, key_len);
+    return xor_cipher(env, (const jbyte *) anilist_secret_ciphertext, input_len, key_len);
 }
 
 JNIEXPORT jbyteArray JNICALL
 Java_com_kl3jvi_animity_data_secrets_Secrets_getRedirectUri(JNIEnv *env, jobject thiz) {
     int input_len = sizeof(redirect_uri_ciphertext) / sizeof(redirect_uri_ciphertext[0]);
     int key_len = strlen(key);
-    return xor_cipher(env, redirect_uri_ciphertext, input_len, key_len);
+    return xor_cipher(env, (const jbyte *) redirect_uri_ciphertext, input_len, key_len);
 }
 

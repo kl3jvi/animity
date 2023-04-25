@@ -42,12 +42,10 @@
             android:entries="@array/anime_provider_entries"
             android:entryValues="@array/anime_provider_values"
             android:key="@string/anime_provider"
-            android:title="Select Anime Provider"
-            app:defaultValue="0" />
+            android:title="Select Anime Provider" />
 
         <DropDownPreference
             android:title="Select DNS"
-            app:defaultValue="0"
             app:entries="@array/dns_entries"
             app:entryValues="@array/dns_values"
             app:key="@string/dns_provider" />

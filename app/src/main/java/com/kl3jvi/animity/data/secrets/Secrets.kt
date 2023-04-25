@@ -34,4 +34,3 @@ private fun decryptXOR(data: ByteArray): String {
 
     return String(result, Charsets.UTF_8)
 }
-

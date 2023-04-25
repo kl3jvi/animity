@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.utils.collectLatest
 import com.kl3jvi.animity.utils.dismissKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -18,6 +20,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var pagingController: PagingSearchController
     private var binding: FragmentSearchBinding? = null
+
+    @Inject
+    lateinit var analytics: Analytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,6 +56,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         super.onDestroyView()
         // letting go of the resources to avoid memory leak.
         binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logCurrentScreen("Search")
     }
 
     override fun onPause() {

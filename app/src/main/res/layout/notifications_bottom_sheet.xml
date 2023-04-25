@@ -35,9 +35,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notification_toolbar" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/no_notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_toolbar"
+        app:lottie_rawRes="@raw/placeholder" />
+
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/notificationsRv"
         android:layout_width="match_parent"
+        tools:visibility="gone"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="?attr/actionBarSize"

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -15,12 +16,16 @@ import com.kl3jvi.animity.utils.createFragmentMenu
 import com.kl3jvi.animity.utils.nav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
     private var binding: FragmentHomeBinding? = null
+
+    @Inject
+    lateinit var analytics: Analytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,6 +37,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 R.id.action_notifications -> handleNotifications()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logCurrentScreen("Home")
     }
 
     private fun handleNotifications() {

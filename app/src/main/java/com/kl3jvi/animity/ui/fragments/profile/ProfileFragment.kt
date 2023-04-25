@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.utils.UiResult
@@ -14,6 +15,7 @@ import com.kl3jvi.animity.utils.createFragmentMenu
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -22,6 +24,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: ProfileViewModel by viewModels()
     private var binding: FragmentProfileBinding? = null
 
+    @Inject
+    lateinit var analytics: Analytics
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
@@ -66,5 +70,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onDestroyView()
         // letting go of the resources to avoid memory leak.
         binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        analytics.logCurrentScreen("Profile")
     }
 }

@@ -3,7 +3,6 @@ package com.kl3jvi.animity.ui.activities.login
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -65,14 +64,13 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
      * @return A Uri object
      */
     override fun getAuthorizationUrl(): Uri {
-        Log.e("Secrets", "$anilistSecret === $anilistId === $redirectUri")
         return Uri.Builder().scheme("https")
             .authority("anilist.co")
             .appendPath("api")
             .appendPath("v2")
             .appendPath("oauth")
             .appendPath("authorize")
-            .appendQueryParameter("client_id", anilistId)
+            .appendQueryParameter("client_id", aniListId)
             .appendQueryParameter("redirect_uri", redirectUri)
             .appendQueryParameter("response_type", "code")
             .build()
@@ -87,8 +85,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
                     collect(
                         viewModel.getAccessToken(
                             grantType = AUTH_GRANT_TYPE,
-                            clientId = anilistId.toInt(),
-                            clientSecret = anilistSecret,
+                            clientId = aniListId.toInt(),
+                            clientSecret = aniListSecret,
                             redirectUri = redirectUri,
                             authorizationToken = authorizationToken
                         )
@@ -160,8 +158,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
     }
 
     companion object {
-        val anilistId = Secrets.aniListId
-        val anilistSecret = Secrets.aniListSecret
+        val aniListId = Secrets.aniListId
+        val aniListSecret = Secrets.aniListSecret
         val redirectUri = Secrets.redirectUri
 
         const val AUTH_GRANT_TYPE = "authorization_code"

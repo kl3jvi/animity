@@ -69,6 +69,7 @@ class DetailsRepositoryImpl @Inject constructor(
         episodeUrl: String,
         extra: List<Any?>
     ) = providerFlow(settings) { provider ->
+        Log.e("Selected settings", provider.name)
         when (provider) {
             AnimeTypes.GOGO_ANIME -> {
                 val response = selectedAnimeProvider?.fetchEpisodeList<ResponseBody>(episodeUrl)

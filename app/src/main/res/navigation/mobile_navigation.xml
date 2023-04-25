@@ -120,7 +120,7 @@
         android:name="com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment"
         android:label="NotificationBottomSheetFragment">
         <action
-            android:id="@+id/action_notificationBottomSheetFragment_to_navigation_details"
+            android:id="@+id/notificationToDetails"
             app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

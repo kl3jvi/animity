@@ -9,6 +9,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.enums.DnsTypes
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.settings.toJson
@@ -21,6 +22,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var settings: Settings
+
+    @Inject
+    lateinit var analytics: Analytics
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -35,7 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         configurePreference<DropDownPreference>(
             R.string.anime_provider,
             settings.preferences
-        ) { summary = value.toJson() }
+        ) { summary = value.toJson()?.removePrefix("\"")?.removeSuffix("\"") }
 
         configurePreference<DropDownPreference>(
             R.string.dns_provider,
@@ -59,7 +63,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         configurePreference<SwitchPreference>(
             R.string.pip,
-            settings.preferences
+            settings.preferences,
+            clickListener = {
+                analytics.setUserProperty("PIP", "clicked")
+                true
+            }
         )
 
         configurePreference<Preference>(
@@ -69,6 +77,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 CustomTabsIntent.Builder()
                     .build()
                     .launchUrl(requireContext(), Uri.parse(PAY_PAY_URL))
+                analytics.setUserProperty("Donation", "clicked")
                 true
             }
         )

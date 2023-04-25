@@ -1,28 +1,29 @@
 package com.kl3jvi.benchmark
 
-import androidx.benchmark.macro.ExperimentalBaselineProfilesApi
-import androidx.benchmark.macro.junit4.BaselineProfileRule
+import androidx.benchmark.macro.StartupMode
+import androidx.benchmark.macro.StartupTimingMetric
+import androidx.benchmark.macro.junit4.MacrobenchmarkRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * Generates a baseline profile which can be copied to `app/src/main/baseline-prof.txt`.
  */
-@ExperimentalBaselineProfilesApi
-class BaselineProfileGenerator {
+@RunWith(AndroidJUnit4::class)
+class StartupBenchmark {
     @get:Rule
-    val baselineProfileRule = BaselineProfileRule()
+    val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun generate() =
-        baselineProfileRule.collectBaselineProfile(
-            packageName = "com.kl3jvi.animity"
-        ) {
-            pressHome()
-            // This block defines the app's critical user journey. Here we are interested in
-            // optimizing for app startup. But you can also navigate and scroll
-            // through your most important UI.
-            startActivityAndWait()
-            device.waitForIdle()
-        }
+    fun startup() = benchmarkRule.measureRepeated(
+        packageName = "com.kl3jvi.animity",
+        metrics = listOf(StartupTimingMetric()),
+        iterations = 5,
+        startupMode = StartupMode.COLD
+    ) {
+        pressHome()
+        startActivityAndWait()
+    }
 }

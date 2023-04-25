@@ -20,6 +20,7 @@
     <string-array name="anime_provider_values">
         <item>GOGO_ANIME</item>
         <item>GOGO_ANIME</item>
+        <!-- TODO Fix this -->
     </string-array>
 
 </resources>
