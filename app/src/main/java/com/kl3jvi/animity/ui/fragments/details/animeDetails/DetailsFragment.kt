@@ -188,7 +188,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             "Anime removed from Favorites"
         }
         showSnack(binding?.root, message)
-
     }
 
     private fun updateFavoriteIcon() {
@@ -319,13 +318,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         }
     }
 
-
     private fun showLatestEpisodeReleaseTime() {
         binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {
             binding?.nextEpisodeContainer?.isVisible = false
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

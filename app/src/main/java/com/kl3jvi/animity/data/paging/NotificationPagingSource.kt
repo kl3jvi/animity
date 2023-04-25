@@ -35,7 +35,6 @@ class NotificationPagingSource(
         }
     }
 
-
     companion object {
         const val STARTING_PAGE_INDEX = 1
     }

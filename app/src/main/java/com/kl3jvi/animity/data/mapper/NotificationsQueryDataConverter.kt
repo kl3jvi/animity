@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.mapper
 
-import android.util.Log
 import com.kl3jvi.animity.NotificationsQuery
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.FuzzyDate
@@ -79,7 +78,6 @@ private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = 
     ),
     contexts = listOf(this.context)
 )
-
 
 private fun NotificationsQuery.Media?.convert(): AniListMedia {
     return AniListMedia(

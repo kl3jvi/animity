@@ -24,7 +24,6 @@ import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
-import com.kl3jvi.animity.utils.setGenericDns
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
