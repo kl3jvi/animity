@@ -8,13 +8,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.settings.Settings
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.AbstractFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
@@ -198,3 +199,10 @@ fun <T> Flow<List<T>>.reverseIf(predicate: MutableStateFlow<Boolean>): Flow<List
         }
     }
 }
+
+suspend fun <T, R> Iterable<T>.asyncMap(transform: suspend (T) -> R): List<R> =
+    coroutineScope {
+        map { element ->
+            async { transform(element) }
+        }.map { it.await() }
+    }

@@ -22,7 +22,7 @@ class GlideModule : AppGlideModule() {
         super.applyOptions(context, builder)
         builder.setDefaultRequestOptions(
             RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .signature(ObjectKey(System.currentTimeMillis().toShort()))
         )
     }

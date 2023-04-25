@@ -311,15 +311,26 @@
                         app:srcCompat="@drawable/ic_down_arrow" />
                 </LinearLayout>
 
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/chunkedEpisodeTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    app:tabIndicatorColor="@color/white"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabMode="scrollable"
+                    app:tabTextColor="@color/white">
+
+                </com.google.android.material.tabs.TabLayout>
             </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <com.airbnb.epoxy.EpoxyRecyclerView
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/episode_list_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_8"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -328,6 +339,17 @@
         tools:listitem="@layout/item_episode_list"
         tools:visibility="visible" />
 
+    <!--    <com.airbnb.epoxy.EpoxyRecyclerView-->
+    <!--        android:id="@+id/episode_list_recycler"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/dp_8"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+    <!--        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"-->
+    <!--        app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
+    <!--        tools:listitem="@layout/item_episode_list"-->
+    <!--        tools:visibility="visible" />-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

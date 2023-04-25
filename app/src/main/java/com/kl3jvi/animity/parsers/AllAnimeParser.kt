@@ -4,7 +4,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 
 class AllAnimeParser : BaseParser() {
 
-    override fun fetchEpisodeList(response: String): List<EpisodeModel> {
+    override suspend fun fetchEpisodeList(response: String): List<EpisodeModel> {
         TODO("Not yet implemented")
     }
 }

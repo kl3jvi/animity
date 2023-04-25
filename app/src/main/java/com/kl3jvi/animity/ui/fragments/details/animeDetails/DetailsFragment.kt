@@ -4,14 +4,12 @@ package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.animation.AnimationUtils
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
@@ -21,12 +19,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.chip.Chip
+import com.google.android.material.tabs.TabLayoutMediator
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.getHexColor
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
-import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.getColor
@@ -234,16 +232,51 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
      */
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
+        val viewPager = binding?.episodeListRecycler
+        val adapter = EpisodeChunkAdapter(
+            childFragmentManager,
+            lifecycle,
+            emptyList(),
+            animeDetails
+        )
+        viewPager?.adapter = adapter
+
         collect(viewModel.episodeList) { listOfEpisodeModel ->
             when (listOfEpisodeModel) {
                 is EpisodeListUiState.Success -> {
-                    bindEpisodeList(listOfEpisodeModel.data, ::goToDesiredPosition)
-                    Log.e("Lista eshte", listOfEpisodeModel.data.isEmpty().toString())
+                    adapter.setData(listOfEpisodeModel.episodeChunks)
+
+                    TabLayoutMediator(
+                        binding?.chunkedEpisodeTab!!,
+                        viewPager!!
+                    ) { tab, position ->
+                        tab.text = listOfEpisodeModel.chunkTitles[position]
+                    }.attach()
+
+                    val episodes = listOfEpisodeModel.episodeChunks.flatten()
+                    updateEpisodeNumber(episodes)
+
                 }
 
                 is EpisodeListUiState.Error -> startAppBarCloseTimer()
-
                 else -> {}
+            }
+        }
+    }
+
+    private fun updateEpisodeNumber(episodes: List<EpisodeModel>) {
+        binding?.resultEpisodesText?.text =
+            requireContext().getString(
+                R.string.total_episodes,
+                episodes.size.toString()
+            )
+        if (episodes.isNotEmpty() && episodes.size == 1) {
+            binding?.resultPlayMovie?.setOnClickListener {
+                requireActivity().launchActivity<PlayerActivity> {
+                    putExtra(Constants.EPISODE_DETAILS, episodes.first())
+                    putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
+                    putExtra(Constants.MAL_ID, animeDetails.idMal)
+                }
             }
         }
     }
@@ -262,61 +295,61 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun goToDesiredPosition() {
         if (desiredPosition != 0) {
             binding?.appbar?.setExpanded(false, true)
-            binding?.episodeListRecycler?.scrollToPosition(desiredPosition)
+//            binding?.episodeListRecycler?.scrollToPosition(desiredPosition)
         }
     }
 
-    private fun bindEpisodeList(episodes: List<EpisodeModel>, listBuildCallBack: () -> Unit) {
-        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
-        binding?.episodeListRecycler?.withModels {
-            episodes.forEachIndexed { index, episodeModel ->
-                episodeLarge {
-                    id(UUID.randomUUID().toString())
-                    clickListener { _ ->
-                        requireContext().launchActivity<PlayerActivity> {
-                            putExtra(Constants.EPISODE_DETAILS, episodeModel)
-                            putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-                            putExtra(Constants.MAL_ID, animeDetails.idMal)
-                        }
-                    }
-                    showTitle(episodeModel.episodeName.isNotEmpty())
-                    isFiller(episodeModel.isFiller)
-                    imageUrl(
-                        when {
-                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
-                                animeDetails.bannerImage.ifEmpty { animeDetails.coverImage.large }
-                            }
-
-                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
-                                animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
-                            }
-
-                            else -> animeDetails.coverImage.large
-                        }
-                    )
-                    episodeInfo(episodeModel)
-                    onBind { _, view, _ ->
-                        if (index == desiredPosition) {
-                            // Apply a translation animation to the root view of the data binding layout
-                            view.dataBinding.root.startAnimation(animation)
-                        }
-                    }
-                }
-            }
-            binding?.resultEpisodesText?.text =
-                requireContext().getString(R.string.total_episodes, episodes.size.toString())
-            if (episodes.isNotEmpty() && episodes.size == 1) {
-                binding?.resultPlayMovie?.setOnClickListener {
-                    requireActivity().launchActivity<PlayerActivity> {
-                        putExtra(Constants.EPISODE_DETAILS, episodes.first())
-                        putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-                        putExtra(Constants.MAL_ID, animeDetails.idMal)
-                    }
-                }
-            }
-            listBuildCallBack()
-        }
-    }
+//    private fun bindEpisodeList(episodes: List<EpisodeModel>, listBuildCallBack: () -> Unit) {
+//        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
+//        binding?.episodeListRecycler?.withModels {
+//            episodes.forEachIndexed { index, episodeModel ->
+//                episodeLarge {
+//                    id(UUID.randomUUID().toString())
+//                    clickListener { _ ->
+//                        requireContext().launchActivity<PlayerActivity> {
+//                            putExtra(Constants.EPISODE_DETAILS, episodeModel)
+//                            putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
+//                            putExtra(Constants.MAL_ID, animeDetails.idMal)
+//                        }
+//                    }
+//                    showTitle(episodeModel.episodeName.isNotEmpty())
+//                    isFiller(episodeModel.isFiller)
+//                    imageUrl(
+//                        when {
+//                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
+//                                animeDetails.bannerImage.ifEmpty { animeDetails.coverImage.large }
+//                            }
+//
+//                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
+//                                animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
+//                            }
+//
+//                            else -> animeDetails.coverImage.large
+//                        }
+//                    )
+//                    episodeInfo(episodeModel)
+//                    onBind { _, view, _ ->
+//                        if (index == desiredPosition) {
+//                            // Apply a translation animation to the root view of the data binding layout
+//                            view.dataBinding.root.startAnimation(animation)
+//                        }
+//                    }
+//                }
+//            }
+//            binding?.resultEpisodesText?.text =
+//                requireContext().getString(R.string.total_episodes, episodes.size.toString())
+//            if (episodes.isNotEmpty() && episodes.size == 1) {
+//                binding?.resultPlayMovie?.setOnClickListener {
+//                    requireActivity().launchActivity<PlayerActivity> {
+//                        putExtra(Constants.EPISODE_DETAILS, episodes.first())
+//                        putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
+//                        putExtra(Constants.MAL_ID, animeDetails.idMal)
+//                    }
+//                }
+//            }
+//            listBuildCallBack()
+//        }
+//    }
 
     private fun showLatestEpisodeReleaseTime() {
         binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {

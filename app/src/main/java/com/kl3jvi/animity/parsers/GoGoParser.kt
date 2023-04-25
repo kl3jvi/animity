@@ -6,6 +6,7 @@ import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
+import com.kl3jvi.animity.utils.asyncMap
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import java.util.Base64
@@ -21,10 +22,10 @@ class GoGoParser @Inject constructor(
     override val name: String
         get() = "GOGO_ANIME"
 
-    override fun fetchEpisodeList(response: String): List<EpisodeModel> {
+    override suspend fun fetchEpisodeList(response: String): List<EpisodeModel> {
         val document = Jsoup.parse(response)
         val lists = document.select("li")
-        return lists.map {
+        return lists.asyncMap {
             val episodeUrl = it.select("a").first()?.attr("href")?.trim()
             val episodeNumber = it.getElementsByClass("name").first()?.text()
             val episodeType = it.getElementsByClass("cate").first()?.text()
