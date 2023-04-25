@@ -10,6 +10,8 @@ import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.settings.Settings
+import com.kl3jvi.animity.utils.asyncMap
+import com.kl3jvi.animity.utils.asyncMapIndexed
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.providerFlow
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,7 +47,7 @@ class DetailsRepositoryImpl @Inject constructor(
             getEpisodeTitles(malId),
             getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
-            episodeModels.mapIndexed { index, episodeModel ->
+            episodeModels.asyncMapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle?.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
@@ -54,7 +56,7 @@ class DetailsRepositoryImpl @Inject constructor(
                     episodeModel.isFiller = false
                 }
                 episodeModel
-            }.map { episode ->
+            }.asyncMap { episode ->
                 val contentEpisode =
                     episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
                 if (contentEpisode != null) {

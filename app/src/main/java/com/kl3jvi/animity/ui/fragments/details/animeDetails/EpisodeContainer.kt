@@ -23,19 +23,21 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         val episodes = requireArguments().getParcelableArrayList<EpisodeModel>(ARG_EPISODE_LIST)!!
         val animeData = requireArguments().getParcelable<AniListMedia>(ANIME_DATA)
         val desiredPosition = requireArguments().getInt(DESIRED_POSITION)
-        bindEpisodeList(episodes, animeData, desiredPosition) {
+        val increaser = requireArguments().getInt(INCREASER)
+        val t = if (increaser == 0) increaser else increaser * 50
+        bindEpisodeList(episodes, animeData, desiredPosition, t) {
             goToDesiredPosition()
         }
     }
 
     private fun goToDesiredPosition() {
-
     }
 
     private fun bindEpisodeList(
         episodes: List<EpisodeModel>,
         animeDetails: AniListMedia?,
         desiredPosition: Int,
+        increaser: Int,
         listBuildCallBack: () -> Unit
     ) {
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
@@ -57,12 +59,12 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                     isFiller(episodeModel.isFiller)
                     imageUrl(
                         when {
-                            animeDetails?.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
+                            animeDetails?.streamingEpisode?.getOrNull(index + increaser)?.thumbnail == null -> {
                                 animeDetails?.bannerImage?.ifEmpty { animeDetails.coverImage.large }
                             }
 
-                            animeDetails.streamingEpisode.getOrNull(index)?.thumbnail != null -> {
-                                animeDetails.streamingEpisode.getOrNull(index)?.thumbnail
+                            animeDetails.streamingEpisode.getOrNull(index + increaser)?.thumbnail != null -> {
+                                animeDetails.streamingEpisode.getOrNull(index + increaser)?.thumbnail
                             }
 
                             else -> animeDetails.coverImage.large
@@ -85,9 +87,11 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         private const val ARG_EPISODE_LIST = "episode_list"
         private const val ANIME_DATA = "anime_data"
         private const val DESIRED_POSITION = "desired_position"
+        private const val INCREASER = "increaser"
 
         fun newInstance(
             episodeList: List<EpisodeModel>,
+            increaser: Int,
             animeDetails: AniListMedia,
             desiredPosition: Int
         ): EpisodeContainer {
@@ -95,6 +99,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_EPISODE_LIST, ArrayList(episodeList))
                     putParcelable(ANIME_DATA, animeDetails)
+                    putInt(INCREASER, increaser)
                     putInt(DESIRED_POSITION, desiredPosition)
                 }
             }

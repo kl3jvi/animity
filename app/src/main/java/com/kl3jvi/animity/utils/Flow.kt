@@ -206,3 +206,10 @@ suspend fun <T, R> Iterable<T>.asyncMap(transform: suspend (T) -> R): List<R> =
             async { transform(element) }
         }.map { it.await() }
     }
+
+suspend fun <T, R> Iterable<T>.asyncMapIndexed(transform: suspend (index: Int, T) -> R): List<R> =
+    coroutineScope {
+        mapIndexed { index, element ->
+            async { transform(index, element) }
+        }.map { it.await() }
+    }

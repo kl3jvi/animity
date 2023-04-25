@@ -233,12 +233,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     @ExperimentalCoroutinesApi
     private fun fetchEpisodeList() {
         val viewPager = binding?.episodeListRecycler
+
         val adapter = EpisodeChunkAdapter(
             childFragmentManager,
             lifecycle,
             emptyList(),
             animeDetails,
-            -1
+            desiredPosition = -1
         )
         viewPager?.adapter = adapter
 
@@ -256,7 +257,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                     val episodes = listOfEpisodeModel.episodeChunks.flatten()
                     updateEpisodeNumber(episodes)
-
                 }
 
                 is EpisodeListUiState.Error -> startAppBarCloseTimer()
