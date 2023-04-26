@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.repository
 
-import android.util.Log
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -10,8 +9,6 @@ import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.settings.Settings
-import com.kl3jvi.animity.utils.asyncMap
-import com.kl3jvi.animity.utils.asyncMapIndexed
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.providerFlow
 import kotlinx.coroutines.CoroutineDispatcher
@@ -47,7 +44,7 @@ class DetailsRepositoryImpl @Inject constructor(
             getEpisodeTitles(malId),
             getEpisodesPercentage(malId)
         ) { episodeModels, episodesWithTitle, episodeEntities ->
-            episodeModels.asyncMapIndexed { index, episodeModel ->
+            episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle?.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
@@ -56,7 +53,7 @@ class DetailsRepositoryImpl @Inject constructor(
                     episodeModel.isFiller = false
                 }
                 episodeModel
-            }.asyncMap { episode ->
+            }.map { episode ->
                 val contentEpisode =
                     episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
                 if (contentEpisode != null) {
@@ -71,7 +68,6 @@ class DetailsRepositoryImpl @Inject constructor(
         episodeUrl: String,
         extra: List<Any?>
     ) = providerFlow(settings) { provider ->
-        Log.e("Selected settings", provider.name)
         when (provider) {
             AnimeTypes.GOGO_ANIME -> {
                 val response = selectedAnimeProvider?.fetchEpisodeList<ResponseBody>(episodeUrl)
@@ -84,7 +80,6 @@ class DetailsRepositoryImpl @Inject constructor(
                 val response =
                     selectedAnimeProvider?.fetchEpisodeList<EnimeResponse>(episodeUrl, extra)
 
-                Log.e("enime ----", response?.episodes.toString())
                 val episodeList = response?.episodes?.map {
                     EpisodeModel(it.title, "Episode ${it.number}", "")
                 } ?: emptyList()

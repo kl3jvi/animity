@@ -23,11 +23,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Genre
-import com.kl3jvi.animity.data.model.ui_models.getHexColor
+import com.kl3jvi.animity.data.model.ui_models.getColors
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.*
-import com.kl3jvi.animity.utils.Constants.Companion.getColor
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -143,19 +142,21 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
      *
      * @param genre List<Genre> - The list of genres that we want to display.
      */
-    private fun createGenreChips(genre: List<Genre>) {
-        binding?.genreGroup?.removeAllViews()
-        genre.forEach { data ->
-            val chip = Chip(requireContext())
-            chip.apply {
-                text = data.name
-                val color = data.getHexColor()
-                setTextColor(Color.WHITE)
-                chipStrokeColor = getColor()
-                chipStrokeWidth = 3f
-                chipBackgroundColor = color
+    private fun createGenreChips(genres: List<Genre>) {
+        binding?.genreGroup?.apply {
+            removeAllViews()
+            genres.forEach { genre ->
+                val (bgColor, outlineColor) = genre.getColors()
+                addView(
+                    Chip(requireContext()).apply {
+                        text = genre.name
+                        setTextColor(Color.WHITE)
+                        chipStrokeWidth = 3f
+                        chipBackgroundColor = bgColor
+                        chipStrokeColor = outlineColor
+                    }
+                )
             }
-            binding?.genreGroup?.addView(chip)
         }
     }
 

@@ -76,8 +76,8 @@ data class AniListMedia(
     }
 }
 
-fun Genre.getHexColor(): ColorStateList {
-    return when (name) {
+fun Genre.getColors(): Pair<ColorStateList, ColorStateList> {
+    val color = when (name) {
         "Action" -> "#24687B"
         "Adventure" -> "#014037"
         "Comedy" -> "#E6977E"
@@ -99,6 +99,31 @@ fun Genre.getHexColor(): ColorStateList {
         "Thriller" -> "#224C80"
         else -> "#000000"
     }.toStateListColor()
+
+    val outlineColor = when (name) {
+        "Action" -> "#1c4f62"
+        "Adventure" -> "#7fbf8c"
+        "Comedy" -> "#d46c5f"
+        "Drama" -> "#5f0c0e"
+        "Ecchi" -> "#5f0c33"
+        "Fantasy" -> "#6d7143"
+        "Hentai" -> "#2b1c4d"
+        "Horror" -> "#4d1c4f"
+        "Mahou Shoujo" -> "#a8414d"
+        "Mecha" -> "#3a1c1e"
+        "Music" -> "#1f5a3c"
+        "Mystery" -> "#2d1f3a"
+        "Psychological" -> "#9c422d"
+        "Romance" -> "#82162a"
+        "Sci-Fi" -> "#4d7738"
+        "Slice of Life" -> "#b09c39"
+        "Sports" -> "#4d6230"
+        "Supernatural" -> "#24695f"
+        "Thriller" -> "#1c3d6e"
+        else -> "#000000"
+    }.toStateListColor()
+
+    return Pair(color, outlineColor)
 }
 
 private fun String.toStateListColor(): ColorStateList {

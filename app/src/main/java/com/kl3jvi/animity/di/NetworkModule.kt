@@ -24,6 +24,7 @@ import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
 import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
+import com.kl3jvi.animity.utils.setGenericDns
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,7 +74,7 @@ object NetworkModule {
                 level = HttpLoggingInterceptor.Level.BASIC
             }
         )
-//        .setGenericDns(settings)
+        .setGenericDns(settings)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .writeTimeout(20, TimeUnit.SECONDS)

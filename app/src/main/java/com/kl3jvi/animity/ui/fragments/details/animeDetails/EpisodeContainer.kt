@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.os.Bundle
@@ -12,6 +14,7 @@ import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.launchActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
 
@@ -20,17 +23,13 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentEpisodeContainerBinding.bind(view)
-        val episodes = requireArguments().getParcelableArrayList<EpisodeModel>(ARG_EPISODE_LIST)!!
-        val animeData = requireArguments().getParcelable<AniListMedia>(ANIME_DATA)
-        val desiredPosition = requireArguments().getInt(DESIRED_POSITION)
-        val increaser = requireArguments().getInt(INCREASER)
-        val t = if (increaser == 0) increaser else increaser * 50
-        bindEpisodeList(episodes, animeData, desiredPosition, t) {
-            goToDesiredPosition()
-        }
-    }
-
-    private fun goToDesiredPosition() {
+        val args = requireArguments()
+        val episodes = args.getParcelableArrayList<EpisodeModel>(ARG_EPISODE_LIST)!!
+        val animeData = args.getParcelable<AniListMedia>(ANIME_DATA)
+        val desiredPosition = args.getInt(DESIRED_POSITION)
+        val increase = args.getInt(INCREASER)
+        val step = if (increase == 0) increase else increase * 50
+        bindEpisodeList(episodes, animeData, desiredPosition, step) {}
     }
 
     private fun bindEpisodeList(

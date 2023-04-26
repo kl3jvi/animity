@@ -11,6 +11,7 @@ import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.createFragmentMenu
 import com.kl3jvi.animity.utils.nav
@@ -58,13 +59,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         collect(viewModel.homeDataUiState) { result ->
             binding?.mainRv?.withModels {
                 when (result) {
-                    is HomeDataUiState.Error -> showSnack(
+                    is UiResult.Error -> showSnack(
                         binding?.root,
-                        result.exception?.message ?: "Error occurred"
+                        result.throwable.message ?: "Error occurred"
                     )
 
-                    HomeDataUiState.Loading -> {}
-                    is HomeDataUiState.Success -> {
+                    UiResult.Loading -> {}
+                    is UiResult.Success -> {
                         Log.e(
                             "Media Status",
                             result.data.popularAnime.map { it.isFavourite }.toString()
