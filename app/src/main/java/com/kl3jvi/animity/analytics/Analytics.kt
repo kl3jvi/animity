@@ -2,6 +2,7 @@ package com.kl3jvi.animity.analytics
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.kl3jvi.animity.BuildConfig
 import javax.inject.Inject
 
 /**
@@ -30,7 +31,8 @@ class Analytics @Inject constructor(
      */
     fun logEvent(event: String, params: Map<String, Any?>? = null) {
         val bundle = params?.let { createBundle(it) }
-        firebaseAnalytics.logEvent(event.removeSpecialCharacters(), bundle)
+
+        firebaseAnalytics.logReleaseEvent(event.removeSpecialCharacters(), bundle)
     }
 
     /**
@@ -40,7 +42,7 @@ class Analytics @Inject constructor(
      * @param value The value to set the user property to (optional).
      */
     fun setUserProperty(name: String, value: String?) {
-        firebaseAnalytics.setUserProperty(name, value)
+        firebaseAnalytics.setUserPropertyRelease(name, value)
     }
 
     /**
@@ -52,7 +54,10 @@ class Analytics @Inject constructor(
      */
     fun logCurrentScreen(screenName: String) {
         val screenDetails = mapOf(FirebaseAnalytics.Param.SCREEN_NAME to screenName)
-        logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, screenDetails)
+        if (BuildConfig.BUILD_TYPE == "release") logEvent(
+            FirebaseAnalytics.Event.SCREEN_VIEW,
+            screenDetails
+        )
     }
 
     /**
@@ -75,4 +80,16 @@ class Analytics @Inject constructor(
         }
         return bundle
     }
+}
+
+private fun FirebaseAnalytics.setUserPropertyRelease(name: String, value: String?) {
+    if (BuildConfig.BUILD_TYPE == "release") setUserProperty(name, value)
+
+}
+
+private fun FirebaseAnalytics.logReleaseEvent(
+    removeSpecialCharacters: String,
+    bundle: Bundle?
+) = apply {
+    if (BuildConfig.BUILD_TYPE == "release") logEvent(removeSpecialCharacters, bundle)
 }
