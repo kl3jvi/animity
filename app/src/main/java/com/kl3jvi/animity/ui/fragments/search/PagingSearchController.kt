@@ -1,15 +1,14 @@
 package com.kl3jvi.animity.ui.fragments.search
 
-import android.os.Bundle
 import androidx.navigation.findNavController
 import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.paging3.PagingDataEpoxyController
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.SearchLayoutBindingModel_
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.utils.logError
 
-class PagingSearchController(private val firebaseAnalytics: FirebaseAnalytics) :
+class PagingSearchController(private val firebaseAnalytics: Analytics) :
     PagingDataEpoxyController<AniListMedia>() {
     /**
      * It creates a new EpoxyModel for each item in the list.
@@ -28,10 +27,8 @@ class PagingSearchController(private val firebaseAnalytics: FirebaseAnalytics) :
                     val directions =
                         SearchFragmentDirections.actionNavigationExploreToNavigationDetails(item, 0)
                     view.findNavController().navigate(directions)
-                    val params = Bundle()
-                    params.putString(
-                        "genre",
-                        item.genres.firstOrNull()?.name ?: "empty"
+                    val params = mapOf(
+                        "genre" to item.genres.firstOrNull()?.name
                     )
                     firebaseAnalytics.logEvent(
                         item.title.userPreferred.replace("[ ,:](?!_)".toRegex(), ""),

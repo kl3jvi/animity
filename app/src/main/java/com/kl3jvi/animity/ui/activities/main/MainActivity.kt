@@ -19,9 +19,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.azhon.appupdate.manager.DownloadManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.application.AnimityApplication.Companion.ONESIGNAL_APP_ID
@@ -36,7 +33,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -48,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firebaseAnalytics = Firebase.analytics
+
 
         val navView: BottomNavigationView = binding.navView
         /* Getting the navigation controller from the navigation host fragment. */

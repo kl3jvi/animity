@@ -36,10 +36,8 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import com.google.android.exoplayer2.util.Util
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
@@ -74,7 +72,9 @@ class PlayerActivity : AppCompatActivity() {
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlayerBinding.inflate(layoutInflater)
     }
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    @Inject
+    lateinit var analytics: Analytics
     private lateinit var cacheFactory: CacheDataSource.Factory
     private var player: ExoPlayer? = null
     private val viewModel: PlayerViewModel by viewModels()
@@ -96,7 +96,6 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        firebaseAnalytics = Firebase.analytics
         if (intent.hasExtra(EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(EPISODE_DETAILS)
 

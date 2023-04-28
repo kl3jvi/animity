@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
@@ -27,7 +26,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
-        pagingController = PagingSearchController(FirebaseAnalytics.getInstance(requireContext()))
+        pagingController = PagingSearchController(analytics)
         initViews()
         observeViewModel()
     }

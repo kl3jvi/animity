@@ -7,11 +7,9 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.data.secrets.Secrets
 import com.kl3jvi.animity.databinding.ActivityLoginBinding
@@ -22,13 +20,17 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication {
 
     private val viewModel: LoginViewModel by viewModels()
-    lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    @Inject
+    lateinit var firebaseAnalytics: Analytics
+
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +38,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseAnalytics = Firebase.analytics
         checkIfUserLoggedIn()
         initViews()
     }
@@ -108,8 +109,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
         if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
             viewModel.saveTokens(authToken, refreshToken)
             launchActivity<MainActivity> {
-                val bundle = bundleOf(FirebaseAnalytics.Param.METHOD to "login")
-                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+                val params = mapOf(FirebaseAnalytics.Param.METHOD to "login")
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, params)
             }
             finish()
             return

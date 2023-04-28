@@ -14,9 +14,6 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.workers.NotificationWorker
 import com.onesignal.OneSignal
@@ -29,14 +26,11 @@ application state. */
 @HiltAndroidApp
 class AnimityApplication : Application(), Configuration.Provider {
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
-        firebaseAnalytics = Firebase.analytics
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
         OneSignal.initWithContext(this)
         OneSignal.setAppId(ONESIGNAL_APP_ID)
