@@ -37,7 +37,7 @@ It merely scrapes 3rd-party websites that are publicly accessable via any regula
 
 ## Screenshots
 
-[<img src="assets/asset1.png" width=23%>](assets/asset1.png)
+[<img src="assets/asset8.png" width=23%>](assets/asset8.png)
 [<img src="assets/asset2.png" width=23%>](assets/asset2.png)
 [<img src="assets/asset3.png" width=23%>](assets/asset3.png)
 [<img src="assets/asset5.png" width=23%>](assets/asset5.png)
@@ -47,7 +47,7 @@ It merely scrapes 3rd-party websites that are publicly accessable via any regula
 
 ## Description
 
-Animity parses website data and filter required info, thus It removes the ads for seamless experience. The app doesn't require account creation to use it.
+Animity parses website data and filter required info, thus It removes the ads for seamless experience.
 
 ### Features
 
