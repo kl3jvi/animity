@@ -15,12 +15,22 @@ class EpisodeChunkDiffCallback(
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldChunk = oldChunks[oldItemPosition]
         val newChunk = newChunks[newItemPosition]
-        return oldChunk.size == newChunk.size && oldChunk[0].episodeName == newChunk[0].episodeName
+        val oldChunkSize = oldChunk.size
+        val newChunkSize = newChunk.size
+
+        return oldChunkSize == newChunkSize &&
+            oldChunk[0].episodeName == newChunk[0].episodeName &&
+            oldChunk[0].episodeNumber == newChunk[0].episodeNumber
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldChunk = oldChunks[oldItemPosition]
         val newChunk = newChunks[newItemPosition]
-        return oldChunk == newChunk
+        val oldChunkSize = oldChunk.size
+        val newChunkSize = newChunk.size
+
+        return oldChunkSize == newChunkSize &&
+            oldChunk == newChunk &&
+            oldChunk[0].percentage == newChunk[0].percentage
     }
 }

@@ -12,10 +12,8 @@ import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.ifChanged
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.or1
-import com.kl3jvi.animity.utils.reverseIf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +28,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -60,12 +57,13 @@ class DetailsViewModel @Inject constructor(
                                 episodeUrl = result.data,
                                 malId = media.idMal.or1(),
                                 extra = listOf(media.idMal)
-                            ).reverseIf(reverseState).map { episodes ->
+                            ).map { episodes ->
                                 // Split the list of episodes into chunks of 50 or less
                                 val episodeChunks = episodes.chunked(50) {
                                     val firstEpisodeNumber =
                                         it.first().getEpisodeNumberOnly().toInt()
-                                    val lastEpisodeNumber = it.last().getEpisodeNumberOnly().toInt()
+                                    val lastEpisodeNumber =
+                                        it.last().getEpisodeNumberOnly().toInt()
                                     "Episodes $firstEpisodeNumber - $lastEpisodeNumber"
                                 }
                                 EpisodeListUiState.Success(episodes.chunked(50), episodeChunks)
@@ -75,7 +73,7 @@ class DetailsViewModel @Inject constructor(
                 }
         }.flowOn(Dispatchers.Default)
             .stateIn(
-                viewModelScope + CoroutineName("Episode List Coroutine"),
+                viewModelScope,
                 SharingStarted.WhileSubscribed(5_000),
                 EpisodeListUiState.Loading
             )

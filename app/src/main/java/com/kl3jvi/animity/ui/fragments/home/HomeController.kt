@@ -29,7 +29,7 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: Analytics) 
         id(Uuid.randomUUID().toString())
         title(Title.values().last().title)
     }
-    homeData.run { review }.forEach { media ->
+    homeData.run(HomeData::review).forEach { media ->
         vertical {
             id(Uuid.randomUUID().toString())
             animeInfo(media)

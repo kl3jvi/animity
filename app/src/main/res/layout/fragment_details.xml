@@ -322,6 +322,14 @@
                     app:tabTextColor="@color/white">
 
                 </com.google.android.material.tabs.TabLayout>
+
+                <ProgressBar
+                    android:id="@+id/loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/dp_10"
+                    android:visibility="gone" />
             </LinearLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -338,18 +346,6 @@
         app:layout_scrollFlags="scroll|exitUntilCollapsed"
         tools:listitem="@layout/item_episode_list"
         tools:visibility="visible" />
-
-    <!--    <com.airbnb.epoxy.EpoxyRecyclerView-->
-    <!--        android:id="@+id/episode_list_recycler"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/dp_8"-->
-    <!--        android:visibility="gone"-->
-    <!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-    <!--        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"-->
-    <!--        app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
-    <!--        tools:listitem="@layout/item_episode_list"-->
-    <!--        tools:visibility="visible" />-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

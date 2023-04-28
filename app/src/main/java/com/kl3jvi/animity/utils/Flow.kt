@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 
 fun <T> Flow<T>.ifChanged() = ifChanged { it }
@@ -191,11 +191,11 @@ fun <T> Fragment.collectLatest(
 }
 
 fun <T> Flow<List<T>>.reverseIf(predicate: MutableStateFlow<Boolean>): Flow<List<T>> {
-    return transform { list ->
-        if (predicate.value) {
-            emit(list.asReversed())
+    return combine(predicate) { list, isReversed ->
+        if (isReversed) {
+            list.reversed()
         } else {
-            emit(list)
+            list
         }
     }
 }

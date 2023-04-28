@@ -8,46 +8,47 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val searchRepository: SearchRepository,
-    private val ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _searchList = MutableStateFlow(PagingData.empty<AniListMedia>())
+    private val _searchList = MutableStateFlow<PagingData<AniListMedia>>(PagingData.empty())
     val searchList: StateFlow<PagingData<AniListMedia>> = _searchList.asStateFlow()
 
-    private var currentSearchJob: Job? = null
-    private var currentQuery = ""
+    private val searchQueryChannel = Channel<String>(Channel.CONFLATED)
+    private val searchFlow = searchQueryChannel
+        .receiveAsFlow()
+        .debounce(500)
+        .filter { it.length >= 2 }
+        .distinctUntilChanged()
+        .flatMapLatest { searchRepository.fetchAniListSearchData(it) }
+        .cachedIn(viewModelScope)
+        .flowOn(ioDispatcher)
+
+    init {
+        viewModelScope.launch {
+            searchFlow.collect {
+                _searchList.value = it
+            }
+        }
+    }
 
     fun onSearchQueryChanged(query: String) {
-        val newQuery = query.trim()
-        if (newQuery != currentQuery && newQuery.length >= 2) {
-            currentQuery = newQuery
-            executeSearch()
-        }
-    }
-
-    private fun executeSearch() {
-        currentSearchJob?.cancel()
-        currentSearchJob = viewModelScope.launch(ioDispatcher) {
-            searchRepository.fetchAniListSearchData(currentQuery)
-                .cachedIn(viewModelScope)
-                .debounce(timeoutMillis = 500)
-                .collect { _searchList.value = it }
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        currentSearchJob?.cancel()
+        searchQueryChannel.trySend(query.trim()).isSuccess
     }
 }

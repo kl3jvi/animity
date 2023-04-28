@@ -27,7 +27,7 @@ fun <T> Flow<T>.mapToUiState(
         emit(UiResult.Error(it))
     }.stateIn(
         scope = scope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.Lazily,
         initialValue = UiResult.Loading
     )
 }

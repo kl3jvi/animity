@@ -84,11 +84,11 @@
                         style="@android:style/Widget.Material.ProgressBar.Horizontal"
                         animatedProgress="@{episodeInfo.percentage}"
                         android:layout_width="match_parent"
-                        android:layout_height="5dp"
+                        android:layout_height="8dp"
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="-1.5dp"
                         android:progressBackgroundTint="?attr/colorPrimary"
-                        android:progressTint="@color/white"
+                        android:progressTint="@color/progress_color"
                         tools:progress="50" />
                 </androidx.cardview.widget.CardView>
 

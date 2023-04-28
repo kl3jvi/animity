@@ -29,7 +29,9 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         val desiredPosition = args.getInt(DESIRED_POSITION)
         val increase = args.getInt(INCREASER)
         val step = if (increase == 0) increase else increase * 50
-        bindEpisodeList(episodes, animeData, desiredPosition, step) {}
+        bindEpisodeList(episodes, animeData, desiredPosition, step) {
+            binding.episodeListRecycler.scrollToPosition(desiredPosition)
+        }
     }
 
     private fun bindEpisodeList(

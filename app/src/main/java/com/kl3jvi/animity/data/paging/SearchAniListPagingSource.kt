@@ -20,17 +20,14 @@ class SearchAniListPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AniListMedia> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val listOfAniListMedia =
-                apiClient.fetchSearchAniListData(query, page)
-                    .data?.convert() ?: emptyList()
-
+            val response = apiClient.fetchSearchAniListData(query, page)
+            val listOfAniListMedia = response.data?.convert() ?: emptyList()
             LoadResult.Page(
                 data = listOfAniListMedia,
                 prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1,
                 nextKey = if (listOfAniListMedia.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
-            e.printStackTrace()
             LoadResult.Error(e)
         }
     }

@@ -65,21 +65,10 @@
         android:paddingBottom="5dp"
         android:visibility="visible"
         tools:listitem="@layout/item_search_layout"
-        tools:visibility="gone">
-
+        tools:visibility="visible">
     </com.airbnb.epoxy.EpoxyRecyclerView>
 
 
 
-    <TextView
-        android:id="@+id/no_search_result"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/no_search_result"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 </LinearLayout>

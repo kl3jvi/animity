@@ -84,11 +84,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 resultTitle.text = animeInfo.title.userPreferred
                 title = animeInfo.title.userPreferred
                 imageButton.setOnClickListener {
-                    viewModel.reverseState.value = !viewModel.reverseState.value.also {
-                        imageButton.load(
-                            if (it) R.drawable.ic_up_arrow else R.drawable.ic_down_arrow
-                        )
-                    }
+                    viewModel.reverseState.value = !viewModel.reverseState.value
+                }
+                collect(viewModel.reverseState) {
+                    imageButton.load(if (it) R.drawable.ic_up_arrow else R.drawable.ic_down_arrow)
                 }
             }
         }
@@ -258,11 +257,24 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                     val episodes = listOfEpisodeModel.episodeChunks.flatten()
                     updateEpisodeNumber(episodes)
+                    showLoading(false)
+                    goToDesiredPosition()
                 }
 
-                is EpisodeListUiState.Error -> startAppBarCloseTimer()
-                else -> {}
+                is EpisodeListUiState.Error -> {
+                    startAppBarCloseTimer()
+                    showLoading(false)
+                }
+
+                is EpisodeListUiState.Loading -> showLoading(true)
             }
+        }
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding?.apply {
+            loading.isVisible = show
+            episodeListRecycler.isVisible = show.not()
         }
     }
 
@@ -297,61 +309,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun goToDesiredPosition() {
         if (desiredPosition != 0) {
             binding?.appbar?.setExpanded(false, true)
-//            binding?.episodeListRecycler?.scrollToPosition(desiredPosition)
+            binding?.chunkedEpisodeTab?.getTabAt(desiredPosition / 50)?.select()
         }
     }
-
-//    private fun bindEpisodeList(episodes: List<EpisodeModel>, listBuildCallBack: () -> Unit) {
-//        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
-//        binding?.episodeListRecycler?.withModels {
-//            episodes.forEachIndexed { index, episodeModel ->
-//                episodeLarge {
-//                    id(UUID.randomUUID().toString())
-//                    clickListener { _ ->
-//                        requireContext().launchActivity<PlayerActivity> {
-//                            putExtra(Constants.EPISODE_DETAILS, episodeModel)
-//                            putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-//                            putExtra(Constants.MAL_ID, animeDetails.idMal)
-//                        }
-//                    }
-//                    showTitle(episodeModel.episodeName.isNotEmpty())
-//                    isFiller(episodeModel.isFiller)
-//                    imageUrl(
-//                        when {
-//                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail == null -> {
-//                                animeDetails.bannerImage.ifEmpty { animeDetails.coverImage.large }
-//                            }
-//
-//                            animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail != null -> {
-//                                animeDetails.streamingEpisode?.getOrNull(index)?.thumbnail
-//                            }
-//
-//                            else -> animeDetails.coverImage.large
-//                        }
-//                    )
-//                    episodeInfo(episodeModel)
-//                    onBind { _, view, _ ->
-//                        if (index == desiredPosition) {
-//                            // Apply a translation animation to the root view of the data binding layout
-//                            view.dataBinding.root.startAnimation(animation)
-//                        }
-//                    }
-//                }
-//            }
-//            binding?.resultEpisodesText?.text =
-//                requireContext().getString(R.string.total_episodes, episodes.size.toString())
-//            if (episodes.isNotEmpty() && episodes.size == 1) {
-//                binding?.resultPlayMovie?.setOnClickListener {
-//                    requireActivity().launchActivity<PlayerActivity> {
-//                        putExtra(Constants.EPISODE_DETAILS, episodes.first())
-//                        putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-//                        putExtra(Constants.MAL_ID, animeDetails.idMal)
-//                    }
-//                }
-//            }
-//            listBuildCallBack()
-//        }
-//    }
 
     private fun showLatestEpisodeReleaseTime() {
         binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {
