@@ -469,6 +469,20 @@ mutation SaveMediaMutation ($id: Int!, $status: MediaListStatus!) {
     }
 }
 
+mutation SaveMediaListEntry(
+    $mediaId: Int!,
+    $episodesWatched: Int!
+) {
+    SaveMediaListEntry(
+        mediaId: $mediaId,
+        progress: $episodesWatched
+    ) {
+        id
+        progress
+    }
+}
+
+
 mutation AnimeListEntryMutation(
     $id: Int,
     $mediaId: Int,

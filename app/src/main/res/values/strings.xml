@@ -120,7 +120,7 @@
     <string name="pip">pip</string>
     <string name="channel_name">AnimityNotifications</string>
     <string name="channel_description">Animity notifications for anime airing</string>
-    <string name="notification_title">Anime Update: Catch the Latest Episode Now!</string>
+    <string name="notification_title">New Notification</string>
     <string name="notifications">Notifications</string>
     <string name="quit">Quit Notifications</string>
     <string name="option_4">Set as Stopped Watching</string>

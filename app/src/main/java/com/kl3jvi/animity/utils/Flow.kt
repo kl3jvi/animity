@@ -8,6 +8,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.settings.Settings
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.AbstractFlow
@@ -147,8 +148,8 @@ class SafeFlow<T>(
 fun <T> LifecycleOwner.collect(
     flow: Flow<T>,
     collector: suspend (T) -> Unit
-) {
-    lifecycleScope.launch {
+): Job {
+    return lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             flow.catch { e -> logError(e) }.collect(collector)
         }
