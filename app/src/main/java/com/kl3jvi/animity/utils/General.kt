@@ -8,9 +8,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ms.square.android.expandabletextview.ExpandableTextView
 import io.noties.markwon.Markwon
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 fun View.hide() {
     visibility = View.GONE
@@ -48,6 +50,15 @@ fun TextView.setHtmlText(htmlString: String?) {
         Html.fromHtml(htmlString)
     }
 }
+
+fun ExpandableTextView.setHtmlText(description: String) {
+    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(description)
+    }
+}
+
 
 fun TextView.setMarkdownText(string: String) {
     Markwon.create(this.context).setMarkdown(this, string)

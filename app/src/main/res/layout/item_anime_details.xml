@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,29 +9,47 @@
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingStart="@dimen/page_horizontal_padding"
         android:paddingEnd="@dimen/size_8">
 
-
         <TextView
+
             style="@style/Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_20"
             android:text="@string/synopsis" />
 
-        <TextView
-            android:id="@+id/textOverview"
-            style="@style/Body2"
+        <com.ms.square.android.expandabletextview.ExpandableTextView
+            android:id="@+id/synopsis_expand"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_8"
-            android:paddingBottom="@dimen/size_8"
-            tools:text="As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain." />
+            android:layout_height="match_parent"
+            style="@style/Body2"
+            app:animDuration="200"
+            app:maxCollapsedLines="5">
+
+            <TextView
+                android:id="@id/expandable_text"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/size_8"
+                android:layout_marginTop="@dimen/size_8"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+
+            <ImageButton
+                android:id="@id/expand_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:padding="3dp" />
+        </com.ms.square.android.expandabletextview.ExpandableTextView>
+
 
     </LinearLayout>
 </layout>

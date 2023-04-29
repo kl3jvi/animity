@@ -28,6 +28,7 @@ import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.ms.square.android.expandabletextview.ExpandableTextView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -99,7 +100,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun fetchAnimeInfo() {
         animeDetails.let { info ->
             binding?.apply {
-                animeInfoLayout.textOverview.setHtmlText(info.description)
+                animeInfoLayout.synopsisExpand.setHtmlText(info.description)
                 releaseDate.text = info.startDate?.getDate()
                 status.text = info.status?.name
                 type.text = info.type?.rawValue
@@ -110,7 +111,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     it != null
                 }?.run(::displayInDayDateTimeFormat)
 
-                animeInfoLayout.textOverview.visibility = VISIBLE
+                animeInfoLayout.expandableText.visibility = VISIBLE
                 releaseDate.visibility = VISIBLE
                 status.visibility = VISIBLE
                 type.visibility = VISIBLE
@@ -325,3 +326,4 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding = null
     }
 }
+

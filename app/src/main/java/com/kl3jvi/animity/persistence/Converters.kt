@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.utils
+package com.kl3jvi.animity.persistence
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
