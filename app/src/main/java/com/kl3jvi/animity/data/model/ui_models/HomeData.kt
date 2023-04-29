@@ -3,6 +3,7 @@ package com.kl3jvi.animity.data.model.ui_models
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Parcelable
+import com.kl3jvi.animity.data.mapper.MediaStatusAnimity
 import com.kl3jvi.animity.type.MediaFormat
 import com.kl3jvi.animity.type.MediaSeason
 import com.kl3jvi.animity.type.MediaSource
@@ -55,8 +56,8 @@ data class AniListMedia(
     val isAdult: Boolean = false,
 //    val nextAiringEpisode: AiringSchedule? = null,
 //    val externalLinks: List<MediaExternalLink> = listOf(),
-    val siteUrl: String = ""
-//    val mediaListEntry: MediaList? = null
+    val siteUrl: String = "",
+    val mediaListEntry: MediaStatusAnimity? = null
 ) : Parcelable {
 
     fun getGenresToString(): String {

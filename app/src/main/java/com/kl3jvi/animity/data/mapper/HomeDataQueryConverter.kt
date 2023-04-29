@@ -94,7 +94,8 @@ fun HomeMedia?.convert(): AniListMedia {
         bannerImage = this?.bannerImage.orEmpty(),
         genres = this?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: emptyList(),
         averageScore = this?.averageScore ?: 0,
-        favourites = this?.favourites ?: 0
+        favourites = this?.favourites ?: 0,
+        mediaListEntry = MediaStatusAnimity.stringToMediaListStatus(this?.mediaListEntry?.status?.rawValue)
     )
 }
 

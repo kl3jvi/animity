@@ -293,6 +293,7 @@ fragment HomeMedia on Media {
     }
     type
     isFavourite
+
     status(version: 2)
     format
     description(asHtml: false)
@@ -317,6 +318,10 @@ fragment HomeMedia on Media {
         year
         month
         day
+    }
+    mediaListEntry {
+        id
+        status
     }
 }
 
@@ -382,6 +387,17 @@ query Notifications($page: Int) {
         }
     }
 }
+
+mutation SaveMediaMutation ($id: Int!, $status: MediaListStatus!) {
+    saveMedia : SaveMediaListEntry (
+        mediaId: $id,
+        status: $status
+    ) {
+        id
+        status
+    }
+}
+
 mutation AnimeListEntryMutation(
     $id: Int,
     $mediaId: Int,

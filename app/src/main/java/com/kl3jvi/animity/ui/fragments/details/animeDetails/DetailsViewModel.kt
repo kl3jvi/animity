@@ -7,6 +7,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
+import com.kl3jvi.animity.type.MediaListStatus
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.ifChanged
@@ -85,6 +86,16 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             animeMetaModel.flatMapLatest {
                 userRepository.markAnimeAsFavorite(it.idAniList).ifChanged()
+                    .catch { error -> logError(error) }
+            }.collect()
+        }
+    }
+
+    fun changeAnimeStatus(status: MediaListStatus) {
+        viewModelScope.launch(ioDispatcher) {
+            animeMetaModel.flatMapLatest {
+                detailsRepository.changeAnimeStatus(it.idAniList, status)
+                    .ifChanged()
                     .catch { error -> logError(error) }
             }.collect()
         }

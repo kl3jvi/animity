@@ -3,14 +3,17 @@ package com.kl3jvi.animity.data.network.anilist_service
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.AnimeListCollectionQuery
+import com.kl3jvi.animity.AnimeListEntryMutation
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.NotificationsQuery
+import com.kl3jvi.animity.SaveMediaMutation
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.TrendingMediaQuery
 import com.kl3jvi.animity.UserQuery
+import com.kl3jvi.animity.type.MediaListStatus
 import javax.inject.Inject
 
 class AniListGraphQlClient @Inject constructor(
@@ -79,4 +82,7 @@ class AniListGraphQlClient @Inject constructor(
                 Optional.Present(page)
             )
         ).execute()
+
+    override suspend fun markAnimeStatus(mediaId: Int, status: MediaListStatus) =
+        apolloClient.mutation(SaveMediaMutation(mediaId, status)).execute()
 }

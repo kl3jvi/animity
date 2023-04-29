@@ -5,7 +5,7 @@
 #ifdef ANILIST_KEY
 const char *key = ANILIST_KEY;
 #else
-const char* key = "default_key";
+#error "No anilist key found"
 #endif
 
 static const unsigned char anilist_id_ciphertext[] = {0x37, 0x33, 0x38, 0x31};

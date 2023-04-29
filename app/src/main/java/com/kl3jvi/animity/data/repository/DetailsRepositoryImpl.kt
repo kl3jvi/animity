@@ -1,14 +1,18 @@
 package com.kl3jvi.animity.data.repository
 
+import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.data.enums.AnimeTypes
+import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
+import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.persistence.EpisodeDao
 import com.kl3jvi.animity.settings.Settings
+import com.kl3jvi.animity.type.MediaListStatus
 import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.providerFlow
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,6 +31,7 @@ class DetailsRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
     private val episodeDao: EpisodeDao,
     private val settings: Settings,
+    private val aniListGraphQlClient: AniListGraphQlClient,
     override val parser: GoGoParser
 ) : DetailsRepository {
 
@@ -64,6 +69,11 @@ class DetailsRepositoryImpl @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
+
+    override fun changeAnimeStatus(mediaId: Int, status: MediaListStatus) = flow {
+        emit(aniListGraphQlClient.markAnimeStatus(mediaId, status).convert())
+    }
+
     private fun getListOfEpisodes(
         episodeUrl: String,
         extra: List<Any?>
@@ -99,4 +109,8 @@ class DetailsRepositoryImpl @Inject constructor(
 
     private fun getEpisodesPercentage(malId: Int) = episodeDao.getEpisodesByAnime(malId = malId)
         .catch { emit(emptyList()) }
+
+
 }
+
+

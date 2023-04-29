@@ -25,10 +25,10 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.getColors
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
+import com.kl3jvi.animity.type.MediaListStatus
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.*
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
-import com.ms.square.android.expandabletextview.ExpandableTextView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -90,6 +90,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 collect(viewModel.reverseState) {
                     imageButton.load(if (it) R.drawable.ic_up_arrow else R.drawable.ic_down_arrow)
                 }
+                setType.setOnClickListener {
+                    showMenu(it, R.menu.popup_menu)
+                }
             }
         }
     }
@@ -120,6 +123,12 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 resultPlayMovie.visibility = GONE
                 episodeListRecycler.visibility = VISIBLE
                 createGenreChips(info.genres)
+                setType.text = info.mediaListEntry?.name
+                    ?.lowercase()?.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(
+                            Locale.getDefault()
+                        ) else it.toString()
+                    }
             }
         }
     }
@@ -211,14 +220,17 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             when (menuItem.itemId) {
                 R.id.option_1 -> {
                     binding?.setType?.text = requireContext().getText(R.string.completed)
+                    viewModel.changeAnimeStatus(MediaListStatus.COMPLETED)
                 }
 
                 R.id.option_2 -> {
                     binding?.setType?.text = requireContext().getText(R.string.watching)
+                    viewModel.changeAnimeStatus(MediaListStatus.CURRENT)
                 }
 
                 R.id.option_3 -> {
                     binding?.setType?.text = requireContext().getText(R.string.planning)
+                    viewModel.changeAnimeStatus(MediaListStatus.PLANNING)
                 }
             }
             false

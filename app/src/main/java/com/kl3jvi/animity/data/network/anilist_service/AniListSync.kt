@@ -1,15 +1,18 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
+import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.NotificationsQuery
+import com.kl3jvi.animity.SaveMediaMutation
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.TrendingMediaQuery
 import com.kl3jvi.animity.UserQuery
+import com.kl3jvi.animity.type.MediaListStatus
 
 interface AniListSync {
 
@@ -36,4 +39,8 @@ interface AniListSync {
     suspend fun getUserData(id: Int?): ApolloResponse<UserQuery.Data>
     suspend fun getSessionForUser(): ApolloResponse<SessionQuery.Data>
     suspend fun getNotifications(page: Int): ApolloResponse<NotificationsQuery.Data>
+    suspend fun markAnimeStatus(
+        mediaId: Int,
+        status: MediaListStatus
+    ): ApolloResponse<SaveMediaMutation.Data>
 }
