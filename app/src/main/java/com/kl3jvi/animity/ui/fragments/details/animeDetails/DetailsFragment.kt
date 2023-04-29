@@ -21,6 +21,7 @@ import coil.load
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.mapper.MediaStatusAnimity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Genre
 import com.kl3jvi.animity.data.model.ui_models.getColors
@@ -123,12 +124,17 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 resultPlayMovie.visibility = GONE
                 episodeListRecycler.visibility = VISIBLE
                 createGenreChips(info.genres)
-                setType.text = info.mediaListEntry?.name
-                    ?.lowercase()?.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(
-                            Locale.getDefault()
-                        ) else it.toString()
+                setType.text = info.mediaListEntry?.let {
+                    when (it) {
+                        MediaStatusAnimity.COMPLETED -> "Completed"
+                        MediaStatusAnimity.WATCHING -> "Watching"
+                        MediaStatusAnimity.DROPPED -> "Dropped"
+                        MediaStatusAnimity.PAUSED -> "Paused"
+                        MediaStatusAnimity.PLANNING -> "Planning"
+                        MediaStatusAnimity.REPEATING -> "Repeating"
+                        MediaStatusAnimity.NOTHING -> "Add to list"
                     }
+                }
             }
         }
     }
@@ -232,8 +238,18 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     binding?.setType?.text = requireContext().getText(R.string.planning)
                     viewModel.changeAnimeStatus(MediaListStatus.PLANNING)
                 }
+
+                R.id.option_4 -> {
+                    binding?.setType?.text = requireContext().getText(R.string.dropped)
+                    viewModel.changeAnimeStatus(MediaListStatus.DROPPED)
+                }
+
+                R.id.option_5 -> {
+                    binding?.setType?.text = requireContext().getText(R.string.paused)
+                    viewModel.changeAnimeStatus(MediaListStatus.PAUSED)
+                }
             }
-            false
+            true
         }
         // Show the popup menu.
         popup.show()

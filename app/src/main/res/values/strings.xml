@@ -96,6 +96,7 @@
     <string name="completed">Completed</string>
     <string name="watching">Watching</string>
     <string name="planning">Planning</string>
+    <string name="dropped">Dropped</string>
     <string name="filler">FILLER</string>
     <string name="list_editor">List Editor</string>
     <string name="watch">Watch</string>
@@ -122,6 +123,9 @@
     <string name="notification_title">Anime Update: Catch the Latest Episode Now!</string>
     <string name="notifications">Notifications</string>
     <string name="quit">Quit Notifications</string>
+    <string name="option_4">Set as Stopped Watching</string>
+    <string name="paused">Paused</string>
+    <string name="option_5">Set as Paused</string>
 
 
 </resources>

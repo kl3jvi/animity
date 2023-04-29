@@ -19,7 +19,8 @@ enum class MediaStatusAnimity {
     DROPPED,
     PAUSED,
     PLANNING,
-    REPEATING;
+    REPEATING,
+    NOTHING;
 
     companion object {
         fun stringToMediaListStatus(passedString: String?): MediaStatusAnimity {
@@ -30,7 +31,7 @@ enum class MediaStatusAnimity {
                 "PAUSED" -> PAUSED
                 "PLANNING" -> PLANNING
                 "REPEATING" -> REPEATING
-                else -> COMPLETED
+                else -> NOTHING
             }
         }
     }
