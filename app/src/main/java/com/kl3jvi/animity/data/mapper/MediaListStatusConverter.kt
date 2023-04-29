@@ -12,7 +12,6 @@ fun ApolloResponse<SaveMediaMutation.Data>.convert(): ChangedMediaResponse {
     )
 }
 
-
 enum class MediaStatusAnimity {
     COMPLETED,
     WATCHING,

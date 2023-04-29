@@ -18,6 +18,7 @@ interface DetailsRepository {
     ): Flow<List<EpisodeModel>>
 
     fun changeAnimeStatus(
-        mediaId: Int, status: MediaListStatus
+        mediaId: Int,
+        status: MediaListStatus
     ): Flow<ChangedMediaResponse>
 }

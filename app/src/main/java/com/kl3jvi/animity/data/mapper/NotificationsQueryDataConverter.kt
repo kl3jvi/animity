@@ -49,67 +49,113 @@ fun NotificationsQuery.Data.convert(): List<Notification> {
 }
 
 private fun NotificationsQuery.OnThreadCommentReplyNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.OnThreadCommentMentionNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.OnActivityMentionNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.OnActivityReplyNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.OnAiringNotification.toNotification() = Notification(
-    id = this.id, episode = this.episode, contexts = this.contexts, media = this.media.convert()
+    id = this.id,
+    episode = this.episode,
+    contexts = this.contexts,
+    media = this.media.convert()
 )
 
 private fun NotificationsQuery.OnFollowingNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.OnActivityLikeNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = Notification(
-    id = this.id, episode = null, user = User(
-        id = this.user?.id ?: 0, name = this.user?.name.orEmpty(), avatar = UserAvatar(
-            this.user?.avatar?.large.orEmpty(), this.user?.avatar?.medium.orEmpty()
+    id = this.id,
+    episode = null,
+    user = User(
+        id = this.user?.id ?: 0,
+        name = this.user?.name.orEmpty(),
+        avatar = UserAvatar(
+            this.user?.avatar?.large.orEmpty(),
+            this.user?.avatar?.medium.orEmpty()
         )
-    ), contexts = listOf(this.context)
+    ),
+    contexts = listOf(this.context)
 )
 
 private fun NotificationsQuery.Media?.convert(): AniListMedia {
-    return AniListMedia(idAniList = this?.homeMedia?.id ?: 0,
+    return AniListMedia(
+        idAniList = this?.homeMedia?.id ?: 0,
         idMal = this?.homeMedia?.idMal,
         title = MediaTitle(userPreferred = this?.homeMedia?.title?.userPreferred.orEmpty()),
         type = this?.homeMedia?.type,
@@ -136,5 +182,6 @@ private fun NotificationsQuery.Media?.convert(): AniListMedia {
         bannerImage = this?.homeMedia?.bannerImage.orEmpty(),
         genres = this?.homeMedia?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: emptyList(),
         averageScore = this?.homeMedia?.averageScore ?: 0,
-        favourites = this?.homeMedia?.favourites ?: 0)
+        favourites = this?.homeMedia?.favourites ?: 0
+    )
 }

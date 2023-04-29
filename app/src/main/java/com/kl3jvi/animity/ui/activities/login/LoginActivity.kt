@@ -163,7 +163,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
         val aniListSecret = Secrets.aniListSecret
         val redirectUri = Secrets.redirectUri
 
-
         const val AUTH_GRANT_TYPE = "authorization_code"
         const val SIGNUP_URL = "https://anilist.co/signup"
         const val TERMS_AND_PRIVACY_LINK = "https://anilist.co/terms"

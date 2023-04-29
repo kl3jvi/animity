@@ -54,10 +54,12 @@ class Analytics @Inject constructor(
      */
     fun logCurrentScreen(screenName: String) {
         val screenDetails = mapOf(FirebaseAnalytics.Param.SCREEN_NAME to screenName)
-        if (BuildConfig.BUILD_TYPE == "release") logEvent(
-            FirebaseAnalytics.Event.SCREEN_VIEW,
-            screenDetails
-        )
+        if (BuildConfig.BUILD_TYPE == "release") {
+            logEvent(
+                FirebaseAnalytics.Event.SCREEN_VIEW,
+                screenDetails
+            )
+        }
     }
 
     /**
@@ -84,7 +86,6 @@ class Analytics @Inject constructor(
 
 private fun FirebaseAnalytics.setUserPropertyRelease(name: String, value: String?) {
     if (BuildConfig.BUILD_TYPE == "release") setUserProperty(name, value)
-
 }
 
 private fun FirebaseAnalytics.logReleaseEvent(

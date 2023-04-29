@@ -3,7 +3,6 @@ package com.kl3jvi.animity.data.network.anilist_service
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.AnimeListCollectionQuery
-import com.kl3jvi.animity.AnimeListEntryMutation
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.NotificationsQuery

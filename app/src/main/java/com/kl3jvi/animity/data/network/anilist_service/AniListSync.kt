@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
-import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery

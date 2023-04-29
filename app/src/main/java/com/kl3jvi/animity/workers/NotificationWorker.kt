@@ -41,7 +41,7 @@ class NotificationWorker @AssistedInject constructor(
                 ?.convert()
 
             val notifications = notificationData?.firstOrNull() ?: Notification()
-            Log.e("notification work",notifications.getFormattedNotification())
+            Log.e("notification work", notifications.getFormattedNotification())
             if (!isNotificationIdStored(notifications.id)) {
                 Log.e(TAG, "Notifications received: $notifications")
                 showNotification(notifications)

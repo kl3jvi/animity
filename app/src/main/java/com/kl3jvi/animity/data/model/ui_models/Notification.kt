@@ -23,8 +23,9 @@ data class Notification(
         return if (user != null) {
             "${user.name}${contexts?.first().orEmpty()}"
         } else {
-            if (contexts?.size == 1) contexts.first().orEmpty()
-            else {
+            if (contexts?.size == 1) {
+                contexts.first().orEmpty()
+            } else {
                 val contextList = contexts?.toMutableList()
                 contextList?.add(1, episode.toString())
                 contextList?.add(3, media.title.userPreferred)
@@ -37,4 +38,3 @@ data class Notification(
         return user?.avatar?.large ?: media.coverImage.large
     }
 }
-

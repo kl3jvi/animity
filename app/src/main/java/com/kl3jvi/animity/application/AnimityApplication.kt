@@ -67,7 +67,6 @@ class AnimityApplication : Application(), Configuration.Provider {
         }
     }
 
-
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -90,7 +89,6 @@ class AnimityApplication : Application(), Configuration.Provider {
         .setWorkerFactory(workerFactory)
         .setMinimumLoggingLevel(Log.DEBUG)
         .build()
-
 
     companion object {
         const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"

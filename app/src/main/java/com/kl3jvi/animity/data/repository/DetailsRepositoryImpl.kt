@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.repository
 
-import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
@@ -69,7 +68,6 @@ class DetailsRepositoryImpl @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
-
     override fun changeAnimeStatus(mediaId: Int, status: MediaListStatus) = flow {
         emit(aniListGraphQlClient.markAnimeStatus(mediaId, status).convert())
     }
@@ -109,8 +107,4 @@ class DetailsRepositoryImpl @Inject constructor(
 
     private fun getEpisodesPercentage(malId: Int) = episodeDao.getEpisodesByAnime(malId = malId)
         .catch { emit(emptyList()) }
-
-
 }
-
-

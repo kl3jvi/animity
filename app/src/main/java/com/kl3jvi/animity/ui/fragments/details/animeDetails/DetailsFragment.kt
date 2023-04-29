@@ -363,5 +363,3 @@ private fun String.removeSource(): String {
     text = text.replace("\n$", "")
     return text
 }
-
-

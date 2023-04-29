@@ -9,7 +9,6 @@ internal object Secrets {
     private external fun getRedirectUri(): ByteArray?
     private external fun getOneSignalKey(): ByteArray?
 
-
     val aniListId: String by lazy {
         decryptXOR(getAniListId() ?: ByteArray(0))
     }

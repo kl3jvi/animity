@@ -59,7 +59,6 @@ fun ExpandableTextView.setHtmlText(description: String) {
     }
 }
 
-
 fun TextView.setMarkdownText(string: String) {
     Markwon.create(this.context).setMarkdown(this, string)
 }
