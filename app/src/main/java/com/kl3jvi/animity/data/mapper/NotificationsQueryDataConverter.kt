@@ -25,6 +25,18 @@ fun NotificationsQuery.Data.convert(): List<Notification> {
 
             notification?.onActivityMessageNotification != null ->
                 listOfNotifications.add(notification.onActivityMessageNotification.toNotification())
+
+//            notification?.onActivityMentionNotification != null ->
+//                listOfNotifications.add(notification.onActivityMentionNotification.toNotification())
+//
+//            notification?.onActivityReplyNotification != null ->
+//                listOfNotifications.add(notification.onActivityReplyNotification.toNotification())
+//
+//            notification?.onThreadCommentMentionNotification != null ->
+//                listOfNotifications.add(notification.onThreadCommentMentionNotification.toNotification())
+//
+//            notification?.onThreadCommentReplyNotification != null ->
+//                listOfNotifications.add(notification.onThreadCommentReplyNotification.toNotification())
         }
     }
     return listOfNotifications

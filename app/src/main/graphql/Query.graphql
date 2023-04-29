@@ -338,13 +338,13 @@ fragment HomeMedia on Media {
 }
 
 query Notifications($page: Int) {
-    page:Page (page: $page, perPage: 20) {
-        notifications(type_in: AIRING, resetNotificationCount: false) {
-            ... on FollowingNotification{
-                context,
-                createdAt,
-                id,
-                type,
+    page: Page(page: $page, perPage: 20) {
+        notifications(resetNotificationCount: false) {
+            ... on FollowingNotification {
+                context
+                createdAt
+                id
+                type
                 user {
                     id
                     name
@@ -352,23 +352,23 @@ query Notifications($page: Int) {
                         large
                         medium
                     }
-                },
-                userId,
+                }
+                userId
             }
-
             ... on AiringNotification {
-                id,
-                episode,
-                contexts,
-                media {...HomeMedia}
+                id
+                episode
+                contexts
+                media {
+                    ...HomeMedia
+                }
                 type
             }
-
-            ... on ActivityLikeNotification{
-                context,
-                createdAt,
-                id,
-                type,
+            ... on ActivityLikeNotification {
+                context
+                createdAt
+                id
+                type
                 user {
                     id
                     name
@@ -376,15 +376,14 @@ query Notifications($page: Int) {
                         large
                         medium
                     }
-                },
-                userId,
+                }
+                userId
             }
-
-            ... on ActivityMessageNotification{
-                context,
-                createdAt,
-                id,
-                type,
+            ... on ActivityMessageNotification {
+                context
+                createdAt
+                id
+                type
                 user {
                     id
                     name
@@ -392,13 +391,73 @@ query Notifications($page: Int) {
                         large
                         medium
                     }
-                },
-                userId,
+                }
+                userId
             }
-
+            ... on ActivityMentionNotification {
+                context
+                createdAt
+                id
+                type
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                }
+                userId
+            }
+            ... on ActivityReplyNotification {
+                context
+                createdAt
+                id
+                type
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                }
+                userId
+            }
+            ... on ThreadCommentMentionNotification {
+                context
+                createdAt
+                id
+                type
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                }
+                userId
+            }
+            ... on ThreadCommentReplyNotification {
+                context
+                createdAt
+                id
+                type
+                user {
+                    id
+                    name
+                    avatar {
+                        large
+                        medium
+                    }
+                }
+                userId
+            }
         }
     }
 }
+
 
 mutation SaveMediaMutation ($id: Int!, $status: MediaListStatus!) {
     saveMedia : SaveMediaListEntry (
