@@ -238,6 +238,18 @@ mutation ToggleFavouriteMutation($animeId: Int) {
     }
 }
 
+mutation MarkEpisodeWatched($mediaId: Int!, $episodeNumber: Int!) {
+    markWatched:SaveMediaListEntry(
+        mediaId: $mediaId,
+        progress: $episodeNumber,
+        status: CURRENT
+    ) {
+        id
+        status
+        progress
+    }
+}
+
 query HomeDataQuery {
     trendingAnime: Page(page: 1, perPage: 50) {
         media(type: ANIME, status:RELEASING sort: [TRENDING_DESC], isAdult: false) {

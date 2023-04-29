@@ -48,13 +48,22 @@ class AnimityApplication : Application(), Configuration.Provider {
             .setRequiresBatteryNotLow(false)
             .build()
 
-        val work: PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES).setConstraints(
-                constraints
-            ).build()
+        // Check if there is an existing periodic work request with the specified tag
+        val workInfos = WorkManager.getInstance(this).getWorkInfosByTag(TAG_PERIODIC_WORK_REQUEST)
+        val hasExistingWorkRequest = workInfos.get().isNotEmpty()
 
-        WorkManager.getInstance(this).enqueue(work)
+        // Schedule a new periodic work request only if there is no existing one
+        if (!hasExistingWorkRequest) {
+            val work: PeriodicWorkRequest =
+                PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+                    .setConstraints(constraints)
+                    .addTag(TAG_PERIODIC_WORK_REQUEST)
+                    .build()
+
+            WorkManager.getInstance(this).enqueue(work)
+        }
     }
+
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -79,8 +88,10 @@ class AnimityApplication : Application(), Configuration.Provider {
         .setMinimumLoggingLevel(Log.DEBUG)
         .build()
 
+
     companion object {
         const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
         const val ONESIGNAL_APP_ID = "f8d936f4-2d9f-4c53-9f85-e2d3789d9174"
+        const val TAG_PERIODIC_WORK_REQUEST = "periodic_work_request"
     }
 }
