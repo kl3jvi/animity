@@ -47,7 +47,7 @@
                     android:layout_gravity="left"
                     android:foreground="?android:attr/selectableItemBackgroundBorderless"
                     android:scaleType="centerCrop"
-                    app:image="@{notification.media.coverImage.large}"
+                    app:image="@{notification.notificationImage}"
                     tools:ignore="RtlHardcoded" />
             </androidx.cardview.widget.CardView>
 
