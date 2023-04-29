@@ -15,6 +15,8 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.secrets.LibraryInitializer
+import com.kl3jvi.animity.data.secrets.Secrets
 import com.kl3jvi.animity.workers.NotificationWorker
 import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
@@ -31,9 +33,10 @@ class AnimityApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        LibraryInitializer.initialize()
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
         OneSignal.initWithContext(this)
-        OneSignal.setAppId(ONESIGNAL_APP_ID)
+        OneSignal.setAppId(Secrets.oneSignalKey)
         createNotificationChannel()
         setupNotificationWorker()
 

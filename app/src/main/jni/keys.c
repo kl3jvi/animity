@@ -22,6 +22,13 @@ static const unsigned char redirect_uri_ciphertext[] = {0x6C, 0x6F, 0x67, 0x69, 
                                                         0x2F, 0x61, 0x6E, 0x69, 0x6D, 0x69,
                                                         0x74, 0x79};
 
+static const unsigned char onesignal_key_ciphertext[] = {0x63, 0x61, 0x34, 0x66, 0x30, 0x65, 0x63,
+                                                         0x34, 0x2D, 0x32, 0x64, 0x39, 0x66, 0x2D,
+                                                         0x34, 0x63, 0x35, 0x33, 0x2D, 0x39, 0x66,
+                                                         0x38, 0x35, 0x2D, 0x65, 0x32, 0x64, 0x33,
+                                                         0x37, 0x38, 0x39, 0x64, 0x39, 0x31, 0x37,
+                                                         0x34};
+
 jbyteArray xor_cipher(JNIEnv *env, const jbyte *input, int input_len, int key_len) {
     jbyteArray result = (*env)->NewByteArray(env, input_len);
 
@@ -58,3 +65,10 @@ Java_com_kl3jvi_animity_data_secrets_Secrets_getRedirectUri(JNIEnv *env, jobject
     return xor_cipher(env, (const jbyte *) redirect_uri_ciphertext, input_len, key_len);
 }
 
+
+JNIEXPORT jbyteArray JNICALL
+Java_com_kl3jvi_animity_data_secrets_Secrets_getOneSignalKey(JNIEnv *env, jobject thiz) {
+    int input_len = sizeof(onesignal_key_ciphertext) / sizeof(onesignal_key_ciphertext[0]);
+    int key_len = strlen(key);
+    return xor_cipher(env, (const jbyte *) onesignal_key_ciphertext, input_len, key_len);
+}

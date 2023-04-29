@@ -287,6 +287,9 @@ dependencies {
 
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
+    implementation "androidx.startup:startup-runtime:1.1.1"
+
+
     testImplementation 'app.cash.turbine:turbine:0.12.1'
     testImplementation "junit:junit:4.13.2"
     testImplementation "androidx.test:core:1.5.0"

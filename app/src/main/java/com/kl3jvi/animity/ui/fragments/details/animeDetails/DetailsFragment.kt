@@ -104,7 +104,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun fetchAnimeInfo() {
         animeDetails.let { info ->
             binding?.apply {
-                animeInfoLayout.synopsisExpand.setHtmlText(info.description)
+                animeInfoLayout.synopsisExpand
+                    .setHtmlText(info.description.removeSource())
                 releaseDate.text = info.startDate?.getDate()
                 status.text = info.status?.name
                 type.text = info.type?.rawValue
@@ -354,4 +355,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding = null
     }
 }
+
+private fun String.removeSource(): String {
+    val regex = Regex("\\(Source:.*\\)")
+    var text = this
+    text = regex.replace(text, "").trim()
+    text = text.replace("\n$", "")
+    return text
+}
+
 

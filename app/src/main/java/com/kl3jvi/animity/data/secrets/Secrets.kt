@@ -3,13 +3,12 @@ package com.kl3jvi.animity.data.secrets
 import com.kl3jvi.animity.BuildConfig
 
 internal object Secrets {
-    init {
-        System.loadLibrary("keys")
-    }
 
     private external fun getAniListId(): ByteArray?
     private external fun getAniListSecret(): ByteArray?
     private external fun getRedirectUri(): ByteArray?
+    private external fun getOneSignalKey(): ByteArray?
+
 
     val aniListId: String by lazy {
         decryptXOR(getAniListId() ?: ByteArray(0))
@@ -21,6 +20,10 @@ internal object Secrets {
 
     val redirectUri: String by lazy {
         decryptXOR(getRedirectUri() ?: ByteArray(0))
+    }
+
+    val oneSignalKey: String by lazy {
+        decryptXOR(getOneSignalKey() ?: ByteArray(0))
     }
 }
 

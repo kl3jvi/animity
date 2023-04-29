@@ -29,6 +29,16 @@
                 tools:node="remove" />
         </provider>
 
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.kl3jvi.animity.data.secrets.LibraryInitializer"
+                android:value="@string/app_name" />
+        </provider>
+
         <activity
             android:name=".ui.activities.login.LoginActivity"
             android:exported="true"
