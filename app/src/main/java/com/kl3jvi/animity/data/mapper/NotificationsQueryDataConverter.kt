@@ -9,43 +9,48 @@ import com.kl3jvi.animity.data.model.ui_models.MediaTitle
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.data.model.ui_models.UserAvatar
+import com.kl3jvi.animity.data.paging.PagingDataItem
 
-inline fun <T, R : Any> Iterable<T>.flatMapNotNull(transform: (T) -> R?): List<R> {
-    return flatMapTo(mutableListOf()) { transform(it)?.let { listOf(it) } ?: emptyList() }
-}
-
-fun NotificationsQuery.Data.convert(): List<Notification> {
-    val listOfNotifications = mutableListOf<Notification>()
+fun NotificationsQuery.Data.convert(): List<PagingDataItem> {
+    val notificationsByType = mutableMapOf<String, MutableList<Notification>>()
     page?.notifications?.forEach { notification ->
-        when {
-            notification?.onAiringNotification != null -> listOfNotifications.add(notification.onAiringNotification.toNotification())
+        val type = when {
+            notification?.onAiringNotification != null -> "Airing"
+            notification?.onFollowingNotification != null -> "Following"
+            notification?.onActivityLikeNotification != null -> "ActivityLike"
+            notification?.onActivityMessageNotification != null -> "ActivityMessage"
+            notification?.onActivityMentionNotification != null -> "ActivityMention"
+            notification?.onActivityReplyNotification != null -> "ActivityReply"
+            notification?.onThreadCommentMentionNotification != null -> "ThreadCommentMention"
+            notification?.onThreadCommentReplyNotification != null -> "ThreadCommentReply"
+            else -> "Unknown"
+        }
+        val notificationList = notificationsByType.getOrPut(type) { mutableListOf() }
+        notificationList.add(
+            when (type) {
+                "Airing" -> notification?.onAiringNotification!!.toNotification()
+                "Following" -> notification?.onFollowingNotification!!.toNotification()
+                "ActivityLike" -> notification?.onActivityLikeNotification!!.toNotification()
+                "ActivityMessage" -> notification?.onActivityMessageNotification!!.toNotification()
+                "ActivityMention" -> notification?.onActivityMentionNotification!!.toNotification()
+                "ActivityReply" -> notification?.onActivityReplyNotification!!.toNotification()
+                "ThreadCommentMention" -> notification?.onThreadCommentMentionNotification!!.toNotification()
+                "ThreadCommentReply" -> notification?.onThreadCommentReplyNotification!!.toNotification()
+                else -> throw IllegalStateException("Unknown notification type: $type")
+            }
+        )
+    }
 
-            notification?.onFollowingNotification != null -> listOfNotifications.add(notification.onFollowingNotification.toNotification())
+    val items = mutableListOf<PagingDataItem>()
 
-            notification?.onActivityLikeNotification != null -> listOfNotifications.add(notification.onActivityLikeNotification.toNotification())
-
-            notification?.onActivityMessageNotification != null -> listOfNotifications.add(
-                notification.onActivityMessageNotification.toNotification()
-            )
-
-            notification?.onActivityMentionNotification != null -> listOfNotifications.add(
-                notification.onActivityMentionNotification.toNotification()
-            )
-
-            notification?.onActivityReplyNotification != null -> listOfNotifications.add(
-                notification.onActivityReplyNotification.toNotification()
-            )
-
-            notification?.onThreadCommentMentionNotification != null -> listOfNotifications.add(
-                notification.onThreadCommentMentionNotification.toNotification()
-            )
-
-            notification?.onThreadCommentReplyNotification != null -> listOfNotifications.add(
-                notification.onThreadCommentReplyNotification.toNotification()
-            )
+    notificationsByType.forEach { (type, notificationList) ->
+        items.add(PagingDataItem.HeaderItem(type))
+        notificationList.forEach { notification ->
+            items.add(PagingDataItem.NotificationItem(notification))
         }
     }
-    return listOfNotifications
+
+    return items
 }
 
 private fun NotificationsQuery.OnThreadCommentReplyNotification.toNotification() = Notification(

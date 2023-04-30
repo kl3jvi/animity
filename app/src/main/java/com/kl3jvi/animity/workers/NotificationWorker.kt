@@ -15,7 +15,6 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.ui.activities.main.MainActivity
@@ -36,10 +35,14 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         try {
-            val notificationData = aniListGraphQlClient.getNotifications(1)
-                .data
-                ?.convert()
+//            val notificationData = aniListGraphQlClient.getNotifications(1)
+//                .data
+//                ?.convert()
+//                ?.map {
+//                    it
+//                }
 
+            val notificationData = listOf<Notification>()
             val notifications = notificationData?.firstOrNull() ?: Notification()
             Log.e("notification work", notifications.getFormattedNotification())
             if (!isNotificationIdStored(notifications.id)) {

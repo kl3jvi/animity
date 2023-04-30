@@ -92,7 +92,5 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
         for (view in viewsToUpdate) {
             view?.isVisible = list.isEmpty()
         }
-
-        binding?.progress?.isVisible = binding?.notificationsRv?.isVisible?.not() == false
     }
 }

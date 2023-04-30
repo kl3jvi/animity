@@ -6,6 +6,7 @@ import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.NotificationsQuery
+import com.kl3jvi.animity.SaveMediaListEntryMutation
 import com.kl3jvi.animity.SaveMediaMutation
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.SessionQuery
@@ -55,7 +56,11 @@ class AniListGraphQlClient @Inject constructor(
     override suspend fun getSessionForUser() = apolloClient.query(SessionQuery()).execute()
 
     override suspend fun getUserData(id: Int?) =
-        apolloClient.query(UserQuery(Optional.Present(id))).execute()
+        apolloClient.query(
+            UserQuery(
+                Optional.Present(id)
+            )
+        ).execute()
 
     override suspend fun getFavoriteAnimes(
         userId: Int?,
@@ -82,6 +87,17 @@ class AniListGraphQlClient @Inject constructor(
             )
         ).execute()
 
-    override suspend fun markAnimeStatus(mediaId: Int, status: MediaListStatus) =
-        apolloClient.mutation(SaveMediaMutation(mediaId, status)).execute()
+    override suspend fun markAnimeStatus(
+        mediaId: Int,
+        status: MediaListStatus
+    ) = apolloClient.mutation(
+        SaveMediaMutation(mediaId, status)
+    ).execute()
+
+    override suspend fun markWatchedEpisode(
+        mediaId: Int,
+        episodesWatched: Int
+    ) = apolloClient.mutation(
+        SaveMediaListEntryMutation(mediaId, episodesWatched)
+    ).execute()
 }

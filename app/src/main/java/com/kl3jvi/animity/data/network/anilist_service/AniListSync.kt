@@ -5,6 +5,7 @@ import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.NotificationsQuery
+import com.kl3jvi.animity.SaveMediaListEntryMutation
 import com.kl3jvi.animity.SaveMediaMutation
 import com.kl3jvi.animity.SearchAnimeQuery
 import com.kl3jvi.animity.SessionQuery
@@ -42,4 +43,9 @@ interface AniListSync {
         mediaId: Int,
         status: MediaListStatus
     ): ApolloResponse<SaveMediaMutation.Data>
+
+    suspend fun markWatchedEpisode(
+        mediaId: Int,
+        episodesWatched: Int
+    ): ApolloResponse<SaveMediaListEntryMutation.Data>
 }
