@@ -15,10 +15,11 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
+import com.kl3jvi.animity.data.paging.PagingDataItem
 import com.kl3jvi.animity.ui.activities.main.MainActivity
-import com.kl3jvi.animity.utils.or1
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,20 +36,18 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
         try {
-//            val notificationData = aniListGraphQlClient.getNotifications(1)
-//                .data
-//                ?.convert()
-//                ?.map {
-//                    it
-//                }
+            val response = aniListGraphQlClient.getNotifications(1).data?.convert()
 
-            val notificationData = listOf<Notification>()
-            val notifications = notificationData?.firstOrNull() ?: Notification()
-            Log.e("notification work", notifications.getFormattedNotification())
-            if (!isNotificationIdStored(notifications.id)) {
-                Log.e(TAG, "Notifications received: $notifications")
-                showNotification(notifications)
-                storeNotificationId(notifications.id)
+            val latestNotification = response?.flatMap {
+                when (it) {
+                    is PagingDataItem.NotificationItem -> listOf(it.notification)
+                    else -> emptyList()
+                }
+            }?.maxByOrNull { it.id ?: -1 }
+            if (latestNotification != null && !isNotificationIdStored(latestNotification.id)) {
+                Log.e(TAG, "Notifications received: $latestNotification")
+                showNotification(latestNotification)
+                storeNotificationId(latestNotification.id)
             }
             Result.success()
         } catch (e: Exception) {
@@ -59,7 +58,7 @@ class NotificationWorker @AssistedInject constructor(
     private fun showNotification(notification: Notification) {
         val args = bundleOf(
             "animeDetails" to notification.media,
-            "desiredPosition" to notification.episode.or1()
+            "desiredPosition" to notification.episode
         )
 
         val pendingIntent = NavDeepLinkBuilder(applicationContext)

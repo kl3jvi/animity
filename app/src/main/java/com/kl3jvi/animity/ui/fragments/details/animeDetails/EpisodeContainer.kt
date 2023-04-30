@@ -45,7 +45,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         binding.episodeListRecycler.withModels {
             episodes.forEachIndexed { index, episodeModel ->
                 episodeLarge {
-                    id(index)
+                    id(episodeModel.episodeUrl)
                     clickListener { _ ->
                         requireContext().launchActivity<PlayerActivity> {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
