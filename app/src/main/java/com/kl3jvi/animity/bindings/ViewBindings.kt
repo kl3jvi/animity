@@ -15,6 +15,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.di.GlideApp
+import io.noties.markwon.Markwon
 
 /**
  * A binding adapter that loads an image from a url into an ImageView.
@@ -83,4 +84,9 @@ fun ContentLoadingProgressBar.setProgress(progress: Int) {
     ObjectAnimator.ofInt(this, "progress", progress)
         .setDuration(400)
         .start()
+}
+
+@BindingAdapter("markdown")
+fun TextView.setMarkdownText(string: String) {
+    Markwon.create(this.context).setMarkdown(this, string)
 }

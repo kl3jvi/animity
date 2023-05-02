@@ -167,7 +167,8 @@ class MainActivity : AppCompatActivity() {
             if (destination.id in arrayOf(
                     R.id.navigation_details,
                     R.id.reviewDetailsFragment,
-                    R.id.settingsFragment
+                    R.id.settingsFragment,
+                    R.id.messageFragment
                 )
             ) {
                 hideBottomNavBar()

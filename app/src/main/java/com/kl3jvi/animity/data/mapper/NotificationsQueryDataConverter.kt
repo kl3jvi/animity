@@ -9,6 +9,7 @@ import com.kl3jvi.animity.data.model.ui_models.MediaTitle
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.data.model.ui_models.UserAvatar
+import com.kl3jvi.animity.data.paging.NotificationType
 import com.kl3jvi.animity.data.paging.PagingDataItem
 
 fun NotificationsQuery.Data.convert(): List<PagingDataItem> {
@@ -17,12 +18,14 @@ fun NotificationsQuery.Data.convert(): List<PagingDataItem> {
         val type = when {
             notification?.onAiringNotification != null -> "Airing"
             notification?.onFollowingNotification != null -> "Following"
-            notification?.onActivityLikeNotification != null -> "ActivityLike"
-            notification?.onActivityMessageNotification != null -> "ActivityMessage"
-            notification?.onActivityMentionNotification != null -> "ActivityMention"
-            notification?.onActivityReplyNotification != null -> "ActivityReply"
-            notification?.onThreadCommentMentionNotification != null -> "ThreadCommentMention"
-            notification?.onThreadCommentReplyNotification != null -> "ThreadCommentReply"
+            notification?.onActivityLikeNotification != null ||
+                notification?.onActivityMessageNotification != null ||
+                notification?.onActivityMentionNotification != null ||
+                notification?.onActivityReplyNotification != null -> "Activity"
+
+            notification?.onThreadCommentMentionNotification != null ||
+                notification?.onThreadCommentReplyNotification != null -> "Threads"
+
             else -> "Unknown"
         }
         val notificationList = notificationsByType.getOrPut(type) { mutableListOf() }
@@ -30,12 +33,26 @@ fun NotificationsQuery.Data.convert(): List<PagingDataItem> {
             when (type) {
                 "Airing" -> notification?.onAiringNotification!!.toNotification()
                 "Following" -> notification?.onFollowingNotification!!.toNotification()
-                "ActivityLike" -> notification?.onActivityLikeNotification!!.toNotification()
-                "ActivityMessage" -> notification?.onActivityMessageNotification!!.toNotification()
-                "ActivityMention" -> notification?.onActivityMentionNotification!!.toNotification()
-                "ActivityReply" -> notification?.onActivityReplyNotification!!.toNotification()
-                "ThreadCommentMention" -> notification?.onThreadCommentMentionNotification!!.toNotification()
-                "ThreadCommentReply" -> notification?.onThreadCommentReplyNotification!!.toNotification()
+                "Activity" -> {
+                    val activityTypeNotification = when {
+                        notification?.onActivityLikeNotification != null -> notification.onActivityLikeNotification.toNotification()
+                        notification?.onActivityMessageNotification != null -> notification.onActivityMessageNotification.toNotification()
+                        notification?.onActivityMentionNotification != null -> notification.onActivityMentionNotification.toNotification()
+                        notification?.onActivityReplyNotification != null -> notification.onActivityReplyNotification.toNotification()
+                        else -> Notification(type = NotificationType.Unknown)
+                    }
+                    activityTypeNotification
+                }
+
+                "Threads" -> {
+                    val threadTypeNotification = when {
+                        notification?.onThreadCommentMentionNotification != null -> notification.onThreadCommentMentionNotification.toNotification()
+                        notification?.onThreadCommentReplyNotification != null -> notification.onThreadCommentReplyNotification.toNotification()
+                        else -> Notification(type = NotificationType.Unknown)
+                    }
+                    threadTypeNotification
+                }
+
                 else -> throw IllegalStateException("Unknown notification type: $type")
             }
         )
@@ -64,7 +81,8 @@ private fun NotificationsQuery.OnThreadCommentReplyNotification.toNotification()
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Threads
 )
 
 private fun NotificationsQuery.OnThreadCommentMentionNotification.toNotification() = Notification(
@@ -78,7 +96,8 @@ private fun NotificationsQuery.OnThreadCommentMentionNotification.toNotification
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Threads
 )
 
 private fun NotificationsQuery.OnActivityMentionNotification.toNotification() = Notification(
@@ -92,7 +111,8 @@ private fun NotificationsQuery.OnActivityMentionNotification.toNotification() = 
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Activity(userId)
 )
 
 private fun NotificationsQuery.OnActivityReplyNotification.toNotification() = Notification(
@@ -106,14 +126,16 @@ private fun NotificationsQuery.OnActivityReplyNotification.toNotification() = No
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Activity(userId)
 )
 
 private fun NotificationsQuery.OnAiringNotification.toNotification() = Notification(
     id = this.id,
     episode = this.episode,
     contexts = this.contexts,
-    media = this.media.convert()
+    media = this.media.convert(),
+    type = NotificationType.Airing
 )
 
 private fun NotificationsQuery.OnFollowingNotification.toNotification() = Notification(
@@ -127,7 +149,8 @@ private fun NotificationsQuery.OnFollowingNotification.toNotification() = Notifi
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Following(this.userId)
 )
 
 private fun NotificationsQuery.OnActivityLikeNotification.toNotification() = Notification(
@@ -141,7 +164,8 @@ private fun NotificationsQuery.OnActivityLikeNotification.toNotification() = Not
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Activity(userId)
 )
 
 private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = Notification(
@@ -155,7 +179,8 @@ private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = 
             this.user?.avatar?.medium.orEmpty()
         )
     ),
-    contexts = listOf(this.context)
+    contexts = listOf(this.context),
+    type = NotificationType.Activity(userId)
 )
 
 private fun NotificationsQuery.Media?.convert(): AniListMedia {

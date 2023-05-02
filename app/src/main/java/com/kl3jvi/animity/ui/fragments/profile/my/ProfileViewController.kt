@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.fragments.profile
+package com.kl3jvi.animity.ui.fragments.profile.my
 
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel

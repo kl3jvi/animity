@@ -365,6 +365,38 @@ query Notifications($page: Int) {
                 type
             }
             ... on ActivityLikeNotification {
+                activity {
+                    ... on ListActivity {
+                        id
+                        type
+                        createdAt
+                        status
+                        progress
+                        media {
+                            ...HomeMedia
+                        }
+                    }
+                    ... on MessageActivity {
+                        id
+                        type
+                        createdAt
+                        message
+                        recipient {
+                            id
+                            name
+                            avatar {
+                                large
+                                medium
+                            }
+                        }
+                    }
+                    ... on TextActivity {
+                        id
+                        type
+                        createdAt
+                        text
+                    }
+                }
                 context
                 createdAt
                 id

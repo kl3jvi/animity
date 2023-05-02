@@ -1,21 +1,23 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
+import com.kl3jvi.animity.GetMessagesQuery
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.NotificationsQuery
 import com.kl3jvi.animity.SaveMediaListEntryMutation
 import com.kl3jvi.animity.SaveMediaMutation
 import com.kl3jvi.animity.SearchAnimeQuery
+import com.kl3jvi.animity.SendMessageMutation
 import com.kl3jvi.animity.SessionQuery
 import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.TrendingMediaQuery
 import com.kl3jvi.animity.UserQuery
 import com.kl3jvi.animity.type.MediaListStatus
 import javax.inject.Inject
-
 class AniListGraphQlClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : AniListSync {
@@ -25,7 +27,7 @@ class AniListGraphQlClient @Inject constructor(
             HomeDataQuery()
         ).execute()
 
-    override suspend fun getProfileData(userId: Int?) =
+    override suspend fun getUserDataById(userId: Int?) =
         apolloClient.query(
             UserQuery(Optional.presentIfNotNull(userId))
         ).execute()
@@ -99,5 +101,23 @@ class AniListGraphQlClient @Inject constructor(
         episodesWatched: Int
     ) = apolloClient.mutation(
         SaveMediaListEntryMutation(mediaId, episodesWatched)
+    ).execute()
+
+    override suspend fun sendMessage(
+        recipientId: Int,
+        message: String,
+        parentId: Int?
+    ): ApolloResponse<SendMessageMutation.Data> {
+        val sendMessageMutation = SendMessageMutation(
+            recipientId,
+            message,
+            Optional.presentIfNotNull(parentId),
+            parentId != null
+        )
+        return apolloClient.mutation(sendMessageMutation).execute()
+    }
+
+    override suspend fun getMessages(recipientId: Int) = apolloClient.query(
+        GetMessagesQuery(recipientId)
     ).execute()
 }

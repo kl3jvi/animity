@@ -20,7 +20,7 @@ class ProfileRepositoryImpl @Inject constructor(
 ) : ProfileRepository {
 
     override fun getProfileData(userId: Int?) = flow {
-        emit(aniListGraphQlClient.getProfileData(userId))
+        emit(aniListGraphQlClient.getUserDataById(userId))
     }.mapNotNull(ApolloResponse<UserQuery.Data>::convert)
         .combine(getProfileAnimes(userId)) { userData, profileRow ->
             ProfileData(

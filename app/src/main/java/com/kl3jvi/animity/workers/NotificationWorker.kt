@@ -58,7 +58,11 @@ class NotificationWorker @AssistedInject constructor(
     private fun showNotification(notification: Notification) {
         val args = bundleOf(
             "animeDetails" to notification.media,
-            "desiredPosition" to notification.episode
+            if (notification.episode != null) {
+                "desiredPosition" to notification.episode
+            } else {
+                "desiredPosition" to -1
+            }
         )
 
         val pendingIntent = NavDeepLinkBuilder(applicationContext)

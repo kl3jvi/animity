@@ -31,7 +31,21 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_home_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_home_to_theirProfile"
+            app:destination="@id/theirProfile"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_home_to_messageFragment"
+            app:destination="@id/messageFragment" />
 
     </fragment>
 
@@ -85,7 +99,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.kl3jvi.animity.ui.fragments.profile.ProfileFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.profile.my.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile">
         <action
@@ -130,5 +144,23 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/theirProfile"
+        android:name="com.kl3jvi.animity.ui.fragments.profile.their.TheirProfile"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_their_profile">
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.MessageFragment"
+        android:label="@string/message"
+        tools:layout="@layout/fragment_message">
+        <argument
+            android:name="userId"
+            app:argType="integer" />
     </fragment>
 </navigation>

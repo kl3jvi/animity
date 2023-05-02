@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.paging.NotificationType
 import com.kl3jvi.animity.databinding.NotificationsBottomSheetBinding
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
 import com.kl3jvi.animity.utils.collectLatest
@@ -62,12 +63,33 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupNotificationsList() {
-        pagingController = NotificationsController { item ->
-            val directions = HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
-                item?.media ?: AniListMedia(),
-                item?.episode.or1()
-            )
-            findNavController().navigate(directions)
+        pagingController = NotificationsController { item, type ->
+
+            when (type) {
+                NotificationType.Airing -> {
+                    val directions = HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
+                        item?.media ?: AniListMedia(),
+                        item?.episode.or1()
+                    )
+                    findNavController().navigate(directions)
+                }
+
+                is NotificationType.Activity -> {
+                    val directions = HomeFragmentDirections.actionNavigationHomeToMessageFragment(
+                        type.userId
+                    )
+                    findNavController().navigate(directions)
+                }
+
+                is NotificationType.Following -> {
+                    val directions = HomeFragmentDirections
+                        .actionNavigationHomeToTheirProfile(type.userId)
+                    findNavController().navigate(directions)
+                }
+
+                NotificationType.Threads -> {}
+                NotificationType.Unknown -> {}
+            }
         }
 
         binding?.notificationsRv?.setController(pagingController)

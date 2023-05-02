@@ -1,6 +1,9 @@
 package com.kl3jvi.animity.data.model.ui_models
 
+import com.kl3jvi.animity.data.paging.NotificationType
+
 data class Notification(
+    val type: NotificationType,
     val id: Int? = null,
     /**
      * The episode number that just aired

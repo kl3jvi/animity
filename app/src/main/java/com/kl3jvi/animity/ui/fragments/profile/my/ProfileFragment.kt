@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.fragments.profile
+package com.kl3jvi.animity.ui.fragments.profile.my
 
 import android.os.Bundle
 import android.view.View
