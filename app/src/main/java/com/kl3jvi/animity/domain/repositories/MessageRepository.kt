@@ -4,7 +4,7 @@ import com.kl3jvi.animity.data.model.ui_models.Message
 import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {
-    suspend fun getMessages(userId: Int): List<Message>
-    suspend fun sendMessage(recipientId: Int, message: String, parentId: Int?): Message
+    fun getMessages(userId: Int): Flow<List<Message>>
+    fun sendMessage(recipientId: Int, message: String, parentId: Int?): Flow<Message>
     fun getNewMessagesFlow(userId: Int, pollingInterval: Long = 5000L): Flow<List<Message>>
 }

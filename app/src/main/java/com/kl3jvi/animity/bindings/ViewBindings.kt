@@ -80,7 +80,7 @@ fun TextView.setHtml(htmlString: String) {
 }
 
 @BindingAdapter("animatedProgress")
-fun ContentLoadingProgressBar.setProgress(progress: Int) {
+fun ContentLoadingProgressBar.setAnimatedProgress(progress: Int) {
     ObjectAnimator.ofInt(this, "progress", progress)
         .setDuration(400)
         .start()
@@ -88,5 +88,6 @@ fun ContentLoadingProgressBar.setProgress(progress: Int) {
 
 @BindingAdapter("markdown")
 fun TextView.setMarkdownText(string: String) {
-    Markwon.create(this.context).setMarkdown(this, string)
+    text = Markwon.create(this.context)
+        .toMarkdown(string)
 }

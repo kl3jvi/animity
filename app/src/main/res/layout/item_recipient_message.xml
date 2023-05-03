@@ -57,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="56dp"
-                android:gravity="end"
                 android:textSize="16sp"
                 tools:text="ckemi klejvi sample messageeee" />
 

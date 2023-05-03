@@ -16,36 +16,40 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_navigation_home_to_detailsFragment"
+            android:id="@+id/toDetails"
             app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_navigation_home_to_reviewDetailsFragment"
+            android:id="@+id/toReviews"
             app:destination="@id/reviewDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_navigation_home_to_settingsFragment"
+            android:id="@+id/toSettings"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_navigation_home_to_theirProfile"
+            android:id="@+id/toTheirProfile"
             app:destination="@id/theirProfile"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_navigation_home_to_messageFragment"
-            app:destination="@id/messageFragment" />
+            android:id="@+id/toMessage"
+            app:destination="@id/messageFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 
@@ -55,7 +59,7 @@
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites">
         <action
-            android:id="@+id/action_navigation_favorites_to_navigation_details"
+            android:id="@+id/favoriteToDetails"
             app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -69,7 +73,7 @@
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_navigation_explore_to_navigation_details"
+            android:id="@+id/exploreToDetails"
             app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -103,7 +107,7 @@
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile">
         <action
-            android:id="@+id/action_navigation_profile_to_navigation_details"
+            android:id="@+id/profileToDetails"
             app:destination="@id/navigation_details"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -154,7 +158,7 @@
             android:name="userId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_theirProfile_to_navigation_details"
+            android:id="@+id/theirProfileToDetails"
             app:destination="@id/navigation_details" />
     </fragment>
     <fragment
@@ -166,7 +170,7 @@
             android:name="userId"
             app:argType="integer" />
         <action
-            android:id="@+id/action_messageFragment_to_theirProfile"
+            android:id="@+id/messageToTheirProfile"
             app:destination="@id/theirProfile" />
     </fragment>
 </navigation>

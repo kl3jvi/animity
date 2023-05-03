@@ -60,7 +60,8 @@ fun ExpandableTextView.setHtmlText(description: String) {
 }
 
 fun TextView.setMarkdownText(string: String) {
-    Markwon.create(this.context).setMarkdown(this, string)
+    text = Markwon.create(this.context)
+        .toMarkdown(string)
 }
 
 fun Int?.or1() = this ?: 1

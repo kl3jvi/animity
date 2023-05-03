@@ -34,7 +34,7 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: Analytics) 
             id(Uuid.randomUUID().toString())
             animeInfo(media)
             clickListener { view ->
-                HomeFragmentDirections.actionNavigationHomeToReviewDetailsFragment(media)
+                HomeFragmentDirections.toReviews(media)
                     .also { view.navigateSafe(it) }
             }
         }
@@ -47,7 +47,7 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: Analytics): List<CardAn
             .id(Uuid.randomUUID().toString())
             .clickListener { view ->
                 val direction =
-                    HomeFragmentDirections.actionNavigationHomeToDetailsFragment(media, 0)
+                    HomeFragmentDirections.toDetails(media, 0)
                 view.navigateSafe(direction)
 
                 firebaseAnalytics.logEvent(

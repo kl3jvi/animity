@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.repositories.MessageRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
+import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.or1
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -32,12 +33,14 @@ class MessageViewModel @Inject constructor(
             messageList.sortedBy { message ->
                 message.createdAt
             }
-        }.catch { e -> e.printStackTrace() }
+        }.asResult()
         .distinctUntilChanged()
 
     fun sendMessage(recipientId: Int, message: String) {
         viewModelScope.launch(Dispatchers.IO) {
             messageRepository.sendMessage(recipientId, message, parentId)
+                .asResult()
+                .collect()
         }
     }
 }

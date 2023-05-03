@@ -8,6 +8,7 @@
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/messageRv"
         android:layout_width="match_parent"
+        tools:visibility="gone"
         tools:listitem="@layout/item_recipient_message"
         android:layout_height="match_parent"
         android:layout_above="@+id/messageInputLayout" />
@@ -40,4 +41,21 @@
             android:src="@drawable/baseline_send_24" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_above="@+id/messageInputLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:text="Loading messages" />
+
 </RelativeLayout>

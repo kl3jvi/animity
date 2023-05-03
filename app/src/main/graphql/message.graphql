@@ -1,4 +1,8 @@
-mutation SendMessage($recipientId: Int!, $message: String!, $parentId: Int, $hasParentId: Boolean!) {
+mutation SendMessage($recipientId: Int!,
+    $message: String!,
+    $parentId: Int,
+    $hasParentId: Boolean!
+) {
     sent: SaveActivityReply(
         activityId: $parentId,
         text: $message
@@ -42,8 +46,6 @@ mutation SendMessage($recipientId: Int!, $message: String!, $parentId: Int, $has
         }
     }
 }
-
-
 
 query GetMessages($userId: Int!) {
     page: Page {

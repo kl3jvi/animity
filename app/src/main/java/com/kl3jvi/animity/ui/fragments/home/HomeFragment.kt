@@ -51,7 +51,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun handleSettings() = findNavController().nav(
         R.id.navigation_home,
-        HomeFragmentDirections.actionNavigationHomeToSettingsFragment()
+        HomeFragmentDirections.toSettings()
     )
 
     private fun fetchHomeData() {

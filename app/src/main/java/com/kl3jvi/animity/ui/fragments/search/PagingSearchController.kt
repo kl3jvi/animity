@@ -25,7 +25,7 @@ class PagingSearchController(private val firebaseAnalytics: Analytics) :
             try {
                 item?.let {
                     val directions =
-                        SearchFragmentDirections.actionNavigationExploreToNavigationDetails(item, 0)
+                        SearchFragmentDirections.exploreToDetails(item, 0)
                     view.findNavController().navigate(directions)
                     val params = mapOf(
                         "genre" to item.genres.firstOrNull()?.name

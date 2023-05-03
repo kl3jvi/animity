@@ -11,7 +11,7 @@ fun EpoxyController.buildFavorites(data: List<AniListMedia>) {
             id(media.idAniList)
             clickListener { view ->
                 val directions =
-                    FavoritesFragmentDirections.actionNavigationFavoritesToNavigationDetails(
+                    FavoritesFragmentDirections.favoriteToDetails(
                         media,
                         0
                     )

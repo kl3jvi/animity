@@ -67,7 +67,7 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
 
             when (type) {
                 NotificationType.Airing -> {
-                    val directions = HomeFragmentDirections.actionNavigationHomeToDetailsFragment(
+                    val directions = HomeFragmentDirections.toDetails(
                         item?.media ?: AniListMedia(),
                         item?.episode.or1()
                     )
@@ -75,15 +75,12 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
                 }
 
                 is NotificationType.Activity -> {
-                    val directions = HomeFragmentDirections.actionNavigationHomeToMessageFragment(
-                        type.userId
-                    )
+                    val directions = HomeFragmentDirections.toMessage(type.userId)
                     findNavController().navigate(directions)
                 }
 
                 is NotificationType.Following -> {
-                    val directions = HomeFragmentDirections
-                        .actionNavigationHomeToTheirProfile(type.userId)
+                    val directions = HomeFragmentDirections.toTheirProfile(type.userId)
                     findNavController().navigate(directions)
                 }
 

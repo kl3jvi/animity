@@ -1,0 +1,15 @@
+query GetAuthenticatedUserFollowers($userId: Int!) {
+    User(id: $userId) {
+        id
+        name
+        siteUrl
+        avatar {
+            medium
+        }
+        statistics {
+            anime {
+                minutesWatched
+            }
+        }
+    }
+}

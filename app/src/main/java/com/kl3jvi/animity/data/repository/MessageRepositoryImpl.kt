@@ -7,9 +7,8 @@ import com.kl3jvi.animity.domain.repositories.MessageRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
@@ -18,11 +17,11 @@ class MessageRepositoryImpl @Inject constructor(
 ) : MessageRepository {
     private val messageSentFlow = MutableSharedFlow<Unit>()
 
-    override suspend fun sendMessage(
+    override fun sendMessage(
         recipientId: Int,
         message: String,
         parentId: Int?
-    ): Message {
+    ): Flow<Message> = flow {
         val recipientDetails = aniListGraphQlClient.getUserDataById(recipientId).convert()
 
         val sentMessage = aniListGraphQlClient.sendMessage(recipientId, message, parentId).convert(
@@ -34,26 +33,33 @@ class MessageRepositoryImpl @Inject constructor(
 
         // Emit a unit to trigger the flow to re-emit
         messageSentFlow.emit(Unit)
-
-        return sentMessage
+        emit(sentMessage)
     }
 
-    override suspend fun getMessages(userId: Int): List<Message> {
+    override fun getMessages(userId: Int): Flow<List<Message>> = flow {
         val allMessages = aniListGraphQlClient.getMessages(userId)
 
-        return allMessages.convert()
-            .filter { message ->
-                message.recipient.id == userId ||
-                    message.messenger.id == userId
+        emit(
+            allMessages.convert().filter { message ->
+                message.recipient.id == userId || message.messenger.id == userId
             }
+        )
     }
 
     override fun getNewMessagesFlow(
         userId: Int,
         pollingInterval: Long
-    ): Flow<List<Message>> = messageSentFlow
-        .onStart { emit(Unit) } // Emit a unit to trigger the flow to emit immediately
-        .combine(flow { emit(Unit) }.onEach { delay(pollingInterval) }) { _, _ ->
-            getMessages(userId)
-        }
+    ): Flow<List<Message>> =
+        messageSentFlow.onStart { emit(Unit) } // Emit a unit to trigger the flow to emit immediately
+            .flatMapLatest { // Use flatMapLatest to switch to the latest emission
+                flow {
+                    emit(Unit) // Emit a unit to trigger the flow to emit immediately
+                    while (true) {
+                        delay(pollingInterval) // Add delay for polling interval
+                        emit(Unit)
+                    }
+                }
+            }.flatMapLatest { // Use flatMapLatest to switch to the latest emission
+                getMessages(userId)
+            }
 }
