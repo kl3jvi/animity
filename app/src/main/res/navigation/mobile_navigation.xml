@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/notificationBottomSheetFragment">
 
     <!--Global action-->
     <action
@@ -153,6 +153,9 @@
         <argument
             android:name="userId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_theirProfile_to_navigation_details"
+            app:destination="@id/navigation_details" />
     </fragment>
     <fragment
         android:id="@+id/messageFragment"
@@ -162,5 +165,8 @@
         <argument
             android:name="userId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_messageFragment_to_theirProfile"
+            app:destination="@id/theirProfile" />
     </fragment>
 </navigation>

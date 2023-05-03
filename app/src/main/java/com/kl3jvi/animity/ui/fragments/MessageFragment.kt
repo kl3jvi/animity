@@ -16,13 +16,13 @@ import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
+import org.joda.time.LocalDate
 
 @AndroidEntryPoint
 class MessageFragment : Fragment(R.layout.fragment_message) {
     private val viewModel: MessageViewModel by viewModels()
     private var binding: FragmentMessageBinding? = null
     private val args: MessageFragmentArgs by navArgs()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,9 +49,14 @@ class MessageFragment : Fragment(R.layout.fragment_message) {
         collect(viewModel.messageList) { messages ->
             Log.e("Messages", messages.toString())
             binding?.messageRv?.withModels {
-                messages.sortedBy {
-                    it.createdAt
-                }.forEach { message ->
+                val messagesByDate = messages.groupBy {
+                    LocalDate(it.createdAt.toLong() / 86400) // Convert epoch to date and group by date
+                }
+                messagesByDate.forEach { (date, messages) ->
+                    Log.e(date.dayOfWeek.toString(), messages.toString())
+                }
+
+                messages.forEach { message ->
                     if (message.senderUserId == viewModel.myUserId) {
                         senderMessage {
                             id(message.id)

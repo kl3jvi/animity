@@ -18,7 +18,7 @@ fun EpoxyController.buildProfile(
     profileCard {
         id(randomId())
         userData?.userData?.let {
-            backgroundImage(it.bannerImage.ifEmpty { DEFAULT_COVER })
+            backgroundImage(it.bannerImage.ifEmpty(::DEFAULT_COVER))
             userData(it)
         }
     }

@@ -288,6 +288,7 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
     implementation "androidx.startup:startup-runtime:1.1.1"
+    implementation 'net.danlew:android.joda:2.12.5'
 
 
     testImplementation 'app.cash.turbine:turbine:0.12.1'
