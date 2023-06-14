@@ -2,6 +2,7 @@ package com.kl3jvi.animity.data.network.anilist_service
 
 import com.kl3jvi.animity.data.model.auth_models.AniListAuth
 import com.kl3jvi.animity.data.model.auth_models.AuthResponse
+import com.kl3jvi.animity.data.model.auth_models.RefreshTokenRequest
 import javax.inject.Inject
 
 class AuthClient @Inject constructor(
@@ -36,4 +37,22 @@ class AuthClient @Inject constructor(
             )
         }
     }
+
+    override suspend fun refreshToken(
+        clientId: Int,
+        clientSecret: String,
+        refreshToken: String
+    ): Result<AuthResponse> {
+        return runCatching {
+            aniListService.refreshToken(
+                RefreshTokenRequest(
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    refreshToken = refreshToken
+                )
+            )
+        }
+    }
+
+
 }

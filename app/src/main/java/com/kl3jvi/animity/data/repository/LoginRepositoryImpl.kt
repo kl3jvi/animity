@@ -1,5 +1,6 @@
 package com.kl3jvi.animity.data.repository
 
+import com.kl3jvi.animity.data.model.auth_models.AuthResponse
 import com.kl3jvi.animity.data.network.anilist_service.AuthClient
 import com.kl3jvi.animity.domain.repositories.LoginRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,4 +30,13 @@ class LoginRepositoryImpl @Inject constructor(
             )
         )
     }.flowOn(ioDispatcher)
+
+    override suspend fun refreshtoken(
+        clientId: Int,
+        clientSecret: String,
+        refreshToken: String
+    ): Result<AuthResponse> {
+        return authClient.refreshToken(clientId, clientSecret, refreshToken)
+    }
+
 }

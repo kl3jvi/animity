@@ -11,4 +11,10 @@ interface LoginRepository {
         redirectUri: String,
         code: String
     ): Flow<Result<AuthResponse>>
+
+    suspend fun refreshtoken(
+        clientId: Int,
+        clientSecret: String,
+        refreshToken: String
+    ): Result<AuthResponse>
 }
