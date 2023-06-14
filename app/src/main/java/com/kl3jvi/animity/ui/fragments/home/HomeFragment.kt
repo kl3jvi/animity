@@ -56,15 +56,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun fetchHomeData() {
         collect(viewModel.homeDataUiState) { result ->
-            binding?.mainRv?.withModels {
-                when (result) {
-                    is UiResult.Error -> showSnack(
-                        binding?.root,
-                        result.throwable.message ?: "Error occurred"
-                    )
+            when (result) {
+                is UiResult.Error -> showSnack(
+                    binding?.root,
+                    result.throwable.message ?: "Error occurred"
+                )
 
-                    UiResult.Loading -> {}
-                    is UiResult.Success -> {
+                UiResult.Loading -> {}
+                is UiResult.Success -> {
+                    binding?.mainRv?.withModels {
                         buildHome(
                             result.data,
                             viewModel.analytics

@@ -23,7 +23,6 @@ class HeaderInterceptor @Inject constructor(
      * through.
      */
     override fun intercept(chain: Interceptor.Chain): Response {
-
         val originalRequest = chain.request()
 
         val token = localStorage.bearerToken ?: return chain.proceed(originalRequest)
@@ -36,7 +35,6 @@ class HeaderInterceptor @Inject constructor(
             .build()
 
         val response = chain.proceed(newRequest)
-
 
         /* Checking if the response code is 401, if it is, it will get a new access token and refresh
         token and then proceed with the request. */
@@ -55,8 +53,9 @@ class HeaderInterceptor @Inject constructor(
                     )
                 }.getOrDefault(AuthResponse())
 
-                if (newTokenResponse == AuthResponse())
+                if (newTokenResponse == AuthResponse()) {
                     return chain.proceed(originalRequest)
+                }
 
                 localStorage.bearerToken = newTokenResponse.accessToken
                 localStorage.refreshToken = newTokenResponse.refreshToken

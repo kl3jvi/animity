@@ -38,5 +38,4 @@ class LoginRepositoryImpl @Inject constructor(
     ): Result<AuthResponse> {
         return authClient.refreshToken(clientId, clientSecret, refreshToken)
     }
-
 }

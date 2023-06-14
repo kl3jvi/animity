@@ -8,7 +8,6 @@ import com.kl3jvi.animity.data.model.ui_models.ProfileData
 import com.kl3jvi.animity.noAnime
 import com.kl3jvi.animity.profileCard
 import com.kl3jvi.animity.title
-import com.kl3jvi.animity.utils.Constants.Companion.randomId
 import com.kl3jvi.animity.utils.navigateSafe
 
 const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
@@ -16,7 +15,7 @@ fun EpoxyController.buildProfile(
     userData: ProfileData?
 ) {
     profileCard {
-        id(randomId())
+        id(userData?.userData?.id)
         userData?.userData?.let {
             backgroundImage(it.bannerImage.ifEmpty(::DEFAULT_COVER))
             userData(it)
@@ -24,21 +23,21 @@ fun EpoxyController.buildProfile(
     }
     userData?.profileRow?.forEach { profileRow ->
         title {
-            id(randomId())
+            id(profileRow.title)
             title(profileRow.title)
         }
         carousel {
-            id(randomId())
+            id("carousel_${profileRow.title}")
             models(profileRow.anime.modelCardAnimeProfile())
         }
-    } ?: noAnime { id(randomId()) }
+    } ?: noAnime { id("no_anime") }
 }
 
 /* A function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
 fun List<AniListMedia>.modelCardAnimeProfile(): List<CardAnimeBindingModel_> {
     return map { media ->
         CardAnimeBindingModel_()
-            .id(randomId())
+            .id(media.idAniList)
             .clickListener { view ->
                 val direction =
                     ProfileFragmentDirections.profileToDetails(media, 0)

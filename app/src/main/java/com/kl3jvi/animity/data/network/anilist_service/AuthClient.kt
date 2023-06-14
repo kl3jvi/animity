@@ -53,6 +53,4 @@ class AuthClient @Inject constructor(
             )
         }
     }
-
-
 }

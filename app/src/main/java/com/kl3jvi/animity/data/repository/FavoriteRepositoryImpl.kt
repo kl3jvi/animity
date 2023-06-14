@@ -27,6 +27,5 @@ class FavoriteRepositoryImpl @Inject constructor(
         page: Int?
     ) = flow {
         emit(aniListGraphQlClient.getFavoriteAnimes(userId, page))
-    }.mapNotNull(ApolloResponse<FavoritesAnimeQuery.Data>::convert)
-        .flowOn(ioDispatcher)
+    }.mapNotNull(ApolloResponse<FavoritesAnimeQuery.Data>::convert).flowOn(ioDispatcher)
 }

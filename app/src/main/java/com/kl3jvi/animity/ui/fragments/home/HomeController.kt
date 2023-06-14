@@ -2,7 +2,6 @@ package com.kl3jvi.animity.ui.fragments.home
 
 import com.airbnb.epoxy.EpoxyController
 import com.airbnb.epoxy.carousel
-import com.benasher44.uuid.Uuid
 import com.kl3jvi.animity.CardAnimeBindingModel_
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.enums.Title
@@ -17,21 +16,21 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: Analytics) 
         listOf(trendingAnime, popularAnime, movies)
     }.forEachIndexed { index, list ->
         title {
-            id(Uuid.randomUUID().toString())
+            id("title_${Title.values()[index].title}")
             title(Title.values()[index].title)
         }
         carousel {
-            id(Uuid.randomUUID().toString())
+            id("carousel_${Title.values()[index].title}")
             models(list.modelCardAnime(firebaseAnalytics))
         }
     }
     title {
-        id(Uuid.randomUUID().toString())
+        id("title_${Title.values().last().title}")
         title(Title.values().last().title)
     }
     homeData.run(HomeData::review).forEach { media ->
         vertical {
-            id(Uuid.randomUUID().toString())
+            id(media.mediaId)
             animeInfo(media)
             clickListener { view ->
                 HomeFragmentDirections.toReviews(media)
@@ -44,7 +43,7 @@ fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: Analytics) 
 fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: Analytics): List<CardAnimeBindingModel_> {
     return map { media ->
         CardAnimeBindingModel_()
-            .id(Uuid.randomUUID().toString())
+            .id(media.idAniList)
             .clickListener { view ->
                 val direction =
                     HomeFragmentDirections.toDetails(media, 0)

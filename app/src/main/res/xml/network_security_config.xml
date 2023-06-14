@@ -3,6 +3,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">gogoanime.gr</domain>
         <domain includeSubdomains="true">gogoanime.fi</domain>
+        <domain includeSubdomains="true">gogoanime.hu</domain>
         <domain includeSubdomains="true">gogoanime.llc</domain>
         <domain includeSubdomains="true">gogoanime.bid</domain>
         <domain includeSubdomains="true">gogoanime.lu</domain>

@@ -1,6 +1,5 @@
 package com.kl3jvi.animity.data.repository
 
-import androidx.work.*
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.data.mapper.convert
@@ -8,7 +7,9 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
 import com.kl3jvi.animity.domain.repositories.HomeRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 import javax.inject.Singleton
 

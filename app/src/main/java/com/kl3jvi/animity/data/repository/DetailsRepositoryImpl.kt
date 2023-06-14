@@ -47,7 +47,9 @@ class DetailsRepositoryImpl @Inject constructor(
             getListOfEpisodes(episodeUrl, extra),
             getEpisodeTitles(malId),
             getEpisodesPercentage(malId)
-        ) { episodeModels, episodesWithTitle, episodeEntities ->
+        ) { episodeModels,
+            episodesWithTitle,
+            episodeEntities ->
             episodeModels.mapIndexed { index, episodeModel ->
                 if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle?.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title

@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.material.snackbar.Snackbar
-import java.util.UUID
 
 class Constants {
     companion object {
@@ -100,15 +99,6 @@ class Constants {
          */
         fun getNetworkHeader(): Map<String, String> {
             return mapOf("referer" to REFERER, "origin" to ORIGIN, "user-agent" to USER_AGENT)
-        }
-
-        /**
-         * It generates a random UUID.
-         *
-         * @return A random UUID
-         */
-        fun randomId(): String {
-            return UUID.randomUUID().toString()
         }
     }
 }

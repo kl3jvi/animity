@@ -60,14 +60,17 @@ class DetailsViewModel @Inject constructor(
                                 extra = listOf(media.idMal)
                             ).map { episodes ->
                                 // Split the list of episodes into chunks of 50 or less
-                                val episodeChunks = episodes.chunked(50) {
+                                val episodeChunksTitles = episodes.chunked(50) {
                                     val firstEpisodeNumber =
                                         it.first().getEpisodeNumberOnly().toInt()
                                     val lastEpisodeNumber =
                                         it.last().getEpisodeNumberOnly().toInt()
                                     "Episodes $firstEpisodeNumber - $lastEpisodeNumber"
                                 }
-                                EpisodeListUiState.Success(episodes.chunked(50), episodeChunks)
+                                EpisodeListUiState.Success(
+                                    episodeChunks = episodes.chunked(50),
+                                    chunkTitles = episodeChunksTitles
+                                )
                             }
                         }
                     }

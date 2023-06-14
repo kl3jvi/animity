@@ -53,7 +53,7 @@ fun NotificationsQuery.Data.convert(): List<PagingDataItem> {
                     threadTypeNotification
                 }
 
-                else -> throw IllegalStateException("Unknown notification type: $type")
+                else -> Notification(type = NotificationType.Unknown)
             }
         )
     }

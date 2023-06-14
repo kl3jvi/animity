@@ -11,7 +11,6 @@ interface Authenticator {
         code: String
     ): Result<AuthResponse>
 
-
     suspend fun refreshToken(
         clientId: Int,
         clientSecret: String,
