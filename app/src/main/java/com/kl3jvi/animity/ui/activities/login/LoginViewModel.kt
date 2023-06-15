@@ -28,14 +28,15 @@ class LoginViewModel @Inject constructor(
         authorizationToken
     )
 
-    fun saveTokens(authToken: String, refreshToken: String) {
-        userRepository.apply {
-            setBearerToken(authToken)
-            setRefreshToken(refreshToken)
-        }
+    fun saveTokens(
+        authToken: String,
+        refreshToken: String,
+        expiration: Int
+    ) = with(userRepository) {
+        setBearerToken(authToken)
+        setRefreshToken(refreshToken)
+        setExpirationTime(expiration)
     }
 
-    fun getToken(): String? {
-        return userRepository.bearerToken
-    }
+    fun getToken(): String? = userRepository.bearerToken
 }

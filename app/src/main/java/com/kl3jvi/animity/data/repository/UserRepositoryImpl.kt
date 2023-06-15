@@ -32,6 +32,9 @@ class UserRepositoryImpl @Inject constructor(
     override val userId: String?
         get() = storage.aniListUserId
 
+    override val expiration: Int?
+        get() = storage.expiration
+
     override fun setBearerToken(authToken: String?) {
         storage.bearerToken = authToken
     }
@@ -44,11 +47,15 @@ class UserRepositoryImpl @Inject constructor(
         storage.aniListUserId = sync
     }
 
+    override fun setExpirationTime(expiration: Int) {
+        storage.expiration = expiration
+    }
+
     override fun setProvider(provider: String) {
     }
 
-    override fun clearStorage() {
-        storage.clearStorage()
+    override fun clearStorage(triggered: () -> Unit) {
+        storage.clearStorage(triggered)
     }
 
     override fun getSessionForUser() = flow {

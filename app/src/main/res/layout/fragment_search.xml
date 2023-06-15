@@ -55,6 +55,91 @@
         </FrameLayout>
     </FrameLayout>
 
+    <HorizontalScrollView
+        android:id="@+id/sortView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="5dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_title"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#24687B"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_start_date"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#E6977E"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortPopularity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_popularity"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#7E1416"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortAverageScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_avg_score"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#989D60"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortTrending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_trending"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#5B1765"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortFavorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_favorites"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#329669"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sortEpisodes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_by_episode_size"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="#85B14B"
+                app:chipStrokeColor="@color/white"
+                app:chipStrokeWidth="2dp" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
 
     <com.airbnb.epoxy.EpoxyRecyclerView
         android:id="@+id/search_recycler"
@@ -65,10 +150,7 @@
         android:paddingBottom="5dp"
         android:visibility="visible"
         tools:listitem="@layout/item_search_layout"
-        tools:visibility="visible">
-    </com.airbnb.epoxy.EpoxyRecyclerView>
-
-
+        tools:visibility="visible" />
 
 
 </LinearLayout>

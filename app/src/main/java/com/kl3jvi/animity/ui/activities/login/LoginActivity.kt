@@ -106,8 +106,9 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
     override fun AuthResponse.onTokenResponse() {
         val authToken: String? = accessToken
         val refreshToken: String? = refreshToken
-        if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty()) {
-            viewModel.saveTokens(authToken, refreshToken)
+        val expiration: Int? = expiresIn
+        if (!authToken.isNullOrEmpty() && !refreshToken.isNullOrEmpty() && expiration != null) {
+            viewModel.saveTokens(authToken, refreshToken, expiration)
             launchActivity<MainActivity> {
                 val params = mapOf(FirebaseAnalytics.Param.METHOD to "login")
                 firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, params)

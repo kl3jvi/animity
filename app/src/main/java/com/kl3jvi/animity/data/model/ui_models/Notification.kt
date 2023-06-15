@@ -29,10 +29,11 @@ data class Notification(
             if (contexts?.size == 1) {
                 contexts.first().orEmpty()
             } else {
-                val contextList = contexts?.toMutableList()
-                contextList?.add(1, episode.toString())
-                contextList?.add(3, media.title.userPreferred)
-                contextList?.joinToString("") ?: ""
+                val contextList = contexts?.toMutableList() ?: mutableListOf()
+                while (contextList.size < 4) contextList.add("")
+                contextList.add(1, episode.toString())
+                contextList.add(3, media.title.userPreferred)
+                contextList.joinToString("") ?: ""
             }
         }
     }

@@ -7,6 +7,7 @@ import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.paging.SearchAniListPagingSource
 import com.kl3jvi.animity.domain.repositories.SearchRepository
+import com.kl3jvi.animity.ui.fragments.search.SortType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -19,10 +20,13 @@ class SearchRepositoryImpl @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) : SearchRepository {
 
-    override fun fetchAniListSearchData(query: String): Flow<PagingData<AniListMedia>> {
+    override fun fetchAniListSearchData(
+        query: String,
+        sortType: List<SortType>
+    ): Flow<PagingData<AniListMedia>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { SearchAniListPagingSource(apiClient, query) }
+            pagingSourceFactory = { SearchAniListPagingSource(apiClient, query, sortType) }
         ).flow.flowOn(ioDispatcher)
     }
 

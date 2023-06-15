@@ -25,5 +25,5 @@ class ProfileViewModel @Inject constructor(
         .getProfileData(localStorage.aniListUserId?.toInt())
         .mapToUiState(viewModelScope + ioDispatcher)
 
-    fun clearStorage() = userRepository.clearStorage()
+    fun clearStorage(triggered: () -> Unit) = userRepository.clearStorage(triggered)
 }

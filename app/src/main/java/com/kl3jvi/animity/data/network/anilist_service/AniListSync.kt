@@ -15,6 +15,7 @@ import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.TrendingMediaQuery
 import com.kl3jvi.animity.UserQuery
 import com.kl3jvi.animity.type.MediaListStatus
+import com.kl3jvi.animity.type.MediaSort
 
 interface AniListSync {
 
@@ -23,7 +24,8 @@ interface AniListSync {
     suspend fun getAnimeListData(userId: Int?): ApolloResponse<AnimeListCollectionQuery.Data>
     suspend fun fetchSearchAniListData(
         query: String,
-        page: Int
+        page: Int,
+        toMediaSort: List<MediaSort>
     ): ApolloResponse<SearchAnimeQuery.Data>
 
     suspend fun getFavoriteAnimesFromAniList(

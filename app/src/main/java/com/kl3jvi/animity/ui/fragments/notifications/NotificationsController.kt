@@ -8,6 +8,7 @@ import com.kl3jvi.animity.TitleBindingModel_
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.paging.NotificationType
 import com.kl3jvi.animity.data.paging.PagingDataItem
+import com.kl3jvi.animity.utils.Constants.Companion.Empty
 
 class NotificationsController(
     private val clickListener: (Notification?, NotificationType) -> Unit
@@ -41,7 +42,8 @@ class NotificationsController(
                     .notification(item.notification)
             }
 
-            null -> throw IllegalStateException("Data should not be null")
+            null -> EmptyBindingModel_()
+                .id("empty_${item?.Empty}")
         }
     }
 }

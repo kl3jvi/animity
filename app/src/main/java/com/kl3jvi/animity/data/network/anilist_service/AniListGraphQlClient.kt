@@ -17,7 +17,9 @@ import com.kl3jvi.animity.ToggleFavouriteMutation
 import com.kl3jvi.animity.TrendingMediaQuery
 import com.kl3jvi.animity.UserQuery
 import com.kl3jvi.animity.type.MediaListStatus
+import com.kl3jvi.animity.type.MediaSort
 import javax.inject.Inject
+
 class AniListGraphQlClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : AniListSync {
@@ -37,13 +39,17 @@ class AniListGraphQlClient @Inject constructor(
             AnimeListCollectionQuery(Optional.presentIfNotNull(userId))
         ).execute()
 
-    override suspend fun fetchSearchAniListData(query: String, page: Int) =
-        apolloClient.query(
-            SearchAnimeQuery(
-                Optional.presentIfNotNull(query),
-                Optional.presentIfNotNull(page)
-            )
-        ).execute()
+    override suspend fun fetchSearchAniListData(
+        query: String,
+        page: Int,
+        toMediaSort: List<MediaSort>
+    ) = apolloClient.query(
+        SearchAnimeQuery(
+            Optional.presentIfNotNull(query),
+            Optional.presentIfNotNull(page),
+            Optional.present(toMediaSort)
+        )
+    ).execute()
 
     override suspend fun getFavoriteAnimesFromAniList(
         userId: Int?,

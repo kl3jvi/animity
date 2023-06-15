@@ -127,6 +127,6 @@ fun Genre.getColors(): Pair<ColorStateList, ColorStateList> {
     return Pair(color, outlineColor)
 }
 
-private fun String.toStateListColor(): ColorStateList {
+fun String.toStateListColor(): ColorStateList {
     return ColorStateList.valueOf(Color.parseColor(this))
 }

@@ -178,11 +178,15 @@ query FavoritesAnimeQuery($id: Int, $page: Int) {
 
 #GetAnime data by searching
 query SearchAnimeQuery(
-    $search: String, $page: Int ) {
+    $search: String,
+    $page: Int,
+    $sortType: [MediaSort]
+) {
     page:Page (page: $page, perPage: 30) {
         media (
             search: $search,
-            type: ANIME
+            type: ANIME,
+            sort: $sortType
         ) {...HomeMedia}
     }
 }

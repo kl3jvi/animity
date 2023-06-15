@@ -12,12 +12,14 @@ interface UserRepository {
     val isAuthenticated: Boolean
     val isGuest: Boolean
     val userId: String?
+    val expiration: Int?
 
     fun setBearerToken(authToken: String?)
     fun setRefreshToken(refreshToken: String?)
+    fun setExpirationTime(expiration: Int)
     fun setAniListUserId(sync: String?)
     fun setProvider(provider: String)
-    fun clearStorage()
     fun getSessionForUser(): Flow<ApolloResponse<SessionQuery.Data>>
     fun markAnimeAsFavorite(idAniList: Int?): Flow<ApolloResponse<ToggleFavouriteMutation.Data>>
+    fun clearStorage(triggered: () -> Unit)
 }

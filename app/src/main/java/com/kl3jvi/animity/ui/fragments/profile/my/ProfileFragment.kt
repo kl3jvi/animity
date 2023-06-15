@@ -33,11 +33,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         createFragmentMenu(menuLayout = R.menu.profile_menu) {
             when (it.itemId) {
                 R.id.action_log_out -> {
-                    viewModel.clearStorage() // Deletes saved token
-                    requireActivity().launchActivity<LoginActivity> {
-                        binding = null
-                    }
-                    requireActivity().finish()
+                    viewModel.clearStorage {
+                        requireActivity().launchActivity<LoginActivity> {
+                            binding = null
+                        }
+                        requireActivity().finish()
+                    } // Deletes saved token
                 }
             }
         }
@@ -45,7 +46,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun getProfileData() {
-        viewLifecycleOwner.collect(viewModel.profileData) { userData ->
+        collect(viewModel.profileData) { userData ->
             binding?.profileRv?.withModels {
                 when (userData) {
                     is UiResult.Error -> {

@@ -127,6 +127,13 @@
     <string name="paused">Paused</string>
     <string name="option_5">Set as Paused</string>
     <string name="message">Messages</string>
+    <string name="sort_by_title">Sort by Title</string>
+    <string name="sort_by_start_date">Sort by Start Date</string>
+    <string name="sort_by_popularity">Sort by Popularity</string>
+    <string name="sort_by_avg_score">Sort by Avg Score</string>
+    <string name="sort_by_trending">Sort by Trending</string>
+    <string name="sort_by_favorites">Sort by Favorites</string>
+    <string name="sort_by_episode_size">Sort by Episode Size</string>
 
 
 </resources>

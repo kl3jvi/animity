@@ -27,16 +27,22 @@ class PersistenceRepositoryImpl @Inject constructor(
 
     companion object {
         private const val BEARER_TOKEN = "bearerToken"
+        private const val EXPIRATION = "expiration"
         private const val REFRESH_TOKEN = "refreshToken"
         private const val GUEST_TOKEN = "guestToken"
         private const val ANILIST_USER_ID = "anilistUserId"
-        const val SELECTED_PROVIDER = "selectedProvider"
         const val SELECTED_DNS = "dns"
 
         private const val ORIGIN = "https://gogoanime.gg/"
         private const val REFERER = "https://goload.pro/"
         private const val BASE_URL = "https://gogoanime.gg"
     }
+
+    override var expiration: Int?
+        get() = getDataInt(EXPIRATION)
+        set(value) {
+            setDataInt(EXPIRATION, value ?: -1)
+        }
 
     override var bearerToken: String?
         get() = getData(BEARER_TOKEN)
@@ -90,12 +96,23 @@ class PersistenceRepositoryImpl @Inject constructor(
         return sharedPreferences.getString(key, null)
     }
 
+    private fun getDataInt(key: String): Int? {
+        return sharedPreferences.getInt(key, -1)
+    }
+
     private fun setData(key: String, value: String?) {
         sharedPreferences.edit().putString(key, value).apply()
     }
 
-    override fun clearStorage() {
-        sharedPreferences.edit().clear().apply()
+    private fun setDataInt(key: String, value: Int) {
+        sharedPreferences.edit().putInt(key, value).apply()
+    }
+
+    override fun clearStorage(triggered: () -> Unit) {
+        sharedPreferences.edit()
+            .clear()
+            .callback(triggered)
+            .apply()
     }
 
     inline fun <reified T> String?.fromJson(): T {
@@ -105,4 +122,8 @@ class PersistenceRepositoryImpl @Inject constructor(
     inline fun <reified T> T?.toJson(): String? {
         return Gson().toJson(this)
     }
+}
+
+private fun SharedPreferences.Editor.callback(triggered: () -> Unit) = apply {
+    triggered()
 }

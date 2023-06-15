@@ -10,6 +10,7 @@ interface PersistenceRepository {
     suspend fun getEpisodeContent(episodeUrl: String): Flow<EpisodeEntity>
     suspend fun isEpisodeOnDatabase(episodeUrl: String): Boolean
 
+    var expiration: Int?
     var bearerToken: String?
     var refreshToken: String?
     var guestToken: String?
@@ -20,5 +21,5 @@ interface PersistenceRepository {
     var key: String?
     var secondKey: String?
 
-    fun clearStorage()
+    fun clearStorage(triggered: () -> Unit)
 }
