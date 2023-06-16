@@ -118,13 +118,6 @@ class MainActivity : AppCompatActivity() {
         binding.navView.animate().translationY(binding.navView.height.toFloat())
             .setInterpolator(AccelerateInterpolator())
             .setListener(object : AnimatorListenerAdapter() {
-                /**
-                 *
-                 * Notifies the end of the animation. This callback is not invoked
-                 * for animations with repeat count set to INFINITE.
-                 *
-                 * @param animation The animation which reached its end.
-                 */
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
                     binding.navView.isVisible = false
@@ -136,13 +129,6 @@ class MainActivity : AppCompatActivity() {
     private fun showBottomNavBar() {
         binding.navView.animate().translationY(0f).setInterpolator(DecelerateInterpolator())
             .setListener(object : AnimatorListenerAdapter() {
-                /**
-                 *
-                 * Notifies the end of the animation. This callback is not invoked
-                 * for animations with repeat count set to INFINITE.
-                 *
-                 * @param animation The animation which reached its end.
-                 */
                 override fun onAnimationStart(animation: Animator) {
                     super.onAnimationStart(animation)
                     binding.navView.isVisible = true
@@ -166,17 +152,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * When the destination changes, if the destination is the details fragment or the review details
-     * fragment, hide the bottom nav bar, otherwise show it.
-     */
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in arrayOf(
                     R.id.navigation_details,
                     R.id.reviewDetailsFragment,
                     R.id.settingsFragment,
-                    R.id.messageFragment
+                    R.id.messageFragment,
+                    R.id.theirProfile
                 )
             ) {
                 hideBottomNavBar()

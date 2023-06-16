@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.workers
 
 import android.Manifest
+import android.app.PendingIntent
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -35,15 +36,9 @@ class NotificationWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
-        try {
-            val response = aniListGraphQlClient.getNotifications(1).data?.convert()
+        return@withContext try {
+            val latestNotification = fetchLatestNotification()
 
-            val latestNotification = response?.flatMap {
-                when (it) {
-                    is PagingDataItem.NotificationItem -> listOf(it.notification)
-                    else -> emptyList()
-                }
-            }?.maxByOrNull { it.id ?: -1 }
             if (latestNotification != null && !isNotificationIdStored(latestNotification.id)) {
                 Log.e(TAG, "Notifications received: $latestNotification")
                 showNotification(latestNotification)
@@ -55,7 +50,31 @@ class NotificationWorker @AssistedInject constructor(
         }
     }
 
+    private suspend fun fetchLatestNotification(): Notification? {
+        val response = aniListGraphQlClient.getNotifications(1).data?.convert()
+
+        return response?.flatMap {
+            when (it) {
+                is PagingDataItem.NotificationItem -> listOf(it.notification)
+                else -> emptyList()
+            }
+        }?.maxByOrNull { it.id ?: -1 }
+    }
+
     private fun showNotification(notification: Notification) {
+        val pendingIntent = buildPendingIntent(notification)
+
+        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification_icon)
+            .setContentTitle(applicationContext.getString(R.string.notification_title))
+            .setContentText(notification.getFormattedNotification())
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        sendNotification(builder)
+    }
+
+    private fun buildPendingIntent(notification: Notification): PendingIntent {
         val args = bundleOf(
             "animeDetails" to notification.media,
             if (notification.episode != null) {
@@ -65,20 +84,15 @@ class NotificationWorker @AssistedInject constructor(
             }
         )
 
-        val pendingIntent = NavDeepLinkBuilder(applicationContext)
+        return NavDeepLinkBuilder(applicationContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.mobile_navigation)
             .setDestination(R.id.navigation_details)
             .setArguments(args)
             .createPendingIntent()
+    }
 
-        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setSmallIcon(R.drawable.baseline_circle_notifications_24)
-            .setContentTitle(applicationContext.getString(R.string.notification_title))
-            .setContentText(notification.getFormattedNotification())
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-
+    private fun sendNotification(builder: NotificationCompat.Builder) {
         NotificationManagerCompat.from(applicationContext).apply {
             if (ContextCompat.checkSelfPermission(
                     applicationContext,

@@ -24,10 +24,7 @@ class AniListGraphQlClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : AniListSync {
 
-    override suspend fun getHomeData() =
-        apolloClient.query(
-            HomeDataQuery()
-        ).execute()
+    override suspend fun getHomeData() = apolloClient.query(HomeDataQuery()).execute()
 
     override suspend fun getUserDataById(userId: Int?) =
         apolloClient.query(

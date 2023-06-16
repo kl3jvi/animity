@@ -3,14 +3,10 @@ package com.kl3jvi.animity.ui.activities.login
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
@@ -116,7 +112,6 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
             launchActivity<MainActivity> {
                 val params = mapOf(FirebaseAnalytics.Param.METHOD to "login")
                 firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, params)
-
             }
             finish()
             return

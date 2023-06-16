@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.data.paging
 
 import com.kl3jvi.animity.data.model.ui_models.Notification
+import com.kl3jvi.animity.data.model.ui_models.User
 
 sealed class PagingDataItem {
     data class NotificationItem(val notification: Notification) : PagingDataItem()
@@ -9,8 +10,8 @@ sealed class PagingDataItem {
 
 sealed interface NotificationType {
     object Airing : NotificationType
-    data class Activity(val userId: Int) : NotificationType
+    data class Activity(val user: User) : NotificationType
     object Threads : NotificationType
     object Unknown : NotificationType
-    data class Following(val userId: Int) : NotificationType
+    data class Following(val user: User) : NotificationType
 }

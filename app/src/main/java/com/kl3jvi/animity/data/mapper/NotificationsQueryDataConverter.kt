@@ -112,7 +112,16 @@ private fun NotificationsQuery.OnActivityMentionNotification.toNotification() = 
         )
     ),
     contexts = listOf(this.context),
-    type = NotificationType.Activity(userId)
+    type = NotificationType.Activity(
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar = UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty()
+            )
+        )
+    )
 )
 
 private fun NotificationsQuery.OnActivityReplyNotification.toNotification() = Notification(
@@ -127,7 +136,16 @@ private fun NotificationsQuery.OnActivityReplyNotification.toNotification() = No
         )
     ),
     contexts = listOf(this.context),
-    type = NotificationType.Activity(userId)
+    type = NotificationType.Activity(
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar = UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty()
+            )
+        )
+    )
 )
 
 private fun NotificationsQuery.OnAiringNotification.toNotification() = Notification(
@@ -150,7 +168,16 @@ private fun NotificationsQuery.OnFollowingNotification.toNotification() = Notifi
         )
     ),
     contexts = listOf(this.context),
-    type = NotificationType.Following(this.userId)
+    type = NotificationType.Following(
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar = UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty()
+            )
+        )
+    )
 )
 
 private fun NotificationsQuery.OnActivityLikeNotification.toNotification() = Notification(
@@ -165,7 +192,16 @@ private fun NotificationsQuery.OnActivityLikeNotification.toNotification() = Not
         )
     ),
     contexts = listOf(this.context),
-    type = NotificationType.Activity(userId)
+    type = NotificationType.Activity(
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar = UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty()
+            )
+        )
+    )
 )
 
 private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = Notification(
@@ -180,7 +216,16 @@ private fun NotificationsQuery.OnActivityMessageNotification.toNotification() = 
         )
     ),
     contexts = listOf(this.context),
-    type = NotificationType.Activity(userId)
+    type = NotificationType.Activity(
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar = UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty()
+            )
+        )
+    )
 )
 
 private fun NotificationsQuery.Media?.convert(): AniListMedia {

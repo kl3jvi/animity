@@ -152,11 +152,11 @@
     <fragment
         android:id="@+id/theirProfile"
         android:name="com.kl3jvi.animity.ui.fragments.profile.their.TheirProfile"
-        android:label="@string/title_profile"
+        android:label="{user}"
         tools:layout="@layout/fragment_their_profile">
         <argument
-            android:name="userId"
-            app:argType="integer" />
+            android:name="user"
+            app:argType="com.kl3jvi.animity.data.model.ui_models.User" />
         <action
             android:id="@+id/theirProfileToDetails"
             app:destination="@id/navigation_details" />

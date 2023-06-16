@@ -60,7 +60,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     UiResult.Loading -> {}
 
                     is UiResult.Success -> {
-                        buildProfile(userData = userData.data)
+                        buildProfile(
+                            profileType = ProfileType.ME,
+                            userData = userData.data
+                        )
                     }
                 }
             }

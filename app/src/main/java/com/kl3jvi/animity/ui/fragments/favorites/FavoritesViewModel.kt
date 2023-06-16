@@ -2,6 +2,8 @@ package com.kl3jvi.animity.ui.fragments.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
@@ -22,9 +24,10 @@ class FavoritesViewModel @Inject constructor(
     ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    val favoritesList: StateFlow<UiResult<List<AniListMedia>>> =
+    val favoritesList: StateFlow<UiResult<PagingData<AniListMedia>>> =
         favoriteRepository.getFavoriteAnimesFromAniList(
             userId = localStorage.aniListUserId?.toInt(),
             page = 1
-        ).mapToUiState(viewModelScope + ioDispatcher)
+        ).cachedIn(viewModelScope)
+            .mapToUiState(viewModelScope + ioDispatcher)
 }

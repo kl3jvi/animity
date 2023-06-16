@@ -140,7 +140,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         valueAnimator.start()
     }
 
-
     override fun onResume() {
         super.onResume()
         analytics.logCurrentScreen("Search")
@@ -157,18 +156,18 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         collapseView(sortView)
 
         binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                pagingController.addInterceptor {
-                    if (it.size == 0) {
-                        collapseView(sortView)
-                    } else {
-                        expandView(sortView)
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                    pagingController.addInterceptor {
+                        if (it.size == 0) {
+                            collapseView(sortView)
+                        } else {
+                            expandView(sortView)
+                        }
                     }
                 }
-            }
-        })
+            })
 
         collectLatest(viewModel.searchList) { animeData ->
             pagingController.submitData(animeData)

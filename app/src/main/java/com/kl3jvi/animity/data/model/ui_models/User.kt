@@ -1,7 +1,10 @@
 package com.kl3jvi.animity.data.model.ui_models
 
 import android.os.Parcelable
-import com.kl3jvi.animity.type.*
+import com.kl3jvi.animity.type.Favourites
+import com.kl3jvi.animity.type.MediaListOptions
+import com.kl3jvi.animity.type.ModRole
+import com.kl3jvi.animity.type.UserStatisticTypes
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -23,4 +26,8 @@ data class User(
     val donatorTier: Int = 0,
     val donatorBadge: String = "",
     val moderatorRoles: List<ModRole> = listOf()
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return name
+    }
+}

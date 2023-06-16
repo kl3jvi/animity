@@ -19,7 +19,6 @@ import com.kl3jvi.animity.type.MediaSort
 
 interface AniListSync {
 
-    suspend fun getHomeData(): ApolloResponse<HomeDataQuery.Data>
     suspend fun getUserDataById(userId: Int?): ApolloResponse<UserQuery.Data>
     suspend fun getAnimeListData(userId: Int?): ApolloResponse<AnimeListCollectionQuery.Data>
     suspend fun fetchSearchAniListData(
@@ -60,4 +59,5 @@ interface AniListSync {
     ): ApolloResponse<SendMessageMutation.Data>
 
     suspend fun getMessages(recipientId: Int): ApolloResponse<GetMessagesQuery.Data>
+    suspend fun getHomeData(): ApolloResponse<HomeDataQuery.Data>
 }

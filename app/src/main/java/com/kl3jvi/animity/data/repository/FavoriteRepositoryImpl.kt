@@ -1,10 +1,12 @@
 package com.kl3jvi.animity.data.repository
 
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.FavoritesAnimeQuery
-import com.kl3jvi.animity.data.mapper.convert
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
+import com.kl3jvi.animity.data.paging.FavoritesPagingSource
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +27,13 @@ class FavoriteRepositoryImpl @Inject constructor(
     override fun getFavoriteAnimesFromAniList(
         userId: Int?,
         page: Int?
-    ) = flow {
-        emit(aniListGraphQlClient.getFavoriteAnimes(userId, page))
-    }.mapNotNull(ApolloResponse<FavoritesAnimeQuery.Data>::convert).flowOn(ioDispatcher)
+    ): Flow<PagingData<AniListMedia>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = { FavoritesPagingSource(aniListGraphQlClient, userId) }
+        ).flow.flowOn(ioDispatcher)
+    }
+    companion object {
+        const val NETWORK_PAGE_SIZE = 50
+    }
 }

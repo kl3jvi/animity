@@ -254,7 +254,7 @@ mutation MarkEpisodeWatched($mediaId: Int!, $episodeNumber: Int!) {
     }
 }
 
-query HomeDataQuery {
+query HomeDataQuery{
     trendingAnime: Page(page: 1, perPage: 50) {
         media(type: ANIME, status:RELEASING sort: [TRENDING_DESC], isAdult: false) {
             ...HomeMedia

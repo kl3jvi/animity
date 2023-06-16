@@ -75,12 +75,12 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment() {
                 }
 
                 is NotificationType.Activity -> {
-                    val directions = HomeFragmentDirections.toMessage(type.userId)
+                    val directions = HomeFragmentDirections.toTheirProfile(type.user)
                     findNavController().navigate(directions)
                 }
 
                 is NotificationType.Following -> {
-                    val directions = HomeFragmentDirections.toTheirProfile(type.userId)
+                    val directions = HomeFragmentDirections.toTheirProfile(type.user)
                     findNavController().navigate(directions)
                 }
 

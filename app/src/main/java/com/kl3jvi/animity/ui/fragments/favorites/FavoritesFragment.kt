@@ -1,13 +1,13 @@
 package com.kl3jvi.animity.ui.fragments.favorites
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
@@ -15,7 +15,7 @@ import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -25,10 +25,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private var binding: FragmentFavoritesBinding? = null
     private var favoritesJob: Job? = null
     private var shouldRefreshFavorites: Boolean = false
+    private lateinit var pagingController: FavoritesSearchController
+
+    @Inject
+    lateinit var analytics: Analytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFavoritesBinding.bind(view)
+        pagingController = FavoritesSearchController(analytics)
         initViews()
         observeAniList()
     }
@@ -42,6 +47,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun observeAniList() {
+        binding?.favoritesRecycler?.setController(pagingController)
         favoritesJob = collect(viewModel.favoritesList) { favoritesUiState ->
             when (favoritesUiState) {
                 is UiResult.Error -> {
@@ -55,11 +61,10 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 }
 
                 is UiResult.Success -> {
-                    Log.e("Media Status", favoritesUiState.data.map { it.isFavourite }.toString())
                     binding?.swipeLayout?.isRefreshing = false
                     binding?.favoritesRecycler?.apply {
                         layoutManager = GridLayoutManager(requireContext(), 3)
-                        withModels { buildFavorites(favoritesUiState.data) }
+                        pagingController.submitData(favoritesUiState.data)
                     }
                 }
             }

@@ -34,8 +34,8 @@ class AnimityApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         LibraryInitializer.initialize()
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
         OneSignal.initWithContext(this)
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
         OneSignal.setAppId(Secrets.oneSignalKey)
         createNotificationChannel()
         setupNotificationWorker()
