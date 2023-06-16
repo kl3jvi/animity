@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(this, "Enabled Notifications Successfully", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                this,
+                "Notifications will not be working, please enable in settings",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -45,10 +59,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-        /* Getting the navigation controller from the navigation host fragment. */
-        navController = findNavController(R.id.nav_host_fragment_activity_main)
-        /* Used to set up the action bar with the navigation controller. */
+        val navView: BottomNavigationView =
+            binding.navView/* Getting the navigation controller from the navigation host fragment. */
+        navController =
+            findNavController(R.id.nav_host_fragment_activity_main)/* Used to set up the action bar with the navigation controller. */
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
@@ -59,30 +73,29 @@ class MainActivity : AppCompatActivity() {
         )
 
         /* Setting up the action bar with the navigation controller. */
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        /* Setting up the bottom navigation bar with the navigation controller. */
-        /* Setting up the bottom navigation bar with the navigation controller. */
+        setupActionBarWithNavController(
+            navController,
+            appBarConfiguration
+        )/* Setting up the bottom navigation bar with the navigation controller. *//* Setting up the bottom navigation bar with the navigation controller. */
         navView.setupWithNavController(navController)
         setBottomBarVisibility()
+        askForPermission()
+
 //        checkUpdates()
     }
 
     private val pushNotificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        askForPermission(granted)
-    }
+    ) { _ -> askForPermission() }
 
-    private fun askForPermission(granted: Boolean) {
+    private fun askForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pushNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
 
-        if (granted) {
-            OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-            OneSignal.initWithContext(this.applicationContext)
-            OneSignal.setAppId(ONESIGNAL_APP_ID)
-        }
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
+        OneSignal.initWithContext(this.applicationContext)
+        OneSignal.setAppId(ONESIGNAL_APP_ID)
     }
 
     private fun checkUpdates() {
@@ -102,9 +115,7 @@ class MainActivity : AppCompatActivity() {
 
     /* Hiding the bottom navigation bar. */
     private fun hideBottomNavBar() {
-        binding.navView
-            .animate()
-            .translationY(binding.navView.height.toFloat())
+        binding.navView.animate().translationY(binding.navView.height.toFloat())
             .setInterpolator(AccelerateInterpolator())
             .setListener(object : AnimatorListenerAdapter() {
                 /**
@@ -123,10 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     /* Showing the bottom navigation bar. */
     private fun showBottomNavBar() {
-        binding.navView
-            .animate()
-            .translationY(0f)
-            .setInterpolator(DecelerateInterpolator())
+        binding.navView.animate().translationY(0f).setInterpolator(DecelerateInterpolator())
             .setListener(object : AnimatorListenerAdapter() {
                 /**
                  *

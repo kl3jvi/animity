@@ -2,7 +2,6 @@
 
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -156,17 +155,17 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     /**
      * It creates a chip for each genre in the list.
      *
-     * @param genre List<Genre> - The list of genres that we want to display.
+     * @param genres List<Genre> - The list of genres that we want to display.
      */
     private fun createGenreChips(genres: List<Genre>) {
         binding?.genreGroup?.apply {
             removeAllViews()
             genres.forEach { genre ->
-                val (bgColor, outlineColor) = genre.getColors()
+                val (bgColor, outlineColor, textColor) = genre.getColors()
                 addView(
                     Chip(requireContext()).apply {
                         text = genre.name
-                        setTextColor(Color.WHITE)
+                        setTextColor(textColor)
                         chipStrokeWidth = 3f
                         chipBackgroundColor = bgColor
                         chipStrokeColor = outlineColor

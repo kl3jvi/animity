@@ -1,12 +1,11 @@
 package com.kl3jvi.animity.ui.fragments.search
 
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -105,46 +104,42 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun animateExpand(view: View) {
-        val initialHeight = 0
-        val targetHeight = view.height
+    private fun expandView(view: View) {
+        if (view.layoutParams.height != 0) return
 
-        val animator = ValueAnimator.ofInt(initialHeight, targetHeight)
-        animator.duration = ANIMATION_DURATION
-        animator.addUpdateListener { animation ->
-            val animatedValue = animation.animatedValue as Int
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec((view.parent as View).width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val targetHeight = view.measuredHeight
+
+        val valueAnimator = ValueAnimator.ofInt(0, targetHeight)
+        valueAnimator.addUpdateListener { animator ->
+            val animatedValue = animator.animatedValue as Int
             view.layoutParams.height = animatedValue
             view.requestLayout()
         }
-        animator.start()
+
+        valueAnimator.duration = ANIMATION_DURATION
+        valueAnimator.start()
     }
 
-    private fun animateDropdown(view: View, isShow: Boolean) {
-        val initialY = if (isShow) -view.height.toFloat() else 0f
-        val finalY = if (isShow) 0f else -view.height.toFloat()
+    private fun collapseView(view: View) {
+        if (view.layoutParams.height == 0) return
 
-        val animator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, initialY, finalY)
+        val initialHeight = view.measuredHeight
 
-        animator.duration = ANIMATION_DURATION
-        animator.interpolator = AccelerateDecelerateInterpolator()
-        animator.start()
-    }
-
-    private fun toggleViewVisibilityWithAnimation(view: View, isShow: Boolean) {
-        if (isShow) {
-            view.visibility = View.VISIBLE
-            animateDropdown(view, isShow)
-        } else {
-            animateDropdown(view, isShow)
-            view.visibility = View.GONE
+        val valueAnimator = ValueAnimator.ofInt(initialHeight, 0)
+        valueAnimator.addUpdateListener { animator ->
+            val animatedValue = animator.animatedValue as Int
+            view.layoutParams.height = animatedValue
+            view.requestLayout()
         }
+
+        valueAnimator.duration = ANIMATION_DURATION
+        valueAnimator.start()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // letting go of the resources to avoid memory leak.
-        binding = null
-    }
 
     override fun onResume() {
         super.onResume()
@@ -157,15 +152,30 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun observeViewModel() {
-        pagingController.addInterceptor {
-            toggleViewVisibilityWithAnimation(binding?.sortView!!, it.size > 0)
-        }
+        val sortView = binding?.sortView!!
+
+        collapseView(sortView)
+
+        binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                pagingController.addInterceptor {
+                    if (it.size == 0) {
+                        collapseView(sortView)
+                    } else {
+                        expandView(sortView)
+                    }
+                }
+            }
+        })
+
         collectLatest(viewModel.searchList) { animeData ->
             pagingController.submitData(animeData)
         }
     }
 
     companion object {
-        private const val ANIMATION_DURATION = 1000L
+        private const val ANIMATION_DURATION = 300L
     }
 }
