@@ -3,6 +3,7 @@ package com.kl3jvi.animity.ui.activities.player
 import android.app.PictureInPictureParams
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.Rational
 import android.view.View
 import android.widget.ImageButton
@@ -25,6 +26,7 @@ import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
+import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -47,7 +49,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
 import com.kl3jvi.animity.utils.Constants.Companion.MAL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
-import com.kl3jvi.animity.utils.Constants.Companion.getSafeString
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
@@ -191,9 +192,10 @@ class PlayerActivity : AppCompatActivity() {
                 }
 
                 is UiResult.Success -> {
-                    val videoM3U8Url = getSafeString(res.data.last())
                     try {
-                        setupPlayer(videoM3U8Url)
+                        setupPlayer(res.data)
+                        viewModel.startDownload(res.data.first().last())
+
                         viewModel.getPlaybackPosition(episodeUrlLocal)
                         collect(viewModel.playBackPosition) {
                             player?.seekTo(it)
@@ -208,9 +210,13 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         }
+
+        collect(viewModel.downloadState) {
+            Log.e("State", "${it.progress}")
+        }
     }
 
-    private fun setupPlayer(videoM3U8Url: String) {
+    private fun setupPlayer(listOfEpisodesWithQualities: List<List<String>>) {
         trackSelector = DefaultTrackSelector(this).apply {
             setParameters(buildUponParameters().setMaxVideoSizeSd())
         }
@@ -220,27 +226,27 @@ class PlayerActivity : AppCompatActivity() {
             .build()
 
         player = ExoPlayer.Builder(this)
-//            .setMediaSourceFactoryIfM3u8(videoM3U8Url)
             .setAudioAttributes(audioAttributes, true)
             .setTrackSelector(trackSelector!!)
             .setSeekBackIncrementMs(settings.seekBackwardTime)
-            .setSeekForwardIncrementMs(
-                settings.seekForwardTime
-            )
+            .setSeekForwardIncrementMs(settings.seekForwardTime)
             .build().apply {
                 binding.videoView.player = this
-                val mdItem = MediaItem.fromUri(videoM3U8Url)
-                val videoSource = buildMediaSource(mdItem, videoM3U8Url)
-                setMediaSource(videoSource)
+                val mediaItems = listOfEpisodesWithQualities.map { episodeWithQualities ->
+                    Log.e("Test url", episodeWithQualities.toString())
+                    MediaItem.fromUri(episodeWithQualities.last())
+                }
+                val concatenatedSource = ConcatenatingMediaSource()
+                mediaItems.forEach { mediaItem ->
+                    val videoSource =
+                        buildMediaSource(mediaItem, mediaItem.localConfiguration?.uri.toString())
+                    concatenatedSource.addMediaSource(videoSource)
+                }
+                setMediaSource(concatenatedSource)
                 playWhenReady = true
                 prepare()
             }
     }
-
-//    private fun ExoPlayer.Builder.setMediaSourceFactoryIfM3u8(videoM3U8Url: String) = apply {
-//        if (videoM3U8Url.contains("m3u8"))
-// //            setMediaSourceFactory(DefaultMediaSourceFactory(cacheFactory))
-//    }
 
     private fun handlePlayerListener() {
         player?.addListener(object : Player.Listener {

@@ -34,4 +34,5 @@
     <dimen name="dimen_8">8dp</dimen>
     <dimen name="dp_15">15dp</dimen>
     <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
 </resources>

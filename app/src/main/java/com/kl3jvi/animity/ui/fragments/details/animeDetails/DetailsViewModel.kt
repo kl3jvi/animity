@@ -8,6 +8,7 @@ import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.type.MediaListStatus
+import com.kl3jvi.animity.utils.CustomDispatcher
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.ifChanged
@@ -15,7 +16,6 @@ import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.or1
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -37,6 +37,7 @@ class DetailsViewModel @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val userRepository: UserRepository,
     private val favoriteRepository: FavoriteRepository,
+    @CustomDispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -59,23 +60,23 @@ class DetailsViewModel @Inject constructor(
                                 malId = media.idMal.or1(),
                                 extra = listOf(media.idMal)
                             ).map { episodes ->
-                                // Split the list of episodes into chunks of 50 or less
+                                val episodesChunked = episodes.chunked(50)
+
                                 val episodeChunksTitles = episodes.chunked(50) {
-                                    val firstEpisodeNumber =
-                                        it.first().getEpisodeNumberOnly().toInt()
-                                    val lastEpisodeNumber =
-                                        it.last().getEpisodeNumberOnly().toInt()
-                                    "Episodes $firstEpisodeNumber - $lastEpisodeNumber"
+                                    val firstEpisodeNumber = it.first().getEpisodeNumberOnly()
+                                    val lastEpisodeNumber = it.last().getEpisodeNumberOnly()
+                                    "Episodes ${firstEpisodeNumber ?: "-"} - ${lastEpisodeNumber ?: "-"}"
                                 }
+
                                 EpisodeListUiState.Success(
-                                    episodeChunks = episodes.chunked(50),
+                                    episodeChunks = episodesChunked,
                                     chunkTitles = episodeChunksTitles
                                 )
                             }
                         }
                     }
                 }
-        }.flowOn(Dispatchers.Default)
+        }.flowOn(ioDispatcher)
             .stateIn(
                 viewModelScope,
                 SharingStarted.WhileSubscribed(5_000),
@@ -88,7 +89,8 @@ class DetailsViewModel @Inject constructor(
     fun updateAnimeFavorite() {
         viewModelScope.launch(ioDispatcher) {
             animeMetaModel.flatMapLatest {
-                userRepository.markAnimeAsFavorite(it.idAniList).ifChanged()
+                userRepository.markAnimeAsFavorite(it.idAniList)
+                    .ifChanged()
                     .catch { error -> logError(error) }
             }.collect()
         }

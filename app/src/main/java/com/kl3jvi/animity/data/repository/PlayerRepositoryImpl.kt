@@ -34,14 +34,12 @@ class PlayerRepositoryImpl @Inject constructor(
         header: Map<String, String>,
         url: String,
         extra: List<Any?>
-    ): Flow<List<String>> = flow {
-        Log.e("Selected ANime provider", selectedAnimeProvider.toString())
-
+    ): Flow<List<List<String>>> = flow {
         val result = selectedAnimeProvider?.fetchEpisodeMediaUrl(
             header,
             url,
             extra
-        ) ?: emptyList<String>()
+        ) ?: emptyList<List<String>>()
         emit(result)
     }.catch { it.printStackTrace() }
 

@@ -15,7 +15,11 @@ data class EpisodeModel(
     var percentage: Int = 0,
     var isFiller: Boolean = false
 ) : Parcelable {
-    fun getEpisodeNumberOnly(): String {
+    fun getEpisodeNumberOnly(): Int? {
+        return episodeNumber.split(" ").lastOrNull()?.toIntOrNull()
+    }
+
+    fun getEpisodeNumberAsString(): String {
         return episodeNumber.split(" ").last()
     }
 }

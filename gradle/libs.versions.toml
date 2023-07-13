@@ -44,6 +44,7 @@ org-jetbrains-kotlinx = "1.6.4"
 remoteConfig = "21.2.1"
 roomKtx = "2.5.0"
 workRuntimeKtx = "2.8.0"
+firebaseFirestoreKtx = "24.6.1"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
@@ -309,6 +310,8 @@ org-jsoup = "org.jsoup:jsoup:1.13.1"
 org-mockito-kotlin-mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:4.0.0"
 org-mockito-mockito-core = "org.mockito:mockito-core:4.7.0"
 org-mozilla-rhino = "org.mozilla:rhino:1.7.14"
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+androidx-media3-database = { group = "androidx.media3", name = "media3-database", version = "1.1.0" }
 
 [plugins]
 

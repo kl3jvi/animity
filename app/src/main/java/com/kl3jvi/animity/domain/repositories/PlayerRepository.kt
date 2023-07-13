@@ -12,7 +12,7 @@ interface PlayerRepository {
         header: Map<String, String> = getNetworkHeader(),
         url: String,
         extra: List<Any?> = emptyList()
-    ): Flow<List<String>>
+    ): Flow<List<List<String>>>
 
     suspend fun upsertEpisode(episodeEntity: EpisodeEntity)
     suspend fun getPlaybackPosition(episodeUrl: String): Flow<EpisodeEntity>

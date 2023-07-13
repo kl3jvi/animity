@@ -23,7 +23,7 @@ class GlideModule : AppGlideModule() {
         builder.setDefaultRequestOptions(
             RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .signature(ObjectKey(System.currentTimeMillis().toShort()))
+                .signature(ObjectKey(System.currentTimeMillis().toShort())),
         )
     }
 
@@ -41,7 +41,7 @@ class GlideModule : AppGlideModule() {
         registry.replace(
             GlideUrl::class.java,
             InputStream::class.java,
-            factory
+            factory,
         )
     }
 }

@@ -7,12 +7,15 @@ import androidx.preference.DropDownPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
-import androidx.preference.SwitchPreference
+import com.azhon.appupdate.manager.DownloadManager
+import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.enums.DnsTypes
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.settings.toJson
+import com.kl3jvi.animity.ui.widgets.ColorSwitchPreferenceCompat
+import com.kl3jvi.animity.ui.widgets.CustomPreference
 import com.kl3jvi.animity.utils.configurePreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -61,7 +64,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             settings.preferences
         ) { seekBarIncrement = 1000 }
 
-        configurePreference<SwitchPreference>(
+        configurePreference<ColorSwitchPreferenceCompat>(
             R.string.pip,
             settings.preferences,
             clickListener = {
@@ -70,7 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         )
 
-        configurePreference<Preference>(
+        configurePreference<CustomPreference>(
             R.string.donation,
             settings.preferences,
             clickListener = {
@@ -81,6 +84,28 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         )
+
+        configurePreference<CustomPreference>(
+            R.string.check_for_update_key,
+            settings.preferences,
+            ::checkUpdates
+        )
+    }
+
+    private fun checkUpdates(preference: Preference): Boolean {
+        val manager = DownloadManager.Builder(requireActivity()).run {
+            apkUrl("https://github.com/kl3jvi/animity/releases/download/v0.1.7/Animity-v1.1.2-universal-release.apk")
+            apkName("animity.apk")
+            smallIcon(R.mipmap.ic_launcher)
+            apkVersionCode(2)
+            apkVersionName("v0.0.18")
+            apkSize("6.42MB")
+            apkDescription("Improved searching and trying to add personalised content.")
+            apkVersionCode(BuildConfig.VERSION_CODE + 1)
+            build()
+        }
+        manager.download()
+        return true
     }
 
     companion object {

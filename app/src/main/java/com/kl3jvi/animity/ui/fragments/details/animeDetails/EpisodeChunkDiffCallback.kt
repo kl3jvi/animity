@@ -15,22 +15,28 @@ class EpisodeChunkDiffCallback(
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldChunk = oldChunks[oldItemPosition]
         val newChunk = newChunks[newItemPosition]
-        val oldChunkSize = oldChunk.size
-        val newChunkSize = newChunk.size
 
-        return oldChunkSize == newChunkSize &&
-            oldChunk[0].episodeName == newChunk[0].episodeName &&
-            oldChunk[0].episodeNumber == newChunk[0].episodeNumber
+        // Compare sizes
+        if (oldChunk.size != newChunk.size) return false
+
+        // Compare all elements
+        for (i in oldChunk.indices) {
+            if (oldChunk[i].episodeNumber != newChunk[i].episodeNumber) return false
+            if (oldChunk[i].percentage != newChunk[i].percentage) return false
+        }
+
+        return true
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldChunk = oldChunks[oldItemPosition]
         val newChunk = newChunks[newItemPosition]
-        val oldChunkSize = oldChunk.size
-        val newChunkSize = newChunk.size
-
-        return oldChunkSize == newChunkSize &&
-            oldChunk == newChunk &&
-            oldChunk[0].percentage == newChunk[0].percentage
+        // Compare all episodes, not just the first one
+        return oldChunk.size == newChunk.size &&
+            oldChunk.zip(newChunk).all { (oldEpisode, newEpisode) ->
+                oldEpisode.percentage == newEpisode.percentage &&
+                    oldEpisode.episodeName == newEpisode.episodeName &&
+                    oldEpisode.episodeNumber == newEpisode.episodeNumber
+            }
     }
 }

@@ -11,9 +11,9 @@
       "type": "UNIVERSAL",
       "filters": [],
       "attributes": [],
-      "versionCode": 15,
-      "versionName": "1.1.4",
-      "outputFile": "Animity-v1.1.4-universal-release.apk"
+      "versionCode": 16,
+      "versionName": "1.1.5",
+      "outputFile": "Animity-v1.1.5-universal-release.apk"
     },
     {
       "type": "ONE_OF_MANY",
@@ -24,22 +24,9 @@
         }
       ],
       "attributes": [],
-      "versionCode": 15,
-      "versionName": "1.1.4",
-      "outputFile": "Animity-v1.1.4-armeabi-v7a-release.apk"
-    },
-    {
-      "type": "ONE_OF_MANY",
-      "filters": [
-        {
-          "filterType": "ABI",
-          "value": "x86"
-        }
-      ],
-      "attributes": [],
-      "versionCode": 15,
-      "versionName": "1.1.4",
-      "outputFile": "Animity-v1.1.4-x86-release.apk"
+      "versionCode": 16,
+      "versionName": "1.1.5",
+      "outputFile": "Animity-v1.1.5-armeabi-v7a-release.apk"
     },
     {
       "type": "ONE_OF_MANY",
@@ -50,9 +37,22 @@
         }
       ],
       "attributes": [],
-      "versionCode": 15,
-      "versionName": "1.1.4",
-      "outputFile": "Animity-v1.1.4-arm64-v8a-release.apk"
+      "versionCode": 16,
+      "versionName": "1.1.5",
+      "outputFile": "Animity-v1.1.5-arm64-v8a-release.apk"
+    },
+    {
+      "type": "ONE_OF_MANY",
+      "filters": [
+        {
+          "filterType": "ABI",
+          "value": "x86"
+        }
+      ],
+      "attributes": [],
+      "versionCode": 16,
+      "versionName": "1.1.5",
+      "outputFile": "Animity-v1.1.5-x86-release.apk"
     },
     {
       "type": "ONE_OF_MANY",
@@ -63,9 +63,9 @@
         }
       ],
       "attributes": [],
-      "versionCode": 15,
-      "versionName": "1.1.4",
-      "outputFile": "Animity-v1.1.4-x86_64-release.apk"
+      "versionCode": 16,
+      "versionName": "1.1.5",
+      "outputFile": "Animity-v1.1.5-x86_64-release.apk"
     }
   ],
   "elementType": "File"

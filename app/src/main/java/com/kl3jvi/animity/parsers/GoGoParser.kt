@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.parsers
 
 import android.os.Build
-import android.util.Log
 import com.kl3jvi.animity.data.model.ui_models.AnimeInfoModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -54,7 +53,6 @@ class GoGoParser @Inject constructor(
     fun parseMediaUrl(response: String): EpisodeInfo {
         val mediaUrl: String?
         val document = Jsoup.parse(response)
-        Log.e("Parsed doc", document.toString())
         val info = document.getElementsByClass("vidcdn").first()?.select("a")
         mediaUrl = info?.attr("data-video").toString()
         val nextEpisodeUrl =

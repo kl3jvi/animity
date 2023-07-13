@@ -134,6 +134,9 @@
     <string name="sort_by_trending">Sort by Trending</string>
     <string name="sort_by_favorites">Sort by Favorites</string>
     <string name="sort_by_episode_size">Sort by Episode Size</string>
+    <string name="general">General</string>
+    <string name="check_for_update">Check for Updates…</string>
+    <string name="check_for_update_key">check_for_update_key</string>
 
 
 </resources>

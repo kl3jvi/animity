@@ -1,7 +1,6 @@
 package com.kl3jvi.animity.utils
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import androidx.preference.Preference
@@ -18,7 +17,6 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
     preference.block()
     preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
         val key = getPreferenceKey(preferenceId)
-        Log.e("New Value", newValue.toString())
         preferences.edit {
             when (newValue) {
                 is Boolean -> putBoolean(key, newValue)

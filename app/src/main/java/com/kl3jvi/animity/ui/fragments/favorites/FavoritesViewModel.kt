@@ -12,22 +12,32 @@ import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    favoriteRepository: FavoriteRepository,
-    localStorage: PersistenceRepository,
-    ioDispatcher: CoroutineDispatcher
+    private val favoriteRepository: FavoriteRepository,
+    private val localStorage: PersistenceRepository,
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
+    private var _favoritesList =
+        MutableStateFlow<UiResult<PagingData<AniListMedia>>>(UiResult.Loading)
+    val favoritesList: StateFlow<UiResult<PagingData<AniListMedia>>> = _favoritesList
 
-    val favoritesList: StateFlow<UiResult<PagingData<AniListMedia>>> =
-        favoriteRepository.getFavoriteAnimesFromAniList(
-            userId = localStorage.aniListUserId?.toInt(),
-            page = 1
-        ).cachedIn(viewModelScope)
-            .mapToUiState(viewModelScope + ioDispatcher)
+    init {
+        refreshFavorites()
+    }
+
+    fun refreshFavorites() {
+        viewModelScope.launch(ioDispatcher) {
+            favoriteRepository.getFavoriteAnimesFromAniList(localStorage.aniListUserId?.toInt())
+                .cachedIn(viewModelScope)
+                .mapToUiState(viewModelScope)
+                .collect { _favoritesList.value = it }
+        }
+    }
 }

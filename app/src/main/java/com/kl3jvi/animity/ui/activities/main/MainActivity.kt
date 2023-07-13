@@ -22,16 +22,16 @@ import com.azhon.appupdate.manager.DownloadManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
-import com.kl3jvi.animity.application.AnimityApplication.Companion.ONESIGNAL_APP_ID
 import com.kl3jvi.animity.databinding.ActivityMainBinding
+import com.kl3jvi.animity.utils.OnNeedToRequestPermissions
+import com.kl3jvi.animity.utils.PermissionsFeature
 import com.kl3jvi.animity.utils.collect
-import com.onesignal.OneSignal
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PermissionsFeature {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -92,26 +92,9 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pushNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
-
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-        OneSignal.initWithContext(this.applicationContext)
-        OneSignal.setAppId(ONESIGNAL_APP_ID)
     }
 
-    private fun checkUpdates() {
-        val manager = DownloadManager.Builder(this).run {
-            apkUrl("https://github.com/kl3jvi/animity/releases/download/v0.1.7/Animity-v1.1.2-universal-release.apk")
-            apkName("animity.apk")
-            smallIcon(R.mipmap.ic_launcher)
-            apkVersionCode(2)
-            apkVersionName("v0.0.18")
-            apkSize("6.42MB")
-            apkDescription("Improved searching and trying to add personalised content.")
-            apkVersionCode(BuildConfig.VERSION_CODE + 1)
-            build()
-        }
-        manager.download()
-    }
+
 
     /* Hiding the bottom navigation bar. */
     private fun hideBottomNavBar() {
@@ -167,5 +150,12 @@ class MainActivity : AppCompatActivity() {
                 showBottomNavBar()
             }
         }
+    }
+
+    override val onNeedToRequestPermissions: OnNeedToRequestPermissions = {
+    }
+
+    override fun onPermissionsResult(permissions: Array<String>, grantResults: IntArray) {
+        TODO("Not yet implemented")
     }
 }

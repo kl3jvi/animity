@@ -2,12 +2,14 @@ package com.kl3jvi.animity.ui.fragments.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
+import com.kl3jvi.animity.ui.fragments.StateManager
 import com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
@@ -20,7 +22,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
     private val viewModel: HomeViewModel by viewModels()
     private var binding: FragmentHomeBinding? = null
 
@@ -57,13 +59,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun fetchHomeData() {
         collect(viewModel.homeDataUiState) { result ->
             when (result) {
-                is UiResult.Error -> showSnack(
-                    binding?.root,
-                    result.throwable.message ?: "Error occurred"
-                )
-
-                UiResult.Loading -> {}
+                is UiResult.Error -> handleError(result.throwable)
+                UiResult.Loading -> showLoading(true)
                 is UiResult.Success -> {
+                    showLoading(false)
                     binding?.mainRv?.withModels {
                         buildHome(
                             result.data,
@@ -77,7 +76,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // letting go of the resources to avoid memory leak.
         binding = null
     }
+
+    override fun showLoading(show: Boolean) = with(binding) {
+        this?.mainRv?.isVisible = !show
+        this?.loading?.isVisible = show
+    }
+
+    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
 }

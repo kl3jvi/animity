@@ -25,8 +25,7 @@ class FavoriteRepositoryImpl @Inject constructor(
     }.flowOn(ioDispatcher)
 
     override fun getFavoriteAnimesFromAniList(
-        userId: Int?,
-        page: Int?
+        userId: Int?
     ): Flow<PagingData<AniListMedia>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),

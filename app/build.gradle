@@ -1,3 +1,5 @@
+import groovy.json.JsonBuilder
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -11,6 +13,7 @@ plugins {
     id "com.apollographql.apollo3" version("3.7.0")
     id 'com.onesignal.androidsdk.onesignal-gradle-plugin'
     id "org.jlleitschuh.gradle.ktlint" version("11.0.0")
+    id "org.jetbrains.kotlin.plugin.serialization" version '1.8.21'
 }
 
 
@@ -31,8 +34,8 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 33
-        versionCode 15
-        versionName "1.1.4"
+        versionCode 16
+        versionName "1.1.5"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -50,6 +53,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
             signingConfig signingConfigs.release
+
+            // Here we add a dependency to generate versionInfo.json
+            applicationVariants.all { variant ->
+                variant.assembleProvider.configure {
+                    dependsOn generateVersionJson
+                }
+            }
         }
         benchmark {
             signingConfig signingConfigs.debug
@@ -129,9 +139,62 @@ apollo {
     excludes.add("**/schema.json.graphql")
 }
 
+tasks.register('generateVersionJson') {
+    doLast {
+
+        def versionCodes = ["x86", "armeabi-v7a", "arm64_v8a", "x86_64", "universal"]
+
+        def animityInfo = [:]
+
+        def androidExtension = project.extensions.getByType(com.android.build.gradle.BaseExtension.class)
+
+        versionCodes.each { versionCode ->
+            def versionName = androidExtension.defaultConfig.versionName
+            def patchVersion = versionName.split("\\.")[2].toInteger()
+
+            def releaseTagParts = "0.2.0".split("\\.").collect { it.toInteger() }
+            releaseTagParts[2] += patchVersion - 4
+
+            if (releaseTagParts[2] > 9) {
+                releaseTagParts[2] = 0
+                releaseTagParts[1] += 1
+                if (releaseTagParts[1] > 9) {
+                    releaseTagParts[1] = 0
+                    releaseTagParts[0] += 1
+                }
+            }
+
+            def releaseTag = releaseTagParts.join(".")
+            def archivesBaseName = "Animity-v${versionName}"
+            def versionCodeNumber = androidExtension.defaultConfig.versionCode
+            def updateMessage = "New update available" // Replace with the actual update message
+
+            // Find the APK and calculate its size
+            def apkFile = file("${rootDir}/app/release/${archivesBaseName}-${versionCode}-release.apk")
+            def apkSize = apkFile.exists() ? String.format("%.2fMB", apkFile.length() / 1024.0 / 1024.0) : "Unknown size"
+
+            animityInfo[versionCode] = [
+                    "versionCode"   : versionCodeNumber,
+                    "versionName"   : versionName,
+                    "direct_link"   : "https://github.com/kl3jvi/animity/releases/download/${releaseTag}/${archivesBaseName}.apk",
+                    "update_message": updateMessage,
+                    "apkSize"       : apkSize
+            ]
+        }
+
+        def jsonData = ["Animity": animityInfo]
+        new File("${projectDir}/versionInfo.json").write(new JsonBuilder(jsonData).toPrettyString())
+    }
+}
+
+
+
+
 dependencies {
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation libs.firebase.firestore.ktx
+    implementation libs.androidx.media3.database
     def coordinatorLayoutVersion = "1.2.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     def androidCoreVersion = "1.9.0"
@@ -177,6 +240,8 @@ dependencies {
 
     def crashlyticsVersion = '18.3.5'
     implementation "com.google.firebase:firebase-crashlytics-ktx:$crashlyticsVersion"
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     def remoteConfig = "21.2.1"
     implementation "com.google.firebase:firebase-config-ktx:$remoteConfig"
@@ -278,7 +343,7 @@ dependencies {
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'io.github.azhon:appupdate:4.2.7'
 
     def work_version = "2.8.1"

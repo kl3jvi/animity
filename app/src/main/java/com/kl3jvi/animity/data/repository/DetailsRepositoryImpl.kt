@@ -51,7 +51,7 @@ class DetailsRepositoryImpl @Inject constructor(
             episodesWithTitle,
             episodeEntities ->
             episodeModels.mapIndexed { index, episodeModel ->
-                if (episodeModel.getEpisodeNumberOnly() == episodesWithTitle?.getOrNull(index)?.number) {
+                if (episodeModel.getEpisodeNumberAsString() == episodesWithTitle?.getOrNull(index)?.number) {
                     episodeModel.episodeName = episodesWithTitle[index].title
                     episodeModel.isFiller = episodesWithTitle[index].isFiller
                 } else {

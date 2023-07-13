@@ -40,6 +40,7 @@ class EpisodeChunkAdapter(
                 newEpisodeChunks
             )
         )
+
         episodeChunks = newEpisodeChunks
         diffResult.dispatchUpdatesTo(this)
     }

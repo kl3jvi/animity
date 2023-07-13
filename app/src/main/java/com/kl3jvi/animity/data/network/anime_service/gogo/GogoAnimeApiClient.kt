@@ -56,12 +56,37 @@ class GogoAnimeApiClient @Inject constructor(
         episodeUrl: String,
         extra: List<Any?>
     ): T {
+        val urls = mutableListOf<List<String>>()
+        // fetch the current episode
+        urls.add(getParsedUrls(header, episodeUrl))
+
+        // fetch and parse the current episode to get nextEpisodeUrl
         val episodeInfo = parser.parseMediaUrl(
             (animeService as GogoAnimeService).fetchEpisodeMediaUrl(
                 header,
                 episodeUrl
             ).string()
         )
+
+        // fetch the next episode if exists
+        if (episodeInfo.nextEpisodeUrl != null) {
+            urls.add(getParsedUrls(header, episodeInfo.nextEpisodeUrl.orEmpty()))
+        }
+
+        return urls as T
+    }
+
+    private suspend fun getParsedUrls(
+        header: Map<String, String>,
+        episodeUrl: String
+    ): List<String> {
+        val episodeInfo = parser.parseMediaUrl(
+            (animeService as GogoAnimeService).fetchEpisodeMediaUrl(
+                header,
+                episodeUrl
+            ).string()
+        )
+
         val id =
             Regex("id=([^&]+)").find(episodeInfo.vidCdnUrl.orEmpty())?.value?.removePrefix("id=")
 
@@ -74,14 +99,13 @@ class GogoAnimeApiClient @Inject constructor(
         )
 
         val streamUrl = "${Constants.REFERER}encrypt-ajax.php?$ajaxResponse"
-        val encryptedUrls = parser.parseEncryptedUrls(
+
+        return parser.parseEncryptedUrls(
             fetchM3u8PreProcessor(
                 header = header,
                 url = streamUrl
             ).string()
         )
-
-        return encryptedUrls as T
     }
 
     private suspend fun fetchM3u8Url(

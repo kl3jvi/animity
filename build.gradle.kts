@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.version
+
 plugins {
     id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
     id("org.jetbrains.kotlin.android") version "1.8.0" apply false
@@ -21,3 +24,5 @@ buildscript {
         classpath(libs.org.jetbrains.kotlin.kotlin.gradle.plugin)
     }
 }
+
+

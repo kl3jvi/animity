@@ -7,7 +7,6 @@ import com.kl3jvi.animity.domain.repositories.HomeRepository
 import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
@@ -19,6 +18,5 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val homeDataUiState = homeRepository.getHomeData()
-        .distinctUntilChanged()
         .mapToUiState(viewModelScope + ioDispatcher)
 }

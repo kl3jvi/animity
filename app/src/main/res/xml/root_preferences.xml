@@ -1,6 +1,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory app:title="@string/general">
+        <com.kl3jvi.animity.ui.widgets.CustomPreference
+            android:key="@string/check_for_update_key"
+            android:summary="Check for app updates to keep your app up to date with the latest features and improvements."
+            app:icon="@drawable/ic_downloading"
+            app:title="@string/check_for_update" />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/player_settings">
 
         <SeekBarPreference
@@ -28,7 +36,7 @@
             app:showSeekBarValue="true"
             app:title="Seek Backward Time" />
 
-        <SwitchPreference
+        <com.kl3jvi.animity.ui.widgets.ColorSwitchPreferenceCompat
             android:summary="Continues playback in a miniature player on top of other apps"
             app:defaultValue="false"
             app:key="@string/pip"
@@ -38,14 +46,15 @@
 
     <PreferenceCategory app:title="@string/provider_settings">
 
-        <DropDownPreference
+        <com.kl3jvi.animity.ui.widgets.SelectorPreference
             android:entries="@array/anime_provider_entries"
             android:entryValues="@array/anime_provider_values"
             android:key="@string/anime_provider"
             android:title="Select Anime Provider" />
 
-        <DropDownPreference
-            android:title="Select DNS"
+        <com.kl3jvi.animity.ui.widgets.SelectorPreference
+            android:summary="Useful for bypassing ISP blocks"
+            android:title="Dns over HTTPS"
             app:entries="@array/dns_entries"
             app:entryValues="@array/dns_values"
             app:key="@string/dns_provider" />
@@ -54,12 +63,11 @@
 
 
     <PreferenceCategory app:title="@string/donation">
-        <Preference
+        <com.kl3jvi.animity.ui.widgets.CustomPreference
             android:key="@string/donation"
             android:summary="Klejvi Kapaj"
             app:icon="@drawable/baseline_paid_24"
             app:title="@string/donate_creator" />
 
     </PreferenceCategory>
-
 </PreferenceScreen>

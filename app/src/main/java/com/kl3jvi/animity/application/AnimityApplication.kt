@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -23,8 +24,6 @@ import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-/* A class that extends `Context` and is the base class for those who need to maintain global
-application state. */
 @HiltAndroidApp
 class AnimityApplication : Application(), Configuration.Provider {
 
@@ -33,39 +32,69 @@ class AnimityApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        LibraryInitializer.initialize()
-        OneSignal.initWithContext(this)
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-        OneSignal.setAppId(Secrets.oneSignalKey)
+        initExternalLibs()
+        initOneSignal()
         createNotificationChannel()
         setupNotificationWorker()
+        disableNightMode()
+    }
 
+    private fun disableNightMode() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 
-    private fun setupNotificationWorker() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(false)
-            .build()
+    private fun initExternalLibs() {
+        LibraryInitializer.initialize()
+    }
 
+    private fun initOneSignal() {
+        OneSignal.initWithContext(this)
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.NONE, OneSignal.LOG_LEVEL.NONE)
+        OneSignal.setAppId(Secrets.oneSignalKey)
+    }
+
+    private fun setupNotificationWorker() {
         // Check if there is an existing periodic work request with the specified tag
         val workInfos = WorkManager.getInstance(this).getWorkInfosByTag(TAG_PERIODIC_WORK_REQUEST)
         val hasExistingWorkRequest = workInfos.get().isNotEmpty()
 
         // Schedule a new periodic work request only if there is no existing one
         if (!hasExistingWorkRequest) {
-            val work: PeriodicWorkRequest =
-                PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
-                    .setConstraints(constraints)
-                    .addTag(TAG_PERIODIC_WORK_REQUEST)
-                    .build()
+            val work = createPeriodicWorkerRequest(
+                Frequency(
+                    repeatInterval = 10,
+                    repeatIntervalTimeUnit = TimeUnit.MINUTES
+                )
+            )
 
-            WorkManager.getInstance(this).enqueue(work)
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                TAG_PERIODIC_WORK_REQUEST,
+                ExistingPeriodicWorkPolicy.KEEP,
+                work
+            )
         }
     }
+
+    private fun createPeriodicWorkerRequest(
+        frequency: Frequency
+    ): PeriodicWorkRequest {
+        val constraints = getWorkerConstrains()
+
+        return PeriodicWorkRequestBuilder<NotificationWorker>(
+            frequency.repeatInterval,
+            frequency.repeatIntervalTimeUnit
+        ).apply {
+            setConstraints(constraints)
+            addTag(TAG_PERIODIC_WORK_REQUEST)
+        }.build()
+    }
+
+    private fun getWorkerConstrains() = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresBatteryNotLow(false)
+        .build()
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -92,7 +121,6 @@ class AnimityApplication : Application(), Configuration.Provider {
 
     companion object {
         const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
-        const val ONESIGNAL_APP_ID = "f8d936f4-2d9f-4c53-9f85-e2d3789d9174"
         const val TAG_PERIODIC_WORK_REQUEST = "periodic_work_request"
     }
 }

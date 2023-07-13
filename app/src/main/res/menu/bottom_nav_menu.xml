@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_baseline_tv_24"
+        android:icon="@drawable/home_icon_selector"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_explore"
-        android:icon="@drawable/ic_outline_explore_24"
+        android:icon="@drawable/explore_icon_selector"
         android:title="@string/title_explore" />
 
     <item
         android:id="@+id/navigation_favorites"
-        android:icon="@drawable/ic_baseline_favorite_24"
+        android:icon="@drawable/favorite_icon_selector"
         android:title="@string/title_favorites" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/profile_icon_selector"
         android:title="@string/title_profile" />
 
 </menu>
