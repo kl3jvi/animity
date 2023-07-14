@@ -8,6 +8,8 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.kl3jvi.animity.data.network.UpdateClient
+import com.kl3jvi.animity.data.network.UpdateService
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
@@ -150,6 +152,16 @@ object NetworkModule {
     @IntoMap
     @StringKey("GOGO_ANIME")
     fun provideGogoAnimeApiClient(client: GogoAnimeApiClient): BaseClient = client
+
+    @Provides
+    @Singleton
+    fun provideUpdateClient(service: UpdateService): UpdateClient = UpdateClient(service)
+
+    @Provides
+    @Singleton
+    fun provideUpdateService(retrofit: Retrofit): UpdateService =
+        retrofit.create(UpdateService::class.java)
+
 
     @Provides
     @Singleton

@@ -1,15 +1,14 @@
-package com.kl3jvi.animity.data.network.anime_service
+package com.kl3jvi.animity.data.network
 
 import retrofit2.http.GET
 
 interface UpdateService {
-
-    @GET("https://raw.githubusercontent.com/kl3jvi/animity/main/update.json")
-    suspend fun getUpdateInfo()
+    @GET("https://raw.githubusercontent.com/kl3jvi/animity/main/app/versionInfo.json")
+    suspend fun getUpdateInfo(): VersionInfo
 }
 
 data class VersionInfo(
-    val Animity: AnimityInfo
+    val Animity: AnimityInfo?
 )
 
 data class AnimityInfo(

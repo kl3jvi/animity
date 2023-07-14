@@ -1,8 +1,11 @@
 package com.kl3jvi.animity.ui.fragments.settings
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.fragment.app.viewModels
 import androidx.preference.DropDownPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -16,6 +19,7 @@ import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.settings.toJson
 import com.kl3jvi.animity.ui.widgets.ColorSwitchPreferenceCompat
 import com.kl3jvi.animity.ui.widgets.CustomPreference
+import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.configurePreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -28,6 +32,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var analytics: Analytics
+
+    private val viewModel by viewModels<SettingsViewModel>()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -93,19 +99,37 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun checkUpdates(preference: Preference): Boolean {
-        val manager = DownloadManager.Builder(requireActivity()).run {
-            apkUrl("https://github.com/kl3jvi/animity/releases/download/v0.1.7/Animity-v1.1.2-universal-release.apk")
-            apkName("animity.apk")
-            smallIcon(R.mipmap.ic_launcher)
-            apkVersionCode(2)
-            apkVersionName("v0.0.18")
-            apkSize("6.42MB")
-            apkDescription("Improved searching and trying to add personalised content.")
-            apkVersionCode(BuildConfig.VERSION_CODE + 1)
-            build()
+        collect(viewModel.versionInfo) {
+            Log.e("URLJAAA", it.Animity?.universal?.direct_link.orEmpty())
+            it.Animity?.let {
+                val manager = DownloadManager.Builder(requireActivity()).run {
+                    apkUrl(it.universal.direct_link)
+                    apkName("animity.apk")
+                    smallIcon(R.mipmap.ic_launcher)
+                    apkVersionCode(it.universal.versionCode)
+                    apkVersionName(it.universal.versionName)
+                    apkSize(it.universal.apkSize)
+                    apkDescription(it.universal.update_message)
+                    apkVersionCode(BuildConfig.VERSION_CODE + 1)
+                }
+                if (it.universal.versionCode > BuildConfig.VERSION_CODE) {
+                    manager.build()
+                        .download()
+                } else showNoUpdate()
+            }
         }
-        manager.download()
         return true
+    }
+
+    private fun showNoUpdate() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Update Check")
+            .setMessage("No updates available at the moment.")
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+
     }
 
     companion object {

@@ -5,6 +5,7 @@ import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
+import com.kl3jvi.animity.data.network.UpdateClient
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
@@ -31,6 +32,7 @@ class DetailsRepositoryImpl @Inject constructor(
     private val episodeDao: EpisodeDao,
     private val settings: Settings,
     private val aniListGraphQlClient: AniListGraphQlClient,
+    private val updateClient: UpdateClient,
     override val parser: GoGoParser
 ) : DetailsRepository {
 
@@ -109,4 +111,6 @@ class DetailsRepositoryImpl @Inject constructor(
 
     private fun getEpisodesPercentage(malId: Int) = episodeDao.getEpisodesByAnime(malId = malId)
         .catch { emit(emptyList()) }
+
+    override fun getUpdateVersionInfo() = flow { emit(updateClient.getUpdateInfo()) }
 }

@@ -34,7 +34,7 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 33
-        versionCode 16
+        versionCode 15
         versionName "1.1.5"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -176,7 +176,7 @@ tasks.register('generateVersionJson') {
             animityInfo[versionCode] = [
                     "versionCode"   : versionCodeNumber,
                     "versionName"   : versionName,
-                    "direct_link"   : "https://github.com/kl3jvi/animity/releases/download/${releaseTag}/${archivesBaseName}.apk",
+                    "direct_link"   : "https://github.com/kl3jvi/animity/releases/download/v${releaseTag}/${archivesBaseName}-${versionCode}-release.apk",
                     "update_message": updateMessage,
                     "apkSize"       : apkSize
             ]
