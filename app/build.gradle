@@ -34,8 +34,8 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 33
-        versionCode 15
-        versionName "1.1.5"
+        versionCode 16
+        versionName "1.1.6"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
