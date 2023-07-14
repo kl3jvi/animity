@@ -29,7 +29,7 @@
             "apkSize": "Unknown size"
         },
         "universal": {
-            "versionCode": 16,
+            "versionCode": 17,
             "versionName": "1.1.6",
             "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.2/Animity-v1.1.6-universal-release.apk",
             "update_message": "New update available",
