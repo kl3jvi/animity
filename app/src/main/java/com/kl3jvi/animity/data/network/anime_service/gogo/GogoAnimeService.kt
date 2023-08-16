@@ -3,6 +3,7 @@ package com.kl3jvi.animity.data.network.anime_service.gogo
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
 import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
+import com.kl3jvi.animity.data.model.ui_models.MalSyncResponse
 import com.kl3jvi.animity.data.network.anime_service.base.BaseService
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -49,8 +50,8 @@ interface GogoAnimeService : BaseService {
         @Query("alias") alias: String
     ): ResponseBody
 
-    @GET("$MAL_SYNC_URL/{id}.json")
-    suspend fun getGogoUrlFromAniListId(
+    @GET("$MAL_SYNC_URL:{id}")
+    suspend fun getGoGoDetailedUrl(
         @Path("id") id: Int
     ): DetailedAnimeInfo
 
@@ -62,7 +63,7 @@ interface GogoAnimeService : BaseService {
 
     companion object {
         const val MAL_SYNC_URL =
-            "https://raw.githubusercontent.com/MALSync/MAL-Sync-Backup/master/data/anilist/anime"
+            "https://api.malsync.moe/mal/anime/anilist"
 
         const val EPISODE_TITLES =
             "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"

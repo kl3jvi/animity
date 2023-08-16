@@ -10,7 +10,9 @@ import com.kl3jvi.animity.data.paging.FavoritesPagingSource
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -32,6 +34,7 @@ class FavoriteRepositoryImpl @Inject constructor(
             pagingSourceFactory = { FavoritesPagingSource(aniListGraphQlClient, userId) }
         ).flow.flowOn(ioDispatcher)
     }
+
     companion object {
         const val NETWORK_PAGE_SIZE = 50
     }
