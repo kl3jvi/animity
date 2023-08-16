@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -44,20 +43,17 @@ class DetailsViewModel @Inject constructor(
     val animeMetaModel = MutableStateFlow(AniListMedia())
     val reverseState = MutableStateFlow(false)
 
-    val episodeList: StateFlow<EpisodeListUiState> =
-        animeMetaModel.distinctUntilChanged { old, _ ->
-            old != AniListMedia()
-        }.flatMapLatest { media ->
-            favoriteRepository.getGogoUrlFromAniListId(media.idAniList)
-                .asResult()
-                .flatMapLatest { result ->
-                    when (result) {
-                        is Result.Error -> flowOf(EpisodeListUiState.Error)
-                        Result.Loading -> flowOf(EpisodeListUiState.Loading)
-                        is Result.Success -> {
-                            detailsRepository.fetchEpisodeList(
-                                episodeUrl = result.data,
-                                malId = media.idMal.or1(),
+    val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
+        favoriteRepository.getGogoUrlFromAniListId(media.idAniList)
+            .asResult()
+            .flatMapLatest { result ->
+                when (result) {
+                    is Result.Error -> flowOf(EpisodeListUiState.Error)
+                    Result.Loading -> flowOf(EpisodeListUiState.Loading)
+                    is Result.Success -> {
+                        detailsRepository.fetchEpisodeList(
+                            episodeUrl = result.data,
+                            malId = media.idMal.or1(),
                                 extra = listOf(media.idMal)
                             ).map { episodes ->
                                 val episodesChunked = episodes.chunked(50)

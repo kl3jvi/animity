@@ -5,14 +5,14 @@
             "versionName": "1.1.7",
             "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-x86-release.apk",
             "update_message": "New update available",
-            "apkSize": "7.17MB"
+            "apkSize": "10.71MB"
         },
         "armeabi-v7a": {
             "versionCode": 17,
             "versionName": "1.1.7",
             "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-armeabi-v7a-release.apk",
             "update_message": "New update available",
-            "apkSize": "7.17MB"
+          "apkSize": "10.71MB"
         },
         "arm64_v8a": {
             "versionCode": 17,
@@ -26,14 +26,14 @@
             "versionName": "1.1.7",
             "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-x86_64-release.apk",
             "update_message": "New update available",
-            "apkSize": "7.17MB"
+          "apkSize": "10.71MB"
         },
         "universal": {
             "versionCode": 17,
             "versionName": "1.1.7",
             "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-universal-release.apk",
             "update_message": "New update available",
-            "apkSize": "7.17MB"
+          "apkSize": "10.71MB"
         }
     }
 }
