@@ -19,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.transition.MaterialFadeThrough
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.mapper.MediaStatusAnimity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -52,6 +53,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var bookMarkMenuItem: MenuItem
     private lateinit var title: String
     private var check by Delegates.notNull<Boolean>()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

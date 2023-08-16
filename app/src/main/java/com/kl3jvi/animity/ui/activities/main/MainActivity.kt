@@ -18,9 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.azhon.appupdate.manager.DownloadManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.utils.OnNeedToRequestPermissions
@@ -93,7 +91,6 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
             pushNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
     }
-
 
 
     /* Hiding the bottom navigation bar. */

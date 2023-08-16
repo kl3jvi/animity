@@ -121,7 +121,7 @@ class GogoAnimeApiClient @Inject constructor(
     ) = (animeService as GogoAnimeService).fetchM3u8PreProcessor(header, url)
 
     suspend fun getGogoUrlFromAniListId(id: Int) =
-        (animeService as GogoAnimeService).getGogoUrlFromAniListId(id)
+        (animeService as GogoAnimeService).getGoGoDetailedUrl(id)
 
     companion object {
         val keysAndIv: Keys = Keys(
