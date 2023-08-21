@@ -12,6 +12,7 @@
 <a href="https://github.com/kl3jvi/animity" alt="GitHub release"><img src="https://img.shields.io/github/stars/kl3jvi/animity" ></a>
 <a href="/LICENSE" alt="License: GPLv3"><img src="https://img.shields.io/badge/License-MIT-orange.svg"></a>
 <a href="https://github.com/kl3jvi/animity" alt="Build Status"><img src="https://img.shields.io/github/forks/kl3jvi/animity"></a>
+<a href="https://github.com/kl3jvi/animity/releases"><img src="https://img.shields.io/github/downloads/kl3jvi/animity/total.svg"></a>
 </p>
 <hr>
 
