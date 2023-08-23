@@ -28,7 +28,7 @@ import javax.inject.Singleton
 
 @Singleton
 class VideoDownloadManager @Inject constructor(
-    private val context: Context
+    private val context: Context,
 ) {
     companion object {
         private const val DOWNLOAD_NOTIFICATION_CHANNEL_ID = "download_channel"
@@ -59,7 +59,7 @@ class VideoDownloadManager @Inject constructor(
         downloadCache = SimpleCache(
             downloadDirectory,
             LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024 /* 100MB */),
-            databaseProvider
+            databaseProvider,
         )
 
         // Create download index.
@@ -71,7 +71,7 @@ class VideoDownloadManager @Inject constructor(
             databaseProvider,
             downloadCache,
             DefaultHttpDataSource.Factory(),
-            Executors.newFixedThreadPool(6)
+            Executors.newFixedThreadPool(6),
         )
     }
 
@@ -99,7 +99,7 @@ class VideoDownloadManager @Inject constructor(
             override fun onDownloadChanged(
                 downloadManager: DownloadManager,
                 download: Download,
-                finalException: Exception?
+                finalException: Exception?,
             ) {
                 if (download.request.uri.toString() == url) {
                     trySend(DownloadState.fromDownload(download))
@@ -108,7 +108,7 @@ class VideoDownloadManager @Inject constructor(
 
             override fun onDownloadRemoved(
                 downloadManager: DownloadManager,
-                download: Download
+                download: Download,
             ) {
                 if (download.request.uri.toString() == url) {
                     trySend(DownloadState.NONE)

@@ -3,7 +3,6 @@ package com.kl3jvi.animity.data.model.ui_models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class MalSyncResponse(
     @SerialName("aniId")
@@ -25,5 +24,5 @@ data class MalSyncResponse(
     @SerialName("type")
     val type: String,
     @SerialName("url")
-    val url: String
+    val url: String,
 )

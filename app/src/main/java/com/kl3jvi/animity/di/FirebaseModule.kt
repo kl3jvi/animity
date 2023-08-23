@@ -15,7 +15,7 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun provideChatManager(
-        firestore: FirebaseFirestore
+        firestore: FirebaseFirestore,
     ): ChatManager = ChatManager(firestore)
 
     @Provides

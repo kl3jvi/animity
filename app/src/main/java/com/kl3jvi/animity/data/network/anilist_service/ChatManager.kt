@@ -11,14 +11,14 @@ import com.google.firebase.firestore.QuerySnapshot
 import javax.inject.Inject
 
 class ChatManager @Inject constructor(
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
 ) {
 
     private val TAG = "ChatManager"
 
     fun createChat(
         user1Id: String,
-        user2Id: String
+        user2Id: String,
     ) {
         val sortedUserIds = listOf(user1Id, user2Id).sorted()
         val chatId = sortedUserIds.joinToString(separator = "")
@@ -26,7 +26,7 @@ class ChatManager @Inject constructor(
         val chat = hashMapOf(
             "users" to sortedUserIds,
             "sender" to user1Id,
-            "receipent" to user2Id
+            "receipent" to user2Id,
         )
 
         db.collection("chats").document(chatId).set(chat)
@@ -61,7 +61,7 @@ class ChatManager @Inject constructor(
         val message = hashMapOf(
             "sender" to senderId,
             "timestamp" to FieldValue.serverTimestamp(),
-            "content" to messageContent
+            "content" to messageContent,
         )
 
         db.collection("chats").document(chatId).collection("messages").add(message)
@@ -69,7 +69,7 @@ class ChatManager @Inject constructor(
 
     fun retrieveMessages(
         chatId: String,
-        onNewMessages: (List<Message>) -> Unit
+        onNewMessages: (List<Message>) -> Unit,
     ): ListenerRegistration {
         return db.collection("chats").document(chatId).collection("messages")
             .orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener { snapshot, e ->
@@ -93,12 +93,12 @@ class ChatManager @Inject constructor(
         val users: List<String>,
         val user1: Map<String, String>,
         val user2: Map<String, String>,
-        val messages: List<Message>?
+        val messages: List<Message>?,
     )
 
     data class Message(
         val sender: String,
         val timestamp: Timestamp,
-        val content: String
+        val content: String,
     )
 }

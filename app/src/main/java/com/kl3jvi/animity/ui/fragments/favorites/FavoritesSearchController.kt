@@ -19,7 +19,7 @@ class FavoritesSearchController(private val firebaseAnalytics: Analytics) :
      */
     override fun buildItemModel(
         currentPosition: Int,
-        item: AniListMedia?
+        item: AniListMedia?,
     ): EpoxyModel<*> {
         return CardAnimeBindingModel_().id(item?.idAniList).clickListener { view ->
             try {
@@ -28,11 +28,11 @@ class FavoritesSearchController(private val firebaseAnalytics: Analytics) :
                         FavoritesFragmentDirections.favoriteToDetails(item, 0)
                     view.findNavController().navigate(directions)
                     val params = mapOf(
-                        "genre" to item.genres.firstOrNull()?.name
+                        "genre" to item.genres.firstOrNull()?.name,
                     )
                     firebaseAnalytics.logEvent(
                         item.title.userPreferred.replace("[ ,:](?!_)".toRegex(), ""),
-                        params
+                        params,
                     )
                 }
             } catch (e: Exception) {
