@@ -1,9 +1,9 @@
 name: Send Notification on Release
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types:
+      - published
 
 jobs:
   notify:
