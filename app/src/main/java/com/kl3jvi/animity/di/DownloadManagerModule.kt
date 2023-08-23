@@ -37,10 +37,10 @@ object DownloadManagerModule {
     @Singleton
     @Provides
     fun provideVideoDownloadManager(
-        @ApplicationContext appContext: Context
+        @ApplicationContext appContext: Context,
     ): VideoDownloadManager {
         return VideoDownloadManager(
-            appContext
+            appContext,
         )
     }
 }

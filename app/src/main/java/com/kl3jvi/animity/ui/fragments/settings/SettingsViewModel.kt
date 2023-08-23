@@ -11,13 +11,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    detailsRepository: DetailsRepository
+    detailsRepository: DetailsRepository,
 ) : ViewModel() {
 
     val versionInfo = detailsRepository.getUpdateVersionInfo()
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
-            VersionInfo(null)
+            VersionInfo(null),
         )
 }

@@ -1,39 +1,39 @@
 {
     "Animity": {
         "x86": {
-            "versionCode": 17,
-            "versionName": "1.1.7",
-            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-x86-release.apk",
+            "versionCode": 18,
+            "versionName": "1.1.8",
+            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.4/Animity-v1.1.8-x86-release.apk",
             "update_message": "New update available",
-            "apkSize": "10.71MB"
+            "apkSize": "Unknown size"
         },
         "armeabi-v7a": {
-            "versionCode": 17,
-            "versionName": "1.1.7",
-            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-armeabi-v7a-release.apk",
+            "versionCode": 18,
+            "versionName": "1.1.8",
+            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.4/Animity-v1.1.8-armeabi-v7a-release.apk",
             "update_message": "New update available",
-          "apkSize": "10.71MB"
+            "apkSize": "Unknown size"
         },
         "arm64_v8a": {
-            "versionCode": 17,
-            "versionName": "1.1.7",
-            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-arm64_v8a-release.apk",
+            "versionCode": 18,
+            "versionName": "1.1.8",
+            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.4/Animity-v1.1.8-arm64_v8a-release.apk",
             "update_message": "New update available",
             "apkSize": "Unknown size"
         },
         "x86_64": {
-            "versionCode": 17,
-            "versionName": "1.1.7",
-            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-x86_64-release.apk",
+            "versionCode": 18,
+            "versionName": "1.1.8",
+            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.4/Animity-v1.1.8-x86_64-release.apk",
             "update_message": "New update available",
-          "apkSize": "10.71MB"
+            "apkSize": "Unknown size"
         },
         "universal": {
-            "versionCode": 17,
-            "versionName": "1.1.7",
-            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.3/Animity-v1.1.7-universal-release.apk",
+            "versionCode": 18,
+            "versionName": "1.1.8",
+            "direct_link": "https://github.com/kl3jvi/animity/releases/download/v0.2.4/Animity-v1.1.8-universal-release.apk",
             "update_message": "New update available",
-          "apkSize": "10.71MB"
+            "apkSize": "Unknown size"
         }
     }
 }

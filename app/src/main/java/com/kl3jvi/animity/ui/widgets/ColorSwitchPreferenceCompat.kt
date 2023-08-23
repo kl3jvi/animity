@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.TextView
-import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SwitchPreferenceCompat
 
@@ -17,9 +16,8 @@ class ColorSwitchPreferenceCompat(context: Context, attrs: AttributeSet) :
         val summaryView = holder.findViewById(android.R.id.summary) as TextView?
         summaryView?.setTextColor(
             ColorStateList.valueOf(
-                Color.parseColor("#A0AAB5")
-            )
+                Color.parseColor("#A0AAB5"),
+            ),
         ) // Set your desired color
     }
 }
-

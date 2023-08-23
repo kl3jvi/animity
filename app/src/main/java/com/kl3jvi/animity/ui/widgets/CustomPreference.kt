@@ -16,8 +16,8 @@ class CustomPreference(context: Context, attrs: AttributeSet) :
         val summaryView = holder.findViewById(android.R.id.summary) as TextView?
         summaryView?.setTextColor(
             ColorStateList.valueOf(
-                Color.parseColor("#A0AAB5")
-            )
+                Color.parseColor("#A0AAB5"),
+            ),
         ) // Set your desired color
     }
 }
