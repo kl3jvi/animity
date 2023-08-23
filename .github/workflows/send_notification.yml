@@ -1,9 +1,9 @@
 name: Send Notification on Release
 
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      - main
 
 jobs:
   notify:
@@ -18,5 +18,6 @@ jobs:
           "app_id": "${{ secrets.ONESIGNAL_APP_ID }}",
           "included_segments": ["All"],
           "headings": {"en": "New GitHub Release"},
-          "contents": {"en": "A new release has been published: ${{ github.event.release.name }}"}
+          "contents": {"en": "A new release has been published: ${{ github.event.release.name }}"},
+          "url": "${{ github.event.release.html_url }}"
         }'
