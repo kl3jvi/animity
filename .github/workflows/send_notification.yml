@@ -1,0 +1,22 @@
+name: Send Notification on Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send Notification
+      run: |
+        curl -X POST "https://onesignal.com/api/v1/notifications" \
+        -H "Authorization: Basic ${{ secrets.ONESIGNAL_API_KEY }}" \
+        -H "Content-Type: application/json" \
+        --data '{
+          "app_id": "${{ secrets.ONESIGNAL_APP_ID }}",
+          "included_segments": ["All"],
+          "headings": {"en": "New GitHub Release"},
+          "contents": {"en": "A new release has been published: ${{ github.event.release.name }}"}
+        }'
