@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class HeaderInterceptor @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val localStorage: PersistenceRepository
+    private val localStorage: PersistenceRepository,
 ) : Interceptor {
 
     /**
@@ -49,7 +49,7 @@ class HeaderInterceptor @Inject constructor(
                     loginRepository.refreshtoken(
                         clientId = anilistId.toInt(),
                         clientSecret = anilistSecret,
-                        refreshToken = refreshToken
+                        refreshToken = refreshToken,
                     )
                 }.getOrDefault(AuthResponse())
 

@@ -5,7 +5,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 
 class EpisodeChunkDiffCallback(
     private val oldChunks: List<List<EpisodeModel>>,
-    private val newChunks: List<List<EpisodeModel>>
+    private val newChunks: List<List<EpisodeModel>>,
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldChunks.size

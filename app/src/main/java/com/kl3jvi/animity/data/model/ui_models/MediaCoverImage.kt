@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class MediaCoverImage(
     val extraLarge: String = "",
     val large: String = "",
-    val medium: String = ""
+    val medium: String = "",
 ) : Parcelable

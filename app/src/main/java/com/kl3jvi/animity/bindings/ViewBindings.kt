@@ -15,6 +15,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kl3jvi.animity.di.GlideApp
+import com.kl3jvi.animity.ui.fragments.profile.my.ProfileType
 import io.noties.markwon.Markwon
 
 /**
@@ -90,4 +91,12 @@ fun ContentLoadingProgressBar.setAnimatedProgress(progress: Int) {
 fun TextView.setMarkdownText(string: String) {
     text = Markwon.create(this.context)
         .toMarkdown(string)
+}
+
+@BindingAdapter("profileTypeVisibility")
+fun View.profileBasedVisibility(profileType: ProfileType) {
+    isVisible = when (profileType) {
+        ProfileType.ME -> false
+        ProfileType.OTHER -> true
+    }
 }

@@ -53,7 +53,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
 
     private fun handleSettings() = findNavController().nav(
         R.id.navigation_home,
-        HomeFragmentDirections.toSettings()
+        HomeFragmentDirections.toSettings(),
     )
 
     private fun fetchHomeData() {
@@ -66,7 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
                     binding?.mainRv?.withModels {
                         buildHome(
                             result.data,
-                            viewModel.analytics
+                            viewModel.analytics,
                         )
                     }
                 }

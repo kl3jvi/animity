@@ -9,12 +9,12 @@ interface BaseClient {
     suspend fun <T> fetchEpisodeMediaUrl(
         header: Map<String, String>,
         episodeUrl: String,
-        extra: List<Any?> = emptyList()
+        extra: List<Any?> = emptyList(),
     ): T
 
     suspend fun <T> fetchEpisodeList(
         episodeUrl: String,
-        extra: List<Any?> = emptyList()
+        extra: List<Any?> = emptyList(),
     ): T
 
     suspend fun <T> getEpisodeTitles(id: Int): T

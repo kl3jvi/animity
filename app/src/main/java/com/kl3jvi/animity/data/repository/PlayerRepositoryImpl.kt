@@ -20,7 +20,7 @@ class PlayerRepositoryImpl @Inject constructor(
     settings: Settings,
     private val episodeDao: EpisodeDao,
     override val parser: GoGoParser,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : PlayerRepository {
 
     private val selectedAnimeProvider: BaseClient? =
@@ -33,12 +33,12 @@ class PlayerRepositoryImpl @Inject constructor(
     override fun getMediaUrl(
         header: Map<String, String>,
         url: String,
-        extra: List<Any?>
+        extra: List<Any?>,
     ): Flow<List<List<String>>> = flow {
         val result = selectedAnimeProvider?.fetchEpisodeMediaUrl(
             header,
             url,
-            extra
+            extra,
         ) ?: emptyList<List<String>>()
         emit(result)
     }.catch { it.printStackTrace() }

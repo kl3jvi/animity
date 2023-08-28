@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.fragments.search.SearchFragment">
 
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +16,7 @@
         android:background="@drawable/search_background"
         android:padding="5dp"
         android:visibility="visible">
+
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -38,23 +40,38 @@
 
                 <requestFocus />
 
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/search_loading_bar"
-                    style="@style/Widget.AppCompat.ProgressBar"
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="-65dp"
-                    android:foregroundTint="@color/white"
-                    android:progressTint="@color/white"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                </androidx.core.widget.ContentLoadingProgressBar>
             </androidx.appcompat.widget.SearchView>
         </FrameLayout>
     </FrameLayout>
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleGroup"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        app:singleSelection="true">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_anime"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            app:strokeWidth="2dp"
+            app:cornerRadius="@dimen/dp_10"
+            android:layout_height="wrap_content"
+            app:strokeColor="@drawable/button_stroke_selector"
+            android:text="Anime"
+            android:textColor="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_users"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            app:strokeWidth="2dp"
+            app:strokeColor="@drawable/button_stroke_selector"
+            app:cornerRadius="@dimen/dp_10"
+            android:layout_height="wrap_content"
+            android:text="Users"
+            android:textColor="@color/white" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
     <HorizontalScrollView
         android:id="@+id/sortView"
         android:layout_width="match_parent"

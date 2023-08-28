@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class ApiServiceSingleton @Inject constructor(
     baseUrlProvider: Provider<String>,
     private val okHttpClient: OkHttpClient,
-    private val settings: Settings
+    private val settings: Settings,
 ) {
 
     private var retrofit: Retrofit = createRetrofit(baseUrlProvider.get())

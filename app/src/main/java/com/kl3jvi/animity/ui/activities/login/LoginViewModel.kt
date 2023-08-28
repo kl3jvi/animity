@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     fun getAccessToken(
@@ -19,19 +19,19 @@ class LoginViewModel @Inject constructor(
         clientId: Int,
         clientSecret: String,
         redirectUri: String,
-        authorizationToken: String
+        authorizationToken: String,
     ) = loginRepository.getAccessToken(
         grantType,
         clientId,
         clientSecret,
         redirectUri,
-        authorizationToken
+        authorizationToken,
     )
 
     fun saveTokens(
         authToken: String,
         refreshToken: String,
-        expiration: Int
+        expiration: Int,
     ) = with(userRepository) {
         setBearerToken(authToken)
         setRefreshToken(refreshToken)

@@ -30,8 +30,7 @@
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
         android:fontFamily="sans-serif"
-
-        android:gravity="center"
+        android:gravity="start"
         android:maxWidth="450dp"
         android:maxLines="2"
         android:textColor="@android:color/white"
@@ -41,7 +40,7 @@
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toEndOf="@id/back"
         app:layout_constraintTop_toTopOf="@+id/back"
-        tools:text="Naruto Shippuden Episode 7" />
+        tools:text="Naruto Shippuden" />
 
     <TextView
         android:id="@+id/episodeNum"
@@ -49,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
-        android:gravity="center"
+        android:gravity="start"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
         app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
@@ -73,21 +72,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <ImageButton
-        android:id="@+id/exo_rew"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:contentDescription="@string/exo_controls_rewind_description"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:src="@drawable/ic_media_seek_backward"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/exo_pause"
@@ -107,6 +91,39 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
+        android:id="@+id/exo_rew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/exo_controls_rewind_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_media_seek_backward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/exo_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/exo_controls_next_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/round_skip_previous_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
         android:id="@+id/exo_ffwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,10 +135,26 @@
         android:src="@drawable/ic_forward_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <ImageButton
+        android:id="@+id/exo_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/exo_controls_rewind_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/round_skip_next_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/exo_track_selection_view"
@@ -195,6 +228,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:id="@+id/exo_timeline_gradient"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/linear_gradient_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.exoplayer2.ui.DefaultTimeBar
                 android:id="@+id/exo_progress"
                 android:layout_width="0dp"
@@ -203,7 +247,7 @@
                 android:layout_margin="@dimen/dp_10"
                 android:layout_weight="1"
                 android:contentDescription="@string/exo_controls_rewind_description"
-                app:bar_height="3dp"
+                app:bar_height="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/exo_duration"
                 app:layout_constraintStart_toEndOf="@+id/exo_position"
@@ -218,6 +262,7 @@
                 android:id="@+id/exo_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:includeFontPadding="false"
                 android:textColor="@color/media_player_controls"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -231,6 +276,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:includeFontPadding="false"
                 android:textColor="@color/media_player_controls"
                 android:textSize="14sp"
                 android:textStyle="bold"

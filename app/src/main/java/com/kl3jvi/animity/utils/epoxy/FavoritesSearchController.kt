@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.ui.fragments.favorites
+package com.kl3jvi.animity.utils.epoxy
 
 import androidx.navigation.findNavController
 import com.airbnb.epoxy.EpoxyModel
@@ -6,6 +6,7 @@ import com.airbnb.epoxy.paging3.PagingDataEpoxyController
 import com.kl3jvi.animity.CardAnimeBindingModel_
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.ui.fragments.favorites.FavoritesFragmentDirections
 import com.kl3jvi.animity.utils.logError
 
 class FavoritesSearchController(private val firebaseAnalytics: Analytics) :

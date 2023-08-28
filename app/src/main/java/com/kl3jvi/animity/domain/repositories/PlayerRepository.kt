@@ -11,7 +11,7 @@ interface PlayerRepository {
     fun getMediaUrl(
         header: Map<String, String> = getNetworkHeader(),
         url: String,
-        extra: List<Any?> = emptyList()
+        extra: List<Any?> = emptyList(),
     ): Flow<List<List<String>>>
 
     suspend fun upsertEpisode(episodeEntity: EpisodeEntity)

@@ -13,7 +13,7 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 @Database(
     entities = [AnimeMetaModel::class, EpisodeEntity::class],
     version = 5,
-    exportSchema = true
+    exportSchema = true,
 //    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
 @TypeConverters(Converters::class)

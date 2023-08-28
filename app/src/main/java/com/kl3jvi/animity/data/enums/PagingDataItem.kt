@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.paging
+package com.kl3jvi.animity.data.enums
 
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.model.ui_models.User

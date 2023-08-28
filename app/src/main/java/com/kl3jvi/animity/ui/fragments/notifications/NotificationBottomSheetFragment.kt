@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
+import com.kl3jvi.animity.data.enums.NotificationType
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
-import com.kl3jvi.animity.data.paging.NotificationType
 import com.kl3jvi.animity.databinding.NotificationsBottomSheetBinding
 import com.kl3jvi.animity.ui.fragments.StateManager
 import com.kl3jvi.animity.ui.fragments.home.HomeFragmentDirections
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collectLatest
+import com.kl3jvi.animity.utils.epoxy.NotificationsController
 import com.kl3jvi.animity.utils.or1
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -34,12 +36,12 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment(), StateManage
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = NotificationsBottomSheetBinding.inflate(
             layoutInflater,
             container,
-            false
+            false,
         )
         return binding?.root!!
     }
@@ -70,7 +72,7 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment(), StateManage
                 NotificationType.Airing -> {
                     val directions = HomeFragmentDirections.toDetails(
                         item?.media ?: AniListMedia(),
-                        item?.episode.or1()
+                        item?.episode.or1(),
                     )
                     findNavController().navigate(directions)
                 }
@@ -113,5 +115,5 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment(), StateManage
         binding?.notificationsRv?.isVisible = !show
     }
 
-    override fun handleError(e: Throwable) = Unit
+    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
 }

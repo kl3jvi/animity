@@ -8,7 +8,7 @@ import java.util.Locale
 fun ApolloResponse<SaveMediaMutation.Data>.convert(): ChangedMediaResponse {
     return ChangedMediaResponse(
         this.data?.saveMedia?.id,
-        MediaStatusAnimity.stringToMediaListStatus(this.data?.saveMedia?.status?.rawValue)
+        MediaStatusAnimity.stringToMediaListStatus(this.data?.saveMedia?.status?.rawValue),
     )
 }
 
@@ -19,7 +19,8 @@ enum class MediaStatusAnimity {
     PAUSED,
     PLANNING,
     REPEATING,
-    NOTHING;
+    NOTHING,
+    ;
 
     companion object {
         fun stringToMediaListStatus(passedString: String?): MediaStatusAnimity {

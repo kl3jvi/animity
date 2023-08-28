@@ -51,7 +51,7 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: Analytics): List<CardAn
 
                 firebaseAnalytics.logEvent(
                     media.title.userPreferred.replace("[ ,:](?!_)".toRegex(), ""),
-                    mapOf("genre" to media.genres.firstOrNull()?.name.orEmpty())
+                    mapOf("genre" to media.genres.firstOrNull()?.name.orEmpty()),
                 )
             }.animeInfo(media)
     }

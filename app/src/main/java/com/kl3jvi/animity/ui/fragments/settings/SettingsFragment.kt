@@ -47,27 +47,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun setupPreferences() {
         configurePreference<DropDownPreference>(
             R.string.anime_provider,
-            settings.preferences
+            settings.preferences,
         ) { summary = value.toJson()?.removePrefix("\"")?.removeSuffix("\"") }
 
         configurePreference<DropDownPreference>(
             R.string.dns_provider,
-            settings.preferences
+            settings.preferences,
         ) { entries = DnsTypes.dnsEntries }
 
         configurePreference<SeekBarPreference>(
             R.string.skip_delay,
-            settings.preferences
+            settings.preferences,
         ) { seekBarIncrement = 1000 }
 
         configurePreference<SeekBarPreference>(
             R.string.forward_seek,
-            settings.preferences
+            settings.preferences,
         ) { seekBarIncrement = 1000 }
 
         configurePreference<SeekBarPreference>(
             R.string.backward_seek,
-            settings.preferences
+            settings.preferences,
         ) { seekBarIncrement = 1000 }
 
         configurePreference<ColorSwitchPreferenceCompat>(
@@ -76,7 +76,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             clickListener = {
                 analytics.setUserProperty("PIP", "clicked")
                 true
-            }
+            },
         )
 
         configurePreference<CustomPreference>(
@@ -85,16 +85,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             clickListener = {
                 CustomTabsIntent.Builder()
                     .build()
-                    .launchUrl(requireContext(), Uri.parse(PAY_PAY_URL))
+                    .launchUrl(requireContext(), Uri.parse(KOFI_URL))
                 analytics.setUserProperty("Donation", "clicked")
                 true
-            }
+            },
         )
 
         configurePreference<CustomPreference>(
             R.string.check_for_update_key,
             settings.preferences,
-            ::checkUpdates
+            ::checkUpdates,
         )
     }
 
@@ -115,7 +115,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 if (it.universal.versionCode > BuildConfig.VERSION_CODE) {
                     manager.build()
                         .download()
-                } else showNoUpdate()
+                } else {
+                    showNoUpdate()
+                }
             }
         }
         return true
@@ -129,10 +131,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 dialog.dismiss()
             }
             .show()
-
     }
 
     companion object {
-        const val PAY_PAY_URL = "https://paypal.me/kl3jvi"
+        const val KOFI_URL = "https://ko-fi.com/kl3jvi?anilistId=1"
     }
 }

@@ -14,7 +14,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     homeRepository: HomeRepository,
     val analytics: Analytics,
-    ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val homeDataUiState = homeRepository.getHomeData()

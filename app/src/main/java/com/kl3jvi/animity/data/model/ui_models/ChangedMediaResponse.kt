@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ChangedMediaResponse(
     val id: Int?,
-    val status: MediaStatusAnimity?
+    val status: MediaStatusAnimity?,
 ) : Parcelable

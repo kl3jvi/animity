@@ -16,9 +16,11 @@ fun ApolloResponse<UserQuery.Data>.convert(): User {
         userData.about.orEmpty(),
         UserAvatar(
             userData.avatar?.large.orEmpty(),
-            userData.avatar?.medium.orEmpty()
+            userData.avatar?.medium.orEmpty(),
         ),
-        userData.bannerImage.orEmpty()
+        userData.bannerImage.orEmpty(),
+        userData.isFollowing ?: false,
+        userData.isFollower ?: false,
     )
 }
 
@@ -26,7 +28,7 @@ fun ApolloResponse<AnimeListCollectionQuery.Data>.convert(): List<ProfileRow> {
     return this.data?.media?.lists?.mapNotNull {
         ProfileRow(
             it?.name.orEmpty(),
-            it?.entries.convert()
+            it?.entries.convert(),
         )
     } ?: emptyList()
 }

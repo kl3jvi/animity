@@ -22,5 +22,5 @@ data class AniListAuth(
     @SerializedName("redirect_uri")
     val redirect_uri: String,
     @SerializedName("code")
-    val code: String
+    val code: String,
 )

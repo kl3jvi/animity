@@ -65,26 +65,26 @@ class AnimityApplication : Application(), Configuration.Provider {
             val work = createPeriodicWorkerRequest(
                 Frequency(
                     repeatInterval = 10,
-                    repeatIntervalTimeUnit = TimeUnit.MINUTES
-                )
+                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                ),
             )
 
             WorkManager.getInstance(this).enqueueUniquePeriodicWork(
                 TAG_PERIODIC_WORK_REQUEST,
                 ExistingPeriodicWorkPolicy.KEEP,
-                work
+                work,
             )
         }
     }
 
     private fun createPeriodicWorkerRequest(
-        frequency: Frequency
+        frequency: Frequency,
     ): PeriodicWorkRequest {
         val constraints = getWorkerConstrains()
 
         return PeriodicWorkRequestBuilder<NotificationWorker>(
             frequency.repeatInterval,
-            frequency.repeatIntervalTimeUnit
+            frequency.repeatIntervalTimeUnit,
         ).apply {
             setConstraints(constraints)
             addTag(TAG_PERIODIC_WORK_REQUEST)

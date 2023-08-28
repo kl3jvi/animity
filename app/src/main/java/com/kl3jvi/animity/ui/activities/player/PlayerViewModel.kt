@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
-import com.kl3jvi.animity.download.VideoDownloadManager
 import com.kl3jvi.animity.utils.Constants.Companion.Empty
 import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
@@ -28,7 +26,6 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val playerRepository: PlayerRepository,
     private val ioDispatcher: CoroutineDispatcher,
-    private val videoDownloadManager: VideoDownloadManager
 ) : ViewModel() {
 
     var episodeUrl = MutableStateFlow(String.Empty)
@@ -53,7 +50,7 @@ class PlayerViewModel @Inject constructor(
     val episodeMediaUrl = episodeUrl.flatMapLatest {
         val mapToUiState = playerRepository.getMediaUrl(
             url = it,
-            extra = listOf("naruto")
+            extra = listOf("naruto"),
         ).mapToUiState(viewModelScope + ioDispatcher)
         mapToUiState
     } // List of episodes which have a list of qualities
@@ -68,22 +65,5 @@ class PlayerViewModel @Inject constructor(
                 _playBackPosition.value = content.watchedDuration
             }
         }
-    }
-
-    private val _downloadState =
-        MutableStateFlow<VideoDownloadManager.DownloadState>(VideoDownloadManager.DownloadState.NONE)
-    val downloadState: StateFlow<VideoDownloadManager.DownloadState> = _downloadState
-
-    fun startDownload(url: String) = viewModelScope.launch(ioDispatcher) {
-        videoDownloadManager.startDownload(url)
-
-        videoDownloadManager.getDownloadState(url)
-            .collect { downloadState ->
-                _downloadState.emit(downloadState)
-            }
-    }
-
-    fun cancelDownload(id: String) = viewModelScope.launch(ioDispatcher) {
-        videoDownloadManager.cancelDownload(id)
     }
 }

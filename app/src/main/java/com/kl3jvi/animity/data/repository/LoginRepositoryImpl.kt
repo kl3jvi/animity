@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
     private val authClient: AuthClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : LoginRepository {
 
     override fun getAccessToken(
@@ -18,7 +18,7 @@ class LoginRepositoryImpl @Inject constructor(
         clientId: Int,
         clientSecret: String,
         redirectUri: String,
-        code: String
+        code: String,
     ) = flow {
         emit(
             authClient.getAccessToken(
@@ -26,15 +26,15 @@ class LoginRepositoryImpl @Inject constructor(
                 clientId,
                 clientSecret,
                 redirectUri,
-                code
-            )
+                code,
+            ),
         )
     }.flowOn(ioDispatcher)
 
     override suspend fun refreshtoken(
         clientId: Int,
         clientSecret: String,
-        refreshToken: String
+        refreshToken: String,
     ): Result<AuthResponse> {
         return authClient.refreshToken(clientId, clientSecret, refreshToken)
     }

@@ -15,7 +15,7 @@ private const val ASPECT_RATIO_WIDTH = 13f
 class FeedItem @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    @AttrRes defStyleAttr: Int = 0
+    @AttrRes defStyleAttr: Int = 0,
 ) : ShapeableImageView(context, attrs, defStyleAttr) {
 
     private var orientation: Int = LinearLayout.HORIZONTAL

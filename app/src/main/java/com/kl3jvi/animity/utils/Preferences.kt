@@ -11,7 +11,7 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
     @StringRes preferenceId: Int,
     preferences: SharedPreferences,
     clickListener: Preference.OnPreferenceClickListener? = null,
-    block: T.() -> Unit = {}
+    block: T.() -> Unit = {},
 ): T {
     val preference = requirePreference<T>(preferenceId)
     preference.block()
@@ -31,5 +31,5 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
 }
 
 private fun <T : Preference> PreferenceFragmentCompat.requirePreference(
-    @StringRes preferenceId: Int
+    @StringRes preferenceId: Int,
 ) = requireNotNull(findPreference<T>(getPreferenceKey(preferenceId)))

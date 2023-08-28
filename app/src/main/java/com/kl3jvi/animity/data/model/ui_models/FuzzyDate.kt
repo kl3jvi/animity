@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class FuzzyDate(
     val year: Int? = null,
     val month: Int? = null,
-    val day: Int? = null
+    val day: Int? = null,
 ) : Parcelable {
     private fun isNull(): Boolean {
         return year == null || month == null || day == null

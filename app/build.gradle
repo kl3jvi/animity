@@ -34,8 +34,8 @@ android {
         applicationId "com.kl3jvi.animity"
         minSdk 21
         targetSdk 33
-        versionCode 17
-        versionName "1.1.7"
+        versionCode 18
+        versionName "1.1.8"
         archivesBaseName = "Animity-v$versionName"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -186,8 +186,6 @@ tasks.register('generateVersionJson') {
         new File("${projectDir}/versionInfo.json").write(new JsonBuilder(jsonData).toPrettyString())
     }
 }
-
-
 
 
 dependencies {

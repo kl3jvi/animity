@@ -20,5 +20,5 @@ data class Review(
     val createdAt: Int = 0,
     val updatedAt: Int = 0,
     val user: User = User(),
-    val aniListMedia: AniListMedia = AniListMedia()
+    val aniListMedia: AniListMedia = AniListMedia(),
 ) : Parcelable

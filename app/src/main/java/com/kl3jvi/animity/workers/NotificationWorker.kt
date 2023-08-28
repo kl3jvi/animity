@@ -16,10 +16,10 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.enums.PagingDataItem
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.model.ui_models.Notification
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
-import com.kl3jvi.animity.data.paging.PagingDataItem
 import com.kl3jvi.animity.ui.activities.main.MainActivity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -32,7 +32,7 @@ class NotificationWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val ioDispatcher: CoroutineDispatcher,
     private val aniListGraphQlClient: AniListGraphQlClient,
-    private val preferences: SharedPreferences
+    private val preferences: SharedPreferences,
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result = withContext(ioDispatcher) {
@@ -81,7 +81,7 @@ class NotificationWorker @AssistedInject constructor(
                 "desiredPosition" to notification.episode
             } else {
                 "desiredPosition" to -1
-            }
+            },
         )
 
         return NavDeepLinkBuilder(applicationContext)
@@ -96,7 +96,7 @@ class NotificationWorker @AssistedInject constructor(
         NotificationManagerCompat.from(applicationContext).apply {
             if (ContextCompat.checkSelfPermission(
                     applicationContext,
-                    Manifest.permission.POST_NOTIFICATIONS
+                    Manifest.permission.POST_NOTIFICATIONS,
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 notify(NOTIFICATION_ID, builder.build())

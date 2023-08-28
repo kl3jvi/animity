@@ -4,5 +4,5 @@ data class NotificationData(
     val airingNotifications: List<Notification>,
     val followingNotifications: List<Notification>,
     val likeNotification: List<Notification>,
-    val messageNotifications: List<Notification>
+    val messageNotifications: List<Notification>,
 )

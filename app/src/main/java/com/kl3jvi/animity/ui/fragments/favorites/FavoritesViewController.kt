@@ -13,7 +13,7 @@ fun EpoxyController.buildFavorites(data: List<AniListMedia>) {
                 val directions =
                     FavoritesFragmentDirections.favoriteToDetails(
                         media,
-                        0
+                        0,
                     )
                 view.findNavController().navigate(directions)
             }

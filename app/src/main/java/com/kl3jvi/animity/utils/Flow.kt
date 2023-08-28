@@ -132,13 +132,13 @@ fun <T, R> Flow<T>.ifAnyChanged(transform: (T) -> Array<R>): Flow<T> {
 @FlowPreview
 fun <T> providerFlow(
     settings: Settings,
-    block: suspend FlowCollector<T>.(AnimeTypes) -> Unit
+    block: suspend FlowCollector<T>.(AnimeTypes) -> Unit,
 ) = SafeFlow(block, settings)
 
 @FlowPreview
 class SafeFlow<T>(
     private val block: suspend FlowCollector<T>.(AnimeTypes) -> Unit,
-    private val settings: Settings
+    private val settings: Settings,
 ) : AbstractFlow<T>() {
     override suspend fun collectSafely(collector: FlowCollector<T>) {
         collector.block(settings.selectedProvider)
@@ -147,7 +147,7 @@ class SafeFlow<T>(
 
 fun <T> LifecycleOwner.collect(
     flow: Flow<T>,
-    collector: suspend (T) -> Unit
+    collector: suspend (T) -> Unit,
 ): Job {
     return lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -165,7 +165,7 @@ fun <T> LifecycleOwner.collect(
  */
 fun <T> LifecycleOwner.collectAll(
     vararg flows: Flow<T>,
-    collector: suspend (T) -> Unit
+    collector: suspend (T) -> Unit,
 ) {
     lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -182,7 +182,7 @@ fun <T> LifecycleOwner.collectAll(
 
 fun <T> Fragment.collectLatest(
     flow: Flow<T>,
-    collector: suspend (T) -> Unit
+    collector: suspend (T) -> Unit,
 ) {
     viewLifecycleOwner.lifecycleScope.launchWhenStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {

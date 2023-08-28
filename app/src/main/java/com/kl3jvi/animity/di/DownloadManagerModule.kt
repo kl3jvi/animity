@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import com.kl3jvi.animity.application.AnimityApplication.Companion.ANIMITY_NOTIFICATIONS_CHANNEL_ID
-import com.kl3jvi.animity.download.VideoDownloadManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,15 +31,5 @@ object DownloadManagerModule {
     @Provides
     fun provideNotificationBuilder(@ApplicationContext context: Context): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, ANIMITY_NOTIFICATIONS_CHANNEL_ID)
-    }
-
-    @Singleton
-    @Provides
-    fun provideVideoDownloadManager(
-        @ApplicationContext appContext: Context,
-    ): VideoDownloadManager {
-        return VideoDownloadManager(
-            appContext,
-        )
     }
 }

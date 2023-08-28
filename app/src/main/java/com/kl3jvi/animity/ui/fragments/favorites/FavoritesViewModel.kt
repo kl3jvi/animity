@@ -22,7 +22,7 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val favoriteRepository: FavoriteRepository,
     private val localStorage: PersistenceRepository,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private var _favoritesList =
         MutableStateFlow<UiResult<PagingData<AniListMedia>>>(UiResult.Loading)

@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
 class GoGoParser @Inject constructor(
-    private val preferences: PersistenceRepository
+    private val preferences: PersistenceRepository,
 ) : BaseParser() {
 
     override val name: String
@@ -31,7 +31,7 @@ class GoGoParser @Inject constructor(
             EpisodeModel(
                 episodeNumber = episodeNumber ?: "",
                 episodeType = episodeType ?: "",
-                episodeUrl = episodeUrl ?: ""
+                episodeUrl = episodeUrl ?: "",
             )
         }
     }
@@ -46,7 +46,7 @@ class GoGoParser @Inject constructor(
         return AnimeInfoModel(
             id = id,
             alias = alias,
-            endEpisode = endEpisode
+            endEpisode = endEpisode,
         )
     }
 
@@ -65,7 +65,7 @@ class GoGoParser @Inject constructor(
         return EpisodeInfo(
             nextEpisodeUrl = nextEpisodeUrl,
             previousEpisodeUrl = previousEpisodeUrl,
-            vidCdnUrl = mediaUrl
+            vidCdnUrl = mediaUrl,
         )
     }
 
@@ -77,12 +77,12 @@ class GoGoParser @Inject constructor(
                 decryptAES(
                     value2,
                     preferences.key.toString(),
-                    preferences.iv.toString()
+                    preferences.iv.toString(),
                 ).replace("\t", "").substringAfter(id)
             val encrypted = encryptAes(
                 id,
                 preferences.key.toString(),
-                preferences.iv.toString()
+                preferences.iv.toString(),
             )
             "id=$encrypted$decrypt&alias=$id"
         } catch (e: java.lang.Exception) {
@@ -100,7 +100,7 @@ class GoGoParser @Inject constructor(
         } else {
             android.util.Base64.encodeToString(
                 cipher.doFinal(text.toByteArray()),
-                android.util.Base64.DEFAULT
+                android.util.Base64.DEFAULT,
             )
         }
     }
@@ -117,9 +117,9 @@ class GoGoParser @Inject constructor(
                 cipher.doFinal(
                     android.util.Base64.decode(
                         encrypted,
-                        android.util.Base64.URL_SAFE
-                    )
-                )
+                        android.util.Base64.URL_SAFE,
+                    ),
+                ),
             )
         }
     }
@@ -130,10 +130,10 @@ class GoGoParser @Inject constructor(
         val decryptedData = decryptAES(
             data,
             preferences.secondKey.toString(),
-            preferences.iv.toString()
+            preferences.iv.toString(),
         ).replace(
             """o"<P{#meme":""",
-            """e":[{"file":"""
+            """e":[{"file":""",
         )
         val res = JSONObject(decryptedData).getJSONArray("source")
         for (i in 0 until res.length()) {

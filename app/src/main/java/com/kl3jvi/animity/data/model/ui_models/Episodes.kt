@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Episodes(
     val title: String? = "",
-    val thumbnail: String? = ""
+    val thumbnail: String? = "",
 ) : Parcelable

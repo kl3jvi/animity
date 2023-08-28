@@ -33,7 +33,7 @@ class DetailsRepositoryImpl @Inject constructor(
     private val settings: Settings,
     private val aniListGraphQlClient: AniListGraphQlClient,
     private val updateClient: UpdateClient,
-    override val parser: GoGoParser
+    override val parser: GoGoParser,
 ) : DetailsRepository {
 
     private val selectedAnimeProvider: BaseClient? =
@@ -43,25 +43,15 @@ class DetailsRepositoryImpl @Inject constructor(
         header: Map<String, String>,
         extra: List<Any?>,
         malId: Int,
-        episodeUrl: String
+        episodeUrl: String,
     ): Flow<List<EpisodeModel>> {
         return combine(
             getListOfEpisodes(episodeUrl, extra),
-            getEpisodeTitles(malId),
-            getEpisodesPercentage(malId)
+            getEpisodesPercentage(malId),
         ) { episodeModels,
-            episodesWithTitle,
-            episodeEntities ->
-            episodeModels.mapIndexed { index, episodeModel ->
-                if (episodeModel.getEpisodeNumberAsString() == episodesWithTitle?.getOrNull(index)?.number) {
-                    episodeModel.episodeName = episodesWithTitle[index].title
-                    episodeModel.isFiller = episodesWithTitle[index].isFiller
-                } else {
-                    episodeModel.episodeName = ""
-                    episodeModel.isFiller = false
-                }
-                episodeModel
-            }.map { episode ->
+            episodeEntities,
+            ->
+            episodeModels.map { episode ->
                 val contentEpisode =
                     episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
                 if (contentEpisode != null) {
@@ -78,7 +68,7 @@ class DetailsRepositoryImpl @Inject constructor(
 
     private fun getListOfEpisodes(
         episodeUrl: String,
-        extra: List<Any?>
+        extra: List<Any?>,
     ) = providerFlow(settings) { provider ->
         when (provider) {
             AnimeTypes.GOGO_ANIME -> {

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class PersistenceRepositoryImpl @Inject constructor(
     private val episodeDao: EpisodeDao,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
 ) : PersistenceRepository {
 
     override suspend fun insertEpisode(episodeEntity: EpisodeEntity) =

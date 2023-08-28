@@ -18,7 +18,7 @@ class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     profileRepository: ProfileRepository,
     localStorage: PersistenceRepository,
-    ioDispatcher: CoroutineDispatcher
+    ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val profileData = profileRepository

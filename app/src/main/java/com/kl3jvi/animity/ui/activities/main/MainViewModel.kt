@@ -23,14 +23,14 @@ class MainViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
     private val userRepository: UserRepository,
     private val localStorage: PersistenceRepository,
-    network: NetworkMonitor
+    network: NetworkMonitor,
 ) : ViewModel() {
 
     val isConnectedToNetwork = network.isConnected
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
-            false
+            false,
         )
 
     init {

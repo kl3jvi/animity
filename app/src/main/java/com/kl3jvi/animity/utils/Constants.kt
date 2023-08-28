@@ -70,7 +70,7 @@ class Constants {
                     "sec-ch-ua-mobile" to "?0",
                     "sec-fetch-user" to "?1",
                     "sec-fetch-mode" to "navigate",
-                    "sec-fetch-dest" to "video"
+                    "sec-fetch-dest" to "video",
                 ) + getNetworkHeader() // Adds the headers from the provider, e.g Authorization
                 setDefaultRequestProperties(headers)
             }

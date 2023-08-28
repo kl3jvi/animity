@@ -8,12 +8,12 @@ interface Authenticator {
         clientId: Int,
         clientSecret: String,
         redirectUri: String,
-        code: String
+        code: String,
     ): Result<AuthResponse>
 
     suspend fun refreshToken(
         clientId: Int,
         clientSecret: String,
-        refreshToken: String
+        refreshToken: String,
     ): Result<AuthResponse>
 }

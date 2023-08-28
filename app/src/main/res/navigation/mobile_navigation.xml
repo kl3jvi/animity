@@ -79,6 +79,23 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/toTheirProfile"
+            app:destination="@id/theirProfile" >
+            <argument
+                android:name="user"
+                app:argType="com.kl3jvi.animity.data.model.ui_models.User" />
+        </action>
+
+        <action
+            android:id="@+id/toMyProfile"
+            app:destination="@id/navigation_profile" >
+            <argument
+                android:name="user"
+                app:argType="com.kl3jvi.animity.data.model.ui_models.User" />
+        </action>
+
+
     </fragment>
 
     <fragment

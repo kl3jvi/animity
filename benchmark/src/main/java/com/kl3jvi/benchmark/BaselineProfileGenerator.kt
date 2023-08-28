@@ -21,7 +21,7 @@ class StartupBenchmark {
         packageName = "com.kl3jvi.animity",
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
-        startupMode = StartupMode.COLD
+        startupMode = StartupMode.COLD,
     ) {
         pressHome()
         startActivityAndWait()

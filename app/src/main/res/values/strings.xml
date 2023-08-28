@@ -137,6 +137,8 @@
     <string name="general">General</string>
     <string name="check_for_update">Check for Updates…</string>
     <string name="check_for_update_key">check_for_update_key</string>
+    <string name="open_counter">open_count_donate</string>
+    <string name="maybe_later">maybe_later_dialog</string>
 
 
 </resources>

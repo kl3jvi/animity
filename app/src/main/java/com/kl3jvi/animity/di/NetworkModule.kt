@@ -52,13 +52,13 @@ object NetworkModule {
     @Apollo
     fun provideOkHttpClient(
         localStorage: PersistenceRepository,
-        loginRepository: LoginRepository
+        loginRepository: LoginRepository,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
         .addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
-            }
+            },
         )
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
@@ -69,12 +69,12 @@ object NetworkModule {
     @Singleton
     @RetrofitClient
     fun provideRetrofitOkHttpClient(
-        settings: Settings
+        settings: Settings,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC
-            }
+            },
         )
         .setGenericDns(settings)
         .connectTimeout(20, TimeUnit.SECONDS)
@@ -86,7 +86,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(
         @RetrofitClient okHttpClient: OkHttpClient,
-        @Named("base-url") url: String
+        @Named("base-url") url: String,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(url)
         .client(okHttpClient)
@@ -100,7 +100,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideApolloClient(
-        @Apollo okHttpClient: OkHttpClient
+        @Apollo okHttpClient: OkHttpClient,
     ): ApolloClient = ApolloClient.Builder()
         .serverUrl(ANILIST_API_URL)
         .okHttpClient(okHttpClient)
@@ -111,13 +111,13 @@ object NetworkModule {
     fun provideApiServiceSingleton(
         @Named("base-url") baseUrlProvider: Provider<String>,
         @RetrofitClient okHttpClient: OkHttpClient,
-        settings: Settings
+        settings: Settings,
     ) = ApiServiceSingleton(baseUrlProvider, okHttpClient, settings)
 
     @Provides
     @Singleton
     fun provideAniListGraphQlClient(
-        apolloClient: ApolloClient
+        apolloClient: ApolloClient,
     ): AniListGraphQlClient = AniListGraphQlClient(apolloClient)
 
     @Singleton
@@ -128,7 +128,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideChucker(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): ChuckerInterceptor = ChuckerInterceptor.Builder(context)
         .collector(ChuckerCollector(context))
         .maxContentLength(250000L)
@@ -139,7 +139,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideConnectivityManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -162,7 +162,6 @@ object NetworkModule {
     fun provideUpdateService(retrofit: Retrofit): UpdateService =
         retrofit.create(UpdateService::class.java)
 
-
     @Provides
     @Singleton
     @IntoMap
@@ -178,6 +177,6 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideFirebaseAnalytics(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ) = FirebaseAnalytics.getInstance(context)
 }

@@ -15,7 +15,7 @@ import com.kl3jvi.animity.R
 class DoubleTapPlayerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : StyledPlayerView(context, attrs, defStyleAttr) {
     private val gestureDetector: GestureDetectorCompat
     private val gestureListener: DoubleTapGestureListener = DoubleTapGestureListener(rootView)
@@ -113,7 +113,7 @@ class DoubleTapPlayerView @JvmOverloads constructor(
                 e.printStackTrace()
                 Log.e(
                     "DoubleTapPlayerView",
-                    "controllerRef is either invalid or not PlayerDoubleTapListener: ${e.message}"
+                    "controllerRef is either invalid or not PlayerDoubleTapListener: ${e.message}",
                 )
             }
         }
@@ -205,7 +205,7 @@ class DoubleTapPlayerView @JvmOverloads constructor(
                 if (DEBUG) {
                     Log.d(
                         TAG,
-                        "onDoubleTapEvent, ACTION_UP"
+                        "onDoubleTapEvent, ACTION_UP",
                     )
                 }
                 controls?.onDoubleTapProgressUp(e.x, e.y)

@@ -24,5 +24,3 @@ buildscript {
         classpath(libs.org.jetbrains.kotlin.kotlin.gradle.plugin)
     }
 }
-
-

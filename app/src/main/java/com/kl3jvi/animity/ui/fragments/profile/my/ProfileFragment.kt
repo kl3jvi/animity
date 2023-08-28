@@ -3,12 +3,15 @@ package com.kl3jvi.animity.ui.fragments.profile.my
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
+import com.kl3jvi.animity.ui.fragments.StateManager
+import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.createFragmentMenu
@@ -19,7 +22,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ProfileFragment : Fragment(R.layout.fragment_profile) {
+class ProfileFragment : Fragment(R.layout.fragment_profile), StateManager {
 
     private val viewModel: ProfileViewModel by viewModels()
     private var binding: FragmentProfileBinding? = null
@@ -53,17 +56,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         Toast.makeText(
                             requireContext(),
                             userData.throwable.localizedMessage ?: "",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG,
                         ).show()
+                        showLoading(false)
                     }
 
-                    UiResult.Loading -> {}
+                    UiResult.Loading -> showLoading(true)
 
                     is UiResult.Success -> {
-                        buildProfile(
-                            profileType = ProfileType.ME,
-                            userData = userData.data
-                        )
+                        showLoading(false)
+//                        buildProfile(
+//                            profileType = ProfileType.ME,
+//                            userData = userData.data,
+//                        ) {
+//                            Log.e(empty {  },userData.data.followersAndFollowing)
+//                        }
                     }
                 }
             }
@@ -80,4 +87,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onResume()
         analytics.logCurrentScreen("Profile")
     }
+
+    override fun showLoading(show: Boolean) {
+        binding?.loading?.isVisible = show
+        binding?.profileRv?.isVisible = !show
+    }
+
+    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
 }

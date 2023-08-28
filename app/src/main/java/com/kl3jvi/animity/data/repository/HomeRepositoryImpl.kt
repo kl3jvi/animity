@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class HomeRepositoryImpl @Inject constructor(
     private val aniListGraphQlClient: AniListGraphQlClient,
     private val animeClient: GogoAnimeApiClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : HomeRepository {
 
     override fun getHomeData() = flow {

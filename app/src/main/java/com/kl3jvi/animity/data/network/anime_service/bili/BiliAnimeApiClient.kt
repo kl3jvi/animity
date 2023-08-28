@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class BiliAnimeApiClient @Inject constructor(
     apiServiceSingleton: ApiServiceSingleton,
-    override val parser: AllAnimeParser
+    override val parser: AllAnimeParser,
 ) : BaseClient {
 
     override var animeService: BaseService = apiServiceSingleton.run {
@@ -20,7 +20,7 @@ class BiliAnimeApiClient @Inject constructor(
     override suspend fun <T> fetchEpisodeMediaUrl(
         header: Map<String, String>,
         episodeUrl: String,
-        extra: List<Any?>
+        extra: List<Any?>,
     ): T {
         TODO("Not yet implemented")
     }

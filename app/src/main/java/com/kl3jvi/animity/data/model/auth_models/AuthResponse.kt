@@ -19,7 +19,7 @@ data class AuthResponse(
     @SerializedName("refresh_token")
     var refreshToken: String? = "",
     @SerializedName("token_type")
-    val tokenType: String? = ""
+    val tokenType: String? = "",
 ) {
     fun isExpired(): Boolean {
         return expiresIn?.let {

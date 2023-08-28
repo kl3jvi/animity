@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    notificationsRepository: NotificationsRepository
+    notificationsRepository: NotificationsRepository,
 ) : ViewModel() {
     val notifications = notificationsRepository
         .getNotifications()

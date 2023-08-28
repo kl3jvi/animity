@@ -10,14 +10,14 @@ import retrofit2.http.POST
 interface AniListAuthService {
     @Headers(
         "Content-Type: application/json",
-        "Accept: application/json"
+        "Accept: application/json",
     )
     @POST(AUTH_URL)
     suspend fun getAccessToken(@Body aniListAuth: AniListAuth): AuthResponse
 
     @Headers(
         "Content-Type: application/json",
-        "Accept: application/json"
+        "Accept: application/json",
     )
     @POST(AUTH_URL)
     suspend fun refreshToken(@Body aniListAuth: RefreshTokenRequest): AuthResponse

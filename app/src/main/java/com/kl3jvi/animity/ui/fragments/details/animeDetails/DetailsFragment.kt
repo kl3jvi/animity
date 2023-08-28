@@ -19,7 +19,6 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.android.material.transition.MaterialFadeThrough
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.mapper.MediaStatusAnimity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -54,7 +53,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private lateinit var title: String
     private var check by Delegates.notNull<Boolean>()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDetailsBinding.bind(view)
@@ -79,7 +77,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             viewModel.animeMetaModel.update {
                 it.copy(
                     idAniList = animeInfo.idAniList,
-                    idMal = animeInfo.idMal
+                    idMal = animeInfo.idMal,
+                    streamingEpisode = it.streamingEpisode,
                 )
             }
             binding?.apply {
@@ -171,7 +170,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                         chipStrokeWidth = 3f
                         chipBackgroundColor = bgColor
                         chipStrokeColor = outlineColor
-                    }
+                    },
                 )
             }
         }
@@ -270,7 +269,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             lifecycle,
             emptyList(),
             animeDetails,
-            desiredPosition = -1
+            desiredPosition = -1,
         )
         viewPager?.adapter = adapter
 
@@ -281,7 +280,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                     TabLayoutMediator(
                         binding?.chunkedEpisodeTab!!,
-                        viewPager!!
+                        viewPager!!,
                     ) { tab, position ->
                         tab.text = listOfEpisodeModel.chunkTitles[position]
                     }.attach()
@@ -313,7 +312,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         binding?.resultEpisodesText?.text =
             requireContext().getString(
                 R.string.total_episodes,
-                episodes.size.toString()
+                episodes.size.toString(),
             )
         if (episodes.isNotEmpty() && episodes.size == 1) {
             binding?.resultPlayMovie?.setOnClickListener {
@@ -346,7 +345,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun showLatestEpisodeReleaseTime() {
         binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {
-            binding?.nextEpisodeContainer?.isVisible = false
+            binding?.nextEpisodeContainer?.isVisible = it
         }
     }
 

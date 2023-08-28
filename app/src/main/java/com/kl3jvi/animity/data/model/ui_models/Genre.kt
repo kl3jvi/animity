@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Genre(
-    val name: String = ""
+    val name: String = "",
 ) : Parcelable

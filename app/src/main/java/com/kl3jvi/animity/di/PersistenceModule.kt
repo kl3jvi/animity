@@ -25,7 +25,7 @@ object PersistenceModule {
     @Provides
     @Singleton
     fun provideAppDatabase(
-        application: Application
+        application: Application,
     ): AppDatabase = Room
         .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
         .fallbackToDestructiveMigration()
@@ -45,6 +45,6 @@ object PersistenceModule {
     @Provides
     fun provideSettings(
         @ApplicationContext context: Context,
-        preferences: SharedPreferences
+        preferences: SharedPreferences,
     ) = Settings(context, preferences)
 }

@@ -22,10 +22,10 @@ object VideoCacheManager {
             simpleCache = SimpleCache(
                 File(
                     context.cacheDir,
-                    "exoplayer"
+                    "exoplayer",
                 ).also { it.deleteOnExit() }, // Ensures always fresh file
                 LeastRecentlyUsedCacheEvictor(300L * 1024L * 1024L),
-                databaseProvider
+                databaseProvider,
             )
         }
         return simpleCache as SimpleCache

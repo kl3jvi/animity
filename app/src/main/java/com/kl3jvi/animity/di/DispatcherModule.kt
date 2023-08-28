@@ -33,6 +33,6 @@ object DispatcherModule {
         Integer.MAX_VALUE,
         60L,
         TimeUnit.SECONDS,
-        LinkedBlockingQueue()
+        LinkedBlockingQueue(),
     ).asCoroutineDispatcher()
 }

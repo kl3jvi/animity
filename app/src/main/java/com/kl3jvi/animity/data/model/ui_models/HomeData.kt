@@ -16,7 +16,7 @@ data class HomeData(
     val trendingAnime: List<AniListMedia> = emptyList(),
     val popularAnime: List<AniListMedia> = emptyList(),
     val movies: List<AniListMedia> = emptyList(),
-    val review: List<Review> = emptyList()
+    val review: List<Review> = emptyList(),
 )
 
 @Parcelize
@@ -57,7 +57,7 @@ data class AniListMedia(
 //    val nextAiringEpisode: AiringSchedule? = null,
 //    val externalLinks: List<MediaExternalLink> = listOf(),
     val siteUrl: String = "",
-    val mediaListEntry: MediaStatusAnimity? = null
+    val mediaListEntry: MediaStatusAnimity? = null,
 ) : Parcelable {
 
     fun getGenresToString(): String {
@@ -75,6 +75,8 @@ data class AniListMedia(
             it != null
         }?.run(::displayInDayDateTimeFormat)
     }
+
+    fun isMovie() = format?.name == "MOVIE"
 }
 
 fun Genre.getColors(): Triple<ColorStateList, ColorStateList, ColorStateList> {

@@ -39,7 +39,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         animeDetails: AniListMedia?,
         desiredPosition: Int,
         increaser: Int,
-        listBuildCallBack: () -> Unit
+        listBuildCallBack: () -> Unit,
     ) {
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
         binding.episodeListRecycler.withModels {
@@ -51,7 +51,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
                             putExtra(
                                 Constants.ANIME_TITLE,
-                                animeDetails?.title?.userPreferred
+                                animeDetails?.title?.userPreferred,
                             )
                             putExtra(Constants.MAL_ID, animeDetails?.idMal)
                         }
@@ -69,7 +69,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                             }
 
                             else -> animeDetails.coverImage.large
-                        }
+                        },
                     )
                     episodeInfo(episodeModel)
                     onBind { _, view, _ ->
@@ -94,7 +94,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
             episodeList: List<EpisodeModel>,
             increaser: Int,
             animeDetails: AniListMedia,
-            desiredPosition: Int
+            desiredPosition: Int,
         ): EpisodeContainer {
             return EpisodeContainer().apply {
                 arguments = Bundle().apply {

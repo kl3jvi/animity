@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.data.model.ui_models
 
-import com.kl3jvi.animity.data.paging.NotificationType
+import android.text.format.DateUtils
+import com.kl3jvi.animity.data.enums.NotificationType
 
 data class Notification(
     val type: NotificationType,
@@ -20,8 +21,10 @@ data class Notification(
     /**
      * The associated media of the airing schedule
      */
-    val media: AniListMedia = AniListMedia()
+    val media: AniListMedia = AniListMedia(),
+    val createdAt: Int? = null,
 ) {
+
     fun getFormattedNotification(): String {
         return if (user != null) {
             "${user.name}${contexts?.first().orEmpty()}"
@@ -36,6 +39,15 @@ data class Notification(
                 contextList.joinToString("") ?: ""
             }
         }
+    }
+
+    fun time(): String {
+        val timeInMillis = createdAt?.times(1000L) ?: System.currentTimeMillis()
+        return DateUtils.getRelativeTimeSpanString(
+            timeInMillis,
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS,
+        ).toString()
     }
 
     fun getNotificationImage(): String {

@@ -16,5 +16,5 @@ data class ZoroVideoSource(
     @SerializedName("url")
     val url: String,
     @SerializedName("website")
-    val website: String
+    val website: String,
 )

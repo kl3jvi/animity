@@ -4,17 +4,25 @@ import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
+import com.kl3jvi.animity.data.enums.SearchMode
+import com.kl3jvi.animity.data.enums.SortType
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
+import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
 import com.kl3jvi.animity.utils.collectLatest
 import com.kl3jvi.animity.utils.dismissKeyboard
+import com.kl3jvi.animity.utils.epoxy.PagingSearchController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,8 +30,22 @@ import javax.inject.Inject
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val viewModel: SearchViewModel by viewModels()
-    private lateinit var pagingController: PagingSearchController
     private var binding: FragmentSearchBinding? = null
+
+    private val animeController: PagingSearchController<AniListMedia> by lazy {
+        PagingSearchController(
+            analytics,
+            SearchMode.ANIME,
+            viewModel.myId.toInt(),
+        )
+    }
+    private val userController: PagingSearchController<User> by lazy {
+        PagingSearchController(
+            analytics,
+            SearchMode.USERS,
+            viewModel.myId.toInt(),
+        )
+    }
 
     @Inject
     lateinit var analytics: Analytics
@@ -31,7 +53,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
-        pagingController = PagingSearchController(analytics)
+
         initViews()
         observeViewModel()
         setupSortChips()
@@ -42,7 +64,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
      */
     private fun initViews() {
         binding?.apply {
-            searchRecycler.setController(pagingController)
             mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     dismissKeyboard(binding?.mainSearch)
@@ -54,6 +75,22 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     return false
                 }
             })
+
+            toggleGroup.check(R.id.btn_anime)
+            toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+                if (isChecked) {
+                    when (checkedId) {
+                        R.id.btn_anime -> {
+                            viewModel.switchToAnimeSearch()
+                            setupSortChips()
+                        }
+
+                        R.id.btn_users -> {
+                            viewModel.switchToUserSearch()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -66,7 +103,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 sortAverageScore to SortType.AVERAGE_SCORE,
                 sortTrending to SortType.TRENDING,
                 sortFavorites to SortType.FAVOURITES,
-                sortEpisodes to SortType.EPISODES
+                sortEpisodes to SortType.EPISODES,
             )
 
             val previousChipStates =
@@ -82,7 +119,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         previousChipStates[chip] = Triple(
                             chip.chipStrokeColor,
                             chip.chipBackgroundColor,
-                            chip.chipStrokeWidth
+                            chip.chipStrokeWidth,
                         )
 
                         chip.chipStrokeColor = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
@@ -109,7 +146,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         view.measure(
             View.MeasureSpec.makeMeasureSpec((view.parent as View).width, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
         )
         val targetHeight = view.measuredHeight
 
@@ -155,23 +192,45 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         collapseView(sortView)
 
-        binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-                ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                    pagingController.addInterceptor {
-                        if (it.size == 0) {
-                            collapseView(sortView)
-                        } else {
-                            expandView(sortView)
+        collectLatest(viewModel.searchList) { animeData ->
+            if (viewModel.currentSearchMode.value == SearchMode.ANIME) {
+                binding?.searchRecycler?.setController(animeController)
+                binding?.searchRecycler?.layoutManager = LinearLayoutManager(requireContext())
+                binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
+                    ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                        animeController.addInterceptor {
+                            if (it.size == 0) {
+                                collapseView(sortView)
+                            } else {
+                                expandView(sortView)
+                            }
                         }
                     }
-                }
-            })
-
-        collectLatest(viewModel.searchList) { animeData ->
-            pagingController.submitData(animeData)
+                })
+                animeController.submitData(animeData)
+            }
         }
+
+        // Handle User search results
+        collectLatest(viewModel.usersList) { usersData ->
+            if (viewModel.currentSearchMode.value == SearchMode.USERS) {
+                collapseView(sortView)
+                binding?.searchRecycler?.setController(userController)
+                val widthOfView = 120f
+                val numberOfColumns = calculateNoOfColumns(widthOfView)
+                binding?.searchRecycler?.layoutManager =
+                    GridLayoutManager(requireContext(), numberOfColumns)
+                userController.submitData(usersData)
+            }
+        }
+    }
+
+    private fun calculateNoOfColumns(columnWidthDp: Float): Int {
+        val displayMetrics: DisplayMetrics = requireContext().resources?.displayMetrics!!
+        val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+        return (screenWidthDp / columnWidthDp + 0.5).toInt() // +0.5 for correct rounding to int.
     }
 
     companion object {

@@ -10,7 +10,7 @@ fun ApolloResponse<SendMessageMutation.Data>.convert(
     recipientId: Int,
     recipientName: String,
     recipientAvatarLarge: String,
-    recipientAvatarMedium: String
+    recipientAvatarMedium: String,
 ): Message {
     val sentReply = this.data?.sent
     val sentMessage = this.data?.sentMessage
@@ -26,15 +26,15 @@ fun ApolloResponse<SendMessageMutation.Data>.convert(
                 id = recipientId,
                 name = recipientName,
                 avatarLarge = recipientAvatarLarge,
-                avatarMedium = recipientAvatarMedium
+                avatarMedium = recipientAvatarMedium,
             ),
             messenger = Message.User(
                 id = user?.id ?: throw Exception("Error sending message: user ID is null"),
                 name = user.name,
                 avatarLarge = user.avatar?.large ?: "",
-                avatarMedium = user.avatar?.medium ?: ""
+                avatarMedium = user.avatar?.medium ?: "",
             ),
-            parentId = null
+            parentId = null,
         )
     } else if (sentMessage != null) {
         val recipient = sentMessage.recipient
@@ -52,15 +52,15 @@ fun ApolloResponse<SendMessageMutation.Data>.convert(
                     ?: throw Exception("Error sending message: recipient ID is null"),
                 name = recipient.name,
                 avatarLarge = recipient.avatar?.large ?: "",
-                avatarMedium = recipient.avatar?.medium ?: ""
+                avatarMedium = recipient.avatar?.medium ?: "",
             ),
             messenger = Message.User(
                 id = messenger.id,
                 name = messenger.name,
                 avatarLarge = messenger.avatar?.large ?: "",
-                avatarMedium = messenger.avatar?.medium ?: ""
+                avatarMedium = messenger.avatar?.medium ?: "",
             ),
-            parentId = null
+            parentId = null,
         )
     } else {
         throw Exception("Error sending message: both sent and sentMessage are null")
@@ -83,15 +83,15 @@ fun ApolloResponse<GetMessagesQuery.Data>.convert(): List<Message> {
                 id = recipient?.id ?: 0,
                 name = recipient?.name ?: "",
                 avatarLarge = recipient?.avatar?.large ?: "",
-                avatarMedium = recipient?.avatar?.medium ?: ""
+                avatarMedium = recipient?.avatar?.medium ?: "",
             ),
             messenger = Message.User(
                 id = messenger?.id ?: 0,
                 name = messenger?.name ?: "",
                 avatarLarge = messenger?.avatar?.large ?: "",
-                avatarMedium = messenger?.avatar?.medium ?: ""
+                avatarMedium = messenger?.avatar?.medium ?: "",
             ),
-            replies = emptyList()
+            replies = emptyList(),
         )
         baseMessage.copy(
             replies = messageActivity?.onMessageActivity?.replies?.mapNotNull { reply ->
@@ -106,11 +106,11 @@ fun ApolloResponse<GetMessagesQuery.Data>.convert(): List<Message> {
                             id = reply.user?.id ?: 0,
                             name = reply.user?.name ?: "",
                             avatarLarge = reply.user?.avatar?.large ?: "",
-                            avatarMedium = reply.user?.avatar?.medium ?: ""
-                        )
+                            avatarMedium = reply.user?.avatar?.medium ?: "",
+                        ),
                     )
                 }
-            } ?: emptyList()
+            } ?: emptyList(),
         )
     }
 }

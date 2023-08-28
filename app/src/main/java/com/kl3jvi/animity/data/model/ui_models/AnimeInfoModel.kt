@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class AnimeInfoModel(
     var id: String,
     var alias: String,
-    var endEpisode: String
+    var endEpisode: String,
 ) : Parcelable

@@ -34,10 +34,10 @@
             app:cardCornerRadius="@dimen/roundedImageRadius">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="55dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:elevation="0dp"
-                android:minHeight="85dp"
+                android:minHeight="60dp"
                 app:cardCornerRadius="8dp">
 
                 <ImageView
@@ -67,6 +67,15 @@
                     android:textColor="@color/textColor"
                     android:textSize="17sp"
                     tools:text="@string/no_data" />
+
+                <TextView
+                    android:id="@+id/hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text="@{notification.time}"
+                    android:textColor="@color/gray_selected"
+                    tools:text="12H" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

@@ -17,7 +17,7 @@ sealed interface UiResult<out T> {
 }
 
 fun <T> Flow<T>.mapToUiState(
-    scope: CoroutineScope
+    scope: CoroutineScope,
 ): StateFlow<UiResult<T>> {
     return map<T, UiResult<T>> {
         UiResult.Success(it)
@@ -28,6 +28,6 @@ fun <T> Flow<T>.mapToUiState(
     }.stateIn(
         scope = scope,
         started = SharingStarted.Lazily,
-        initialValue = UiResult.Loading
+        initialValue = UiResult.Loading,
     )
 }

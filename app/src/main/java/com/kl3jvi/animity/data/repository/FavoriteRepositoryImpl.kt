@@ -19,7 +19,7 @@ import javax.inject.Inject
 class FavoriteRepositoryImpl @Inject constructor(
     private val apiClient: GogoAnimeApiClient,
     private val aniListGraphQlClient: AniListGraphQlClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : FavoriteRepository {
 
     override fun getGogoUrlFromAniListId(id: Int) = flow {
@@ -27,11 +27,11 @@ class FavoriteRepositoryImpl @Inject constructor(
     }.flowOn(ioDispatcher)
 
     override fun getFavoriteAnimesFromAniList(
-        userId: Int?
+        userId: Int?,
     ): Flow<PagingData<AniListMedia>> {
         return Pager(
             config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { FavoritesPagingSource(aniListGraphQlClient, userId) }
+            pagingSourceFactory = { FavoritesPagingSource(aniListGraphQlClient, userId) },
         ).flow.flowOn(ioDispatcher)
     }
 

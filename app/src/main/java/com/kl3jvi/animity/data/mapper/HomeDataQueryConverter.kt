@@ -35,7 +35,7 @@ fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
             ?.review
             ?.reviews
             ?.mapNotNull { it.convert() }
-            ?: emptyList()
+            ?: emptyList(),
     )
 }
 
@@ -55,17 +55,17 @@ fun HomeDataQuery.Review1?.convert(): Review {
             name = this?.user?.name.orEmpty(),
             avatar = UserAvatar(
                 this?.user?.avatar?.large.orEmpty(),
-                this?.user?.avatar?.medium.orEmpty()
-            )
+                this?.user?.avatar?.medium.orEmpty(),
+            ),
         ),
         aniListMedia = AniListMedia(
             idAniList = this?.media?.homeMedia?.id ?: 0,
             title = MediaTitle(userPreferred = this?.media?.homeMedia?.title?.userPreferred.orEmpty()),
             bannerImage = this?.media?.homeMedia?.bannerImage.orEmpty(),
             coverImage = MediaCoverImage(
-                large = this?.media?.homeMedia?.coverImage?.large.orEmpty()
-            )
-        )
+                large = this?.media?.homeMedia?.coverImage?.large.orEmpty(),
+            ),
+        ),
     )
 }
 
@@ -89,18 +89,18 @@ fun HomeMedia?.convert(): AniListMedia {
         coverImage = MediaCoverImage(
             this?.coverImage?.extraLarge.orEmpty(),
             this?.coverImage?.large.orEmpty(),
-            this?.coverImage?.medium.orEmpty()
+            this?.coverImage?.medium.orEmpty(),
         ),
         bannerImage = this?.bannerImage.orEmpty(),
         genres = this?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: emptyList(),
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0,
-        mediaListEntry = MediaStatusAnimity.stringToMediaListStatus(this?.mediaListEntry?.status?.rawValue)
+        mediaListEntry = MediaStatusAnimity.stringToMediaListStatus(this?.mediaListEntry?.status?.rawValue),
     )
 }
 
 fun HomeMedia.StreamingEpisode?.convert() =
     Episodes(
         this?.title,
-        this?.thumbnail
+        this?.thumbnail,
     )

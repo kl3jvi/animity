@@ -11,7 +11,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val storage: PersistenceRepository,
     private val aniListGraphQlClient: AniListGraphQlClient,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : UserRepository {
 
     override val bearerToken: String?

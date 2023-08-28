@@ -11,7 +11,7 @@ import android.os.Bundle
 inline fun <reified T : Any> Activity.launchActivity(
     requestCode: Int = -1,
     options: Bundle? = null,
-    noinline init: Intent.() -> Unit = {}
+    noinline init: Intent.() -> Unit = {},
 ) {
     val intent = newIntent<T>(this)
     intent.init()
@@ -20,7 +20,7 @@ inline fun <reified T : Any> Activity.launchActivity(
 
 inline fun <reified T : Any> Context.launchActivity(
     options: Bundle? = null,
-    noinline init: Intent.() -> Unit = {}
+    noinline init: Intent.() -> Unit = {},
 ) {
     val intent = newIntent<T>(this)
     intent.init()

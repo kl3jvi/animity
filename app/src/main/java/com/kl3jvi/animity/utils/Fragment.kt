@@ -41,7 +41,7 @@ fun View.canNavigate(): Boolean {
 fun Fragment.createFragmentMenu(
     @MenuRes menuLayout: Int,
     menuCallback: ((Menu) -> Unit)? = null,
-    selectedItem: (menuItem: MenuItem) -> Unit
+    selectedItem: (menuItem: MenuItem) -> Unit,
 ) {
     val menuHost = requireActivity()
     menuHost.addMenuProvider(
@@ -61,7 +61,7 @@ fun Fragment.createFragmentMenu(
             }
         },
         viewLifecycleOwner,
-        Lifecycle.State.RESUMED
+        Lifecycle.State.RESUMED,
     )
 }
 

@@ -12,7 +12,7 @@ data class Message(
     val recipient: User,
     val messenger: User,
     val parentId: Int? = null, // Add parentId field
-    val replies: List<Reply> = listOf()
+    val replies: List<Reply> = listOf(),
 ) {
     fun convertUnixTimeToFormattedTime(): String {
         val date = Date(createdAt * 1000L)
@@ -24,13 +24,13 @@ data class Message(
         val id: Int,
         val name: String,
         val avatarLarge: String,
-        val avatarMedium: String
+        val avatarMedium: String,
     )
 
     data class Reply(
         val id: Int,
         val message: String,
         val createdAt: Int,
-        val user: User
+        val user: User,
     )
 }

@@ -6,7 +6,7 @@ import com.kl3jvi.animity.data.model.auth_models.RefreshTokenRequest
 import javax.inject.Inject
 
 class AuthClient @Inject constructor(
-    private val aniListService: AniListAuthService
+    private val aniListService: AniListAuthService,
 ) : Authenticator {
     /**
      * Retrieves an access token from the AniList API.
@@ -23,7 +23,7 @@ class AuthClient @Inject constructor(
         clientId: Int,
         clientSecret: String,
         redirectUri: String,
-        code: String
+        code: String,
     ): Result<AuthResponse> {
         return runCatching {
             aniListService.getAccessToken(
@@ -32,8 +32,8 @@ class AuthClient @Inject constructor(
                     client_id = clientId,
                     client_secret = clientSecret,
                     redirect_uri = redirectUri,
-                    code = code
-                )
+                    code = code,
+                ),
             )
         }
     }
@@ -41,15 +41,15 @@ class AuthClient @Inject constructor(
     override suspend fun refreshToken(
         clientId: Int,
         clientSecret: String,
-        refreshToken: String
+        refreshToken: String,
     ): Result<AuthResponse> {
         return runCatching {
             aniListService.refreshToken(
                 RefreshTokenRequest(
                     clientId = clientId,
                     clientSecret = clientSecret,
-                    refreshToken = refreshToken
-                )
+                    refreshToken = refreshToken,
+                ),
             )
         }
     }

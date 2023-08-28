@@ -10,5 +10,5 @@ data class RefreshTokenRequest(
     @SerializedName("client_secret")
     val clientSecret: String,
     @SerializedName("refresh_token")
-    val refreshToken: String
+    val refreshToken: String,
 )

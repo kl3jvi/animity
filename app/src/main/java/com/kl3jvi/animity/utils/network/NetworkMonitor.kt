@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
 class NetworkMonitor @Inject constructor(
-    private val connectivityManager: ConnectivityManager
+    private val connectivityManager: ConnectivityManager,
 ) {
 
     /* A flow that emits true when the network is available and false when it is not. */

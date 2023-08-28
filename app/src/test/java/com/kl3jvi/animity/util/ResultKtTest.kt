@@ -22,11 +22,12 @@ class ResultKtTest {
             when (val errorResult = awaitItem()) {
                 is Result.Error -> assertEquals(
                     "Test Finished",
-                    errorResult.exception?.message
+                    errorResult.exception?.message,
                 )
                 Result.Loading,
-                is Result.Success -> throw IllegalStateException(
-                    "The flow should have emitted an Error Result"
+                is Result.Success,
+                -> throw IllegalStateException(
+                    "The flow should have emitted an Error Result",
                 )
             }
             awaitComplete()

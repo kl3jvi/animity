@@ -134,7 +134,7 @@ class PlayerActivity : AppCompatActivity() {
                     PictureInPictureParams
                         .Builder()
                         .setAspectRatio(aspectRatio)
-                        .build()
+                        .build(),
                 )
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 enterPictureInPictureMode()
@@ -194,7 +194,6 @@ class PlayerActivity : AppCompatActivity() {
                 is UiResult.Success -> {
                     try {
                         setupPlayer(res.data)
-                        viewModel.startDownload(res.data.first().last())
 
                         viewModel.getPlaybackPosition(episodeUrlLocal)
                         collect(viewModel.playBackPosition) {
@@ -209,10 +208,6 @@ class PlayerActivity : AppCompatActivity() {
                     binding.loadingOverlay.visibility = View.GONE
                 }
             }
-        }
-
-        collect(viewModel.downloadState) {
-            Log.e("State", "${it.progress}")
         }
     }
 
@@ -325,7 +320,7 @@ class PlayerActivity : AppCompatActivity() {
                 this,
                 getString(R.string.video_quality),
                 player!!,
-                0
+                0,
             ).setTheme(R.style.MaterialThemeDialog)
                 .setTrackNameProvider { f: Format ->
                     "${f.height}p"
@@ -489,7 +484,7 @@ class PlayerActivity : AppCompatActivity() {
         val defaultHeaders = mapOf(
             "User-Agent" to
                 "Mozilla/5.0 (Linux; Android %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36"
-                    .format(Build.VERSION.RELEASE, Build.MODEL)
+                    .format(Build.VERSION.RELEASE, Build.MODEL),
         )
     }
 }

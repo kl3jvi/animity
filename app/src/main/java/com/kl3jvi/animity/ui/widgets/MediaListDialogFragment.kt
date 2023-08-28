@@ -14,7 +14,7 @@ class MediaListDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = BottomSheetMediaListBinding.inflate(inflater, container, false)
         return binding.root

@@ -9,7 +9,7 @@ import com.kl3jvi.animity.utils.logError
 import javax.inject.Inject
 
 class FirebaseRemoteConfigRepositoryImpl @Inject constructor(
-    override val instance: FirebaseRemoteConfig
+    override val instance: FirebaseRemoteConfig,
 ) : FirebaseRemoteConfigRepository {
 
     /**

@@ -8,11 +8,11 @@ data class GogoAnimeKeys(
     @SerializedName("key")
     val key: String = "",
     @SerializedName("second_key")
-    val secondKey: String = ""
+    val secondKey: String = "",
 )
 
 data class Keys(
     val key: String,
     val secondKey: String,
-    val iv: String
+    val iv: String,
 )

@@ -1,9 +1,6 @@
 package com.kl3jvi.animity.data.network.anime_service.gogo
 
 import com.kl3jvi.animity.data.model.ui_models.DetailedAnimeInfo
-import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
-import com.kl3jvi.animity.data.model.ui_models.GogoAnimeKeys
-import com.kl3jvi.animity.data.model.ui_models.MalSyncResponse
 import com.kl3jvi.animity.data.network.anime_service.base.BaseService
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -17,27 +14,27 @@ interface GogoAnimeService : BaseService {
     @GET
     suspend fun fetchEpisodeMediaUrl(
         @HeaderMap header: Map<String, String>,
-        @Url url: String
+        @Url url: String,
     ): ResponseBody
 
     @GET
     suspend fun fetchAnimeInfo(
         @HeaderMap header: Map<String, String>,
-        @Url episodeUrl: String
+        @Url episodeUrl: String,
     ): ResponseBody
 
     @GET
     @Headers("watchsb:streamsb")
     suspend fun fetchM3u8Url(
         @HeaderMap header: Map<String, String>,
-        @Url url: String
+        @Url url: String,
     ): ResponseBody
 
     @GET
     @Headers("X-Requested-With:XMLHttpRequest")
     suspend fun fetchM3u8PreProcessor(
         @HeaderMap header: Map<String, String>,
-        @Url url: String
+        @Url url: String,
     ): ResponseBody
 
     @GET(EPISODE_LOAD_URL)
@@ -47,26 +44,17 @@ interface GogoAnimeService : BaseService {
         @Query("ep_end") endEpisode: String,
         @Query("id") id: String,
         @Query("default_ep") defaultEp: Int = 0,
-        @Query("alias") alias: String
+        @Query("alias") alias: String,
     ): ResponseBody
 
     @GET("$MAL_SYNC_URL:{id}")
     suspend fun getGoGoDetailedUrl(
-        @Path("id") id: Int
+        @Path("id") id: Int,
     ): DetailedAnimeInfo
-
-    @GET("$EPISODE_TITLES/{id}.json")
-    suspend fun getEpisodeTitles(@Path("id") id: Int = 1): EpisodeWithTitle
-
-    @GET(GOGO_KEYS_URL)
-    suspend fun getKeys(): GogoAnimeKeys
 
     companion object {
         const val MAL_SYNC_URL =
             "https://api.malsync.moe/mal/anime/anilist"
-
-        const val EPISODE_TITLES =
-            "https://raw.githubusercontent.com/saikou-app/mal-id-filler-list/main/fillers"
 
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
 

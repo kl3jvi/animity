@@ -12,7 +12,7 @@ import javax.inject.Inject
  * @property firebaseAnalytics An instance of Firebase Analytics.
  */
 class Analytics @Inject constructor(
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val firebaseAnalytics: FirebaseAnalytics,
 ) {
 
     /**
@@ -57,7 +57,7 @@ class Analytics @Inject constructor(
         if (BuildConfig.BUILD_TYPE == "release") {
             logEvent(
                 FirebaseAnalytics.Event.SCREEN_VIEW,
-                screenDetails
+                screenDetails,
             )
         }
     }
@@ -90,7 +90,7 @@ private fun FirebaseAnalytics.setUserPropertyRelease(name: String, value: String
 
 private fun FirebaseAnalytics.logReleaseEvent(
     removeSpecialCharacters: String,
-    bundle: Bundle?
+    bundle: Bundle?,
 ) = apply {
     if (BuildConfig.BUILD_TYPE == "release") logEvent(removeSpecialCharacters, bundle)
 }

@@ -13,13 +13,14 @@ fun Fragment.getPreferenceKey(@StringRes resourceId: Int): String = getString(re
  * @param preferenceId Resource ID from preference_keys
  */
 
-fun Int.parseTime(errorHappened: () -> Unit): CharSequence? {
+fun Int.parseTime(state: (Boolean) -> Unit): CharSequence? {
     return try {
+        state(false)
         val now = System.currentTimeMillis()
         DateUtils.getRelativeTimeSpanString(now, toLong(), DateUtils.MINUTE_IN_MILLIS)
     } catch (e: ParseException) {
         e.printStackTrace()
-        errorHappened()
-        ""
+        state(true)
+        null
     }
 }

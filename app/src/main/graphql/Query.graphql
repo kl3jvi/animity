@@ -6,6 +6,8 @@ query SessionQuery {
     }
 }
 
+
+
 #Getting the user data.
 query UserQuery($id: Int) {
     user:User(id: $id) {
@@ -61,6 +63,33 @@ query UserQuery($id: Int) {
         donatorBadge
         moderatorRoles
         siteUrl
+    }
+}
+
+
+query GetFollowersList($id:Int!,$page:Int){
+    Page(page:$page){
+        pageInfo{
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+        followers(userId:$id,sort:USERNAME){
+            id
+            name
+            avatar{
+                large
+            }
+        }
+        following(userId:$id,sort:USERNAME){
+            id
+            name
+            avatar{
+                large
+            }
+        }
     }
 }
 
@@ -187,8 +216,24 @@ query SearchAnimeQuery(
             search: $search,
             type: ANIME,
             sort: $sortType
-        ) {...HomeMedia}
+        ) {...HomeMedia},
     }
+}
+
+query SearchUsersQuery(
+    $search: String,
+    $page: Int
+) {
+    page:Page(page: $page, perPage: 30){
+        users(search: $search) {
+            id
+            name
+            avatar {
+                large
+            }
+            about
+            siteUrl
+        }}
 }
 
 
@@ -232,14 +277,36 @@ mutation DeleteMedia($id:Int){
 
 
 #marks anime as favorite
-mutation ToggleFavouriteMutation($animeId: Int) {
-    toggle:ToggleFavourite(animeId: $animeId) {
-        anime {
-            pageInfo {
-                total
-            }
-        }
+#mutation ToggleFavouriteMutation($animeId: Int) {
+#    toggle:ToggleFavourite(animeId: $animeId) {
+#        anime {
+#            nodes {
+#                id
+#                isFavourite
+#            }
+#        }
+#    }
+#}
+mutation ToggleFavouriteMutation($animeId:Int,
+    $mangaId:Int,
+    $characterId:Int,
+    $staffId:Int,
+    $studioId:Int)
+{
+    toggle:ToggleFavourite(animeId:$animeId
+        mangaId:$mangaId
+        characterId:$characterId
+        staffId:$staffId
+        studioId:$studioId
+    ){anime{pageInfo{total}}manga{pageInfo{total}}characters{pageInfo{total}}staff{pageInfo{total}}studios{pageInfo{total}}}}
+mutation ToggleFollowUser($userId:Int) {
+    follow:ToggleFollow(userId: $userId){
+        id
+        name
+        isFollowing
+        isFollower
     }
+
 }
 
 mutation MarkEpisodeWatched($mediaId: Int!, $episodeNumber: Int!) {
@@ -362,6 +429,7 @@ query Notifications($page: Int) {
             ... on AiringNotification {
                 id
                 episode
+                createdAt
                 contexts
                 media {
                     ...HomeMedia

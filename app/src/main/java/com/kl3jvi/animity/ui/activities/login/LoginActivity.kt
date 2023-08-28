@@ -89,8 +89,8 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
                             clientId = aniListId.toInt(),
                             clientSecret = aniListSecret,
                             redirectUri = redirectUri,
-                            authorizationToken = authorizationToken
-                        )
+                            authorizationToken = authorizationToken,
+                        ),
                     ) { state ->
                         state.onSuccess {
                             it.onTokenResponse()

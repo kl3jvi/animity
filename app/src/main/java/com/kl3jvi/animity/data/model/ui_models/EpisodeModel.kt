@@ -13,7 +13,7 @@ data class EpisodeModel(
     var episodeUrl: String,
     var episodeType: String = "",
     var percentage: Int = 0,
-    var isFiller: Boolean = false
+    var isFiller: Boolean = false,
 ) : Parcelable {
     fun getEpisodeNumberOnly(): Int? {
         return episodeNumber.split(" ").lastOrNull()?.toIntOrNull()
@@ -26,7 +26,7 @@ data class EpisodeModel(
 
 data class EpisodeWithTitle(
     @SerializedName("episodes")
-    val episodes: List<Episode> = emptyList()
+    val episodes: List<Episode> = emptyList(),
 )
 
 data class Episode(
@@ -35,5 +35,5 @@ data class Episode(
     @SerializedName("title")
     val title: String,
     @SerializedName("filler-bool")
-    val isFiller: Boolean
+    val isFiller: Boolean,
 )

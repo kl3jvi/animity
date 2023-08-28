@@ -15,12 +15,12 @@ interface DetailsRepository {
         header: Map<String, String> = Constants.getNetworkHeader(),
         extra: List<Any?> = emptyList(),
         malId: Int,
-        episodeUrl: String
+        episodeUrl: String,
     ): Flow<List<EpisodeModel>>
 
     fun changeAnimeStatus(
         mediaId: Int,
-        status: MediaListStatus
+        status: MediaListStatus,
     ): Flow<ChangedMediaResponse>
 
     fun getUpdateVersionInfo(): Flow<VersionInfo>

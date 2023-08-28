@@ -37,7 +37,7 @@ class DetailsViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val favoriteRepository: FavoriteRepository,
     @CustomDispatcher
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     val animeMetaModel = MutableStateFlow(AniListMedia())
@@ -54,30 +54,34 @@ class DetailsViewModel @Inject constructor(
                         detailsRepository.fetchEpisodeList(
                             episodeUrl = result.data,
                             malId = media.idMal.or1(),
-                                extra = listOf(media.idMal)
-                            ).map { episodes ->
-                                val episodesChunked = episodes.chunked(50)
-
-                                val episodeChunksTitles = episodes.chunked(50) {
-                                    val firstEpisodeNumber = it.first().getEpisodeNumberOnly()
-                                    val lastEpisodeNumber = it.last().getEpisodeNumberOnly()
-                                    "Episodes ${firstEpisodeNumber ?: "-"} - ${lastEpisodeNumber ?: "-"}"
-                                }
-
-                                EpisodeListUiState.Success(
-                                    episodeChunks = episodesChunked,
-                                    chunkTitles = episodeChunksTitles
-                                )
+                            extra = listOf(media.idMal),
+                        ).map { episodes ->
+                            episodes.mapIndexed { index, episodeModel ->
+                                episodeModel.episodeName =
+                                    media.streamingEpisode?.getOrNull(index)?.title.orEmpty()
                             }
+                            val episodesChunked = episodes.chunked(50)
+
+                            val episodeChunksTitles = episodes.chunked(50) {
+                                val firstEpisodeNumber = it.first().getEpisodeNumberOnly()
+                                val lastEpisodeNumber = it.last().getEpisodeNumberOnly()
+                                "Episodes ${firstEpisodeNumber ?: "-"} - ${lastEpisodeNumber ?: "-"}"
+                            }
+
+                            EpisodeListUiState.Success(
+                                episodeChunks = episodesChunked,
+                                chunkTitles = episodeChunksTitles,
+                            )
                         }
                     }
                 }
-        }.flowOn(ioDispatcher)
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
-                EpisodeListUiState.Loading
-            )
+            }
+    }.flowOn(ioDispatcher)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            EpisodeListUiState.Loading,
+        )
 
     /**
      * > The function updates the anime as favorite in the AniList website
@@ -108,6 +112,6 @@ sealed interface EpisodeListUiState {
     object Error : EpisodeListUiState
     data class Success(
         val episodeChunks: List<List<EpisodeModel>>,
-        val chunkTitles: List<String>
+        val chunkTitles: List<String>,
     ) : EpisodeListUiState
 }

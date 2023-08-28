@@ -4,5 +4,5 @@ enum class NotificationTitle(val title: String) {
     AIRING(title = "Airing"),
     FOLLOWING(title = "Following"),
     LIKE(title = "Likes"),
-    MESSAGES(title = "Likes")
+    MESSAGES(title = "Likes"),
 }

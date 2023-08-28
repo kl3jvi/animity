@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.utils
+package com.kl3jvi.animity.utils.epoxy
 
 import com.airbnb.epoxy.EpoxyDataBindingPattern
 import com.kl3jvi.animity.R
