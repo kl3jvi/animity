@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/add_to_favorites"
-        android:icon="@drawable/ic_favorite_uncomplete"
         android:checkable="true"
+        android:icon="@drawable/ic_favorite_uncomplete"
         android:title="@string/favorite"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/scheduler_action"
+        android:checkable="true"
+        android:icon="@drawable/schedule_selector"
+        android:title="@string/schedule"
         app:showAsAction="always" />
 
 </menu>

@@ -7,6 +7,7 @@ import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.domain.repositories.ProfileRepository
 import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -18,7 +19,8 @@ class TheirProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val followState: MutableStateFlow<Pair<String, String>> = MutableStateFlow(Pair("Follow", ""))
+    private val followState: MutableStateFlow<Pair<String, String>> =
+        MutableStateFlow(Pair("Follow", ""))
 
     val theirProfileData = savedStateHandle.getStateFlow("user", User())
         .flatMapLatest { user ->
@@ -33,7 +35,7 @@ class TheirProfileViewModel @Inject constructor(
 
     fun followUser() {
         val id = savedStateHandle.get<User>("user")?.id ?: return
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             profileRepository.followUser(id).collect { newFollowState ->
                 followState.value = newFollowState
             }

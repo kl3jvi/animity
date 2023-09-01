@@ -14,7 +14,7 @@
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="@dimen/dp_100"
+        android:layout_width="@dimen/dp_90"
         android:layout_height="@dimen/dp_100"
         android:layout_margin="@dimen/dp_10"
         android:onClick="@{clickListener}"
@@ -33,13 +33,15 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     image="@{user.avatar.large}"
                     tools:src="@tools:sample/avatars" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/dark_bg" />
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/dark_shade" />
 
             </FrameLayout>
 

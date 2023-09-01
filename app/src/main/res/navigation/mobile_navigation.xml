@@ -44,12 +44,13 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/toMessage"
-            app:destination="@id/messageFragment"
+            android:id="@+id/toSchedule"
+            app:destination="@id/scheduleFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
 
     </fragment>
 
@@ -81,7 +82,7 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/toTheirProfile"
-            app:destination="@id/theirProfile" >
+            app:destination="@id/theirProfile">
             <argument
                 android:name="user"
                 app:argType="com.kl3jvi.animity.data.model.ui_models.User" />
@@ -89,7 +90,7 @@
 
         <action
             android:id="@+id/toMyProfile"
-            app:destination="@id/navigation_profile" >
+            app:destination="@id/navigation_profile">
             <argument
                 android:name="user"
                 app:argType="com.kl3jvi.animity.data.model.ui_models.User" />
@@ -179,15 +180,24 @@
             app:destination="@id/navigation_details" />
     </fragment>
     <fragment
-        android:id="@+id/messageFragment"
-        android:name="com.kl3jvi.animity.ui.fragments.MessageFragment"
-        android:label="@string/message"
-        tools:layout="@layout/fragment_message">
-        <argument
-            android:name="userId"
-            app:argType="integer" />
+        android:id="@+id/scheduleFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.schedule.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule" >
         <action
-            android:id="@+id/messageToTheirProfile"
-            app:destination="@id/theirProfile" />
+            android:id="@+id/scheduleToDetails"
+            app:destination="@id/navigation_details" />
     </fragment>
+
+    <fragment
+        android:id="@+id/dayAnimeFragment"
+        android:name="com.kl3jvi.animity.ui.fragments.schedule.DayAnimeFragment"
+        android:label="fragment_airing"
+        tools:layout="@layout/fragment_airing" >
+        <action
+            android:id="@+id/scheduleToDetails"
+            app:destination="@id/navigation_details" />
+    </fragment>
+
+
 </navigation>

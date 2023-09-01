@@ -29,8 +29,11 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         val desiredPosition = args.getInt(DESIRED_POSITION)
         val increase = args.getInt(INCREASER)
         val step = if (increase == 0) increase else increase * 50
-        bindEpisodeList(episodes, animeData, desiredPosition, step) {
+        bindEpisodeList(episodes, animeData, desiredPosition, step, {
             binding.episodeListRecycler.scrollToPosition(desiredPosition)
+        }) {
+            val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
+            it.startAnimation(animation)
         }
     }
 
@@ -40,8 +43,8 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         desiredPosition: Int,
         increaser: Int,
         listBuildCallBack: () -> Unit,
+        runBlinkAnimation: (View) -> Unit,
     ) {
-        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blink_animation)
         binding.episodeListRecycler.withModels {
             episodes.forEachIndexed { index, episodeModel ->
                 episodeLarge {
@@ -58,6 +61,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                     }
                     showTitle(episodeModel.episodeName.isNotEmpty())
                     isFiller(episodeModel.isFiller)
+
                     imageUrl(
                         when {
                             animeDetails?.streamingEpisode?.getOrNull(index + increaser)?.thumbnail == null -> {
@@ -73,9 +77,9 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                     )
                     episodeInfo(episodeModel)
                     onBind { _, view, _ ->
-                        if (index == desiredPosition) {
+                        if (index == desiredPosition - 1) {
                             // Apply a translation animation to the root view of the data binding layout
-                            view.dataBinding.root.startAnimation(animation)
+                            runBlinkAnimation(view.dataBinding.root)
                         }
                     }
                 }

@@ -24,7 +24,6 @@ import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
-import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
 import com.kl3jvi.animity.utils.setGenericDns
 import dagger.Module
@@ -57,7 +56,7 @@ object NetworkModule {
         .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
         .addInterceptor(
             HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BASIC
             },
         )
         .connectTimeout(20, TimeUnit.SECONDS)
@@ -95,7 +94,7 @@ object NetworkModule {
 
     @Provides
     @Named("base-url")
-    fun provideBaseUrl(): String = GOGO_BASE_URL
+    fun provideBaseUrl(): String = "https://rickandmortyapi.com/"
 
     @Provides
     @Singleton

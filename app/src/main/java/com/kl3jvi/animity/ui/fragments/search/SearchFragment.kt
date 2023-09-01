@@ -20,6 +20,7 @@ import com.kl3jvi.animity.data.enums.SortType
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
+import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.collectLatest
 import com.kl3jvi.animity.utils.dismissKeyboard
 import com.kl3jvi.animity.utils.epoxy.PagingSearchController
@@ -192,23 +193,39 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         collapseView(sortView)
 
-        collectLatest(viewModel.searchList) { animeData ->
-            if (viewModel.currentSearchMode.value == SearchMode.ANIME) {
-                binding?.searchRecycler?.setController(animeController)
-                binding?.searchRecycler?.layoutManager = LinearLayoutManager(requireContext())
-                binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-                    ViewTreeObserver.OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-                        binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                        animeController.addInterceptor {
-                            if (it.size == 0) {
-                                collapseView(sortView)
-                            } else {
-                                expandView(sortView)
+        collect(viewModel.currentSearchMode) {
+            when (it) {
+                SearchMode.ANIME -> {
+                    binding?.searchRecycler?.setController(animeController)
+                    binding?.searchRecycler?.layoutManager = LinearLayoutManager(requireContext())
+                    binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
+                        ViewTreeObserver.OnGlobalLayoutListener {
+                        override fun onGlobalLayout() {
+                            binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                            animeController.addInterceptor {
+                                if (it.size == 0) {
+                                    collapseView(sortView)
+                                } else {
+                                    expandView(sortView)
+                                }
                             }
                         }
-                    }
-                })
+                    })
+                }
+
+                SearchMode.USERS -> {
+                    collapseView(sortView)
+                    binding?.searchRecycler?.setController(userController)
+                    val widthOfView = 110f
+                    val numberOfColumns = calculateNoOfColumns(widthOfView)
+                    binding?.searchRecycler?.layoutManager =
+                        GridLayoutManager(requireContext(), numberOfColumns)
+                }
+            }
+        }
+
+        collectLatest(viewModel.searchList) { animeData ->
+            if (viewModel.currentSearchMode.value == SearchMode.ANIME) {
                 animeController.submitData(animeData)
             }
         }
@@ -216,12 +233,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         // Handle User search results
         collectLatest(viewModel.usersList) { usersData ->
             if (viewModel.currentSearchMode.value == SearchMode.USERS) {
-                collapseView(sortView)
-                binding?.searchRecycler?.setController(userController)
-                val widthOfView = 120f
-                val numberOfColumns = calculateNoOfColumns(widthOfView)
-                binding?.searchRecycler?.layoutManager =
-                    GridLayoutManager(requireContext(), numberOfColumns)
                 userController.submitData(usersData)
             }
         }

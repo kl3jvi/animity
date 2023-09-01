@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_airing_schedule"
+        android:title="@string/notifications"
+        android:icon="@drawable/baseline_schedule_24"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
         app:showAsAction="collapseActionView" />

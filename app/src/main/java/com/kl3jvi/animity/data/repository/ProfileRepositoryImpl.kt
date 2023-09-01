@@ -39,7 +39,7 @@ class ProfileRepositoryImpl @Inject constructor(
                 followersAndFollowing = followStuff,
             )
         }
-    }
+    }.flowOn(ioDispatcher)
 
     private fun getProfileAnimes(userId: Int?) = flow {
         emit(aniListGraphQlClient.getAnimeListData(userId))

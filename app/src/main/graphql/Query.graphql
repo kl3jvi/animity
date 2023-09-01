@@ -5,6 +5,27 @@ query SessionQuery {
         name
     }
 }
+query AiringQuery ($startDate: Int, $endDate: Int) {
+    Page {
+        pageInfo {
+            total
+            currentPage
+            lastPage
+            hasNextPage
+            perPage
+        }
+        airingSchedules(
+            airingAt_greater: $startDate,
+            airingAt_lesser:$endDate,
+            sort: [TIME],
+            notYetAired:true
+        ) {
+            airingAt
+            episode
+            media {...HomeMedia}
+        }
+    }
+}
 
 
 
@@ -376,7 +397,7 @@ fragment HomeMedia on Media {
     }
     type
     isFavourite
-
+    countryOfOrigin
     status(version: 2)
     format
     description(asHtml: false)

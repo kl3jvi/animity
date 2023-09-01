@@ -16,7 +16,7 @@ class Constants {
         // Base URLS
         const val GOGO_BASE_URL = "https://gogoanime.gr"
         const val ENIME_BASE_URL = "https://api.enime.moe"
-        const val ANILIST_API_URL = "https://graphql.anilist.co"
+        const val ANILIST_API_URL = "https://main--klejvi-kapaj-h8pazn.apollographos.net/graphql"
         const val BILI_URL = "https://api-vn.kaguya.app/server"
 
         // Network Requests Header

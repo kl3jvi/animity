@@ -7,6 +7,7 @@ import androidx.room.Room
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
+import com.kl3jvi.animity.persistence.ScheduleDao
 import com.kl3jvi.animity.settings.Settings
 import dagger.Module
 import dagger.Provides
@@ -35,6 +36,10 @@ object PersistenceModule {
     @Provides
     @Singleton
     fun providesEpisodeDao(appDatabase: AppDatabase): EpisodeDao = appDatabase.episodeDao()
+
+    @Provides
+    @Singleton
+    fun provideScheduleDao(appDatabase: AppDatabase): ScheduleDao = appDatabase.schedulingDao()
 
     @Singleton
     @Provides

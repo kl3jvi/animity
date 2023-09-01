@@ -1,6 +1,7 @@
 package com.kl3jvi.animity.data.network.anilist_service
 
 import com.apollographql.apollo3.api.ApolloResponse
+import com.kl3jvi.animity.AiringQuery
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.GetFollowersListQuery
@@ -59,4 +60,5 @@ interface AniListSync {
     suspend fun followUser(id: Int): ApolloResponse<ToggleFollowUserMutation.Data>
     suspend fun fetchUsers(query: String, page: Int): ApolloResponse<SearchUsersQuery.Data>
     suspend fun getFollowersAndFollowing(page: Int): ApolloResponse<GetFollowersListQuery.Data>
+    suspend fun getAiringAnimeForDate(startDate: Int?, endDate: Int?): ApolloResponse<AiringQuery.Data>
 }

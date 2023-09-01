@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -90,6 +91,7 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
     private fun shouldShowDialog(openCount: Int): Boolean {
         val exponent = 1 + (openCount / 5) // starts with 1 after 5 openings, then increases
         val randomizedValue = (2.0.pow(exponent) % 10).toInt()
+        Log.e("Calculated Val", (5 + randomizedValue).toString())
         return openCount == 5 + randomizedValue
     }
 
@@ -189,7 +191,7 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
                     R.id.navigation_details,
                     R.id.reviewDetailsFragment,
                     R.id.settingsFragment,
-                    R.id.messageFragment,
+                    R.id.scheduleFragment,
                     R.id.theirProfile,
                 )
             ) {

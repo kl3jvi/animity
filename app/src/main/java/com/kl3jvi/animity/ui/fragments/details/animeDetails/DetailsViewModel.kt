@@ -40,10 +40,13 @@ class DetailsViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    val animeMetaModel = MutableStateFlow(AniListMedia())
+    val passedAniListMedia = MutableStateFlow(AniListMedia())
     val reverseState = MutableStateFlow(false)
+    val isScheduled = passedAniListMedia.flatMapLatest {
+        userRepository.getScheduleStatusLocally(it.idAniList)
+    }.map { it != null }
 
-    val episodeList: StateFlow<EpisodeListUiState> = animeMetaModel.flatMapLatest { media ->
+    val episodeList: StateFlow<EpisodeListUiState> = passedAniListMedia.flatMapLatest { media ->
         favoriteRepository.getGogoUrlFromAniListId(media.idAniList)
             .asResult()
             .flatMapLatest { result ->
@@ -54,14 +57,9 @@ class DetailsViewModel @Inject constructor(
                         detailsRepository.fetchEpisodeList(
                             episodeUrl = result.data,
                             malId = media.idMal.or1(),
-                            extra = listOf(media.idMal),
+                            extra = listOf(media),
                         ).map { episodes ->
-                            episodes.mapIndexed { index, episodeModel ->
-                                episodeModel.episodeName =
-                                    media.streamingEpisode?.getOrNull(index)?.title.orEmpty()
-                            }
                             val episodesChunked = episodes.chunked(50)
-
                             val episodeChunksTitles = episodes.chunked(50) {
                                 val firstEpisodeNumber = it.first().getEpisodeNumberOnly()
                                 val lastEpisodeNumber = it.last().getEpisodeNumberOnly()
@@ -88,7 +86,7 @@ class DetailsViewModel @Inject constructor(
      */
     fun updateAnimeFavorite() {
         viewModelScope.launch(ioDispatcher) {
-            animeMetaModel.flatMapLatest {
+            passedAniListMedia.flatMapLatest {
                 userRepository.markAnimeAsFavorite(it.idAniList)
                     .ifChanged()
                     .catch { error -> logError(error) }
@@ -98,11 +96,17 @@ class DetailsViewModel @Inject constructor(
 
     fun changeAnimeStatus(status: MediaListStatus) {
         viewModelScope.launch(ioDispatcher) {
-            animeMetaModel.flatMapLatest {
+            passedAniListMedia.flatMapLatest {
                 detailsRepository.changeAnimeStatus(it.idAniList, status)
                     .ifChanged()
                     .catch { error -> logError(error) }
             }.collect()
+        }
+    }
+
+    fun updateAnimeScheduleStatus(aniListMedia: AniListMedia) {
+        viewModelScope.launch(ioDispatcher) {
+            userRepository.markAnimeForSchedule(aniListMedia)
         }
     }
 }

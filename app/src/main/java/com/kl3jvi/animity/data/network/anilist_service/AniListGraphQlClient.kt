@@ -3,6 +3,7 @@ package com.kl3jvi.animity.data.network.anilist_service
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
+import com.kl3jvi.animity.AiringQuery
 import com.kl3jvi.animity.AnimeListCollectionQuery
 import com.kl3jvi.animity.FavoritesAnimeQuery
 import com.kl3jvi.animity.GetFollowersListQuery
@@ -32,10 +33,9 @@ class AniListGraphQlClient @Inject constructor(
 
     override suspend fun getSessionForUser() = apolloClient.query(SessionQuery()).execute()
 
-    override suspend fun getUserDataById(userId: Int?) =
-        apolloClient.query(
-            UserQuery(Optional.presentIfNotNull(userId)),
-        ).execute()
+    override suspend fun getUserDataById(userId: Int?) = apolloClient.query(
+        UserQuery(Optional.presentIfNotNull(userId)),
+    ).execute()
 
     override suspend fun fetchUsers(
         query: String,
@@ -47,27 +47,23 @@ class AniListGraphQlClient @Inject constructor(
         ),
     ).execute()
 
-    override suspend fun getUserData(id: Int?) =
-        apolloClient.query(
-            UserQuery(Optional.Present(id)),
-        ).execute()
+    override suspend fun getUserData(id: Int?) = apolloClient.query(
+        UserQuery(Optional.Present(id)),
+    ).execute()
 
-    override suspend fun getNotifications(page: Int) =
-        apolloClient.query(
-            NotificationsQuery(Optional.Present(page)),
-        ).execute()
+    override suspend fun getNotifications(page: Int) = apolloClient.query(
+        NotificationsQuery(Optional.Present(page)),
+    ).execute()
 
-    override suspend fun getFollowersAndFollowing(page: Int) =
-        apolloClient.query(
-            GetFollowersListQuery(page),
-        ).execute()
+    override suspend fun getFollowersAndFollowing(page: Int) = apolloClient.query(
+        GetFollowersListQuery(page),
+    ).execute()
 
     // 2. Queries related to anime media:
 
-    override suspend fun getAnimeListData(userId: Int?) =
-        apolloClient.query(
-            AnimeListCollectionQuery(Optional.presentIfNotNull(userId)),
-        ).execute()
+    override suspend fun getAnimeListData(userId: Int?) = apolloClient.query(
+        AnimeListCollectionQuery(Optional.presentIfNotNull(userId)),
+    ).execute()
 
     override suspend fun fetchSearchAniListData(
         query: String,
@@ -92,6 +88,10 @@ class AniListGraphQlClient @Inject constructor(
     ).execute()
 
     override suspend fun getTopTenTrending() = apolloClient.query(TrendingMediaQuery()).execute()
+
+    override suspend fun getAiringAnimeForDate(startDate: Int?, endDate: Int?) = apolloClient.query(
+        AiringQuery(Optional.present(startDate), Optional.present(endDate)),
+    ).execute()
 
     // 3. Mutation related operations:
 

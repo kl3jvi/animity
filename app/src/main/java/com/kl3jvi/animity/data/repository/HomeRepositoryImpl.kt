@@ -1,7 +1,5 @@
 package com.kl3jvi.animity.data.repository
 
-import com.apollographql.apollo3.api.ApolloResponse
-import com.kl3jvi.animity.HomeDataQuery
 import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
@@ -9,7 +7,6 @@ import com.kl3jvi.animity.domain.repositories.HomeRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,9 +18,8 @@ class HomeRepositoryImpl @Inject constructor(
 ) : HomeRepository {
 
     override fun getHomeData() = flow {
-        emit(aniListGraphQlClient.getHomeData())
-    }.mapNotNull(ApolloResponse<HomeDataQuery.Data>::convert)
-        .flowOn(ioDispatcher)
+        emit(aniListGraphQlClient.getHomeData().convert())
+    }.flowOn(ioDispatcher)
 
     override fun getEncryptionKeys() = flow {
         emit(animeClient.getEncryptionKeys())

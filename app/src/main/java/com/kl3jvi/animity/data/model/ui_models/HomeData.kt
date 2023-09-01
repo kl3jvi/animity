@@ -3,6 +3,8 @@ package com.kl3jvi.animity.data.model.ui_models
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.kl3jvi.animity.data.mapper.MediaStatusAnimity
 import com.kl3jvi.animity.type.MediaFormat
 import com.kl3jvi.animity.type.MediaSeason
@@ -21,6 +23,7 @@ data class HomeData(
 
 @Parcelize
 data class AniListMedia(
+    @PrimaryKey
     val idAniList: Int = 0,
     val idMal: Int? = null,
     val title: MediaTitle = MediaTitle(),
@@ -78,6 +81,19 @@ data class AniListMedia(
 
     fun isMovie() = format?.name == "MOVIE"
 }
+
+fun AniListMedia.mapToEntity(): AniListMediaEntity {
+    return AniListMediaEntity(idAniList, title.userPreferred, coverImage.extraLarge)
+}
+
+@Entity(tableName = "schedule_table")
+@Parcelize
+data class AniListMediaEntity(
+    @PrimaryKey
+    val idAniList: Int,
+    val title: String,
+    val coverImage: String,
+) : Parcelable
 
 fun Genre.getColors(): Triple<ColorStateList, ColorStateList, ColorStateList> {
     val color = when (name) {

@@ -27,16 +27,20 @@ import com.kl3jvi.animity.data.model.ui_models.getColors
 import com.kl3jvi.animity.databinding.FragmentDetailsBinding
 import com.kl3jvi.animity.type.MediaListStatus
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
-import com.kl3jvi.animity.utils.*
+import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
+import com.kl3jvi.animity.utils.collect
+import com.kl3jvi.animity.utils.launchActivity
+import com.kl3jvi.animity.utils.parseTime
+import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import kotlin.properties.Delegates
 
 @ExperimentalCoroutinesApi
@@ -50,13 +54,16 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private var binding: FragmentDetailsBinding? = null
 
     private lateinit var bookMarkMenuItem: MenuItem
+    private lateinit var notificationMenuItem: MenuItem
     private lateinit var title: String
     private var check by Delegates.notNull<Boolean>()
+    private var checkNotification by Delegates.notNull<Boolean>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDetailsBinding.bind(view)
         check = animeDetails.isFavourite
+        checkNotification = false
         observeViewModel()
         initViews()
     }
@@ -70,17 +77,23 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         fetchAnimeInfo()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
+        checkIfItsScheduled()
+    }
+
+    private fun checkIfItsScheduled() {
+        collect(viewModel.isScheduled) {
+            checkNotification = it
+        }
     }
 
     private fun initViews() {
         animeDetails.let { animeInfo ->
-            viewModel.animeMetaModel.update {
-                it.copy(
-                    idAniList = animeInfo.idAniList,
-                    idMal = animeInfo.idMal,
-                    streamingEpisode = it.streamingEpisode,
-                )
-            }
+            viewModel.passedAniListMedia.value = viewModel.passedAniListMedia.value.copy(
+                idAniList = animeInfo.idAniList,
+                idMal = animeInfo.idMal,
+                streamingEpisode = animeInfo.streamingEpisode.orEmpty(),
+            )
+
             binding?.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }
                 resultTitle.text = animeInfo.title.userPreferred
@@ -180,8 +193,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         when (item.itemId) {
             R.id.add_to_favorites -> {
                 toggleFavoriteStatus()
-                viewModel.updateAnimeFavorite()
                 return true
+            }
+
+            R.id.scheduler_action -> {
+                toggleAddToSchedule()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -190,7 +206,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
         bookMarkMenuItem = menu.findItem(R.id.add_to_favorites)
+        notificationMenuItem = menu.findItem(R.id.scheduler_action)
         updateFavoriteIcon()
+        updateNotificationIcon()
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -203,6 +222,19 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             "Anime removed from Favorites"
         }
         showSnack(binding?.root, message)
+        viewModel.updateAnimeFavorite()
+    }
+
+    private fun toggleAddToSchedule() {
+        checkNotification = !checkNotification
+        updateNotificationIcon()
+        val message = if (check) {
+            "Anime added to Scheduler"
+        } else {
+            "Anime removed from Scheduler"
+        }
+        showSnack(binding?.root, message)
+        viewModel.updateAnimeScheduleStatus(args.animeDetails)
     }
 
     private fun updateFavoriteIcon() {
@@ -212,6 +244,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             R.drawable.ic_favorite_uncomplete
         }
         bookMarkMenuItem.setIcon(iconResId)
+    }
+
+    private fun updateNotificationIcon() {
+        val iconResId = if (checkNotification) {
+            R.drawable.twotone_schedule_24
+        } else {
+            R.drawable.baseline_schedule_24
+        }
+        notificationMenuItem.setIcon(iconResId)
     }
 
     /**
@@ -269,7 +310,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             lifecycle,
             emptyList(),
             animeDetails,
-            desiredPosition = -1,
+            desiredPosition = args.desiredPosition,
         )
         viewPager?.adapter = adapter
 
@@ -277,7 +318,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             when (listOfEpisodeModel) {
                 is EpisodeListUiState.Success -> {
                     adapter.setData(listOfEpisodeModel.episodeChunks)
-
                     TabLayoutMediator(
                         binding?.chunkedEpisodeTab!!,
                         viewPager!!,

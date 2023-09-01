@@ -26,12 +26,12 @@ class PagingSearchController<T : Any>(
      */
     override fun buildItemModel(currentPosition: Int, item: T?): EpoxyModel<*> {
         return when (searchMode) {
-            SearchMode.ANIME -> createAnimeModel(currentPosition, item as? AniListMedia)
-            SearchMode.USERS -> createUserModel(currentPosition, item as? User, myId)
+            SearchMode.ANIME -> createAnimeModel(item as? AniListMedia)
+            SearchMode.USERS -> createUserModel(item as? User, myId)
         }
     }
 
-    private fun createAnimeModel(currentPosition: Int, item: AniListMedia?): EpoxyModel<*> {
+    private fun createAnimeModel(item: AniListMedia?): EpoxyModel<*> {
         return SearchLayoutBindingModel_()
             .id(item?.idAniList)
             .clickListener { view ->
@@ -54,7 +54,7 @@ class PagingSearchController<T : Any>(
             }.animeInfo(item)
     }
 
-    private fun createUserModel(currentPosition: Int, item: User?, myId: Int): EpoxyModel<*> {
+    private fun createUserModel(item: User?, myId: Int): EpoxyModel<*> {
         return SearchSuggestionBindingModel_()
             .id(item?.id)
             .clickListener { view ->

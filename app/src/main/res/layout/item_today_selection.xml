@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="animeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel" />
+            type="com.kl3jvi.animity.data.mapper.AiringInfo" />
 
 
         <variable
@@ -42,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="img"
                 android:scaleType="centerCrop"
-                app:image="@{animeInfo.imageUrl}" />
+                app:image="@{animeInfo.media.coverImage.extraLarge}" />
 
             <ImageView
                 android:layout_width="30dp"
@@ -55,11 +56,11 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="-10dp"
             android:layout_marginEnd="10dp"
             android:translationZ="-1dp"
-            app:cardBackgroundColor="@color/darkBackground"
+            app:cardBackgroundColor="@color/background_color"
             app:cardCornerRadius="10dp">
 
             <LinearLayout
@@ -77,9 +78,10 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif"
                     android:maxLines="1"
-                    android:text="@{animeInfo.title}"
+                    android:text="@{animeInfo.media.title.userPreferred}"
                     android:textColor="@color/white"
                     android:textSize="15sp"
+                    tools:text="Naruto"
 
                     />
 
@@ -91,8 +93,9 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="sans-serif"
-                    android:text="@{animeInfo.episodeNumber}"
-                    android:textColor="#BBBBBB" />
+                    android:text="@{animeInfo.getEpisodeTitle()}"
+                    android:textColor="#BBBBBB"
+                    tools:text="Episode 40" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup"
@@ -101,6 +104,15 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp">
 
+                    <com.google.android.material.chip.Chip
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{animeInfo.time()}"
+                        android:textColor="@color/white"
+                        app:chipBackgroundColor="@color/blue"
+                        app:chipStrokeColor="@color/white"
+                        app:chipStrokeWidth="3dp"
+                        tools:text="In 6 hours" />
                 </com.google.android.material.chip.ChipGroup>
             </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kl3jvi.animity.R
@@ -11,6 +12,7 @@ import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
 import com.kl3jvi.animity.ui.fragments.StateManager
 import com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment
+import com.kl3jvi.animity.ui.fragments.schedule.ScheduleViewModel
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
@@ -25,6 +27,7 @@ import javax.inject.Inject
 class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
     private val viewModel: HomeViewModel by viewModels()
     private var binding: FragmentHomeBinding? = null
+    private val scheduleViewModel by activityViewModels<ScheduleViewModel>()
 
     @Inject
     lateinit var analytics: Analytics
@@ -33,13 +36,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
         fetchHomeData()
+        scheduleViewModel()
         createFragmentMenu(R.menu.settings_menu) {
             when (it.itemId) {
                 R.id.action_settings -> handleSettings()
                 R.id.action_notifications -> handleNotifications()
+                R.id.action_airing_schedule -> handleAiringScheduler()
             }
         }
     }
+
+    private fun handleAiringScheduler() = findNavController().nav(
+        R.id.navigation_home,
+        HomeFragmentDirections.toSchedule(),
+    )
 
     override fun onResume() {
         super.onResume()

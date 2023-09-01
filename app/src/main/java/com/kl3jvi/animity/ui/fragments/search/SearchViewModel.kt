@@ -16,6 +16,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -46,7 +47,7 @@ class SearchViewModel @Inject constructor(
     private var lastSearchQuery = ""
 
     // Channels and Flows for Anime and User search
-    private val animeSearchQueryChannel = Channel<SearchQuery>(Channel.CONFLATED)
+    private val animeSearchQueryChannel = Channel<SearchQuery>(Channel.UNLIMITED)
     private val animeSearchFlow = animeSearchQueryChannel
         .receiveAsFlow()
         .debounce(500)
@@ -55,7 +56,7 @@ class SearchViewModel @Inject constructor(
         .cachedIn(viewModelScope)
         .flowOn(ioDispatcher)
 
-    private val userSearchQueryChannel = Channel<String>(Channel.CONFLATED)
+    private val userSearchQueryChannel = Channel<String>(Channel.UNLIMITED)
     private val userSearchFlow = userSearchQueryChannel
         .receiveAsFlow()
         .debounce(500)
@@ -66,13 +67,13 @@ class SearchViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            animeSearchFlow.collect {
+            animeSearchFlow.collectLatest {
                 _searchList.value = it
             }
         }
 
         viewModelScope.launch {
-            userSearchFlow.collect {
+            userSearchFlow.collectLatest {
                 _usersList.value = it
             }
         }
@@ -112,9 +113,7 @@ class SearchViewModel @Inject constructor(
     }
 }
 
-
 data class SearchQuery(
     val query: String,
     val sortTypes: MutableList<SortType>,
 )
-

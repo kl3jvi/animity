@@ -2,6 +2,7 @@ package com.kl3jvi.animity.data.repository
 
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.data.mapper.convert
+import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.EnimeResponse
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeWithTitle
@@ -48,15 +49,27 @@ class DetailsRepositoryImpl @Inject constructor(
         return combine(
             getListOfEpisodes(episodeUrl, extra),
             getEpisodesPercentage(malId),
-        ) { episodeModels,
-            episodeEntities,
-            ->
+        ) { episodeModels, episodeEntities ->
+
+            val mediaPassed = extra.first() as? AniListMedia
+            val reversedStreamingEpisode = mediaPassed?.streamingEpisode?.asReversed()
+            val episodeEntitiesMap = episodeEntities.associateBy { it.episodeUrl }
+
             episodeModels.map { episode ->
-                val contentEpisode =
-                    episodeEntities.firstOrNull { it.episodeUrl == episode.episodeUrl }
-                if (contentEpisode != null) {
-                    episode.percentage = contentEpisode.getWatchedPercentage()
-                }
+                episode.percentage =
+                    episodeEntitiesMap[episode.episodeUrl]?.getWatchedPercentage() ?: 0
+
+                val matchingTitle = reversedStreamingEpisode
+                    ?.find { streamingEpisode ->
+                        val cleanedTitle = streamingEpisode.title
+                            ?.replace("Episode", "EP")
+                            ?.split("-")
+                            ?.first()
+                            ?.trim() ?: "Episode -1"
+                        cleanedTitle == episode.episodeNumber
+                    }?.title.orEmpty()
+
+                episode.episodeName = matchingTitle.split("-").last().trim()
                 episode
             }
         }.flowOn(ioDispatcher)

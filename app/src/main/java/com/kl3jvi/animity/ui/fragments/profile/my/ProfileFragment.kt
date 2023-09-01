@@ -65,12 +65,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), StateManager {
 
                     is UiResult.Success -> {
                         showLoading(false)
-//                        buildProfile(
-//                            profileType = ProfileType.ME,
-//                            userData = userData.data,
-//                        ) {
-//                            Log.e(empty {  },userData.data.followersAndFollowing)
-//                        }
+                        buildProfile(
+                            profileType = ProfileType.ME,
+                            userData = userData.data,
+                        )
                     }
                 }
             }

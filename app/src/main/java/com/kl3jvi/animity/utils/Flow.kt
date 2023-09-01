@@ -163,18 +163,14 @@ fun <T> LifecycleOwner.collect(
  * @param collector The lambda function to apply to the collected data.
  * @param flows The vararg of flows to collect data from.
  */
-fun <T> LifecycleOwner.collectAll(
+inline fun <reified T> LifecycleOwner.collectAll(
     vararg flows: Flow<T>,
-    collector: suspend (T) -> Unit,
+    crossinline collector: suspend (Array<T>) -> Unit,
 ) {
     lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flows.map { flow ->
-                launch {
-                    flow.collect { data ->
-                        collector(data)
-                    }
-                }
+            combine(*flows) { flows ->
+                collector(flows)
             }
         }
     }
