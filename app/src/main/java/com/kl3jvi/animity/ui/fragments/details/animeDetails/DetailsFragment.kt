@@ -54,7 +54,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private var binding: FragmentDetailsBinding? = null
 
     private lateinit var bookMarkMenuItem: MenuItem
-    private lateinit var notificationMenuItem: MenuItem
+
+    //    private lateinit var notificationMenuItem: MenuItem
     private lateinit var title: String
     private var check by Delegates.notNull<Boolean>()
     private var checkNotification by Delegates.notNull<Boolean>()
@@ -196,9 +197,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 return true
             }
 
-            R.id.scheduler_action -> {
-                toggleAddToSchedule()
-            }
+//            R.id.scheduler_action -> {
+//                toggleAddToSchedule()
+//            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -206,7 +207,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.favorite_menu, menu)
         bookMarkMenuItem = menu.findItem(R.id.add_to_favorites)
-        notificationMenuItem = menu.findItem(R.id.scheduler_action)
+//        notificationMenuItem = menu.findItem(R.id.scheduler_action)
         updateFavoriteIcon()
         updateNotificationIcon()
 
@@ -252,7 +253,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         } else {
             R.drawable.baseline_schedule_24
         }
-        notificationMenuItem.setIcon(iconResId)
+//        notificationMenuItem.setIcon(iconResId)
     }
 
     /**

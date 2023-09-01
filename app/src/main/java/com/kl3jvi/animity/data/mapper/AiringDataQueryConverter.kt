@@ -1,13 +1,11 @@
 package com.kl3jvi.animity.data.mapper
 
 import android.os.Parcelable
+import android.text.format.DateUtils
 import com.apollographql.apollo3.api.ApolloResponse
 import com.kl3jvi.animity.AiringQuery
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import kotlinx.parcelize.Parcelize
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 fun ApolloResponse<AiringQuery.Data>.convert(): List<AiringInfo> {
     return this.data?.Page?.airingSchedules?.map {
@@ -30,10 +28,18 @@ data class AiringInfo(
     fun getEpisodeTitle() = "Episode $episode"
 
     fun time(): String {
-        val date = Date(
-            airsAt?.times(1000L) ?: System.currentTimeMillis(),
-        ) // epoch is in seconds, but Java expects milliseconds
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        return format.format(date)
+        val timeInMillis = airsAt?.times(1000L) ?: System.currentTimeMillis()
+
+        // If the time is in the past
+        if (timeInMillis <= System.currentTimeMillis()) {
+            return "Aired"
+        }
+
+        return DateUtils.getRelativeTimeSpanString(
+            timeInMillis,
+            System.currentTimeMillis(),
+            DateUtils.HOUR_IN_MILLIS,
+        ).toString()
     }
+
 }

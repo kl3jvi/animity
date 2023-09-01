@@ -5,20 +5,12 @@ query SessionQuery {
         name
     }
 }
-query AiringQuery ($startDate: Int, $endDate: Int) {
+query AiringQuery ($startTime: Int, $endTime: Int) {
     Page {
-        pageInfo {
-            total
-            currentPage
-            lastPage
-            hasNextPage
-            perPage
-        }
         airingSchedules(
-            airingAt_greater: $startDate,
-            airingAt_lesser:$endDate,
+            airingAt_greater: $startTime,
+            airingAt_lesser: $endTime,
             sort: [TIME],
-            notYetAired:true
         ) {
             airingAt
             episode

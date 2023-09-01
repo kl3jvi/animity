@@ -8,11 +8,11 @@
         android:title="@string/favorite"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/scheduler_action"
-        android:checkable="true"
-        android:icon="@drawable/schedule_selector"
-        android:title="@string/schedule"
-        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:id="@+id/scheduler_action"-->
+<!--        android:checkable="true"-->
+<!--        android:icon="@drawable/schedule_selector"-->
+<!--        android:title="@string/schedule"-->
+<!--        app:showAsAction="always" />-->
 
 </menu>
