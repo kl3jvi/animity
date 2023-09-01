@@ -9,8 +9,8 @@ enum class SortType {
     AVERAGE_SCORE,
     TRENDING,
     FAVOURITES,
-    EPISODES;
-
+    EPISODES,
+    ;
 
     fun toMediaSort(): MediaSort {
         return when (this) {
