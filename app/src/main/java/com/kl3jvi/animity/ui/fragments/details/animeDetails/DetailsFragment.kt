@@ -89,11 +89,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun initViews() {
         animeDetails.let { animeInfo ->
-            viewModel.passedAniListMedia.value = viewModel.passedAniListMedia.value.copy(
-                idAniList = animeInfo.idAniList,
-                idMal = animeInfo.idMal,
-                streamingEpisode = animeInfo.streamingEpisode.orEmpty(),
-            )
+            viewModel.passedAniListMedia.value = animeInfo
 
             binding?.apply {
                 detailsPoster.load(animeInfo.coverImage.large) { crossfade(true) }

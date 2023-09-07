@@ -11,10 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,6 +44,6 @@ class ScheduleViewModel @Inject constructor(
                 results[pair.first] = pair.second
             }
         }
-        _airingAnimeSchedule.value = results
+        _airingAnimeSchedule.compareAndSet(_airingAnimeSchedule.value, results)
     }
 }

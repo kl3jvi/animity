@@ -4,6 +4,9 @@ import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.kl3jvi.animity.BuildConfig
 import javax.inject.Inject
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 /**
  * Analytics is a class that provides methods for logging events and setting user properties in
@@ -32,7 +35,7 @@ class Analytics @Inject constructor(
     fun logEvent(event: String, params: Map<String, Any?>? = null) {
         val bundle = params?.let { createBundle(it) }
 
-        firebaseAnalytics.logReleaseEvent(event.removeSpecialCharacters(), bundle)
+        firebaseAnalytics.logEvent(event.removeSpecialCharacters(), bundle)
     }
 
     /**
@@ -84,13 +87,23 @@ class Analytics @Inject constructor(
     }
 }
 
-private fun FirebaseAnalytics.setUserPropertyRelease(name: String, value: String?) {
-    if (BuildConfig.BUILD_TYPE == "release") setUserProperty(name, value)
-}
+private fun FirebaseAnalytics.setUserPropertyRelease(name: String, value: String?) =
+    applyOnRelease {
+        setUserProperty(name, value)
+    }
 
 private fun FirebaseAnalytics.logReleaseEvent(
     removeSpecialCharacters: String,
     bundle: Bundle?,
-) = apply {
-    if (BuildConfig.BUILD_TYPE == "release") logEvent(removeSpecialCharacters, bundle)
+) = applyOnRelease {
+    logEvent(removeSpecialCharacters, bundle)
+}
+
+@OptIn(ExperimentalContracts::class)
+inline fun <T> T.applyOnRelease(block: T.() -> Unit): T {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+    if (BuildConfig.BUILD_TYPE == "release") block()
+    return this
 }

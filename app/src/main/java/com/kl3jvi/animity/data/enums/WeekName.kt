@@ -9,7 +9,8 @@ enum class WeekName {
     THURSDAY,
     FRIDAY,
     SATURDAY,
-    SUNDAY;
+    SUNDAY,
+    ;
 
     companion object {
         fun WeekName.computeEpochTimesForDay(): Pair<Int, Int> {
@@ -31,4 +32,3 @@ enum class WeekName {
         }
     }
 }
-

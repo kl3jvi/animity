@@ -11,6 +11,7 @@ import javax.inject.Inject
 class NotificationViewModel @Inject constructor(
     notificationsRepository: NotificationsRepository,
 ) : ViewModel() {
+
     val notifications = notificationsRepository
         .getNotifications()
         .cachedIn(viewModelScope)

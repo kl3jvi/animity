@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
@@ -14,11 +15,14 @@ import com.kl3jvi.animity.episodeLarge
 import com.kl3jvi.animity.ui.activities.player.PlayerActivity
 import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.launchActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@AndroidEntryPoint
 class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
 
     private lateinit var binding: FragmentEpisodeContainerBinding
+    private val viewModel: DetailsViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +32,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
         val animeData = args.getParcelable<AniListMedia>(ANIME_DATA)
         val desiredPosition = args.getInt(DESIRED_POSITION)
         val increase = args.getInt(INCREASER)
-        val step = if (increase == 0) increase else increase * 50
+        val step = if (increase == 0) 0 else increase * 50
         bindEpisodeList(episodes, animeData, desiredPosition, step, {
             binding.episodeListRecycler.scrollToPosition(desiredPosition)
         }) {
@@ -49,6 +53,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
             episodes.forEachIndexed { index, episodeModel ->
                 episodeLarge {
                     id(episodeModel.episodeUrl)
+                    vm(viewModel)
                     clickListener { _ ->
                         requireContext().launchActivity<PlayerActivity> {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
@@ -61,7 +66,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                     }
                     showTitle(episodeModel.episodeName.isNotEmpty())
                     isFiller(episodeModel.isFiller)
-
+                    downloadStatus(viewModel.downloadState.value)
                     imageUrl(
                         when {
                             animeDetails?.streamingEpisode?.getOrNull(index + increaser)?.thumbnail == null -> {

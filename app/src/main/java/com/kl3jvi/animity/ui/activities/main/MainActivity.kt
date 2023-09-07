@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_favorites,
+                R.id.navigation_downloads,
                 R.id.navigation_explore,
                 R.id.navigation_profile,
             ),

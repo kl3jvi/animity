@@ -3,7 +3,6 @@ package com.kl3jvi.animity.ui.activities.player
 import android.app.PictureInPictureParams
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.Rational
 import android.view.View
 import android.widget.ImageButton
@@ -228,7 +227,6 @@ class PlayerActivity : AppCompatActivity() {
             .build().apply {
                 binding.videoView.player = this
                 val mediaItems = listOfEpisodesWithQualities.map { episodeWithQualities ->
-                    Log.e("Test url", episodeWithQualities.toString())
                     MediaItem.fromUri(episodeWithQualities.last())
                 }
                 val concatenatedSource = ConcatenatingMediaSource()
@@ -351,11 +349,6 @@ class PlayerActivity : AppCompatActivity() {
                     .setUserAgent(Constants.USER_AGENT)
                     .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
                 dataSource.createDataSource()
-            }
-            val simpleCache = VideoCacheManager.getInstance(this)
-            cacheFactory = CacheDataSource.Factory().apply {
-                setCache(simpleCache)
-                setUpstreamDataSourceFactory(dataSource)
             }
 
             HlsMediaSource.Factory(dataSource)

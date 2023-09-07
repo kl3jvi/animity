@@ -3,13 +3,13 @@ package com.kl3jvi.animity.data.network.anime_service.bili
 import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.data.network.anime_service.base.BaseService
-import com.kl3jvi.animity.parsers.AllAnimeParser
+import com.kl3jvi.animity.parsers.AniWaveParser
 import com.kl3jvi.animity.utils.Constants
 import javax.inject.Inject
 
 class BiliAnimeApiClient @Inject constructor(
     apiServiceSingleton: ApiServiceSingleton,
-    override val parser: AllAnimeParser,
+    override val parser: AniWaveParser,
 ) : BaseClient {
 
     override var animeService: BaseService = apiServiceSingleton.run {

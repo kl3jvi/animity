@@ -40,12 +40,11 @@ class PagingSearchController<T : Any>(
                         val directions =
                             SearchFragmentDirections.exploreToDetails(item, 0)
                         view.findNavController().navigate(directions)
-                        val params = mapOf(
-                            "genre" to item.genres.firstOrNull()?.name,
-                        )
+
+                        val animeName = item.title.userPreferred.replace("[ ,:](?!_)".toRegex(), "")
                         firebaseAnalytics.logEvent(
-                            item.title.userPreferred.replace("[ ,:](?!_)".toRegex(), ""),
-                            params,
+                            "anime_viewed",
+                            mapOf("anime_title" to animeName),
                         )
                     }
                 } catch (e: Exception) {

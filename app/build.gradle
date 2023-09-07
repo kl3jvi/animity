@@ -207,7 +207,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation 'com.github.brahmkshatriya:NiceHttp:1.1.0'
-
+    implementation "com.google.firebase:firebase-perf-ktx:20.0.1"
 
     def constraintLayoutVersion = "2.1.4"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"

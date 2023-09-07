@@ -3,6 +3,7 @@ package com.kl3jvi.animity.ui.activities.player
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.exoplayer2.ExoPlayer
+import com.kl3jvi.animity.data.downloader.Downloader
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
 import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.utils.Constants.Companion.Empty
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class PlayerViewModel @Inject constructor(
     private val playerRepository: PlayerRepository,
     private val ioDispatcher: CoroutineDispatcher,
+    private val downloader: Downloader,
 ) : ViewModel() {
 
     var episodeUrl = MutableStateFlow(String.Empty)

@@ -41,10 +41,12 @@ mockk = "1.13.2"
 mockitoCore = "4.8.1"
 org-jetbrains-kotlin = "1.8.10"
 org-jetbrains-kotlinx = "1.6.4"
+perfPlugin = "1.4.2"
 remoteConfig = "21.2.1"
 roomKtx = "2.5.0"
 workRuntimeKtx = "2.8.0"
 firebaseFirestoreKtx = "24.6.1"
+kotlin = "1.9.0"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
@@ -234,7 +236,7 @@ com-google-firebase-firebase-components = "com.google.firebase:firebase-componen
 com-google-firebase-firebase-config = "com.google.firebase:firebase-config:21.2.0"
 com-google-firebase-firebase-config-ktx = "com.google.firebase:firebase-config-ktx:21.2.0"
 com-google-firebase-firebase-crashlytics = "com.google.firebase:firebase-crashlytics:18.3.1"
-com-google-firebase-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.2"
+com-google-firebase-firebase-crashlytics-gradle = "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
 com-google-firebase-firebase-crashlytics-ktx = "com.google.firebase:firebase-crashlytics-ktx:18.3.1"
 com-google-firebase-firebase-encoders = "com.google.firebase:firebase-encoders:17.0.0"
 com-google-firebase-firebase-encoders-json = "com.google.firebase:firebase-encoders-json:18.0.0"
@@ -312,36 +314,7 @@ org-mockito-mockito-core = "org.mockito:mockito-core:4.7.0"
 org-mozilla-rhino = "org.mozilla:rhino:1.7.14"
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 androidx-media3-database = { group = "androidx.media3", name = "media3-database", version = "1.1.0" }
-
+perf-plugin = { module = "com.google.firebase:perf-plugin", version.ref = "perfPlugin" }
 [plugins]
-
-android = "android:7.3.0"
-android-library = "android-library:7.3.0"
-android-reporting = "android-reporting:7.3.0"
-androidx-navigation-safeargs = "androidx.navigation.safeargs:2.4.1"
-androidx-navigation-safeargs-kotlin = "androidx.navigation.safeargs.kotlin:2.4.1"
-com-apollographql-apollo3 = "com.apollographql.apollo3:3.5.0"
-com-github-ben-manes-versions = "com.github.ben-manes.versions:0.41.0"
-com-google-android-libraries-mapsplatform-secrets-gradle-plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:2.0.1"
-com-google-dagger-hilt-android = "com.google.dagger.hilt.android:2.43.2"
-com-google-firebase-crashlytics = "com.google.firebase.crashlytics:2.9.2"
-com-google-gms-google-services = "com.google.gms.google-services:4.3.14"
-com-onesignal-androidsdk-onesignal-gradle-plugin = "com.onesignal.androidsdk.onesignal-gradle-plugin:0.13.4"
-dagger-hilt-android-plugin = "dagger.hilt.android.plugin:2.43.2"
-kotlin = "kotlin:1.7.10"
-kotlin-android = "kotlin-android:1.7.10"
-kotlin-android-extensions = "kotlin-android-extensions:1.7.10"
-kotlin-kapt = "kotlin-kapt:1.7.10"
-kotlin-multiplatform = "kotlin-multiplatform:1.7.10"
-kotlin-native-cocoapods = "kotlin-native-cocoapods:1.7.10"
-kotlin-native-performance = "kotlin-native-performance:1.7.10"
-kotlin-parcelize = "kotlin-parcelize:1.7.10"
-kotlin-platform-android = "kotlin-platform-android:1.7.10"
-kotlin-platform-common = "kotlin-platform-common:1.7.10"
-kotlin-platform-js = "kotlin-platform-js:1.7.10"
-kotlin-platform-jvm = "kotlin-platform-jvm:1.7.10"
-kotlin-scripting = "kotlin-scripting:1.7.10"
-nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.7.0"
-org-jetbrains-kotlin-android = "org.jetbrains.kotlin.android:1.7.10"
-org-jetbrains-kotlin-android-extensions = "org.jetbrains.kotlin.android.extensions:1.7.10"
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

@@ -16,7 +16,6 @@ class HomeViewModel @Inject constructor(
     val analytics: Analytics,
     ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-
     val homeDataUiState = homeRepository.getHomeData()
         .mapToUiState(viewModelScope + ioDispatcher)
 }

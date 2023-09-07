@@ -41,5 +41,4 @@ data class AiringInfo(
             DateUtils.HOUR_IN_MILLIS,
         ).toString()
     }
-
 }

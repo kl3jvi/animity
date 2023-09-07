@@ -1,14 +1,17 @@
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kl3jvi.animity.data.downloader.DownloadState
+import com.kl3jvi.animity.data.downloader.Downloader
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.domain.repositories.DetailsRepository
 import com.kl3jvi.animity.domain.repositories.FavoriteRepository
+import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
 import com.kl3jvi.animity.type.MediaListStatus
-import com.kl3jvi.animity.utils.CustomDispatcher
 import com.kl3jvi.animity.utils.Result
 import com.kl3jvi.animity.utils.asResult
 import com.kl3jvi.animity.utils.ifChanged
@@ -16,6 +19,7 @@ import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.or1
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -36,8 +40,9 @@ class DetailsViewModel @Inject constructor(
     private val detailsRepository: DetailsRepository,
     private val userRepository: UserRepository,
     private val favoriteRepository: FavoriteRepository,
-    @CustomDispatcher
+    private val playerRepository: PlayerRepository,
     private val ioDispatcher: CoroutineDispatcher,
+    private val downloader: Downloader,
 ) : ViewModel() {
 
     val passedAniListMedia = MutableStateFlow(AniListMedia())
@@ -45,6 +50,7 @@ class DetailsViewModel @Inject constructor(
     val isScheduled = passedAniListMedia.flatMapLatest {
         userRepository.getScheduleStatusLocally(it.idAniList)
     }.map { it != null }
+    val downloadState = MutableStateFlow(DownloadState.UNKNOWN)
 
     val episodeList: StateFlow<EpisodeListUiState> = passedAniListMedia.flatMapLatest { media ->
         favoriteRepository.getGogoUrlFromAniListId(media.idAniList)
@@ -91,6 +97,43 @@ class DetailsViewModel @Inject constructor(
                     .ifChanged()
                     .catch { error -> logError(error) }
             }.collect()
+        }
+    }
+
+    fun downloadEpisode(
+        episodeUrl: EpisodeModel,
+    ) {
+        viewModelScope.launch(
+            ioDispatcher + CoroutineExceptionHandler { _, throwable ->
+                Log.e("Error", throwable.toString())
+            },
+        ) {
+            playerRepository.getMediaUrl(
+                url = episodeUrl.episodeUrl,
+                extra = listOf("naruto"),
+            )
+                .asResult()
+                .ifChanged()
+                .collect { result ->
+                    when (result) {
+                        is Result.Error -> {
+                            Log.e(
+                                "Error",
+                                result.exception.toString(),
+                                result.exception,
+                            )
+                            downloadState.value = DownloadState.FAILED
+                        }
+
+                        Result.Loading -> downloadState.value = DownloadState.QUEUED
+
+                        is Result.Success -> {
+                            val videoUrl = result.data.first().first()
+                            downloader.downloadM3U8Content(videoUrl)
+                            downloadState.value = DownloadState.COMPLETED
+                        }
+                    }
+                }
         }
     }
 

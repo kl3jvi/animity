@@ -22,5 +22,6 @@ buildscript {
         classpath(libs.gradle.plugin.com.onesignal.onesignal.gradle.plugin)
         classpath(libs.androidx.navigation.navigation.safe.args.gradle.plugin)
         classpath(libs.org.jetbrains.kotlin.kotlin.gradle.plugin)
+        classpath(libs.perf.plugin)
     }
 }

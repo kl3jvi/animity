@@ -183,7 +183,7 @@
         android:id="@+id/scheduleFragment"
         android:name="com.kl3jvi.animity.ui.fragments.schedule.ScheduleFragment"
         android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" >
+        tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/scheduleToDetails"
             app:destination="@id/navigation_details" />
@@ -193,11 +193,17 @@
         android:id="@+id/dayAnimeFragment"
         android:name="com.kl3jvi.animity.ui.fragments.schedule.DayAnimeFragment"
         android:label="fragment_airing"
-        tools:layout="@layout/fragment_airing" >
+        tools:layout="@layout/fragment_airing">
         <action
             android:id="@+id/scheduleToDetails"
             app:destination="@id/navigation_details" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_downloads"
+        android:name="com.kl3jvi.animity.ui.fragments.downloads.DownloadFragment"
+        android:label="@string/title_downloads"
+        tools:layout="@layout/fragment_download" />
 
 
 </navigation>

@@ -48,11 +48,8 @@ fun List<AniListMedia>.modelCardAnime(firebaseAnalytics: Analytics): List<CardAn
                 val direction =
                     HomeFragmentDirections.toDetails(media, 0)
                 view.navigateSafe(direction)
-
-                firebaseAnalytics.logEvent(
-                    media.title.userPreferred.replace("[ ,:](?!_)".toRegex(), ""),
-                    mapOf("genre" to media.genres.firstOrNull()?.name.orEmpty()),
-                )
+                val animeName = media.title.userPreferred.replace("[ ,:](?!_)".toRegex(), "")
+                firebaseAnalytics.logEvent("anime_viewed", mapOf("anime_title" to animeName))
             }.animeInfo(media)
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_home"
@@ -15,6 +16,11 @@
         android:id="@+id/navigation_favorites"
         android:icon="@drawable/favorite_icon_selector"
         android:title="@string/title_favorites" />
+
+    <item
+        android:id="@+id/navigation_downloads"
+        android:icon="@drawable/download_icon_selector"
+        android:title="@string/title_downloads" />
 
     <item
         android:id="@+id/navigation_profile"

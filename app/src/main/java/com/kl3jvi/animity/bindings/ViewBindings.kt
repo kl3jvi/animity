@@ -6,6 +6,7 @@ import android.os.Build
 import android.text.Html
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
@@ -14,6 +15,7 @@ import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.kl3jvi.animity.data.downloader.DownloadState
 import com.kl3jvi.animity.di.GlideApp
 import com.kl3jvi.animity.ui.fragments.profile.my.ProfileType
 import io.noties.markwon.Markwon
@@ -98,5 +100,24 @@ fun View.profileBasedVisibility(profileType: ProfileType) {
     isVisible = when (profileType) {
         ProfileType.ME -> false
         ProfileType.OTHER -> true
+    }
+}
+
+@BindingAdapter("dowoladingVisibility")
+fun ProgressBar.setDownloadingVisibility(downloadState: DownloadState) {
+    when (downloadState) {
+        DownloadState.DOWNLOADING -> {
+            isIndeterminate = true
+            isVisible = true
+        }
+
+        DownloadState.COMPLETED -> {
+            progress = 100
+            isVisible = true
+        }
+
+        else -> {
+            isVisible = false
+        }
     }
 }
