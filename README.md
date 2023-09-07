@@ -77,4 +77,6 @@ Your ideas, translations, design changes, code cleaning, or real heavy code chan
 
 [Pull requests](https://github.com/kl3jvi/animity/pulls) will be reviewed
 
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=kl3jvi/animity&type=Date)](https://star-history.com/#kl3jvi/animity&Date)
