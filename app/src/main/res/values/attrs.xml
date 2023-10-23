@@ -8,4 +8,8 @@
     <declare-styleable name="DoubleTapPlayerView">
         <attr name="dtpv_controller" format="reference" />
     </declare-styleable>
+
+        <declare-styleable name="EliteNavView">
+            <attr name="cornerRadius" format="dimension" />
+        </declare-styleable>
 </resources>

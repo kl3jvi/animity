@@ -15,7 +15,6 @@ class EpisodeChunkAdapter(
     private val animeDetails: AniListMedia,
     private val desiredPosition: Int,
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
-
     private var episodeChunks: List<List<EpisodeModel>> = emptyList()
 
     init {
@@ -34,12 +33,13 @@ class EpisodeChunkAdapter(
     }
 
     fun setData(newEpisodeChunks: List<List<EpisodeModel>>) {
-        val diffResult = DiffUtil.calculateDiff(
-            EpisodeChunkDiffCallback(
-                episodeChunks,
-                newEpisodeChunks,
-            ),
-        )
+        val diffResult =
+            DiffUtil.calculateDiff(
+                EpisodeChunkDiffCallback(
+                    episodeChunks,
+                    newEpisodeChunks,
+                ),
+            )
 
         episodeChunks = newEpisodeChunks
         diffResult.dispatchUpdatesTo(this)

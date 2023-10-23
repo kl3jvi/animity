@@ -42,26 +42,29 @@ fun logMessage(string: String?) {
     Log.e("Error Happened", "-------------------------------------------------------------------")
 }
 
-/* A function that is used to set the text of a TextView to a HTML string. */
+// A function that is used to set the text of a TextView to a HTML string.
 fun TextView.setHtmlText(htmlString: String?) {
-    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(htmlString)
-    }
+    text =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(htmlString)
+        }
 }
 
 fun ExpandableTextView.setHtmlText(description: String) {
-    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(description)
-    }
+    text =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(description)
+        }
 }
 
 fun TextView.setMarkdownText(string: String) {
-    text = Markwon.create(this.context)
-        .toMarkdown(string)
+    text =
+        Markwon.create(this.context)
+            .toMarkdown(string)
 }
 
 fun Int?.or1() = this ?: 1

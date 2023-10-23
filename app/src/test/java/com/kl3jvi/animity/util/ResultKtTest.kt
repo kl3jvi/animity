@@ -9,28 +9,29 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class ResultKtTest {
-
     @Test
-    fun Result_catches_errors() = runTest {
-        flow {
-            emit("Animes are the best")
-            throw Exception("Test Finished")
-        }.asResult().test {
-            assertEquals(Result.Loading, awaitItem())
-            assertEquals(Result.Success("Animes are the best"), awaitItem())
+    fun Result_catches_errors() =
+        runTest {
+            flow {
+                emit("Animes are the best")
+                throw Exception("Test Finished")
+            }.asResult().test {
+                assertEquals(Result.Loading, awaitItem())
+                assertEquals(Result.Success("Animes are the best"), awaitItem())
 
-            when (val errorResult = awaitItem()) {
-                is Result.Error -> assertEquals(
-                    "Test Finished",
-                    errorResult.exception?.message,
-                )
-                Result.Loading,
-                is Result.Success,
-                -> throw IllegalStateException(
-                    "The flow should have emitted an Error Result",
-                )
+                when (val errorResult = awaitItem()) {
+                    is Result.Error ->
+                        assertEquals(
+                            "Test Finished",
+                            errorResult.exception?.message,
+                        )
+                    Result.Loading,
+                    is Result.Success,
+                    -> throw IllegalStateException(
+                        "The flow should have emitted an Error Result",
+                    )
+                }
+                awaitComplete()
             }
-            awaitComplete()
         }
-    }
 }

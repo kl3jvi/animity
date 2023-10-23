@@ -1,75 +1,62 @@
 package com.kl3jvi.animity.ui.activities.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl3jvi.animity.domain.repositories.HomeRepository
 import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.domain.repositories.UserRepository
-import com.kl3jvi.animity.utils.Result
-import com.kl3jvi.animity.utils.asResult
-import com.kl3jvi.animity.utils.logError
 import com.kl3jvi.animity.utils.network.NetworkMonitor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
-    private val userRepository: UserRepository,
-    private val localStorage: PersistenceRepository,
-    network: NetworkMonitor,
-) : ViewModel() {
+class MainViewModel
+    @Inject
+    constructor(
+        private val homeRepository: HomeRepository,
+        private val userRepository: UserRepository,
+        private val localStorage: PersistenceRepository,
+        private val ioDispatcher: CoroutineDispatcher,
+        network: NetworkMonitor,
+    ) : ViewModel() {
+        val isConnectedToNetwork = network.isConnected
 
-    val isConnectedToNetwork = network.isConnected
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Eagerly,
-            false,
-        )
+        init {
+            viewModelScope.launch(ioDispatcher) {
+                launch { getUserSession() }
+                launch { updateEncryptionKeys() }
+            }
+        }
 
-    init {
-        getUserSession()
-        updateEncryptionKeys()
-    }
-
-    /**
-     * It gets the user session from the server and sets the user id in the repository.
-     */
-    private fun getUserSession() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userRepository.getSessionForUser().asResult().collect {
-                when (it) {
-                    is Result.Error -> logError(it.exception)
-                    Result.Loading -> {}
-                    is Result.Success -> {
-                        if (!it.data.hasErrors()) {
-                            userRepository.setAniListUserId(it.data.data?.viewer?.id.toString())
-                        }
+        private fun getUserSession() {
+            userRepository.getSessionForUser()
+                .onEach { data ->
+                    if (!data.hasErrors()) {
+                        userRepository.setAniListUserId(data.data?.viewer?.id.toString())
+                    } else {
+                        Log.e("MainViewModel", "Error getting user session")
                     }
-                }
-            }
+                }.launchIn(viewModelScope)
         }
-    }
 
-    /**
-     * > It gets the encryption keys from the server and saves them to the local storage
-     */
-    private fun updateEncryptionKeys() {
-        viewModelScope.launch(Dispatchers.IO) {
-            homeRepository.getEncryptionKeys().asResult().collect {
-                if (it is Result.Success) {
-                    val data = it.data
-                    localStorage.iv = data.iv
-                    localStorage.key = data.key
-                    localStorage.secondKey = data.secondKey
-                }
-            }
+        /**
+         * > It gets the encryption keys from the server and saves them to the local storage
+         */
+        private fun updateEncryptionKeys() {
+            homeRepository.getEncryptionKeys()
+                .onEach { data ->
+                    with(localStorage) {
+                        iv = data.iv
+                        key = data.key
+                        secondKey = data.secondKey
+                    }
+                }.launchIn(viewModelScope)
         }
     }
-}

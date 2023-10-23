@@ -3,6 +3,7 @@ package com.kl3jvi.animity.ui.activities.main
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Dialog
+import android.app.NotificationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.app.NotificationCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -24,15 +26,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.ui.fragments.settings.SettingsFragment
-import com.kl3jvi.animity.utils.OnNeedToRequestPermissions
-import com.kl3jvi.animity.utils.PermissionsFeature
-import com.kl3jvi.animity.utils.collect
+import com.kl3jvi.animity.utils.BottomNavScrollListener
+import com.kl3jvi.animity.utils.collectLatest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -40,8 +41,7 @@ import kotlin.math.pow
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), PermissionsFeature {
-
+class MainActivity : AppCompatActivity(), BottomNavScrollListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -60,33 +60,42 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navView: BottomNavigationView =
-            binding.navView /* Getting the navigation controller from the navigation host fragment. */
+        val navView: NavigationBarView = binding.navView as NavigationBarView
         navController =
-            findNavController(R.id.nav_host_fragment_activity_main) /* Used to set up the action bar with the navigation controller. */
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home,
-                R.id.navigation_favorites,
-                R.id.navigation_downloads,
-                R.id.navigation_explore,
-                R.id.navigation_profile,
-            ),
-        )
+            findNavController(R.id.nav_host_fragment_activity_main) // Used to set up the action bar with the navigation controller.
+        appBarConfiguration =
+            AppBarConfiguration(
+                setOf(
+                    R.id.navigation_home,
+                    R.id.navigation_favorites,
+                    R.id.navigation_downloads,
+                    R.id.navigation_explore,
+                    R.id.navigation_profile,
+                ),
+            )
 
-        /* Setting up the action bar with the navigation controller. */
+        // Setting up the action bar with the navigation controller.
         setupActionBarWithNavController(
             navController,
             appBarConfiguration,
-        )/* Setting up the bottom navigation bar with the navigation controller. */ /* Setting up the bottom navigation bar with the navigation controller. */
+        )/* Setting up the bottom navigation bar with the navigation controller. */ // Setting up the bottom navigation bar with the navigation controller.
         navView.setupWithNavController(navController)
         setBottomBarVisibility()
         askForPermission()
 
-        settings.openCount = settings.openCount + 1
+        settings.openCount += 1
         if (shouldShowDialog(settings.openCount) && !settings.maybeLater) {
             showDonationDialog()
         }
+
+        // show test notification
+         val notification = NotificationCompat.Builder(this, "ANIMITY_NOTIFICATIONS_CHANNEL_ID")
+            .setContentTitle("Test")
+            .setContentText("Test")
+            .setSmallIcon(R.drawable.ic_notification_icon)
+            .build()
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(1, notification)
     }
 
     private fun shouldShowDialog(openCount: Int): Boolean {
@@ -96,7 +105,7 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
         return openCount == 5 + randomizedValue
     }
 
-    fun showDonationDialog() {
+    private fun showDonationDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.donate_dialog)
 
@@ -132,9 +141,10 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
             .launchUrl(this, Uri.parse(SettingsFragment.KOFI_URL))
     }
 
-    private val pushNotificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { _ -> askForPermission() }
+    private val pushNotificationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { _ -> askForPermission() }
 
     private fun askForPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -142,27 +152,31 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
         }
     }
 
-    /* Hiding the bottom navigation bar. */
+    // Hiding the bottom navigation bar.
     private fun hideBottomNavBar() {
         binding.navView.animate().translationY(binding.navView.height.toFloat())
             .setInterpolator(AccelerateInterpolator())
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    binding.navView.isVisible = false
-                }
-            }).duration = 300
+            .setListener(
+                object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
+                        binding.navView.isVisible = false
+                    }
+                },
+            ).duration = 200
     }
 
-    /* Showing the bottom navigation bar. */
+    // Showing the bottom navigation bar.
     private fun showBottomNavBar() {
         binding.navView.animate().translationY(0f).setInterpolator(DecelerateInterpolator())
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationStart(animation: Animator) {
-                    super.onAnimationStart(animation)
-                    binding.navView.isVisible = true
-                }
-            }).duration = 300
+            .setListener(
+                object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animation: Animator) {
+                        super.onAnimationStart(animation)
+                        binding.navView.isVisible = true
+                    }
+                },
+            ).duration = 200
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -180,7 +194,7 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
     }
 
     private fun handleNetworkChanges() {
-        collect(viewModel.isConnectedToNetwork) { isConnected ->
+        collectLatest(viewModel.isConnectedToNetwork) { isConnected ->
             binding.wrapper.isVisible = isConnected
             binding.noInternetStatus.noInternet.isVisible = !isConnected
         }
@@ -188,7 +202,8 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
 
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id in arrayOf(
+            if (destination.id in
+                arrayOf(
                     R.id.navigation_details,
                     R.id.reviewDetailsFragment,
                     R.id.settingsFragment,
@@ -203,10 +218,7 @@ class MainActivity : AppCompatActivity(), PermissionsFeature {
         }
     }
 
-    override val onNeedToRequestPermissions: OnNeedToRequestPermissions = {
-    }
+    override fun onScrollDown() = hideBottomNavBar()
 
-    override fun onPermissionsResult(permissions: Array<String>, grantResults: IntArray) {
-        TODO("Not yet implemented")
-    }
+    override fun onScrollUp() = showBottomNavBar()
 }

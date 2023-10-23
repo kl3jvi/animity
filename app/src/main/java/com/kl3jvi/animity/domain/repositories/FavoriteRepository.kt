@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoriteRepository {
     fun getGogoUrlFromAniListId(id: Int): Flow<String>
-    fun getFavoriteAnimesFromAniList(
-        userId: Int?,
-    ): Flow<PagingData<AniListMedia>>
+
+    fun getFavoriteAnimesFromAniList(userId: Int?): Flow<PagingData<AniListMedia>>
 }

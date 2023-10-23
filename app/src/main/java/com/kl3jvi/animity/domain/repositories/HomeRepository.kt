@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     fun getHomeData(): Flow<HomeData>
+
     fun getEncryptionKeys(): Flow<Keys>
 }

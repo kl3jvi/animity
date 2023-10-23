@@ -10,7 +10,6 @@ import retrofit2.http.*
  */
 
 interface GogoAnimeService : BaseService {
-
     @GET
     suspend fun fetchEpisodeMediaUrl(
         @HeaderMap header: Map<String, String>,
@@ -58,7 +57,7 @@ interface GogoAnimeService : BaseService {
 
         const val EPISODE_LOAD_URL = "https://ajax.gogocdn.net/ajax/load-list-episode"
 
-        /* Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround */
+        // Used to get the gogoanime keys from the GitHub repo. Thanks to https://github.com/justfoolingaround
         const val GOGO_KEYS_URL =
             "https://raw.githubusercontent.com/justfoolingaround/animdl-provider-benchmarks/master/api/gogoanime.json"
     }

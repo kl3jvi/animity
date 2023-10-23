@@ -147,6 +147,8 @@
     <string name="title_schedule">Airing Animes</string>
     <string name="schedule">Add Schedule Reminder</string>
     <string name="title_downloads">Downloads</string>
+    <string name="episodes">Media</string>
+    <string name="episode_chunk">episode_chung_variable</string>
 
 
 </resources>

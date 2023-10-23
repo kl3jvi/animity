@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.downloader.DownloadState
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.FragmentEpisodeContainerBinding
@@ -20,11 +21,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
-
     private lateinit var binding: FragmentEpisodeContainerBinding
     private val viewModel: DetailsViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentEpisodeContainerBinding.bind(view)
         val args = requireArguments()
@@ -54,6 +57,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                 episodeLarge {
                     id(episodeModel.episodeUrl)
                     vm(viewModel)
+                    animeDetails(animeDetails)
                     clickListener { _ ->
                         requireContext().launchActivity<PlayerActivity> {
                             putExtra(Constants.EPISODE_DETAILS, episodeModel)
@@ -61,12 +65,12 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                                 Constants.ANIME_TITLE,
                                 animeDetails?.title?.userPreferred,
                             )
-                            putExtra(Constants.MAL_ID, animeDetails?.idMal)
+                            putExtra(Constants.ANILIST_ID, animeDetails?.idMal)
                         }
                     }
                     showTitle(episodeModel.episodeName.isNotEmpty())
                     isFiller(episodeModel.isFiller)
-                    downloadStatus(viewModel.downloadState.value)
+                    downloadStatus(DownloadState.STATE_QUEUED)
                     imageUrl(
                         when {
                             animeDetails?.streamingEpisode?.getOrNull(index + increaser)?.thumbnail == null -> {
@@ -106,12 +110,13 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
             desiredPosition: Int,
         ): EpisodeContainer {
             return EpisodeContainer().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(ARG_EPISODE_LIST, ArrayList(episodeList))
-                    putParcelable(ANIME_DATA, animeDetails)
-                    putInt(INCREASER, increaser)
-                    putInt(DESIRED_POSITION, desiredPosition)
-                }
+                arguments =
+                    Bundle().apply {
+                        putParcelableArrayList(ARG_EPISODE_LIST, ArrayList(episodeList))
+                        putParcelable(ANIME_DATA, animeDetails)
+                        putInt(INCREASER, increaser)
+                        putInt(DESIRED_POSITION, desiredPosition)
+                    }
             }
         }
     }

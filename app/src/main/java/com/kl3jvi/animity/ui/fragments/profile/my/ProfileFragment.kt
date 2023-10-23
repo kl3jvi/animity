@@ -11,10 +11,12 @@ import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentProfileBinding
 import com.kl3jvi.animity.ui.activities.login.LoginActivity
 import com.kl3jvi.animity.ui.fragments.StateManager
+import com.kl3jvi.animity.utils.BottomNavScrollListener
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.createFragmentMenu
+import com.kl3jvi.animity.utils.epoxy.setupBottomNavScrollListener
 import com.kl3jvi.animity.utils.launchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,13 +25,17 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile), StateManager {
-
     private val viewModel: ProfileViewModel by viewModels()
     private var binding: FragmentProfileBinding? = null
+    private lateinit var listener: BottomNavScrollListener
 
     @Inject
     lateinit var analytics: Analytics
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
 
@@ -46,38 +52,40 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), StateManager {
             }
         }
         getProfileData()
+        listener = requireActivity() as BottomNavScrollListener
     }
 
     private fun getProfileData() {
         collect(viewModel.profileData) { userData ->
-            binding?.profileRv?.withModels {
-                when (userData) {
-                    is UiResult.Error -> {
-                        Toast.makeText(
-                            requireContext(),
-                            userData.throwable.localizedMessage ?: "",
-                            Toast.LENGTH_LONG,
-                        ).show()
-                        showLoading(false)
-                    }
+            binding?.profileRv
+                ?.setupBottomNavScrollListener(listener)
+                ?.withModels {
+                    when (userData) {
+                        is UiResult.Error -> {
+                            Toast.makeText(
+                                requireContext(),
+                                userData.throwable.localizedMessage ?: "",
+                                Toast.LENGTH_LONG,
+                            ).show()
+                            showLoading(false)
+                        }
 
-                    UiResult.Loading -> showLoading(true)
+                        UiResult.Loading -> showLoading(true)
 
-                    is UiResult.Success -> {
-                        showLoading(false)
-                        buildProfile(
-                            profileType = ProfileType.ME,
-                            userData = userData.data,
-                        )
+                        is UiResult.Success -> {
+                            showLoading(false)
+                            buildProfile(
+                                profileType = ProfileType.ME,
+                                userData = userData.data,
+                            )
+                        }
                     }
                 }
-            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // letting go of the resources to avoid memory leak.
         binding = null
     }
 

@@ -17,29 +17,30 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchRepositoryImpl @Inject constructor(
-    private val apiClient: AniListGraphQlClient,
-    private val ioDispatcher: CoroutineDispatcher,
-) : SearchRepository {
+class SearchRepositoryImpl
+    @Inject
+    constructor(
+        private val apiClient: AniListGraphQlClient,
+        private val ioDispatcher: CoroutineDispatcher,
+    ) : SearchRepository {
+        override fun fetchAniListSearchData(
+            query: String,
+            sortType: List<SortType>,
+        ): Flow<PagingData<AniListMedia>> {
+            return Pager(
+                config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+                pagingSourceFactory = { SearchAniListPagingSource(apiClient, query, sortType) },
+            ).flow.flowOn(ioDispatcher)
+        }
 
-    override fun fetchAniListSearchData(
-        query: String,
-        sortType: List<SortType>,
-    ): Flow<PagingData<AniListMedia>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { SearchAniListPagingSource(apiClient, query, sortType) },
-        ).flow.flowOn(ioDispatcher)
-    }
+        override fun fetchAniListUsers(query: String): Flow<PagingData<User>> {
+            return Pager(
+                config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+                pagingSourceFactory = { SearchUsersPagingSource(apiClient, query) },
+            ).flow.flowOn(ioDispatcher)
+        }
 
-    override fun fetchAniListUsers(query: String): Flow<PagingData<User>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { SearchUsersPagingSource(apiClient, query) },
-        ).flow.flowOn(ioDispatcher)
+        companion object {
+            const val NETWORK_PAGE_SIZE = 50
+        }
     }
-
-    companion object {
-        const val NETWORK_PAGE_SIZE = 50
-    }
-}

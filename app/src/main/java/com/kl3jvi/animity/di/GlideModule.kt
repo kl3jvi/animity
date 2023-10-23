@@ -17,8 +17,10 @@ import java.util.concurrent.TimeUnit
 
 @GlideModule
 class GlideModule : AppGlideModule() {
-
-    override fun applyOptions(context: Context, builder: GlideBuilder) {
+    override fun applyOptions(
+        context: Context,
+        builder: GlideBuilder,
+    ) {
         super.applyOptions(context, builder)
         builder.setDefaultRequestOptions(
             RequestOptions()
@@ -28,14 +30,19 @@ class GlideModule : AppGlideModule() {
     }
 
     companion object {
-        private val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .build()
+        private val okHttpClient =
+            OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .build()
     }
 
-    override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+    override fun registerComponents(
+        context: Context,
+        glide: Glide,
+        registry: Registry,
+    ) {
         super.registerComponents(context, glide, registry)
         val factory = OkHttpUrlLoader.Factory(okHttpClient)
         registry.replace(

@@ -8,8 +8,12 @@ import retrofit2.http.Path
 
 interface EnimeService : BaseService {
     @GET("/mapping/mal/{id}")
-    suspend fun getEnimeEpisodesIds(@Path("id") malId: Int): EnimeResponse
+    suspend fun getEnimeEpisodesIds(
+        @Path("id") malId: Int,
+    ): EnimeResponse
 
     @GET("/source/{source}")
-    suspend fun getEnimeSource(@Path("source") source: String): ZoroVideoSource
+    suspend fun getEnimeSource(
+        @Path("source") source: String,
+    ): ZoroVideoSource
 }

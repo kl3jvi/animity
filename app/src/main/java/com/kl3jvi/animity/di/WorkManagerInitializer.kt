@@ -13,10 +13,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object WorkManagerInitializer : Initializer<WorkManager> {
-
     @Provides
     @Singleton
-    override fun create(@ApplicationContext context: Context): WorkManager {
+    override fun create(
+        @ApplicationContext context: Context,
+    ): WorkManager {
         return WorkManager.getInstance(context)
     }
 

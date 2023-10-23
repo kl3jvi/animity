@@ -12,7 +12,7 @@ interface LoginRepository {
         code: String,
     ): Flow<Result<AuthResponse>>
 
-    suspend fun refreshtoken(
+    suspend fun refreshToken(
         clientId: Int,
         clientSecret: String,
         refreshToken: String,

@@ -16,26 +16,26 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class FavoriteRepositoryImpl @Inject constructor(
-    private val apiClient: GogoAnimeApiClient,
-    private val aniListGraphQlClient: AniListGraphQlClient,
-    private val ioDispatcher: CoroutineDispatcher,
-) : FavoriteRepository {
+class FavoriteRepositoryImpl
+    @Inject
+    constructor(
+        private val apiClient: GogoAnimeApiClient,
+        private val aniListGraphQlClient: AniListGraphQlClient,
+        private val ioDispatcher: CoroutineDispatcher,
+    ) : FavoriteRepository {
+        override fun getGogoUrlFromAniListId(id: Int) =
+            flow {
+                emit(apiClient.getGogoUrlFromAniListId(id).pages?.getGogoUrl().orEmpty())
+            }.flowOn(ioDispatcher)
 
-    override fun getGogoUrlFromAniListId(id: Int) = flow {
-        emit(apiClient.getGogoUrlFromAniListId(id).pages?.getGogoUrl().orEmpty())
-    }.flowOn(ioDispatcher)
+        override fun getFavoriteAnimesFromAniList(userId: Int?): Flow<PagingData<AniListMedia>> {
+            return Pager(
+                config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
+                pagingSourceFactory = { FavoritesPagingSource(aniListGraphQlClient, userId) },
+            ).flow.flowOn(ioDispatcher)
+        }
 
-    override fun getFavoriteAnimesFromAniList(
-        userId: Int?,
-    ): Flow<PagingData<AniListMedia>> {
-        return Pager(
-            config = PagingConfig(enablePlaceholders = true, pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = { FavoritesPagingSource(aniListGraphQlClient, userId) },
-        ).flow.flowOn(ioDispatcher)
+        companion object {
+            const val NETWORK_PAGE_SIZE = 50
+        }
     }
-
-    companion object {
-        const val NETWORK_PAGE_SIZE = 50
-    }
-}

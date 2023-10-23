@@ -5,8 +5,10 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import java.text.ParseException
 
-/* It's a function that takes a resource ID and returns a string. */
-fun Fragment.getPreferenceKey(@StringRes resourceId: Int): String = getString(resourceId)
+// It's a function that takes a resource ID and returns a string.
+fun Fragment.getPreferenceKey(
+    @StringRes resourceId: Int,
+): String = getString(resourceId)
 
 /**
  * Find a preference with the corresponding key and throw if it does not exist.
@@ -23,4 +25,9 @@ fun Int.parseTime(state: (Boolean) -> Unit): CharSequence? {
         state(true)
         null
     }
+}
+
+inline fun <T> T?.ifNull(block: () -> Unit): T? {
+    if (this == null) block()
+    return this
 }

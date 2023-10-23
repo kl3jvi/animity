@@ -2,23 +2,25 @@ package com.kl3jvi.animity.persistence
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import com.kl3jvi.animity.data.model.ui_models.AniListMediaEntity
-import com.kl3jvi.animity.data.model.ui_models.AnimeMetaModel
 import com.kl3jvi.animity.data.model.ui_models.EpisodeEntity
+import com.kl3jvi.animity.data.model.ui_models.LocalAnime
+import com.kl3jvi.animity.data.model.ui_models.LocalEpisode
 
-/**
- *  It's a database class that has two tables, one for anime metadata and one for episode metadata
- *
- * */
 @Database(
-    entities = [AnimeMetaModel::class, EpisodeEntity::class, AniListMediaEntity::class],
-    version = 6,
+    entities = [
+        EpisodeEntity::class,
+        AniListMediaEntity::class,
+        LocalAnime::class,
+        LocalEpisode::class,
+    ],
+    version = 8,
     exportSchema = true,
-//    autoMigrations = [AutoMigration(from = 2, to = 3)]
 )
-@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun episodeDao(): EpisodeDao
-    abstract fun schedulingDao(): ScheduleDao
+
+    abstract fun localAnimeDao(): LocalDownloadsDao
+
+    abstract fun localEpisodeDao(): LocalEpisodeDao
 }

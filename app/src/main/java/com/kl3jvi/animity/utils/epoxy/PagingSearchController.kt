@@ -24,7 +24,10 @@ class PagingSearchController<T : Any>(
      * @param item AniListMedia? - The item that is being bound to the view.
      * @return A EpoxyModel<*>
      */
-    override fun buildItemModel(currentPosition: Int, item: T?): EpoxyModel<*> {
+    override fun buildItemModel(
+        currentPosition: Int,
+        item: T?,
+    ): EpoxyModel<*> {
         return when (searchMode) {
             SearchMode.ANIME -> createAnimeModel(item as? AniListMedia)
             SearchMode.USERS -> createUserModel(item as? User, myId)
@@ -53,7 +56,10 @@ class PagingSearchController<T : Any>(
             }.animeInfo(item)
     }
 
-    private fun createUserModel(item: User?, myId: Int): EpoxyModel<*> {
+    private fun createUserModel(
+        item: User?,
+        myId: Int,
+    ): EpoxyModel<*> {
         return SearchSuggestionBindingModel_()
             .id(item?.id)
             .clickListener { view ->

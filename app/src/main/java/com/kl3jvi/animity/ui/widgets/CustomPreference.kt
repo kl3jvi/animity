@@ -10,7 +10,6 @@ import androidx.preference.PreferenceViewHolder
 
 class CustomPreference(context: Context, attrs: AttributeSet) :
     Preference(context, attrs) {
-
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         val summaryView = holder.findViewById(android.R.id.summary) as TextView?

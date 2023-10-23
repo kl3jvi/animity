@@ -11,11 +11,14 @@ import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    homeRepository: HomeRepository,
-    val analytics: Analytics,
-    ioDispatcher: CoroutineDispatcher,
-) : ViewModel() {
-    val homeDataUiState = homeRepository.getHomeData()
-        .mapToUiState(viewModelScope + ioDispatcher)
-}
+class HomeViewModel
+    @Inject
+    constructor(
+        homeRepository: HomeRepository,
+        val analytics: Analytics,
+        ioDispatcher: CoroutineDispatcher,
+    ) : ViewModel() {
+        val homeDataUiState =
+            homeRepository.getHomeData()
+                .mapToUiState(viewModelScope + ioDispatcher)
+    }

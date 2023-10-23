@@ -10,7 +10,6 @@ class SearchUsersPagingSource(
     private val apiClient: AniListGraphQlClient,
     private val query: String,
 ) : AniListPagingSource<User>() {
-
     override suspend fun fetch(page: Int): ApolloResponse<SearchUsersQuery.Data> {
         return apiClient.fetchUsers(query, page)
     }

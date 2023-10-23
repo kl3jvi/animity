@@ -206,52 +206,6 @@
                     app:icon="@drawable/ic_down_arrow"
                     tools:visibility="visible" />
 
-                <!--                <TextView-->
-                <!--                    android:id="@+id/result_plot_header2"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginBottom="10dp"-->
-                <!--                    android:text="@string/synopsis"-->
-                <!--                    android:textColor="@color/textColor"-->
-                <!--                    android:textSize="17sp"-->
-                <!--                    android:textStyle="normal" />-->
-
-                <!--                <com.ms.square.android.expandabletextview.ExpandableTextView-->
-                <!--                    android:id="@+id/expand_text_view"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_marginStart="20dp"-->
-                <!--                    android:layout_marginEnd="20dp"-->
-                <!--                    app:animDuration="200"-->
-                <!--                    app:maxCollapsedLines="4">-->
-
-                <!--                    <TextView-->
-                <!--                        android:id="@id/expandable_text"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:textColor="@color/grayTextColor"-->
-                <!--                        android:textSize="15sp" />-->
-
-                <!--                    <ImageButton-->
-                <!--                        android:id="@id/expand_collapse"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_gravity="center"-->
-                <!--                        android:background="@android:color/transparent"-->
-                <!--                        android:padding="3dp" />-->
-                <!--                </com.ms.square.android.expandabletextview.ExpandableTextView>-->
-
-                <!--                <TextView-->
-                <!--                    android:id="@+id/result_tag_holder2"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginTop="5dp"-->
-                <!--                    android:text="@string/genre"-->
-                <!--                    android:textColor="@color/textColor"-->
-                <!--                    android:textSize="17sp"-->
-                <!--                    android:textStyle="normal" />-->
-
 
                 <include
                     android:id="@+id/animeInfoLayout"

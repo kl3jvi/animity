@@ -15,30 +15,33 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TheirProfileViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository,
-    private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
-    private val followState: MutableStateFlow<Pair<String, String>> =
-        MutableStateFlow(Pair("Follow", ""))
+class TheirProfileViewModel
+    @Inject
+    constructor(
+        private val profileRepository: ProfileRepository,
+        private val savedStateHandle: SavedStateHandle,
+    ) : ViewModel() {
+        private val followState: MutableStateFlow<Pair<String, String>> =
+            MutableStateFlow(Pair("Follow", ""))
 
-    val theirProfileData = savedStateHandle.getStateFlow("user", User())
-        .flatMapLatest { user ->
-            profileRepository.getProfileData(user.id)
-        }.combine(followState) { profileData, followState ->
-            profileData.copy(
-                userData = profileData.userData,
-                profileRow = profileData.profileRow,
-                followState = followState,
-            )
-        }.mapToUiState(viewModelScope)
+        val theirProfileData =
+            savedStateHandle.getStateFlow("user", User())
+                .flatMapLatest { user ->
+                    profileRepository.getProfileData(user.id)
+                }.combine(followState) { profileData, followState ->
+                    profileData.copy(
+                        userData = profileData.userData,
+                        profileRow = profileData.profileRow,
+                        followState = followState,
+                    )
+                }.mapToUiState(viewModelScope)
 
-    fun followUser() {
-        val id = savedStateHandle.get<User>("user")?.id ?: return
-        viewModelScope.launch(Dispatchers.IO) {
-            profileRepository.followUser(id).collect { newFollowState ->
-                followState.value = newFollowState
+        fun followUser() {
+            val id = savedStateHandle.get<User>("user")?.id ?: return
+            viewModelScope.launch(Dispatchers.IO) {
+                profileRepository.followUser(id).collect { newFollowState ->
+                    followState.value = newFollowState
+                }
             }
         }
     }
-}

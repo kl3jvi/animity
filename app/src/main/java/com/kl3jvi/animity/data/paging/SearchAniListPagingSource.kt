@@ -12,7 +12,6 @@ class SearchAniListPagingSource(
     private val query: String,
     private val sortType: List<SortType>,
 ) : AniListPagingSource<AniListMedia>() {
-
     override suspend fun fetch(page: Int): ApolloResponse<SearchAnimeQuery.Data> {
         return apiClient.fetchSearchAniListData(query, page, sortType.map(SortType::toMediaSort))
     }

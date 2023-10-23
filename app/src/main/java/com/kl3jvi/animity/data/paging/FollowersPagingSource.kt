@@ -8,7 +8,6 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 
 class FollowersPagingSource(private val apiQlClient: AniListGraphQlClient) :
     AniListPagingSource<Pair<List<User>, List<User>>>() {
-
     override suspend fun fetch(page: Int): ApolloResponse<GetFollowersListQuery.Data> {
         return apiQlClient.getFollowersAndFollowing(page)
     }

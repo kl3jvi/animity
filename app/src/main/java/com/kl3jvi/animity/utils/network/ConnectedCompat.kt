@@ -6,19 +6,18 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 object ConnectedCompat {
-
     private val IMPL: ConnectedCompatImpl
 
     init {
-        IMPL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            MarshMallowImpl
-        } else {
-            BaseImpl
-        }
+        IMPL =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                MarshMallowImpl
+            } else {
+                BaseImpl
+            }
     }
 
-    fun isConnected(connectivityManager: ConnectivityManager) =
-        IMPL.isConnected(connectivityManager)
+    fun isConnected(connectivityManager: ConnectivityManager) = IMPL.isConnected(connectivityManager)
 
     internal interface ConnectedCompatImpl {
         fun isConnected(connectivityManager: ConnectivityManager): Boolean

@@ -26,7 +26,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
-
     @Inject
     lateinit var settings: Settings
 
@@ -35,7 +34,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private val viewModel by viewModels<SettingsViewModel>()
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
     }
 
@@ -102,16 +104,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         collect(viewModel.versionInfo) {
             Log.e("URLJAAA", it.Animity?.universal?.direct_link.orEmpty())
             it.Animity?.let {
-                val manager = DownloadManager.Builder(requireActivity()).run {
-                    apkUrl(it.universal.direct_link)
-                    apkName("animity.apk")
-                    smallIcon(R.mipmap.ic_launcher)
-                    apkVersionCode(it.universal.versionCode)
-                    apkVersionName(it.universal.versionName)
-                    apkSize(it.universal.apkSize)
-                    apkDescription(it.universal.update_message)
-                    apkVersionCode(BuildConfig.VERSION_CODE + 1)
-                }
+                val manager =
+                    DownloadManager.Builder(requireActivity()).run {
+                        apkUrl(it.universal.direct_link)
+                        apkName("animity.apk")
+                        smallIcon(R.mipmap.ic_launcher)
+                        apkVersionCode(it.universal.versionCode)
+                        apkVersionName(it.universal.versionName)
+                        apkSize(it.universal.apkSize)
+                        apkDescription(it.universal.update_message)
+                        apkVersionCode(BuildConfig.VERSION_CODE + 1)
+                    }
                 if (it.universal.versionCode > BuildConfig.VERSION_CODE) {
                     manager.build()
                         .download()

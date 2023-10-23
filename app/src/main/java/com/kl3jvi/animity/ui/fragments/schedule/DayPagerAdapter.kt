@@ -12,9 +12,9 @@ class DayPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
 ) : FragmentStateAdapter(
-    fragmentManager,
-    lifecycle,
-) {
+        fragmentManager,
+        lifecycle,
+    ) {
     private val weekDays = WeekName.values()
     private var scheduleMap: Map<WeekName, List<AiringInfo>> = emptyMap()
 
@@ -43,17 +43,22 @@ private class ScheduleDiffCallback(
     private val oldMap: Map<WeekName, List<AiringInfo>>,
     private val newMap: Map<WeekName, List<AiringInfo>>,
 ) : DiffUtil.Callback() {
-
     override fun getOldListSize(): Int = WeekName.values().size
 
     override fun getNewListSize(): Int = WeekName.values().size
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    override fun areItemsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean {
         // Since WeekName is constant, items are always the same.
         return oldItemPosition == newItemPosition
     }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    override fun areContentsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean {
         val weekName = WeekName.values()[oldItemPosition]
         val oldData = oldMap[weekName]
         val newData = newMap[weekName]

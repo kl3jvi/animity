@@ -15,17 +15,18 @@ fun <T : Preference> PreferenceFragmentCompat.configurePreference(
 ): T {
     val preference = requirePreference<T>(preferenceId)
     preference.block()
-    preference.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-        val key = getPreferenceKey(preferenceId)
-        preferences.edit {
-            when (newValue) {
-                is Boolean -> putBoolean(key, newValue)
-                is Int -> putLong(key, newValue.toLong() * 1000)
-                is String -> putString(key, newValue.toJson())
+    preference.onPreferenceChangeListener =
+        Preference.OnPreferenceChangeListener { _, newValue ->
+            val key = getPreferenceKey(preferenceId)
+            preferences.edit {
+                when (newValue) {
+                    is Boolean -> putBoolean(key, newValue)
+                    is Int -> putLong(key, newValue.toLong() * 1000)
+                    is String -> putString(key, newValue.toJson())
+                }
             }
+            true
         }
-        true
-    }
     preference.onPreferenceClickListener = clickListener
     return preference
 }

@@ -39,4 +39,8 @@
     <dimen name="dp_90">90dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="rounded_image_radius">5dp</dimen>
+    <dimen name="default_margin_horizontal">16dp</dimen>
+    <dimen name="default_margin_bottom">16dp</dimen>
+    <dimen name="default_margin_top">10dp</dimen>
+    <dimen name="custom_nav_icon_size">18dp</dimen>
 </resources>

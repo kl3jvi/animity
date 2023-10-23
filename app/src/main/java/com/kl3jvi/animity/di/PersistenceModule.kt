@@ -7,7 +7,8 @@ import androidx.room.Room
 import com.kl3jvi.animity.BuildConfig
 import com.kl3jvi.animity.persistence.AppDatabase
 import com.kl3jvi.animity.persistence.EpisodeDao
-import com.kl3jvi.animity.persistence.ScheduleDao
+import com.kl3jvi.animity.persistence.LocalDownloadsDao
+import com.kl3jvi.animity.persistence.LocalEpisodeDao
 import com.kl3jvi.animity.settings.Settings
 import dagger.Module
 import dagger.Provides
@@ -19,19 +20,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object PersistenceModule {
-
     private const val DATABASE_NAME = "anime_database"
     private const val SHARED_PREFERENCES_NAME = BuildConfig.APPLICATION_ID + ".LocalStorage"
 
     @Provides
     @Singleton
-    fun provideAppDatabase(
-        application: Application,
-    ): AppDatabase = Room
-        .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
-        .fallbackToDestructiveMigration()
-//            .addTypeConverter(typeResponseConverter)
-        .build()
+    fun provideAppDatabase(application: Application): AppDatabase =
+        Room
+            .databaseBuilder(application, AppDatabase::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     @Singleton
@@ -39,12 +37,17 @@ object PersistenceModule {
 
     @Provides
     @Singleton
-    fun provideScheduleDao(appDatabase: AppDatabase): ScheduleDao = appDatabase.schedulingDao()
+    fun provideLocalEpisodeDao(appDatabase: AppDatabase): LocalEpisodeDao = appDatabase.localEpisodeDao()
+
+    @Provides
+    @Singleton
+    fun provideLocalAnimeDao(appDatabase: AppDatabase): LocalDownloadsDao = appDatabase.localAnimeDao()
 
     @Singleton
     @Provides
-    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    fun provideSharedPreference(
+        @ApplicationContext context: Context,
+    ): SharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     @Singleton
     @Provides

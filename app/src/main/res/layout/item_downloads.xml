@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <variable
+            name="anime"
+            type="com.kl3jvi.animity.data.model.ui_models.LocalAnime" />
+
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnLongClickListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/episode_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,14 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
-            android:orientation="horizontal">
-            <!--app:cardCornerRadius="@dimen/roundedImageRadius"-->
+            android:onLongClick="@{clickListener}"
+            android:orientation="horizontal"
+            app:cardCornerRadius="@dimen/roundedImageRadius">
+
             <androidx.cardview.widget.CardView
                 android:layout_width="70dp"
                 android:layout_height="104dp">
 
                 <ImageView
                     android:id="@+id/download_header_poster"
+                    image="@{anime.coverImageUrl}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -42,6 +57,7 @@
                     android:id="@+id/download_header_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{anime.title}"
                     android:textColor="@color/textColor"
                     android:textStyle="bold"
                     tools:text="Perfect Run" />
@@ -50,8 +66,22 @@
                     android:id="@+id/download_header_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{anime.getEpisodeCountString}"
                     android:textColor="@color/grayTextColor"
                     tools:text="1 episode | 285MB" />
+
+                <ImageButton
+                    android:id="@+id/delete_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="10dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/delete"
+                    android:src="@drawable/ic_download_filled"
+                    android:visibility="gone" />
+
+
             </LinearLayout>
 
             <ImageView

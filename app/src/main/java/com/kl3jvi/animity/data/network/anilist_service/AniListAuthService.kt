@@ -13,14 +13,18 @@ interface AniListAuthService {
         "Accept: application/json",
     )
     @POST(AUTH_URL)
-    suspend fun getAccessToken(@Body aniListAuth: AniListAuth): AuthResponse
+    suspend fun getAccessToken(
+        @Body aniListAuth: AniListAuth,
+    ): AuthResponse
 
     @Headers(
         "Content-Type: application/json",
         "Accept: application/json",
     )
     @POST(AUTH_URL)
-    suspend fun refreshToken(@Body aniListAuth: RefreshTokenRequest): AuthResponse
+    suspend fun refreshToken(
+        @Body aniListAuth: RefreshTokenRequest,
+    ): AuthResponse
 
     companion object {
         const val AUTH_URL = "https://anilist.co/api/v2/oauth/token"

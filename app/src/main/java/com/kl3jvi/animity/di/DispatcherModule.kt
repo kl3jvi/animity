@@ -28,11 +28,12 @@ object DispatcherModule {
     @Provides
     @Singleton
     @CustomDispatcher
-    fun provideCustomDispatcher(): CoroutineDispatcher = ThreadPoolExecutor(
-        0,
-        Integer.MAX_VALUE,
-        60L,
-        TimeUnit.SECONDS,
-        LinkedBlockingQueue(),
-    ).asCoroutineDispatcher()
+    fun provideCustomDispatcher(): CoroutineDispatcher =
+        ThreadPoolExecutor(
+            0,
+            Integer.MAX_VALUE,
+            60L,
+            TimeUnit.SECONDS,
+            LinkedBlockingQueue(),
+        ).asCoroutineDispatcher()
 }

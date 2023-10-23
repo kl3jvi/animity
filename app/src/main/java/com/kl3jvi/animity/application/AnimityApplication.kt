@@ -15,22 +15,21 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.google.firebase.FirebaseApp
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.data.secrets.LibraryInitializer
-import com.kl3jvi.animity.data.secrets.Secrets
 import com.kl3jvi.animity.workers.NotificationWorker
-import com.onesignal.OneSignal
 import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidApp
 class AnimityApplication : Application(), Configuration.Provider {
-
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
+        FirebaseApp.initializeApp(this)
         super.onCreate()
         initExternalLibs()
         initOneSignal()
@@ -50,24 +49,24 @@ class AnimityApplication : Application(), Configuration.Provider {
     }
 
     private fun initOneSignal() {
-        OneSignal.initWithContext(this)
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.NONE, OneSignal.LOG_LEVEL.NONE)
-        OneSignal.setAppId(Secrets.oneSignalKey)
+        FirebaseApp.initializeApp(this)
+//        OneSignal.initWithContext(this)
+//        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.NONE, OneSignal.LOG_LEVEL.NONE)
+//        OneSignal.setAppId(Secrets.oneSignalKey)
     }
 
     private fun setupNotificationWorker() {
-        // Check if there is an existing periodic work request with the specified tag
         val workInfos = WorkManager.getInstance(this).getWorkInfosByTag(TAG_PERIODIC_WORK_REQUEST)
         val hasExistingWorkRequest = workInfos.get().isNotEmpty()
 
-        // Schedule a new periodic work request only if there is no existing one
         if (!hasExistingWorkRequest) {
-            val work = createPeriodicWorkerRequest(
-                Frequency(
-                    repeatInterval = 10,
-                    repeatIntervalTimeUnit = TimeUnit.MINUTES,
-                ),
-            )
+            val work =
+                createPeriodicWorkerRequest(
+                    Frequency(
+                        repeatInterval = 10,
+                        repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                    ),
+                )
 
             WorkManager.getInstance(this).enqueueUniquePeriodicWork(
                 TAG_PERIODIC_WORK_REQUEST,
@@ -77,9 +76,7 @@ class AnimityApplication : Application(), Configuration.Provider {
         }
     }
 
-    private fun createPeriodicWorkerRequest(
-        frequency: Frequency,
-    ): PeriodicWorkRequest {
+    private fun createPeriodicWorkerRequest(frequency: Frequency): PeriodicWorkRequest {
         val constraints = getWorkerConstrains()
 
         return PeriodicWorkRequestBuilder<NotificationWorker>(
@@ -91,10 +88,11 @@ class AnimityApplication : Application(), Configuration.Provider {
         }.build()
     }
 
-    private fun getWorkerConstrains() = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .setRequiresBatteryNotLow(false)
-        .build()
+    private fun getWorkerConstrains() =
+        Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresBatteryNotLow(false)
+            .build()
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -114,10 +112,11 @@ class AnimityApplication : Application(), Configuration.Provider {
         }
     }
 
-    override fun getWorkManagerConfiguration() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .setMinimumLoggingLevel(Log.DEBUG)
-        .build()
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(Log.DEBUG)
+            .build()
 
     companion object {
         const val ANIMITY_NOTIFICATIONS_CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"

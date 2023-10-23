@@ -1,10 +1,14 @@
 package com.kl3jvi.animity.utils
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.kl3jvi.animity.bindings.gone
+import com.kl3jvi.animity.bindings.visible
 import com.kl3jvi.animity.data.enums.AnimeTypes
 import com.kl3jvi.animity.settings.Settings
 import kotlinx.coroutines.FlowPreview
@@ -16,11 +20,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 fun <T> Flow<T>.ifChanged() = ifChanged { it }
@@ -84,13 +90,14 @@ fun <T, R> Flow<List<T>>.filterChanged(transform: (T) -> R): Flow<T> {
     var lastMappedValues: Map<T, R>? = null
     return flatMapConcat { values ->
         val lastMapped = lastMappedValues
-        val changed = if (lastMapped == null) {
-            values
-        } else {
-            values.filter {
-                !lastMapped.containsKey(it) || lastMapped[it] != transform(it)
+        val changed =
+            if (lastMapped == null) {
+                values
+            } else {
+                values.filter {
+                    !lastMapped.containsKey(it) || lastMapped[it] != transform(it)
+                }
             }
-        }
         lastMappedValues = values.associateWith { transform(it) }
         changed.asFlow()
     }
@@ -114,10 +121,11 @@ fun <T, R> Flow<T>.ifAnyChanged(transform: (T) -> Array<R>): Flow<T> {
 
     return filter { value ->
         val mapped = transform(value)
-        val hasChanges = lastMappedValues
-            ?.asSequence()
-            ?.filterIndexed { i, r -> mapped[i] != r }
-            ?.any()
+        val hasChanges =
+            lastMappedValues
+                ?.asSequence()
+                ?.filterIndexed { i, r -> mapped[i] != r }
+                ?.any()
 
         if (!observedValueOnce || hasChanges == true) {
             lastMappedValues = mapped
@@ -149,11 +157,21 @@ fun <T> LifecycleOwner.collect(
     flow: Flow<T>,
     collector: suspend (T) -> Unit,
 ): Job {
-    return lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.catch { e -> logError(e) }.collect(collector)
-        }
-    }
+    return flow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+        .catch { e -> logError(e) }
+        .onEach(collector)
+        .launchIn(lifecycleScope)
+}
+
+fun <T> LifecycleOwner.collectLatest(
+    flow: Flow<T>,
+    collector: suspend (T) -> Unit,
+): Job {
+    return flow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+        .catch { e -> logError(e) }
+        .buffer(0)
+        .onEach(collector)
+        .launchIn(lifecycleScope)
 }
 
 /**
@@ -180,11 +198,11 @@ fun <T> Fragment.collectLatest(
     flow: Flow<T>,
     collector: suspend (T) -> Unit,
 ) {
-    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        repeatOnLifecycle(Lifecycle.State.STARTED) {
-            flow.catch { e -> e.printStackTrace() }.collectLatest(collector)
-        }
-    }
+    flow.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+        .catch { e -> logError(e) }
+        .buffer(0) // mimics the collect latest calse
+        .onEach(collector)
+        .launchIn(viewLifecycleOwner.lifecycleScope)
 }
 
 fun <T> Flow<List<T>>.reverseIf(predicate: MutableStateFlow<Boolean>): Flow<List<T>> {
@@ -210,3 +228,30 @@ suspend fun <T, R> Iterable<T>.asyncMapIndexed(transform: suspend (index: Int, T
             async { transform(index, element) }
         }.map { it.await() }
     }
+
+fun <T> Fragment.handleUiState(
+    uiState: UiResult<T>,
+    contentView: View,
+    loadingView: View,
+    errorAction: (Throwable) -> Unit,
+    contentAction: (T) -> Unit,
+) {
+    when (uiState) {
+        is UiResult.Loading -> {
+            loadingView.visible()
+            contentView.gone()
+        }
+
+        is UiResult.Success -> {
+            loadingView.gone()
+            contentView.visible()
+            contentAction(uiState.data) // Use this to update your UI with data
+        }
+
+        is UiResult.Error -> {
+            loadingView.gone()
+            contentView.visible()
+            errorAction(uiState.throwable) // Typically show a Snackbar with error message
+        }
+    }
+}

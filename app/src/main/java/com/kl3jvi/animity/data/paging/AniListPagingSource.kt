@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.apollographql.apollo3.api.ApolloResponse
 
 abstract class AniListPagingSource<T : Any> : PagingSource<Int, T>() {
-
     abstract suspend fun fetch(page: Int): ApolloResponse<*>
 
     abstract fun convert(response: ApolloResponse<*>): List<T>

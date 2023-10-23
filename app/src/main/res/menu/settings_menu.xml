@@ -18,4 +18,5 @@
         android:id="@+id/action_settings"
         android:title="@string/settings"
         app:showAsAction="collapseActionView" />
+
 </menu>

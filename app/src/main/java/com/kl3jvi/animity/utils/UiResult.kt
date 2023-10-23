@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.stateIn
 
 // Ui Result
 sealed interface UiResult<out T> {
-    data class Success<T>(val data: T) : UiResult<T>
+    data class Success<out T>(val data: T) : UiResult<T>
+
     data class Error(val throwable: Throwable) : UiResult<Nothing>
-    object Loading : UiResult<Nothing>
+
+    data object Loading : UiResult<Nothing>
 }
 
-fun <T> Flow<T>.mapToUiState(
-    scope: CoroutineScope,
-): StateFlow<UiResult<T>> {
+fun <T> Flow<T>.mapToUiState(scope: CoroutineScope): StateFlow<UiResult<T>> {
     return map<T, UiResult<T>> {
         UiResult.Success(it)
     }.onStart {

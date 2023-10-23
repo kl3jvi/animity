@@ -75,11 +75,12 @@ fun CardView.changeFillerBg(isFiller: Boolean) {
 
 @BindingAdapter("htmlText")
 fun TextView.setHtml(htmlString: String) {
-    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(htmlString)
-    }
+    text =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(htmlString, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            Html.fromHtml(htmlString)
+        }
 }
 
 @BindingAdapter("animatedProgress")
@@ -91,27 +92,29 @@ fun ContentLoadingProgressBar.setAnimatedProgress(progress: Int) {
 
 @BindingAdapter("markdown")
 fun TextView.setMarkdownText(string: String) {
-    text = Markwon.create(this.context)
-        .toMarkdown(string)
+    text =
+        Markwon.create(this.context)
+            .toMarkdown(string)
 }
 
 @BindingAdapter("profileTypeVisibility")
 fun View.profileBasedVisibility(profileType: ProfileType) {
-    isVisible = when (profileType) {
-        ProfileType.ME -> false
-        ProfileType.OTHER -> true
-    }
+    isVisible =
+        when (profileType) {
+            ProfileType.ME -> false
+            ProfileType.OTHER -> true
+        }
 }
 
 @BindingAdapter("dowoladingVisibility")
 fun ProgressBar.setDownloadingVisibility(downloadState: DownloadState) {
     when (downloadState) {
-        DownloadState.DOWNLOADING -> {
+        DownloadState.STATE_DOWNLOADING -> {
             isIndeterminate = true
             isVisible = true
         }
 
-        DownloadState.COMPLETED -> {
+        DownloadState.STATE_COMPLETED -> {
             progress = 100
             isVisible = true
         }
@@ -120,4 +123,12 @@ fun ProgressBar.setDownloadingVisibility(downloadState: DownloadState) {
             isVisible = false
         }
     }
+}
+
+fun View.visible() {
+    visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
 }

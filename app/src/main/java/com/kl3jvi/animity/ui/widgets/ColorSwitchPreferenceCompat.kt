@@ -10,7 +10,6 @@ import androidx.preference.SwitchPreferenceCompat
 
 class ColorSwitchPreferenceCompat(context: Context, attrs: AttributeSet) :
     SwitchPreferenceCompat(context, attrs) {
-
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         val summaryView = holder.findViewById(android.R.id.summary) as TextView?

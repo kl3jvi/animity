@@ -14,16 +14,18 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    profileRepository: ProfileRepository,
-    localStorage: PersistenceRepository,
-    ioDispatcher: CoroutineDispatcher,
-) : ViewModel() {
+class ProfileViewModel
+    @Inject
+    constructor(
+        private val userRepository: UserRepository,
+        profileRepository: ProfileRepository,
+        localStorage: PersistenceRepository,
+        ioDispatcher: CoroutineDispatcher,
+    ) : ViewModel() {
+        val profileData =
+            profileRepository
+                .getProfileData(localStorage.aniListUserId?.toInt())
+                .mapToUiState(viewModelScope + ioDispatcher)
 
-    val profileData = profileRepository
-        .getProfileData(localStorage.aniListUserId?.toInt())
-        .mapToUiState(viewModelScope + ioDispatcher)
-
-    fun clearStorage(triggered: () -> Unit) = userRepository.clearStorage(triggered)
-}
+        fun clearStorage(triggered: () -> Unit) = userRepository.clearStorage(triggered)
+    }

@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EpisodeDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEpisode(episodeEntity: EpisodeEntity)
 
@@ -16,7 +15,7 @@ interface EpisodeDao {
     @Query("SELECT * FROM EpisodeEntity WHERE episodeUrl =:episodeUrl")
     fun getEpisodeContent(episodeUrl: String): Flow<EpisodeEntity>
 
-    @Query("SELECT * FROM EpisodeEntity WHERE malId = :malId")
+    @Query("SELECT * FROM EpisodeEntity WHERE aniListId = :malId")
     fun getEpisodesByAnime(malId: Int): Flow<List<EpisodeEntity>>
 
     @Query("SELECT EXISTS(SELECT * FROM EpisodeEntity WHERE episodeUrl = :episodeUrl LIMIT 1)")

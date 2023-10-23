@@ -62,7 +62,6 @@ data class AniListMedia(
     val siteUrl: String = "",
     val mediaListEntry: MediaStatusAnimity? = null,
 ) : Parcelable {
-
     fun getGenresToString(): String {
         return if (genres.size < 3) {
             genres.joinToString { it.name }
@@ -96,51 +95,53 @@ data class AniListMediaEntity(
 ) : Parcelable
 
 fun Genre.getColors(): Triple<ColorStateList, ColorStateList, ColorStateList> {
-    val color = when (name) {
-        "Action" -> "#24687B"
-        "Adventure" -> "#014037"
-        "Comedy" -> "#E6977E"
-        "Drama" -> "#7E1416"
-        "Ecchi" -> "#7E174A"
-        "Fantasy" -> "#989D60"
-        "Hentai" -> "#37286B"
-        "Horror" -> "#5B1765"
-        "Mahou Shoujo" -> "#BF5264"
-        "Mecha" -> "#542437"
-        "Music" -> "#329669"
-        "Mystery" -> "#3D3251"
-        "Psychological" -> "#D85C43"
-        "Romance" -> "#C02944"
-        "Sci-Fi" -> "#85B14B"
-        "Slice of Life" -> "#D3B042"
-        "Sports" -> "#6B9145"
-        "Supernatural" -> "#338074"
-        "Thriller" -> "#224C80"
-        else -> "#000000"
-    }.toStateListColor()
+    val color =
+        when (name) {
+            "Action" -> "#24687B"
+            "Adventure" -> "#014037"
+            "Comedy" -> "#E6977E"
+            "Drama" -> "#7E1416"
+            "Ecchi" -> "#7E174A"
+            "Fantasy" -> "#989D60"
+            "Hentai" -> "#37286B"
+            "Horror" -> "#5B1765"
+            "Mahou Shoujo" -> "#BF5264"
+            "Mecha" -> "#542437"
+            "Music" -> "#329669"
+            "Mystery" -> "#3D3251"
+            "Psychological" -> "#D85C43"
+            "Romance" -> "#C02944"
+            "Sci-Fi" -> "#85B14B"
+            "Slice of Life" -> "#D3B042"
+            "Sports" -> "#6B9145"
+            "Supernatural" -> "#338074"
+            "Thriller" -> "#224C80"
+            else -> "#000000"
+        }.toStateListColor()
 
-    val outlineColor = when (name) {
-        "Action" -> "#1c4f62"
-        "Adventure" -> "#7fbf8c"
-        "Comedy" -> "#d46c5f"
-        "Drama" -> "#5f0c0e"
-        "Ecchi" -> "#5f0c33"
-        "Fantasy" -> "#6d7143"
-        "Hentai" -> "#2b1c4d"
-        "Horror" -> "#4d1c4f"
-        "Mahou Shoujo" -> "#a8414d"
-        "Mecha" -> "#3a1c1e"
-        "Music" -> "#1f5a3c"
-        "Mystery" -> "#2d1f3a"
-        "Psychological" -> "#9c422d"
-        "Romance" -> "#82162a"
-        "Sci-Fi" -> "#4d7738"
-        "Slice of Life" -> "#b09c39"
-        "Sports" -> "#4d6230"
-        "Supernatural" -> "#24695f"
-        "Thriller" -> "#1c3d6e"
-        else -> "#000000"
-    }.toStateListColor()
+    val outlineColor =
+        when (name) {
+            "Action" -> "#1c4f62"
+            "Adventure" -> "#7fbf8c"
+            "Comedy" -> "#d46c5f"
+            "Drama" -> "#5f0c0e"
+            "Ecchi" -> "#5f0c33"
+            "Fantasy" -> "#6d7143"
+            "Hentai" -> "#2b1c4d"
+            "Horror" -> "#4d1c4f"
+            "Mahou Shoujo" -> "#a8414d"
+            "Mecha" -> "#3a1c1e"
+            "Music" -> "#1f5a3c"
+            "Mystery" -> "#2d1f3a"
+            "Psychological" -> "#9c422d"
+            "Romance" -> "#82162a"
+            "Sci-Fi" -> "#4d7738"
+            "Slice of Life" -> "#b09c39"
+            "Sports" -> "#4d6230"
+            "Supernatural" -> "#24695f"
+            "Thriller" -> "#1c3d6e"
+            else -> "#000000"
+        }.toStateListColor()
 
     val r = Color.red(color.defaultColor)
     val g = Color.green(color.defaultColor)
@@ -149,11 +150,12 @@ fun Genre.getColors(): Triple<ColorStateList, ColorStateList, ColorStateList> {
     val luminance = 0.299 * r + 0.587 * g + 0.114 * b
 
     // Set the text color based on the luminance
-    val textColor = if (luminance > 160) {
-        ColorStateList.valueOf(Color.BLACK)
-    } else {
-        ColorStateList.valueOf(Color.WHITE)
-    }
+    val textColor =
+        if (luminance > 160) {
+            ColorStateList.valueOf(Color.BLACK)
+        } else {
+            ColorStateList.valueOf(Color.WHITE)
+        }
 
     return Triple(color, outlineColor, textColor)
 }

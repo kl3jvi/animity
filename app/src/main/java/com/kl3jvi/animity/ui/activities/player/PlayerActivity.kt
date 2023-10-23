@@ -1,6 +1,9 @@
 package com.kl3jvi.animity.ui.activities.player
 
 import android.app.PictureInPictureParams
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Rational
@@ -44,10 +47,11 @@ import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.databinding.ActivityPlayerBinding
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Constants
+import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_ID
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
-import com.kl3jvi.animity.utils.Constants.Companion.MAL_ID
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
+import com.kl3jvi.animity.utils.Constants.Companion.THUMBNAIL
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
@@ -65,7 +69,6 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
-
     @Inject
     lateinit var settings: Settings
 
@@ -91,7 +94,8 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var episodeNumberLocal: String
     lateinit var episodeUrlLocal: String
     lateinit var episodeEntity: EpisodeEntity
-    var aniListId: Int = 0
+    private var aniListId: Int = 0
+    private var thumbnailUri: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,10 +103,11 @@ class PlayerActivity : AppCompatActivity() {
         if (intent.hasExtra(EPISODE_DETAILS)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(EPISODE_DETAILS)
 
-            aniListId = intent.getIntExtra(MAL_ID, 0)
+            aniListId = intent.getIntExtra(ANILIST_ID, 0)
             animeTitlePassed = intent.getStringExtra(ANIME_TITLE).toString()
             episodeNumberLocal = getIntentData?.episodeNumber.toString()
             episodeUrlLocal = getIntentData?.episodeUrl.toString()
+            thumbnailUri = intent.getStringExtra(THUMBNAIL).orEmpty()
 
             val title = binding.videoView.findViewById<TextView>(R.id.episodeName)
             val episodeNum = binding.videoView.findViewById<TextView>(R.id.episodeNum)
@@ -113,6 +118,29 @@ class PlayerActivity : AppCompatActivity() {
             initialisePlayerLayout()
             viewModel.episodeUrl.value = getIntentData?.episodeUrl.toString()
             hideSystemUi()
+        }
+    }
+
+    private fun cast(videoUrl: String?) {
+        val videoURL = videoUrl ?: return
+        val shareVideo = Intent(Intent.ACTION_VIEW)
+        shareVideo.setDataAndType(Uri.parse(videoURL), "video/*")
+        shareVideo.setPackage("com.instantbits.cast.webvideo")
+        val castTitle = "$animeTitlePassed : Ep $episodeNumberLocal"
+        shareVideo.putExtra("title", castTitle)
+        val episodeThumbnail = thumbnailUri
+        shareVideo.putExtra("poster", episodeThumbnail)
+        val headers = Bundle()
+        headers.putString("Referer", REFERER)
+        shareVideo.putExtra("android.media.intent.extra.HTTP_HEADERS", headers)
+        shareVideo.putExtra("secure_uri", true)
+        try {
+            startActivity(shareVideo)
+        } catch (ex: ActivityNotFoundException) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            val uriString = "market://details?id=com.instantbits.cast.webvideo"
+            intent.data = Uri.parse(uriString)
+            startActivity(intent)
         }
     }
 
@@ -194,6 +222,11 @@ class PlayerActivity : AppCompatActivity() {
                     try {
                         setupPlayer(res.data)
 
+                        binding.videoView.findViewById<ImageButton>(R.id.media_route_button)
+                            .setOnClickListener {
+                                cast(res.data.last().last())
+                            }
+
                         viewModel.getPlaybackPosition(episodeUrlLocal)
                         collect(viewModel.playBackPosition) {
                             player?.seekTo(it)
@@ -211,50 +244,60 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setupPlayer(listOfEpisodesWithQualities: List<List<String>>) {
-        trackSelector = DefaultTrackSelector(this).apply {
-            setParameters(buildUponParameters().setMaxVideoSizeSd())
-        }
-        val audioAttributes = AudioAttributes.Builder()
-            .setUsage(C.USAGE_MEDIA)
-            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
-            .build()
-
-        player = ExoPlayer.Builder(this)
-            .setAudioAttributes(audioAttributes, true)
-            .setTrackSelector(trackSelector!!)
-            .setSeekBackIncrementMs(settings.seekBackwardTime)
-            .setSeekForwardIncrementMs(settings.seekForwardTime)
-            .build().apply {
-                binding.videoView.player = this
-                val mediaItems = listOfEpisodesWithQualities.map { episodeWithQualities ->
-                    MediaItem.fromUri(episodeWithQualities.last())
-                }
-                val concatenatedSource = ConcatenatingMediaSource()
-                mediaItems.forEach { mediaItem ->
-                    val videoSource =
-                        buildMediaSource(mediaItem, mediaItem.localConfiguration?.uri.toString())
-                    concatenatedSource.addMediaSource(videoSource)
-                }
-                setMediaSource(concatenatedSource)
-                playWhenReady = true
-                prepare()
+        trackSelector =
+            DefaultTrackSelector(this).apply {
+                setParameters(buildUponParameters().setMaxVideoSizeSd())
             }
+        val audioAttributes =
+            AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA)
+                .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+                .build()
+
+        player =
+            ExoPlayer.Builder(this)
+                .setAudioAttributes(audioAttributes, true)
+                .setTrackSelector(trackSelector!!)
+                .setSeekBackIncrementMs(settings.seekBackwardTime)
+                .setSeekForwardIncrementMs(settings.seekForwardTime)
+                .build().apply {
+                    binding.videoView.player = this
+                    val mediaItems =
+                        listOfEpisodesWithQualities.map { episodeWithQualities ->
+                            MediaItem.fromUri(episodeWithQualities.last())
+                        }
+                    val concatenatedSource = ConcatenatingMediaSource()
+                    mediaItems.forEach { mediaItem ->
+                        val videoSource =
+                            buildMediaSource(mediaItem, mediaItem.localConfiguration?.uri.toString())
+                        concatenatedSource.addMediaSource(videoSource)
+                    }
+                    setMediaSource(concatenatedSource)
+                    playWhenReady = true
+                    prepare()
+                }
     }
 
     private fun handlePlayerListener() {
-        player?.addListener(object : Player.Listener {
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                if (playbackState == ExoPlayer.STATE_READY) {
-                    val realDurationMillis = player?.duration ?: 0
-                    episodeEntity = EpisodeEntity().apply {
-                        malId = aniListId
-                        episodeUrl = episodeUrlLocal
-                        watchedDuration = 0
-                        duration = realDurationMillis
+        player?.addListener(
+            object : Player.Listener {
+                override fun onPlayerStateChanged(
+                    playWhenReady: Boolean,
+                    playbackState: Int,
+                ) {
+                    if (playbackState == ExoPlayer.STATE_READY) {
+                        val realDurationMillis = player?.duration ?: 0
+                        episodeEntity =
+                            EpisodeEntity().apply {
+                                aniListId = aniListId
+                                episodeUrl = episodeUrlLocal
+                                watchedDuration = 0
+                                duration = realDurationMillis
+                            }
                     }
                 }
-            }
-        })
+            },
+        )
     }
 
     private fun handleSkipIntro() {
@@ -333,21 +376,26 @@ class PlayerActivity : AppCompatActivity() {
 //        return HlsMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)
 //    }
 
-    private fun buildMediaSource(mediaItem: MediaItem, url: String): MediaSource {
+    private fun buildMediaSource(
+        mediaItem: MediaItem,
+        url: String,
+    ): MediaSource {
         return if (url.contains("m3u8")) {
             val appCache = Cache(File("cacheDir", "okhttpcache"), 10 * 1024 * 1024)
             val bootstrapClient = OkHttpClient.Builder().cache(appCache).build()
 
-            val dns = DnsOverHttps.Builder().client(bootstrapClient)
-                .url("https://security.cloudflare-dns.com/dns-query".toHttpUrl())
-                .bootstrapDnsHosts(InetAddress.getByName("1.1.1.1"))
-                .build()
+            val dns =
+                DnsOverHttps.Builder().client(bootstrapClient)
+                    .url("https://security.cloudflare-dns.com/dns-query".toHttpUrl())
+                    .bootstrapDnsHosts(InetAddress.getByName("1.1.1.1"))
+                    .build()
 
             val client = bootstrapClient.newBuilder().dns(dns).build()
             val dataSource = {
-                val dataSource = OkHttpDataSource.Factory(client)
-                    .setUserAgent(Constants.USER_AGENT)
-                    .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
+                val dataSource =
+                    OkHttpDataSource.Factory(client)
+                        .setUserAgent(Constants.USER_AGENT)
+                        .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
                 dataSource.createDataSource()
             }
 
@@ -355,11 +403,12 @@ class PlayerActivity : AppCompatActivity() {
                 .setAllowChunklessPreparation(true)
                 .createMediaSource(mediaItem)
         } else {
-            /* Creating a data source factory. */
+            // Creating a data source factory.
             val dataSource = {
-                val dataSource: DataSource.Factory = DefaultHttpDataSource.Factory()
-                    .setUserAgent(Constants.USER_AGENT)
-                    .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
+                val dataSource: DataSource.Factory =
+                    DefaultHttpDataSource.Factory()
+                        .setUserAgent(Constants.USER_AGENT)
+                        .setDefaultRequestProperties(hashMapOf("Referer" to REFERER))
                 dataSource.createDataSource()
             }
             ProgressiveMediaSource.Factory(dataSource)
@@ -435,27 +484,30 @@ class PlayerActivity : AppCompatActivity() {
      * It toggles the full screen mode of the video player.
      */
     private fun toggleFullView() {
-        val resizeMode = if (isFullScreen) {
-            AspectRatioFrameLayout.RESIZE_MODE_FIT
-        } else {
-            AspectRatioFrameLayout.RESIZE_MODE_FILL
-        }
+        val resizeMode =
+            if (isFullScreen) {
+                AspectRatioFrameLayout.RESIZE_MODE_FIT
+            } else {
+                AspectRatioFrameLayout.RESIZE_MODE_FILL
+            }
         binding.videoView.resizeMode = resizeMode
 
-        val videoScalingMode = if (isFullScreen) {
-            C.VIDEO_SCALING_MODE_SCALE_TO_FIT
-        } else {
-            C.VIDEO_SCALING_MODE_DEFAULT
-        }
+        val videoScalingMode =
+            if (isFullScreen) {
+                C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+            } else {
+                C.VIDEO_SCALING_MODE_DEFAULT
+            }
         player?.videoScalingMode = videoScalingMode
 
         isFullScreen = !isFullScreen
 
-        val fullScreenIcon = if (isFullScreen) {
-            R.drawable.exo_controls_fullscreen_exit
-        } else {
-            R.drawable.exo_controls_fullscreen_enter
-        }
+        val fullScreenIcon =
+            if (isFullScreen) {
+                R.drawable.exo_controls_fullscreen_exit
+            } else {
+                R.drawable.exo_controls_fullscreen_enter
+            }
         val fullScreenDrawable = ContextCompat.getDrawable(this, fullScreenIcon)
         binding.videoView.findViewById<ImageView>(R.id.exo_full_Screen)
             ?.setImageDrawable(fullScreenDrawable)
@@ -474,10 +526,11 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        val defaultHeaders = mapOf(
-            "User-Agent" to
-                "Mozilla/5.0 (Linux; Android %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36"
-                    .format(Build.VERSION.RELEASE, Build.MODEL),
-        )
+        val defaultHeaders =
+            mapOf(
+                "User-Agent" to
+                    "Mozilla/5.0 (Linux; Android %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Mobile Safari/537.36"
+                        .format(Build.VERSION.RELEASE, Build.MODEL),
+            )
     }
 }

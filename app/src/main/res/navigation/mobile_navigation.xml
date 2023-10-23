@@ -137,6 +137,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.kl3jvi.animity.ui.fragments.settings.SettingsFragment"
+        tools:layout="@xml/root_preferences"
         android:label="Settings">
         <action
             android:id="@+id/placeHolder"
@@ -158,6 +159,7 @@
     <fragment
         android:id="@+id/notificationBottomSheetFragment"
         android:name="com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment"
+        tools:layout="@layout/notifications_bottom_sheet"
         android:label="NotificationBottomSheetFragment">
         <action
             android:id="@+id/notificationToDetails"

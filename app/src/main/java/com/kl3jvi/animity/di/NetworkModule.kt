@@ -6,24 +6,26 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.kl3jvi.animity.data.network.UpdateClient
-import com.kl3jvi.animity.data.network.UpdateService
+import com.kl3jvi.animity.analytics.Performance
 import com.kl3jvi.animity.data.network.anilist_service.AniListAuthService
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.network.anime_service.base.ApiServiceSingleton
 import com.kl3jvi.animity.data.network.anime_service.base.BaseClient
 import com.kl3jvi.animity.data.network.anime_service.enime.EnimeClient
 import com.kl3jvi.animity.data.network.anime_service.gogo.GogoAnimeApiClient
+import com.kl3jvi.animity.data.network.general.UpdateClient
+import com.kl3jvi.animity.data.network.general.UpdateService
 import com.kl3jvi.animity.data.network.interceptor.HeaderInterceptor
-import com.kl3jvi.animity.domain.repositories.LoginRepository
-import com.kl3jvi.animity.domain.repositories.PersistenceRepository
 import com.kl3jvi.animity.parsers.BaseParser
 import com.kl3jvi.animity.parsers.GoGoParser
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.utils.Apollo
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_API_URL
+import com.kl3jvi.animity.utils.Constants.Companion.GOGO_BASE_URL
 import com.kl3jvi.animity.utils.RetrofitClient
 import com.kl3jvi.animity.utils.setGenericDns
 import dagger.Module
@@ -45,65 +47,63 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
-
     @Provides
     @Singleton
     @Apollo
     fun provideOkHttpClient(
-        localStorage: PersistenceRepository,
-        loginRepository: LoginRepository,
-    ): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HeaderInterceptor(loginRepository, localStorage))
-        .addInterceptor(
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            },
-        )
-        .connectTimeout(40, TimeUnit.SECONDS)
-        .readTimeout(40, TimeUnit.SECONDS)
-        .writeTimeout(40, TimeUnit.SECONDS)
-        .build()
+        interceptor: ChuckerInterceptor,
+        headerInterceptor: HeaderInterceptor,
+    ): OkHttpClient =
+        OkHttpClient.Builder().addInterceptor(headerInterceptor)
+            .addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BASIC
+                },
+            )
+            .addInterceptor(interceptor)
+            .connectTimeout(40, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
+            .writeTimeout(40, TimeUnit.SECONDS).build()
 
     @Provides
     @Singleton
     @RetrofitClient
     fun provideRetrofitOkHttpClient(
         settings: Settings,
-    ): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(
+        chuckerInterceptor: ChuckerInterceptor,
+    ): OkHttpClient =
+        OkHttpClient.Builder().addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             },
         )
-        .setGenericDns(settings)
-        .connectTimeout(20, TimeUnit.SECONDS)
-        .readTimeout(20, TimeUnit.SECONDS)
-        .writeTimeout(20, TimeUnit.SECONDS)
-        .build()
+            .addInterceptor(chuckerInterceptor)
+            .setGenericDns(settings)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS).build()
 
     @Provides
     @Singleton
     fun provideRetrofit(
         @RetrofitClient okHttpClient: OkHttpClient,
         @Named("base-url") url: String,
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(url)
-        .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    ): Retrofit =
+        Retrofit.Builder().baseUrl(url).client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create()).build()
 
     @Provides
     @Named("base-url")
-    fun provideBaseUrl(): String = "https://rickandmortyapi.com/"
+    fun provideBaseUrl(): String = GOGO_BASE_URL
 
     @Provides
     @Singleton
     fun provideApolloClient(
         @Apollo okHttpClient: OkHttpClient,
-    ): ApolloClient = ApolloClient.Builder()
-        .serverUrl(ANILIST_API_URL)
-        .okHttpClient(okHttpClient)
-        .build()
+    ): ApolloClient =
+        ApolloClient.Builder()
+            .serverUrl(ANILIST_API_URL)
+            .okHttpClient(okHttpClient)
+            .build()
 
     @Provides
     @Singleton
@@ -117,30 +117,26 @@ object NetworkModule {
     @Singleton
     fun provideAniListGraphQlClient(
         apolloClient: ApolloClient,
-    ): AniListGraphQlClient = AniListGraphQlClient(apolloClient)
+        performance: Performance,
+    ): AniListGraphQlClient = AniListGraphQlClient(apolloClient, performance)
 
     @Singleton
     @Provides
-    fun provideAniListAuthService(retrofit: Retrofit): AniListAuthService =
-        retrofit.create(AniListAuthService::class.java)
+    fun provideAniListAuthService(retrofit: Retrofit): AniListAuthService = retrofit.create(AniListAuthService::class.java)
 
     @Provides
     @Singleton
     fun provideChucker(
         @ApplicationContext context: Context,
-    ): ChuckerInterceptor = ChuckerInterceptor.Builder(context)
-        .collector(ChuckerCollector(context))
-        .maxContentLength(250000L)
-        .redactHeaders(emptySet())
-        .alwaysReadResponseBody(false)
-        .build()
+    ): ChuckerInterceptor =
+        ChuckerInterceptor.Builder(context).collector(ChuckerCollector(context))
+            .maxContentLength(250000L).redactHeaders(emptySet()).alwaysReadResponseBody(false).build()
 
     @Singleton
     @Provides
     fun provideConnectivityManager(
         @ApplicationContext context: Context,
-    ): ConnectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    ): ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     @Singleton
     @Provides
@@ -158,8 +154,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideUpdateService(retrofit: Retrofit): UpdateService =
-        retrofit.create(UpdateService::class.java)
+    fun provideUpdateService(retrofit: Retrofit): UpdateService = retrofit.create(UpdateService::class.java)
 
     @Provides
     @Singleton
@@ -175,7 +170,19 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseApp(
+        @ApplicationContext context: Context,
+    ): FirebaseApp? {
+        return FirebaseApp.initializeApp(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideFirebaseAnalytics(
         @ApplicationContext context: Context,
-    ) = FirebaseAnalytics.getInstance(context)
+    ): FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+
+    @Provides
+    @Singleton
+    fun provideFirebasePerformance(): FirebasePerformance = FirebasePerformance.getInstance()
 }

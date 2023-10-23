@@ -27,91 +27,97 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 @HiltWorker
-class NotificationWorker @AssistedInject constructor(
-    @Assisted appContext: Context,
-    @Assisted workerParams: WorkerParameters,
-    private val ioDispatcher: CoroutineDispatcher,
-    private val aniListGraphQlClient: AniListGraphQlClient,
-    private val preferences: SharedPreferences,
-) : CoroutineWorker(appContext, workerParams) {
-
-    override suspend fun doWork(): Result = withContext(ioDispatcher) {
-        return@withContext try {
-            val latestNotification = fetchLatestNotification()
-
-            if (latestNotification != null && !isNotificationIdStored(latestNotification.id)) {
-                Log.e(TAG, "Notifications received: $latestNotification")
-                showNotification(latestNotification)
-                storeNotificationId(latestNotification.id)
+class NotificationWorker
+    @AssistedInject
+    constructor(
+        @Assisted appContext: Context,
+        @Assisted workerParams: WorkerParameters,
+        private val ioDispatcher: CoroutineDispatcher,
+        private val aniListGraphQlClient: AniListGraphQlClient,
+        private val preferences: SharedPreferences,
+    ) : CoroutineWorker(appContext, workerParams) {
+        override suspend fun doWork(): Result =
+            withContext(ioDispatcher) {
+                return@withContext try {
+                    val latestNotification = fetchLatestNotification()
+                    if (latestNotification != null && !isNotificationIdStored(latestNotification.id)) {
+                        Log.e(TAG, "Notifications received: $latestNotification")
+                        showNotification(latestNotification)
+                        storeNotificationId(latestNotification.id)
+                    }
+                    Result.success()
+                } catch (e: Exception) {
+                    Result.failure()
+                }
             }
-            Result.success()
-        } catch (e: Exception) {
-            Result.failure()
+
+        private suspend fun fetchLatestNotification(): Notification? {
+            val response =
+                aniListGraphQlClient
+                    .getNotifications(1)
+                    .data
+                    ?.convert()
+
+            return response?.flatMap {
+                when (it) {
+                    is PagingDataItem.NotificationItem -> listOf(it.notification)
+                    else -> emptyList()
+                }
+            }?.maxByOrNull { it.id ?: -1 }
+        }
+
+        private fun showNotification(notification: Notification) {
+            val pendingIntent = buildPendingIntent(notification)
+
+            val builder =
+                NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_notification_icon)
+                    .setContentTitle(applicationContext.getString(R.string.notification_title))
+                    .setContentText(notification.getFormattedNotification())
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+
+            sendNotification(builder)
+        }
+
+        private fun buildPendingIntent(notification: Notification): PendingIntent {
+            val args =
+                bundleOf(
+                    "animeDetails" to notification.media,
+                    if (notification.episode != null) {
+                        "desiredPosition" to notification.episode
+                    } else {
+                        "desiredPosition" to -1
+                    },
+                )
+
+            return NavDeepLinkBuilder(applicationContext)
+                .setComponentName(MainActivity::class.java)
+                .setGraph(R.navigation.mobile_navigation)
+                .setDestination(R.id.navigation_details)
+                .setArguments(args)
+                .createPendingIntent()
+        }
+
+        private fun sendNotification(builder: NotificationCompat.Builder) {
+            NotificationManagerCompat.from(applicationContext).apply {
+                if (ContextCompat.checkSelfPermission(
+                        applicationContext,
+                        Manifest.permission.POST_NOTIFICATIONS,
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    notify(NOTIFICATION_ID, builder.build())
+                }
+            }
+        }
+
+        private fun isNotificationIdStored(id: Int?): Boolean = preferences.getBoolean(id.toString(), false)
+
+        private fun storeNotificationId(id: Int?) = preferences.edit { putBoolean(id.toString(), true) }
+
+        companion object {
+            private const val TAG = "NotificationWorker"
+            private const val CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
+            private const val NOTIFICATION_ID = 0x1
         }
     }
-
-    private suspend fun fetchLatestNotification(): Notification? {
-        val response = aniListGraphQlClient.getNotifications(1).data?.convert()
-
-        return response?.flatMap {
-            when (it) {
-                is PagingDataItem.NotificationItem -> listOf(it.notification)
-                else -> emptyList()
-            }
-        }?.maxByOrNull { it.id ?: -1 }
-    }
-
-    private fun showNotification(notification: Notification) {
-        val pendingIntent = buildPendingIntent(notification)
-
-        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_notification_icon)
-            .setContentTitle(applicationContext.getString(R.string.notification_title))
-            .setContentText(notification.getFormattedNotification())
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-
-        sendNotification(builder)
-    }
-
-    private fun buildPendingIntent(notification: Notification): PendingIntent {
-        val args = bundleOf(
-            "animeDetails" to notification.media,
-            if (notification.episode != null) {
-                "desiredPosition" to notification.episode
-            } else {
-                "desiredPosition" to -1
-            },
-        )
-
-        return NavDeepLinkBuilder(applicationContext)
-            .setComponentName(MainActivity::class.java)
-            .setGraph(R.navigation.mobile_navigation)
-            .setDestination(R.id.navigation_details)
-            .setArguments(args)
-            .createPendingIntent()
-    }
-
-    private fun sendNotification(builder: NotificationCompat.Builder) {
-        NotificationManagerCompat.from(applicationContext).apply {
-            if (ContextCompat.checkSelfPermission(
-                    applicationContext,
-                    Manifest.permission.POST_NOTIFICATIONS,
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                notify(NOTIFICATION_ID, builder.build())
-            }
-        }
-    }
-
-    private fun isNotificationIdStored(id: Int?): Boolean =
-        preferences.getBoolean(id.toString(), false)
-
-    private fun storeNotificationId(id: Int?) = preferences.edit { putBoolean(id.toString(), true) }
-
-    companion object {
-        private const val TAG = "NotificationWorker"
-        private const val CHANNEL_ID = "ANIMITY_NOTIFICATIONS_CHANNEL_ID"
-        private const val NOTIFICATION_ID = 0x1
-    }
-}

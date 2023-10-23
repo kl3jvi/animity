@@ -67,9 +67,9 @@
 #-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 #
 ## Accessed via menu.xml
-#-keep class androidx.mediarouter.app.MediaRouteActionProvider {
-#  *;
-#}
+-keep class androidx.mediarouter.app.MediaRouteActionProvider {
+  *;
+}
 #
 -keep class * extends com.airbnb.epoxy.EpoxyController { *; }
 -keep class * extends com.airbnb.epoxy.ControllerHelper { *; }

@@ -4,6 +4,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
 interface FirebaseRemoteConfigRepository {
     val instance: FirebaseRemoteConfig
+
     fun init()
+
     fun getBaseUrl(): String
 }

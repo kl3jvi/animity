@@ -311,7 +311,35 @@ mutation ToggleFavouriteMutation($animeId:Int,
         characterId:$characterId
         staffId:$staffId
         studioId:$studioId
-    ){anime{pageInfo{total}}manga{pageInfo{total}}characters{pageInfo{total}}staff{pageInfo{total}}studios{pageInfo{total}}}}
+    ){
+        anime{
+            pageInfo{
+                total
+            }
+        }
+        manga{
+            pageInfo{
+                total
+            }
+        }
+        characters{
+            pageInfo{
+                total
+            }
+        }
+        staff{
+            pageInfo{
+                total
+            }
+        }
+        studios{
+            pageInfo{
+                total
+            }
+        }
+    }
+}
+
 mutation ToggleFollowUser($userId:Int) {
     follow:ToggleFollow(userId: $userId){
         id

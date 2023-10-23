@@ -1,4 +1,4 @@
-package com.kl3jvi.animity.data.network
+package com.kl3jvi.animity.data.network.general
 
 import retrofit2.http.GET
 
@@ -27,7 +27,10 @@ data class ApkInfo(
     val apkSize: String,
 )
 
-fun getApkInfoForVersion(animityInfo: AnimityInfo, version: String): String {
+fun getApkInfoForVersion(
+    animityInfo: AnimityInfo,
+    version: String,
+): String {
     return when (version) {
         "x86" -> animityInfo.x86.direct_link
         "armeabi-v7a" -> animityInfo.armeabi_v7a.direct_link

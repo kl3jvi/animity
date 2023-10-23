@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
@@ -25,7 +26,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class NotificationBottomSheetFragment : BottomSheetDialogFragment(), StateManager {
-
     private var binding: NotificationsBottomSheetBinding? = null
     private val viewModel by activityViewModels<NotificationViewModel>()
     private lateinit var pagingController: NotificationsController
@@ -38,18 +38,24 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment(), StateManage
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = NotificationsBottomSheetBinding.inflate(
-            layoutInflater,
-            container,
-            false,
-        )
+        binding =
+            NotificationsBottomSheetBinding.inflate(
+                layoutInflater,
+                container,
+                false,
+            )
         return binding?.root!!
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupNotificationsList()
         initializeToolbarDismissAction()
+        val behavior = BottomSheetBehavior.from(binding?.root?.parent as View)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun initializeToolbarDismissAction() {
@@ -66,31 +72,33 @@ class NotificationBottomSheetFragment : BottomSheetDialogFragment(), StateManage
     }
 
     private fun setupNotificationsList() {
-        pagingController = NotificationsController { item, type ->
+        pagingController =
+            NotificationsController { item, type ->
 
-            when (type) {
-                NotificationType.Airing -> {
-                    val directions = HomeFragmentDirections.toDetails(
-                        item?.media ?: AniListMedia(),
-                        item?.episode.or1(),
-                    )
-                    findNavController().navigate(directions)
+                when (type) {
+                    NotificationType.Airing -> {
+                        val directions =
+                            HomeFragmentDirections.toDetails(
+                                item?.media ?: AniListMedia(),
+                                item?.episode.or1(),
+                            )
+                        findNavController().navigate(directions)
+                    }
+
+                    is NotificationType.Activity -> {
+                        val directions = HomeFragmentDirections.toTheirProfile(type.user)
+                        findNavController().navigate(directions)
+                    }
+
+                    is NotificationType.Following -> {
+                        val directions = HomeFragmentDirections.toTheirProfile(type.user)
+                        findNavController().navigate(directions)
+                    }
+
+                    NotificationType.Threads -> {}
+                    NotificationType.Unknown -> {}
                 }
-
-                is NotificationType.Activity -> {
-                    val directions = HomeFragmentDirections.toTheirProfile(type.user)
-                    findNavController().navigate(directions)
-                }
-
-                is NotificationType.Following -> {
-                    val directions = HomeFragmentDirections.toTheirProfile(type.user)
-                    findNavController().navigate(directions)
-                }
-
-                NotificationType.Threads -> {}
-                NotificationType.Unknown -> {}
             }
-        }
 
         binding?.notificationsRv?.setController(pagingController)
         binding?.notificationsRv?.layoutManager = LinearLayoutManager(requireContext())

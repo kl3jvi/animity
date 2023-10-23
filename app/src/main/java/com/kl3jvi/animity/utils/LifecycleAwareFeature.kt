@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleOwner
  * An interface for all entry points to feature components to implement in order to make them lifecycle aware.
  */
 interface LifecycleAwareFeature : DefaultLifecycleObserver {
-
     /**
      * Method that is called after ON_START event occurred.
      */

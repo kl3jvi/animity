@@ -4,8 +4,12 @@
     package="com.kl3jvi.animity">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
 
     <application
         android:name=".application.AnimityApplication"
@@ -18,9 +22,14 @@
         <profileable
             android:shell="true"
             tools:targetApi="29" />
+        <meta-data android:name="firebase_performance_logcat_enabled" android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.kl3jvi.animity.ui.activities.player.CastOptionsProvider" />
 
         <service
             android:name=".workers.AnimeDownloadService"
+            android:foregroundServiceType="dataSync"
             android:exported="false">
             <intent-filter>
                 <action android:name="androidx.media3.exoplayer.downloadService.action.RESTART" />

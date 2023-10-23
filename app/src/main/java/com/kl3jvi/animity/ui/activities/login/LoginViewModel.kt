@@ -9,34 +9,35 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
-    private val userRepository: UserRepository,
-) : ViewModel() {
+class LoginViewModel
+    @Inject
+    constructor(
+        private val loginRepository: LoginRepository,
+        private val userRepository: UserRepository,
+    ) : ViewModel() {
+        fun getAccessToken(
+            grantType: String,
+            clientId: Int,
+            clientSecret: String,
+            redirectUri: String,
+            authorizationToken: String,
+        ) = loginRepository.getAccessToken(
+            grantType,
+            clientId,
+            clientSecret,
+            redirectUri,
+            authorizationToken,
+        )
 
-    fun getAccessToken(
-        grantType: String,
-        clientId: Int,
-        clientSecret: String,
-        redirectUri: String,
-        authorizationToken: String,
-    ) = loginRepository.getAccessToken(
-        grantType,
-        clientId,
-        clientSecret,
-        redirectUri,
-        authorizationToken,
-    )
+        fun saveTokens(
+            authToken: String,
+            refreshToken: String,
+            expiration: Int,
+        ) = with(userRepository) {
+            setBearerToken(authToken)
+            setRefreshToken(refreshToken)
+            setExpirationTime(expiration)
+        }
 
-    fun saveTokens(
-        authToken: String,
-        refreshToken: String,
-        expiration: Int,
-    ) = with(userRepository) {
-        setBearerToken(authToken)
-        setRefreshToken(refreshToken)
-        setExpirationTime(expiration)
+        fun getToken(): String? = userRepository.bearerToken
     }
-
-    fun getToken(): String? = userRepository.bearerToken
-}

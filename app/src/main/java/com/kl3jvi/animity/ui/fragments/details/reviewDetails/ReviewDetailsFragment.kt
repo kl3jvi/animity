@@ -18,7 +18,10 @@ class ReviewDetailsFragment : Fragment(R.layout.review_details_fragment) {
     private val reviewInfo get() = args.reviewDetails
     private var binding: ReviewDetailsFragmentBinding? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = ReviewDetailsFragmentBinding.bind(view)
         initViews()

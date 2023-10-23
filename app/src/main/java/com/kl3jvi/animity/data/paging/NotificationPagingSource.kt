@@ -9,7 +9,6 @@ import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 class NotificationPagingSource(
     private val apiClient: AniListGraphQlClient,
 ) : AniListPagingSource<PagingDataItem>() {
-
     override suspend fun fetch(page: Int): ApolloResponse<NotificationsQuery.Data> {
         return apiClient.getNotifications(page)
     }

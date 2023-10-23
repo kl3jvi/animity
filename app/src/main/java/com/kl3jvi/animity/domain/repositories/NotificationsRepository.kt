@@ -8,5 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface NotificationsRepository {
     fun getNotifications(): Flow<PagingData<PagingDataItem>>
+
     fun getScheduled(weekName: WeekName): Flow<List<AiringInfo>>
 }

@@ -19,11 +19,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TheirProfile : Fragment(R.layout.fragment_their_profile), StateManager {
-
     private val viewModel: TheirProfileViewModel by viewModels()
     private var binding: FragmentTheirProfileBinding? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentTheirProfileBinding.bind(view)
         getProfileData()

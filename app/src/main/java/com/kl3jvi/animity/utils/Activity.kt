@@ -27,5 +27,4 @@ inline fun <reified T : Any> Context.launchActivity(
     startActivity(intent, options)
 }
 
-inline fun <reified T : Any> newIntent(context: Context): Intent =
-    Intent(context, T::class.java)
+inline fun <reified T : Any> newIntent(context: Context): Intent = Intent(context, T::class.java)

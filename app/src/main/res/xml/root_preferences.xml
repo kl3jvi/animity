@@ -62,6 +62,16 @@
     </PreferenceCategory>
 
 
+
+    <PreferenceCategory app:title="@string/episodes">
+        <com.kl3jvi.animity.ui.widgets.SelectorPreference
+
+            android:key="@string/episode_chunk"
+            android:summary="Split your favorite episodes into smaller segments!"
+            app:icon="@drawable/line_weight"
+            app:title="Episode Breakdown" />
+
+    </PreferenceCategory>
     <PreferenceCategory app:title="@string/donation">
         <com.kl3jvi.animity.ui.widgets.CustomPreference
             android:key="@string/donation"

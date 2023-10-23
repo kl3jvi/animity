@@ -11,17 +11,20 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class HomeRepositoryImpl @Inject constructor(
-    private val aniListGraphQlClient: AniListGraphQlClient,
-    private val animeClient: GogoAnimeApiClient,
-    private val ioDispatcher: CoroutineDispatcher,
-) : HomeRepository {
+class HomeRepositoryImpl
+    @Inject
+    constructor(
+        private val aniListGraphQlClient: AniListGraphQlClient,
+        private val animeClient: GogoAnimeApiClient,
+        private val ioDispatcher: CoroutineDispatcher,
+    ) : HomeRepository {
+        override fun getHomeData() =
+            flow {
+                emit(aniListGraphQlClient.getHomeData().convert())
+            }.flowOn(ioDispatcher)
 
-    override fun getHomeData() = flow {
-        emit(aniListGraphQlClient.getHomeData().convert())
-    }.flowOn(ioDispatcher)
-
-    override fun getEncryptionKeys() = flow {
-        emit(animeClient.getEncryptionKeys())
-    }.flowOn(ioDispatcher)
-}
+        override fun getEncryptionKeys() =
+            flow {
+                emit(animeClient.getEncryptionKeys())
+            }.flowOn(ioDispatcher)
+    }

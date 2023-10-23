@@ -8,11 +8,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationViewModel @Inject constructor(
-    notificationsRepository: NotificationsRepository,
-) : ViewModel() {
-
-    val notifications = notificationsRepository
-        .getNotifications()
-        .cachedIn(viewModelScope)
-}
+class NotificationViewModel
+    @Inject
+    constructor(
+        notificationsRepository: NotificationsRepository,
+    ) : ViewModel() {
+        val notifications =
+            notificationsRepository
+                .getNotifications()
+                .cachedIn(viewModelScope)
+    }

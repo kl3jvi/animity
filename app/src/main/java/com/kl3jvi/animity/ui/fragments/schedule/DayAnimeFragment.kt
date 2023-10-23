@@ -10,10 +10,12 @@ import com.kl3jvi.animity.databinding.FragmentAiringBinding
 import com.kl3jvi.animity.todaySelection
 
 class DayAnimeFragment : Fragment(R.layout.fragment_airing) {
-
     private var binding: FragmentAiringBinding? = null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAiringBinding.bind(view)
         val args = requireArguments()
@@ -30,10 +32,11 @@ class DayAnimeFragment : Fragment(R.layout.fragment_airing) {
                     animeInfo(airingInfo)
                     clickListener { view ->
                         airingInfo.media?.let {
-                            val directions = ScheduleFragmentDirections.scheduleToDetails(
-                                it,
-                                airingInfo.episode ?: 0,
-                            )
+                            val directions =
+                                ScheduleFragmentDirections.scheduleToDetails(
+                                    it,
+                                    airingInfo.episode ?: 0,
+                                )
                             view.findNavController().navigate(directions)
                         }
                     }
@@ -52,9 +55,10 @@ class DayAnimeFragment : Fragment(R.layout.fragment_airing) {
 
         fun newInstance(airingInfo: List<AiringInfo>): DayAnimeFragment {
             return DayAnimeFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(ARG_ANIME_LIST, ArrayList(airingInfo))
-                }
+                arguments =
+                    Bundle().apply {
+                        putParcelableArrayList(ARG_ANIME_LIST, ArrayList(airingInfo))
+                    }
             }
         }
     }

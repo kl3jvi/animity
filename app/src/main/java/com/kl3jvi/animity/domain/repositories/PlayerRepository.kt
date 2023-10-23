@@ -15,5 +15,6 @@ interface PlayerRepository {
     ): Flow<List<List<String>>>
 
     suspend fun upsertEpisode(episodeEntity: EpisodeEntity)
+
     suspend fun getPlaybackPosition(episodeUrl: String): Flow<EpisodeEntity>
 }

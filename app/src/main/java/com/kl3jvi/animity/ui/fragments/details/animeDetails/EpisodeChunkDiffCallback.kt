@@ -7,12 +7,14 @@ class EpisodeChunkDiffCallback(
     private val oldChunks: List<List<EpisodeModel>>,
     private val newChunks: List<List<EpisodeModel>>,
 ) : DiffUtil.Callback() {
-
     override fun getOldListSize() = oldChunks.size
 
     override fun getNewListSize() = newChunks.size
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    override fun areItemsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean {
         val oldChunk = oldChunks[oldItemPosition]
         val newChunk = newChunks[newItemPosition]
 
@@ -28,7 +30,10 @@ class EpisodeChunkDiffCallback(
         return true
     }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+    override fun areContentsTheSame(
+        oldItemPosition: Int,
+        newItemPosition: Int,
+    ): Boolean {
         val oldChunk = oldChunks[oldItemPosition]
         val newChunk = newChunks[newItemPosition]
         // Compare all episodes, not just the first one

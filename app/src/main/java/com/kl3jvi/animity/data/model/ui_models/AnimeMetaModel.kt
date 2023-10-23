@@ -18,6 +18,6 @@ data class AnimeMetaModel(
     @ColumnInfo var episodeNumber: String? = null,
     @ColumnInfo var timestamp: Long = System.currentTimeMillis(),
     @ColumnInfo var insertionOrder: Int = -1,
-    @ColumnInfo var genreList: List<GenreModel>? = null,
+//    @ColumnInfo var genreList: List<GenreModel>? = null,
     @ColumnInfo var releasedDate: String? = null,
 ) : Parcelable

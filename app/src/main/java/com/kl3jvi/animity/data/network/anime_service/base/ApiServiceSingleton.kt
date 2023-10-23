@@ -14,41 +14,42 @@ import javax.inject.Singleton
  * @param okHttpClient Instance of OkHttpClient to be used for the API requests.
  */
 @Singleton
-class ApiServiceSingleton @Inject constructor(
-    baseUrlProvider: Provider<String>,
-    private val okHttpClient: OkHttpClient,
-    private val settings: Settings,
-) {
+class ApiServiceSingleton
+    @Inject
+    constructor(
+        baseUrlProvider: Provider<String>,
+        private val okHttpClient: OkHttpClient,
+        private val settings: Settings,
+    ) {
+        private var retrofit: Retrofit = createRetrofit(baseUrlProvider.get())
 
-    private var retrofit: Retrofit = createRetrofit(baseUrlProvider.get())
+        /**
+         * Returns an instance of the API service interface for the given class type.
+         * @param clazz Class of the API service interface.
+         * @return An instance of the API service interface.
+         */
+        fun <T : Any> getApiService(clazz: Class<T>): T {
+            return retrofit.create(clazz)
+        }
 
-    /**
-     * Returns an instance of the API service interface for the given class type.
-     * @param clazz Class of the API service interface.
-     * @return An instance of the API service interface.
-     */
-    fun <T : Any> getApiService(clazz: Class<T>): T {
-        return retrofit.create(clazz)
+        /**
+         * Updates the base URL of the API and creates a new instance of Retrofit with the updated URL.
+         * @param newBaseUrl The new base URL of the API.
+         */
+        fun updateBaseUrl(newBaseUrl: String) {
+            retrofit = createRetrofit(newBaseUrl)
+        }
+
+        /**
+         * Creates a new instance of Retrofit with the given base URL and OkHttpClient.
+         * @param baseUrl The base URL of the API.
+         * @return A new instance of Retrofit.
+         */
+        private fun createRetrofit(baseUrl: String): Retrofit {
+            return Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
     }
-
-    /**
-     * Updates the base URL of the API and creates a new instance of Retrofit with the updated URL.
-     * @param newBaseUrl The new base URL of the API.
-     */
-    fun updateBaseUrl(newBaseUrl: String) {
-        retrofit = createRetrofit(newBaseUrl)
-    }
-
-    /**
-     * Creates a new instance of Retrofit with the given base URL and OkHttpClient.
-     * @param baseUrl The base URL of the API.
-     * @return A new instance of Retrofit.
-     */
-    private fun createRetrofit(baseUrl: String): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-}

@@ -25,7 +25,6 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication {
-
     private val viewModel: LoginViewModel by viewModels()
 
     @Inject
@@ -134,11 +133,12 @@ class LoginActivity : AppCompatActivity(R.layout.activity_login), Authentication
      *
      * @param uri The URI to be opened in the browser.
      */
-    private fun View.launchBrowser(uri: Uri) = setOnClickListener {
-        CustomTabsIntent.Builder()
-            .build()
-            .launchUrl(this.context, uri)
-    }
+    private fun View.launchBrowser(uri: Uri) =
+        setOnClickListener {
+            CustomTabsIntent.Builder()
+                .build()
+                .launchUrl(this.context, uri)
+        }
 
     /**
      * If the intent is not null, and the intent has the action of the intent filter, then call the

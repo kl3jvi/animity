@@ -14,11 +14,13 @@ import java.util.Calendar
 
 @AndroidEntryPoint
 class ScheduleFragment : Fragment(R.layout.fragment_schedule) {
-
     private var binding: FragmentScheduleBinding? = null
     private val viewModel: ScheduleViewModel by activityViewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentScheduleBinding.bind(view)
         if (isAdded) {

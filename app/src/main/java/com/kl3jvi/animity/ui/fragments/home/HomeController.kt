@@ -11,22 +11,25 @@ import com.kl3jvi.animity.title
 import com.kl3jvi.animity.utils.navigateSafe
 import com.kl3jvi.animity.vertical
 
-fun EpoxyController.buildHome(homeData: HomeData, firebaseAnalytics: Analytics) {
+fun EpoxyController.buildHome(
+    homeData: HomeData,
+    firebaseAnalytics: Analytics,
+) {
     homeData.run {
         listOf(trendingAnime, popularAnime, movies)
     }.forEachIndexed { index, list ->
         title {
-            id("title_${Title.values()[index].title}")
-            title(Title.values()[index].title)
+            id("title_${Title.entries[index].title}")
+            title(Title.entries[index].title)
         }
         carousel {
-            id("carousel_${Title.values()[index].title}")
+            id("carousel_${Title.entries[index].title}")
             models(list.modelCardAnime(firebaseAnalytics))
         }
     }
     title {
-        id("title_${Title.values().last().title}")
-        title(Title.values().last().title)
+        id("title_${Title.entries.last().title}")
+        title(Title.entries.last().title)
     }
     homeData.run(HomeData::review).forEach { media ->
         vertical {

@@ -17,12 +17,15 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.kl3jvi.animity.R
 
-/* A function that is used to navigate to a destination safely. */
-fun View.navigateSafe(directions: NavDirections, navOptions: NavOptions? = null) {
+// A function that is used to navigate to a destination safely.
+fun View.navigateSafe(
+    directions: NavDirections,
+    navOptions: NavOptions? = null,
+) {
     if (canNavigate()) this.findNavController().navigate(directions, navOptions)
 }
 
-/* Checking if the current destination is the same as the destination of the fragment. */
+// Checking if the current destination is the same as the destination of the fragment.
 fun View.canNavigate(): Boolean {
     val navController = findNavController()
     val destinationIdInNavController = navController.currentDestination?.id
@@ -51,7 +54,10 @@ fun Fragment.createFragmentMenu(
                 super.onPrepareMenu(menu)
             }
 
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            override fun onCreateMenu(
+                menu: Menu,
+                menuInflater: MenuInflater,
+            ) {
                 menuInflater.inflate(menuLayout, menu)
             }
 
@@ -69,11 +75,19 @@ internal inline fun Fragment.runIfFragmentIsAttached(block: () -> Unit) {
     context?.let { block() }
 }
 
-fun Fragment.nav(@IdRes id: Int?, directions: NavDirections, options: NavOptions? = null) {
+fun Fragment.nav(
+    @IdRes id: Int?,
+    directions: NavDirections,
+    options: NavOptions? = null,
+) {
     findNavController().nav(id, directions, options)
 }
 
-fun NavController.nav(@IdRes id: Int?, directions: NavDirections, navOptions: NavOptions? = null) {
+fun NavController.nav(
+    @IdRes id: Int?,
+    directions: NavDirections,
+    navOptions: NavOptions? = null,
+) {
     if (id == null || this.currentDestination?.id == id) {
         this.navigate(directions, navOptions)
     } else {

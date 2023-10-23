@@ -3,10 +3,12 @@ package com.kl3jvi.animity.data.secrets
 import com.kl3jvi.animity.BuildConfig
 
 internal object Secrets {
-
     private external fun getAniListId(): ByteArray?
+
     private external fun getAniListSecret(): ByteArray?
+
     private external fun getRedirectUri(): ByteArray?
+
     private external fun getOneSignalKey(): ByteArray?
 
     val aniListId: String by lazy {

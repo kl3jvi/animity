@@ -24,7 +24,6 @@ data class Notification(
     val media: AniListMedia = AniListMedia(),
     val createdAt: Int? = null,
 ) {
-
     fun getFormattedNotification(): String {
         return if (user != null) {
             "${user.name}${contexts?.first().orEmpty()}"

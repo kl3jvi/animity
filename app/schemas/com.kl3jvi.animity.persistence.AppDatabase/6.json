@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "bb60258f1cf7d4968140777bf88f14a2",
+    "identityHash": "cb1597bd0e546f2839de97defb33ef1d",
     "entities": [
       {
         "tableName": "anime_table",
@@ -86,7 +86,7 @@
       },
       {
         "tableName": "EpisodeEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeUrl` TEXT NOT NULL, `malId` INTEGER NOT NULL, `watchedDuration` INTEGER NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY(`episodeUrl`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeUrl` TEXT NOT NULL, `aniListId` INTEGER NOT NULL, `watchedDuration` INTEGER NOT NULL, `duration` INTEGER NOT NULL, PRIMARY KEY(`episodeUrl`))",
         "fields": [
           {
             "fieldPath": "episodeUrl",
@@ -95,8 +95,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "malId",
-            "columnName": "malId",
+            "fieldPath": "aniListId",
+            "columnName": "aniListId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -153,12 +153,100 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "anime",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `coverImageUrl` TEXT NOT NULL, `episodesCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverImageUrl",
+            "columnName": "coverImageUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodesCount",
+            "columnName": "episodesCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "episodes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`episodeUrl` TEXT NOT NULL, `animeId` INTEGER NOT NULL, `episodeNumber` TEXT NOT NULL, `downloaded` INTEGER NOT NULL, PRIMARY KEY(`episodeUrl`), FOREIGN KEY(`animeId`) REFERENCES `anime`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "episodeUrl",
+            "columnName": "episodeUrl",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "animeId",
+            "columnName": "animeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "episodeNumber",
+            "columnName": "episodeNumber",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "downloaded",
+            "columnName": "downloaded",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "episodeUrl"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "anime",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "animeId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bb60258f1cf7d4968140777bf88f14a2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb1597bd0e546f2839de97defb33ef1d')"
     ]
   }
 }

@@ -12,7 +12,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @InstallIn(ViewModelComponent::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepositoryModule {
-
     @Binds
     abstract fun bindFavoritesRepository(repository: FavoriteRepositoryImpl): FavoriteRepository
 

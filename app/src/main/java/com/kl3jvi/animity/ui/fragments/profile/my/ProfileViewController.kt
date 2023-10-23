@@ -13,6 +13,7 @@ import com.kl3jvi.animity.ui.fragments.profile.their.TheirProfileDirections
 import com.kl3jvi.animity.utils.navigateSafe
 
 const val DEFAULT_COVER = "https://bit.ly/3p6DE28"
+
 fun EpoxyController.buildProfile(
     profileType: ProfileType,
     userData: ProfileData?,
@@ -41,16 +42,17 @@ fun EpoxyController.buildProfile(
     } ?: noAnime { id("no_anime") }
 }
 
-/* A function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_ */
+// A function that takes a list of AniListMedia and returns a list of CardAnimeBindingModel_
 fun List<AniListMedia>.modelCardAnimeProfile(profileType: ProfileType): List<CardAnimeBindingModel_> {
     return map { media ->
         CardAnimeBindingModel_()
             .id(media.idAniList)
             .clickListener { view ->
-                val direction = when (profileType) {
-                    ProfileType.ME -> ProfileFragmentDirections.profileToDetails(media, 0)
-                    ProfileType.OTHER -> TheirProfileDirections.theirProfileToDetails(media, 0)
-                }
+                val direction =
+                    when (profileType) {
+                        ProfileType.ME -> ProfileFragmentDirections.profileToDetails(media, 0)
+                        ProfileType.OTHER -> TheirProfileDirections.theirProfileToDetails(media, 0)
+                    }
                 view.navigateSafe(direction)
             }.animeInfo(media)
     }

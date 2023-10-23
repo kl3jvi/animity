@@ -20,18 +20,20 @@ import com.kl3jvi.animity.data.enums.SortType
 import com.kl3jvi.animity.data.model.ui_models.AniListMedia
 import com.kl3jvi.animity.data.model.ui_models.User
 import com.kl3jvi.animity.databinding.FragmentSearchBinding
+import com.kl3jvi.animity.utils.BottomNavScrollListener
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.collectLatest
 import com.kl3jvi.animity.utils.dismissKeyboard
 import com.kl3jvi.animity.utils.epoxy.PagingSearchController
+import com.kl3jvi.animity.utils.epoxy.setupBottomNavScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
-
     private val viewModel: SearchViewModel by viewModels()
     private var binding: FragmentSearchBinding? = null
+    private lateinit var listener: BottomNavScrollListener
 
     private val animeController: PagingSearchController<AniListMedia> by lazy {
         PagingSearchController(
@@ -51,13 +53,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     @Inject
     lateinit var analytics: Analytics
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
 
         initViews()
         observeViewModel()
         setupSortChips()
+        listener = requireActivity() as BottomNavScrollListener
     }
 
     /**
@@ -65,17 +71,19 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
      */
     private fun initViews() {
         binding?.apply {
-            mainSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    dismissKeyboard(binding?.mainSearch)
-                    return false
-                }
+            mainSearch.setOnQueryTextListener(
+                object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        dismissKeyboard(binding?.mainSearch)
+                        return false
+                    }
 
-                override fun onQueryTextChange(query: String): Boolean {
-                    viewModel.onSearchQueryChanged(query)
-                    return false
-                }
-            })
+                    override fun onQueryTextChange(query: String): Boolean {
+                        viewModel.onSearchQueryChanged(query)
+                        return false
+                    }
+                },
+            )
 
             toggleGroup.check(R.id.btn_anime)
             toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -97,15 +105,16 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun setupSortChips() {
         binding?.apply {
-            val chipMap = mapOf(
-                sortTitle to SortType.TITLE,
-                sortDate to SortType.START_DATE,
-                sortPopularity to SortType.POPULARITY,
-                sortAverageScore to SortType.AVERAGE_SCORE,
-                sortTrending to SortType.TRENDING,
-                sortFavorites to SortType.FAVOURITES,
-                sortEpisodes to SortType.EPISODES,
-            )
+            val chipMap =
+                mapOf(
+                    sortTitle to SortType.TITLE,
+                    sortDate to SortType.START_DATE,
+                    sortPopularity to SortType.POPULARITY,
+                    sortAverageScore to SortType.AVERAGE_SCORE,
+                    sortTrending to SortType.TRENDING,
+                    sortFavorites to SortType.FAVOURITES,
+                    sortEpisodes to SortType.EPISODES,
+                )
 
             val previousChipStates =
                 mutableMapOf<Chip, Triple<ColorStateList?, ColorStateList?, Float>>()
@@ -117,11 +126,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
                     if (isSelected) {
                         viewModel.toggleSortType(sortType)
-                        previousChipStates[chip] = Triple(
-                            chip.chipStrokeColor,
-                            chip.chipBackgroundColor,
-                            chip.chipStrokeWidth,
-                        )
+                        previousChipStates[chip] =
+                            Triple(
+                                chip.chipStrokeColor,
+                                chip.chipBackgroundColor,
+                                chip.chipStrokeWidth,
+                            )
 
                         chip.chipStrokeColor = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
                         chip.chipBackgroundColor =
@@ -196,21 +206,25 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         collect(viewModel.currentSearchMode) {
             when (it) {
                 SearchMode.ANIME -> {
-                    binding?.searchRecycler?.setController(animeController)
+                    binding?.searchRecycler
+                        ?.setupBottomNavScrollListener(listener)
+                        ?.setController(animeController)
                     binding?.searchRecycler?.layoutManager = LinearLayoutManager(requireContext())
-                    binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(object :
-                        ViewTreeObserver.OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
-                            binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                            animeController.addInterceptor {
-                                if (it.size == 0) {
-                                    collapseView(sortView)
-                                } else {
-                                    expandView(sortView)
+                    binding?.sortView?.viewTreeObserver?.addOnGlobalLayoutListener(
+                        object :
+                            ViewTreeObserver.OnGlobalLayoutListener {
+                            override fun onGlobalLayout() {
+                                binding?.sortView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+                                animeController.addInterceptor {
+                                    if (it.size == 0) {
+                                        collapseView(sortView)
+                                    } else {
+                                        expandView(sortView)
+                                    }
                                 }
                             }
-                        }
-                    })
+                        },
+                    )
                 }
 
                 SearchMode.USERS -> {

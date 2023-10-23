@@ -26,92 +26,95 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository,
-    localRepository: PersistenceRepository,
-    ioDispatcher: CoroutineDispatcher,
-) : ViewModel() {
+class SearchViewModel
+    @Inject
+    constructor(
+        private val searchRepository: SearchRepository,
+        localRepository: PersistenceRepository,
+        ioDispatcher: CoroutineDispatcher,
+    ) : ViewModel() {
+        val myId = localRepository.aniListUserId ?: "-1"
 
-    val myId = localRepository.aniListUserId ?: "-1"
+        private val _currentSearchMode = MutableStateFlow(SearchMode.ANIME)
+        val currentSearchMode: StateFlow<SearchMode> = _currentSearchMode.asStateFlow()
 
-    private val _currentSearchMode = MutableStateFlow(SearchMode.ANIME)
-    val currentSearchMode: StateFlow<SearchMode> = _currentSearchMode.asStateFlow()
+        private val _searchList = MutableStateFlow<PagingData<AniListMedia>>(PagingData.empty())
+        val searchList: StateFlow<PagingData<AniListMedia>> = _searchList.asStateFlow()
 
-    private val _searchList = MutableStateFlow<PagingData<AniListMedia>>(PagingData.empty())
-    val searchList: StateFlow<PagingData<AniListMedia>> = _searchList.asStateFlow()
+        private val _usersList = MutableStateFlow<PagingData<User>>(PagingData.empty())
+        val usersList: StateFlow<PagingData<User>> = _usersList.asStateFlow()
 
-    private val _usersList = MutableStateFlow<PagingData<User>>(PagingData.empty())
-    val usersList: StateFlow<PagingData<User>> = _usersList.asStateFlow()
+        private val sortTypes = mutableListOf<SortType>()
+        private var lastSearchQuery = ""
 
-    private val sortTypes = mutableListOf<SortType>()
-    private var lastSearchQuery = ""
+        // Channels and Flows for Anime and User search
+        private val animeSearchQueryChannel = Channel<SearchQuery>(Channel.UNLIMITED)
+        private val animeSearchFlow =
+            animeSearchQueryChannel
+                .receiveAsFlow()
+                .debounce(500)
+                .filter { it.query.length >= 2 }
+                .flatMapLatest { searchRepository.fetchAniListSearchData(it.query, it.sortTypes) }
+                .cachedIn(viewModelScope)
+                .flowOn(ioDispatcher)
 
-    // Channels and Flows for Anime and User search
-    private val animeSearchQueryChannel = Channel<SearchQuery>(Channel.UNLIMITED)
-    private val animeSearchFlow = animeSearchQueryChannel
-        .receiveAsFlow()
-        .debounce(500)
-        .filter { it.query.length >= 2 }
-        .flatMapLatest { searchRepository.fetchAniListSearchData(it.query, it.sortTypes) }
-        .cachedIn(viewModelScope)
-        .flowOn(ioDispatcher)
+        private val userSearchQueryChannel = Channel<String>(Channel.UNLIMITED)
+        private val userSearchFlow =
+            userSearchQueryChannel
+                .receiveAsFlow()
+                .debounce(500)
+                .filter { it.length >= 2 }
+                .flatMapLatest { searchRepository.fetchAniListUsers(it) }
+                .cachedIn(viewModelScope)
+                .flowOn(ioDispatcher)
 
-    private val userSearchQueryChannel = Channel<String>(Channel.UNLIMITED)
-    private val userSearchFlow = userSearchQueryChannel
-        .receiveAsFlow()
-        .debounce(500)
-        .filter { it.length >= 2 }
-        .flatMapLatest { searchRepository.fetchAniListUsers(it) }
-        .cachedIn(viewModelScope)
-        .flowOn(ioDispatcher)
+        init {
+            viewModelScope.launch {
+                animeSearchFlow.collectLatest {
+                    _searchList.value = it
+                }
+            }
 
-    init {
-        viewModelScope.launch {
-            animeSearchFlow.collectLatest {
-                _searchList.value = it
+            viewModelScope.launch {
+                userSearchFlow.collectLatest {
+                    _usersList.value = it
+                }
             }
         }
 
-        viewModelScope.launch {
-            userSearchFlow.collectLatest {
-                _usersList.value = it
+        fun onSearchQueryChanged(query: String) {
+            lastSearchQuery = query.trim()
+            when (_currentSearchMode.value) {
+                SearchMode.ANIME -> searchForAnime(lastSearchQuery)
+                SearchMode.USERS -> searchForUsers(lastSearchQuery)
             }
         }
-    }
 
-    fun onSearchQueryChanged(query: String) {
-        lastSearchQuery = query.trim()
-        when (_currentSearchMode.value) {
-            SearchMode.ANIME -> searchForAnime(lastSearchQuery)
-            SearchMode.USERS -> searchForUsers(lastSearchQuery)
+        private fun searchForAnime(query: String) {
+            animeSearchQueryChannel.trySend(SearchQuery(query, sortTypes)).isSuccess
+        }
+
+        private fun searchForUsers(query: String) {
+            userSearchQueryChannel.trySend(query).isSuccess
+        }
+
+        fun toggleSortType(sortType: SortType) {
+            if (sortTypes.contains(sortType)) {
+                sortTypes.remove(sortType)
+            } else {
+                sortTypes.add(sortType)
+            }
+            onSearchQueryChanged(lastSearchQuery)
+        }
+
+        fun switchToAnimeSearch() {
+            _currentSearchMode.value = SearchMode.ANIME
+        }
+
+        fun switchToUserSearch() {
+            _currentSearchMode.value = SearchMode.USERS
         }
     }
-
-    private fun searchForAnime(query: String) {
-        animeSearchQueryChannel.trySend(SearchQuery(query, sortTypes)).isSuccess
-    }
-
-    private fun searchForUsers(query: String) {
-        userSearchQueryChannel.trySend(query).isSuccess
-    }
-
-    fun toggleSortType(sortType: SortType) {
-        if (sortTypes.contains(sortType)) {
-            sortTypes.remove(sortType)
-        } else {
-            sortTypes.add(sortType)
-        }
-        onSearchQueryChanged(lastSearchQuery)
-    }
-
-    fun switchToAnimeSearch() {
-        _currentSearchMode.value = SearchMode.ANIME
-    }
-
-    fun switchToUserSearch() {
-        _currentSearchMode.value = SearchMode.USERS
-    }
-}
 
 data class SearchQuery(
     val query: String,

@@ -28,7 +28,6 @@ typealias OnNeedToRequestPermissions = (permissions: Array<String>) -> Unit
  * ```
  */
 interface PermissionsFeature {
-
     /**
      * A callback invoked when permissions need to be requested by the feature before
      * it can complete its task. Once the request is completed, [onPermissionsResult]
@@ -43,5 +42,8 @@ interface PermissionsFeature {
      * @param permissions The permissions that were granted.
      * @param grantResults The grant results for the corresponding permission
      */
-    fun onPermissionsResult(permissions: Array<String>, grantResults: IntArray)
+    fun onPermissionsResult(
+        permissions: Array<String>,
+        grantResults: IntArray,
+    )
 }

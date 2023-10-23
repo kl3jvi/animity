@@ -33,15 +33,17 @@ class HomeRepositoryImplTest {
 
     @Before
     fun setup() {
-        apolloClient = ApolloClient.Builder()
-            .networkTransport(QueueTestNetworkTransport())
-            .build()
+        apolloClient =
+            ApolloClient.Builder()
+                .networkTransport(QueueTestNetworkTransport())
+                .build()
         client = null
 //        repository = HomeRepositoryImpl(client, coroutinesRule.testDispatcher, parser)
     }
 
     @Test
-    fun getHomeDataSuccessful() = runTest {
+    fun getHomeDataSuccessful() =
+        runTest {
 //        val mockData = HomeDataQuery.Data(
 //            trendingAnime = trendingAnimeModel,
 //            movies = moviesModel,
@@ -55,14 +57,15 @@ class HomeRepositoryImplTest {
 //            mockData.movies?.media?.first()?.homeMedia?.id,
 //            actual.movies?.media?.first()?.homeMedia?.id
 //        )
-    }
+        }
 
     @Test
-    fun getHomeDataCatchError() = runTest {
-        val testQuery = HomeDataQuery()
+    fun getHomeDataCatchError() =
+        runTest {
+            val testQuery = HomeDataQuery()
 //        apolloClient.enqueueTestResponse(testQuery, )
-        val data = apolloClient.query(testQuery).execute()
-        assertEquals(data, ApolloNetworkException())
+            val data = apolloClient.query(testQuery).execute()
+            assertEquals(data, ApolloNetworkException())
 //        assertEquals(data?.movies?.media?.first()?.homeMedia?.id, Unit)
-    }
+        }
 }

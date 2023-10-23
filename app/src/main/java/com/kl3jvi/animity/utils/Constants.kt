@@ -8,10 +8,10 @@ import com.google.android.material.snackbar.Snackbar
 
 class Constants {
     companion object {
-
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
-        const val MAL_ID = "anilist_id"
+        const val ANILIST_ID = "anilist_id"
+        const val THUMBNAIL = "thumbnail"
 
         // Base URLS
         const val GOGO_BASE_URL = "https://gogoanime.gr"
@@ -63,15 +63,16 @@ class Constants {
         fun getDataSourceFactory(): DefaultHttpDataSource.Factory {
             return DefaultHttpDataSource.Factory().apply {
                 setUserAgent(USER_AGENT)
-                val headers = mapOf(
-                    "referer" to REFERER,
-                    "accept" to "*/*",
-                    "sec-ch-ua" to "\"Chromium\";v=\"91\", \" Not;A Brand\";v=\"99\"",
-                    "sec-ch-ua-mobile" to "?0",
-                    "sec-fetch-user" to "?1",
-                    "sec-fetch-mode" to "navigate",
-                    "sec-fetch-dest" to "video",
-                ) + getNetworkHeader() // Adds the headers from the provider, e.g Authorization
+                val headers =
+                    mapOf(
+                        "referer" to REFERER,
+                        "accept" to "*/*",
+                        "sec-ch-ua" to "\"Chromium\";v=\"91\", \" Not;A Brand\";v=\"99\"",
+                        "sec-ch-ua-mobile" to "?0",
+                        "sec-fetch-user" to "?1",
+                        "sec-fetch-mode" to "navigate",
+                        "sec-fetch-dest" to "video",
+                    ) + getNetworkHeader() // Adds the headers from the provider, e.g Authorization
                 setDefaultRequestProperties(headers)
             }
         }
@@ -82,7 +83,10 @@ class Constants {
          * @param view View - The view to show the snackbar on
          * @param message The message to be displayed in the snackbar.
          */
-        fun showSnack(view: View?, message: String?) {
+        fun showSnack(
+            view: View?,
+            message: String?,
+        ) {
             view?.let {
                 val snack =
                     Snackbar.make(view, message ?: "Error Occurred", Snackbar.LENGTH_LONG)

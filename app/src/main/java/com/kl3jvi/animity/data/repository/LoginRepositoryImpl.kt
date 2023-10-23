@@ -8,34 +8,35 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(
-    private val authClient: AuthClient,
-    private val ioDispatcher: CoroutineDispatcher,
-) : LoginRepository {
+class LoginRepositoryImpl
+    @Inject
+    constructor(
+        private val authClient: AuthClient,
+        private val ioDispatcher: CoroutineDispatcher,
+    ) : LoginRepository {
+        override fun getAccessToken(
+            grantType: String,
+            clientId: Int,
+            clientSecret: String,
+            redirectUri: String,
+            code: String,
+        ) = flow {
+            emit(
+                authClient.getAccessToken(
+                    grantType,
+                    clientId,
+                    clientSecret,
+                    redirectUri,
+                    code,
+                ),
+            )
+        }.flowOn(ioDispatcher)
 
-    override fun getAccessToken(
-        grantType: String,
-        clientId: Int,
-        clientSecret: String,
-        redirectUri: String,
-        code: String,
-    ) = flow {
-        emit(
-            authClient.getAccessToken(
-                grantType,
-                clientId,
-                clientSecret,
-                redirectUri,
-                code,
-            ),
-        )
-    }.flowOn(ioDispatcher)
-
-    override suspend fun refreshtoken(
-        clientId: Int,
-        clientSecret: String,
-        refreshToken: String,
-    ): Result<AuthResponse> {
-        return authClient.refreshToken(clientId, clientSecret, refreshToken)
+        override suspend fun refreshToken(
+            clientId: Int,
+            clientSecret: String,
+            refreshToken: String,
+        ): Result<AuthResponse> {
+            return authClient.refreshToken(clientId, clientSecret, refreshToken)
+        }
     }
-}

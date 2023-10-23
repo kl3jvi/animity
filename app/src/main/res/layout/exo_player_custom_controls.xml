@@ -28,7 +28,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_10"
         android:fontFamily="sans-serif"
         android:gravity="start"
         android:maxWidth="450dp"
@@ -36,7 +35,7 @@
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/episodeNum"
-        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintEnd_toStartOf="@+id/media_route_button"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toEndOf="@id/back"
         app:layout_constraintTop_toTopOf="@+id/back"
@@ -47,11 +46,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_10"
         android:gravity="start"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
-        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintEnd_toStartOf="@+id/media_route_button"
         app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintTop_toBottomOf="@+id/episodeName"
         tools:text="episode 2" />
@@ -155,6 +153,17 @@
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/media_route_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:src="@drawable/ic_cast"
+        app:layout_constraintBottom_toBottomOf="@+id/exo_track_selection_view"
+        app:layout_constraintEnd_toStartOf="@+id/exo_track_selection_view"
+        app:layout_constraintTop_toTopOf="@+id/exo_track_selection_view" />
 
     <ImageButton
         android:id="@+id/exo_track_selection_view"

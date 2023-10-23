@@ -13,7 +13,6 @@ import com.kl3jvi.animity.utils.Constants.Companion.Empty
 class NotificationsController(
     private val clickListener: (Notification?, NotificationType) -> Unit,
 ) : PagingDataEpoxyController<PagingDataItem>() {
-
     private val addedTitles = mutableSetOf<String>()
 
     override fun buildItemModel(
@@ -42,8 +41,9 @@ class NotificationsController(
                     .notification(item.notification)
             }
 
-            null -> EmptyBindingModel_()
-                .id("empty_${item?.Empty}")
+            null ->
+                EmptyBindingModel_()
+                    .id("empty_${item?.Empty}")
         }
     }
 }

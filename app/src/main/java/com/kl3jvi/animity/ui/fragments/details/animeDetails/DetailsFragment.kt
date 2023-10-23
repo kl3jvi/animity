@@ -1,8 +1,7 @@
-@file:OptIn(FlowPreview::class)
-
 package com.kl3jvi.animity.ui.fragments.details.animeDetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -14,12 +13,16 @@ import androidx.annotation.MenuRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.google.android.exoplayer2.offline.Download
+import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kl3jvi.animity.R
+import com.kl3jvi.animity.data.downloader.DownloadState
 import com.kl3jvi.animity.data.mapper.MediaStatusAnimity
 import com.kl3jvi.animity.data.model.ui_models.EpisodeModel
 import com.kl3jvi.animity.data.model.ui_models.Genre
@@ -35,38 +38,67 @@ import com.kl3jvi.animity.utils.parseTime
 import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class DetailsFragment : Fragment(R.layout.fragment_details) {
-
     private val viewModel: DetailsViewModel by viewModels()
     private val args: DetailsFragmentArgs by navArgs()
     private val animeDetails get() = args.animeDetails
     private val desiredPosition: Int get() = args.desiredPosition
     private var binding: FragmentDetailsBinding? = null
-
     private lateinit var bookMarkMenuItem: MenuItem
+
+    @Inject
+    lateinit var downloadManager: DownloadManager
+
+    private val currentDownloadState =
+        callbackFlow {
+            val downloadManagerListener =
+                object : DownloadManager.Listener {
+                    override fun onDownloadChanged(
+                        downloadManager: DownloadManager,
+                        download: Download,
+                        finalException: Exception?,
+                    ) {
+                        super.onDownloadChanged(downloadManager, download, finalException)
+                        trySend(DownloadState.getNameFromCount(download.state)).isSuccess
+                    }
+                }
+
+            downloadManager.addListener(downloadManagerListener)
+            awaitClose { downloadManager.removeListener(downloadManagerListener) }
+        }
 
     //    private lateinit var notificationMenuItem: MenuItem
     private lateinit var title: String
     private var check by Delegates.notNull<Boolean>()
-    private var checkNotification by Delegates.notNull<Boolean>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDetailsBinding.bind(view)
         check = animeDetails.isFavourite
-        checkNotification = false
         observeViewModel()
         initViews()
+        currentDownloadState
+            .flowWithLifecycle(lifecycle, lifecycle.currentState)
+            .onEach { Log.e("Download State", it.name) }
+            .launchIn(lifecycleScope)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,13 +110,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         fetchAnimeInfo()
         fetchEpisodeList()
         showLatestEpisodeReleaseTime()
-        checkIfItsScheduled()
-    }
-
-    private fun checkIfItsScheduled() {
-        collect(viewModel.isScheduled) {
-            checkNotification = it
-        }
     }
 
     private fun initViews() {
@@ -122,9 +147,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
                 /* Checking if the nextAiringEpisode is not null, if it is not null, then it will run
                 the displayInDayDateTimeFormat function on it. */
-                releaseTime.text = info.nextAiringEpisode.takeIf {
-                    it != null
-                }?.run(::displayInDayDateTimeFormat)
+                releaseTime.text =
+                    info.nextAiringEpisode.takeIf {
+                        it != null
+                    }?.run(::displayInDayDateTimeFormat)
 
                 animeInfoLayout.expandableText.visibility = VISIBLE
                 releaseDate.visibility = VISIBLE
@@ -135,17 +161,18 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 resultPlayMovie.visibility = GONE
                 episodeListRecycler.visibility = VISIBLE
                 createGenreChips(info.genres)
-                setType.text = info.mediaListEntry?.let {
-                    when (it) {
-                        MediaStatusAnimity.COMPLETED -> "Completed"
-                        MediaStatusAnimity.WATCHING -> "Watching"
-                        MediaStatusAnimity.DROPPED -> "Dropped"
-                        MediaStatusAnimity.PAUSED -> "Paused"
-                        MediaStatusAnimity.PLANNING -> "Planning"
-                        MediaStatusAnimity.REPEATING -> "Repeating"
-                        MediaStatusAnimity.NOTHING -> "Add to list"
+                setType.text =
+                    info.mediaListEntry?.let {
+                        when (it) {
+                            MediaStatusAnimity.COMPLETED -> "Completed"
+                            MediaStatusAnimity.WATCHING -> "Watching"
+                            MediaStatusAnimity.DROPPED -> "Dropped"
+                            MediaStatusAnimity.PAUSED -> "Paused"
+                            MediaStatusAnimity.PLANNING -> "Planning"
+                            MediaStatusAnimity.REPEATING -> "Repeating"
+                            MediaStatusAnimity.NOTHING -> "Add to list"
+                        }
                     }
-                }
             }
         }
     }
@@ -200,12 +227,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         inflater.inflate(R.menu.favorite_menu, menu)
         bookMarkMenuItem = menu.findItem(R.id.add_to_favorites)
 //        notificationMenuItem = menu.findItem(R.id.scheduler_action)
         updateFavoriteIcon()
-        updateNotificationIcon()
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -213,52 +242,30 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun toggleFavoriteStatus() {
         check = !check
         updateFavoriteIcon()
-        val message = if (check) {
-            "Anime added to Favorites"
-        } else {
-            "Anime removed from Favorites"
-        }
+        val message =
+            if (check) {
+                "Anime added to Favorites"
+            } else {
+                "Anime removed from Favorites"
+            }
         showSnack(binding?.root, message)
         viewModel.updateAnimeFavorite()
     }
 
-    private fun toggleAddToSchedule() {
-        checkNotification = !checkNotification
-        updateNotificationIcon()
-        val message = if (check) {
-            "Anime added to Scheduler"
-        } else {
-            "Anime removed from Scheduler"
-        }
-        showSnack(binding?.root, message)
-        viewModel.updateAnimeScheduleStatus(args.animeDetails)
-    }
-
     private fun updateFavoriteIcon() {
-        val iconResId = if (check) {
-            R.drawable.ic_favorite_complete
-        } else {
-            R.drawable.ic_favorite_uncomplete
-        }
+        val iconResId =
+            if (check) {
+                R.drawable.ic_favorite_complete
+            } else {
+                R.drawable.ic_favorite_uncomplete
+            }
         bookMarkMenuItem.setIcon(iconResId)
     }
 
-    private fun updateNotificationIcon() {
-        val iconResId = if (checkNotification) {
-            R.drawable.twotone_schedule_24
-        } else {
-            R.drawable.baseline_schedule_24
-        }
-//        notificationMenuItem.setIcon(iconResId)
-    }
-
-    /**
-     * It shows a popup menu when the user clicks on the view.
-     *
-     * @param v View - The view that the popup menu should be anchored to.
-     * @param menuRes The menu resource to inflate.
-     */
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+    private fun showMenu(
+        v: View,
+        @MenuRes menuRes: Int,
+    ) {
         val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(menuRes, popup.menu)
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
@@ -302,13 +309,14 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     private fun fetchEpisodeList() {
         val viewPager = binding?.episodeListRecycler
 
-        val adapter = EpisodeChunkAdapter(
-            childFragmentManager,
-            lifecycle,
-            emptyList(),
-            animeDetails,
-            desiredPosition = args.desiredPosition,
-        )
+        val adapter =
+            EpisodeChunkAdapter(
+                childFragmentManager,
+                lifecycle,
+                emptyList(),
+                animeDetails,
+                desiredPosition = args.desiredPosition,
+            )
         viewPager?.adapter = adapter
 
         collect(viewModel.episodeList) { listOfEpisodeModel ->
@@ -356,7 +364,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 requireActivity().launchActivity<PlayerActivity> {
                     putExtra(Constants.EPISODE_DETAILS, episodes.first())
                     putExtra(Constants.ANIME_TITLE, animeDetails.title.userPreferred)
-                    putExtra(Constants.MAL_ID, animeDetails.idMal)
+                    putExtra(Constants.ANILIST_ID, animeDetails.idMal)
+                    putExtra(Constants.THUMBNAIL, animeDetails.coverImage.extraLarge)
                 }
             }
         }
@@ -381,9 +390,10 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     }
 
     private fun showLatestEpisodeReleaseTime() {
-        binding?.releaseTime?.text = animeDetails.nextAiringEpisode?.parseTime {
-            binding?.nextEpisodeContainer?.isVisible = it
-        }
+        binding?.releaseTime?.text =
+            animeDetails.nextAiringEpisode?.parseTime {
+                binding?.nextEpisodeContainer?.isVisible = it
+            }
     }
 
     override fun onDestroyView() {

@@ -17,13 +17,14 @@ class StartupBenchmark {
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startup() = benchmarkRule.measureRepeated(
-        packageName = "com.kl3jvi.animity",
-        metrics = listOf(StartupTimingMetric()),
-        iterations = 5,
-        startupMode = StartupMode.COLD,
-    ) {
-        pressHome()
-        startActivityAndWait()
-    }
+    fun startup() =
+        benchmarkRule.measureRepeated(
+            packageName = "com.kl3jvi.animity",
+            metrics = listOf(StartupTimingMetric()),
+            iterations = 5,
+            startupMode = StartupMode.COLD,
+        ) {
+            pressHome()
+            startActivityAndWait()
+        }
 }
