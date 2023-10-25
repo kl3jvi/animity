@@ -69,6 +69,7 @@ class EpisodeContainer : Fragment(R.layout.fragment_episode_container) {
                         }
                     }
                     showTitle(episodeModel.episodeName.isNotEmpty())
+                    isDownloaded(episodeModel.isDownloaded)
                     isFiller(episodeModel.isFiller)
                     downloadStatus(DownloadState.STATE_QUEUED)
                     imageUrl(

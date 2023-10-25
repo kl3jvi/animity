@@ -3,7 +3,6 @@ package com.kl3jvi.animity.ui.activities.main
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Dialog
-import android.app.NotificationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,11 +12,9 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.app.NotificationCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -33,7 +30,6 @@ import com.kl3jvi.animity.databinding.ActivityMainBinding
 import com.kl3jvi.animity.settings.Settings
 import com.kl3jvi.animity.ui.fragments.settings.SettingsFragment
 import com.kl3jvi.animity.utils.BottomNavScrollListener
-import com.kl3jvi.animity.utils.collectLatest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -42,10 +38,10 @@ import kotlin.math.pow
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), BottomNavScrollListener {
-    private lateinit var binding: ActivityMainBinding
+    private var isUIInitialized: Boolean = false
+    lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val viewModel: MainViewModel by viewModels()
 
     @Inject
     lateinit var settings: Settings
@@ -61,8 +57,8 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
         setContentView(binding.root)
 
         val navView: NavigationBarView = binding.navView as NavigationBarView
-        navController =
-            findNavController(R.id.nav_host_fragment_activity_main) // Used to set up the action bar with the navigation controller.
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
+
         appBarConfiguration =
             AppBarConfiguration(
                 setOf(
@@ -78,7 +74,7 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
         setupActionBarWithNavController(
             navController,
             appBarConfiguration,
-        )/* Setting up the bottom navigation bar with the navigation controller. */ // Setting up the bottom navigation bar with the navigation controller.
+        )
         navView.setupWithNavController(navController)
         setBottomBarVisibility()
         askForPermission()
@@ -87,15 +83,7 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
         if (shouldShowDialog(settings.openCount) && !settings.maybeLater) {
             showDonationDialog()
         }
-
-        // show test notification
-         val notification = NotificationCompat.Builder(this, "ANIMITY_NOTIFICATIONS_CHANNEL_ID")
-            .setContentTitle("Test")
-            .setContentText("Test")
-            .setSmallIcon(R.drawable.ic_notification_icon)
-            .build()
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(1, notification)
+        isUIInitialized = true
     }
 
     private fun shouldShowDialog(openCount: Int): Boolean {
@@ -163,7 +151,7 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
                         binding.navView.isVisible = false
                     }
                 },
-            ).duration = 200
+            ).duration = ANIMATION_DURATION
     }
 
     // Showing the bottom navigation bar.
@@ -176,29 +164,13 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
                         binding.navView.isVisible = true
                     }
                 },
-            ).duration = 200
+            ).duration = ANIMATION_DURATION
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)
     }
 
-    override fun onStart() {
-        super.onStart()
-        handleNetworkChanges()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        handleNetworkChanges()
-    }
-
-    private fun handleNetworkChanges() {
-        collectLatest(viewModel.isConnectedToNetwork) { isConnected ->
-            binding.wrapper.isVisible = isConnected
-            binding.noInternetStatus.noInternet.isVisible = !isConnected
-        }
-    }
 
     private fun setBottomBarVisibility() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -209,6 +181,7 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
                     R.id.settingsFragment,
                     R.id.scheduleFragment,
                     R.id.theirProfile,
+                    R.id.navigation_downloaded_episodes
                 )
             ) {
                 hideBottomNavBar()
@@ -219,6 +192,9 @@ class MainActivity : AppCompatActivity(), BottomNavScrollListener {
     }
 
     override fun onScrollDown() = hideBottomNavBar()
-
     override fun onScrollUp() = showBottomNavBar()
+
+    companion object {
+        const val ANIMATION_DURATION = 200L
+    }
 }

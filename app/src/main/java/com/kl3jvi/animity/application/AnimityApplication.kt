@@ -7,6 +7,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.util.Consumer
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.Constraints
@@ -49,7 +50,7 @@ class AnimityApplication : Application(), Configuration.Provider {
     }
 
     private fun initOneSignal() {
-        FirebaseApp.initializeApp(this)
+//        FirebaseApp.initializeApp(this)
 //        OneSignal.initWithContext(this)
 //        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.NONE, OneSignal.LOG_LEVEL.NONE)
 //        OneSignal.setAppId(Secrets.oneSignalKey)
@@ -115,7 +116,12 @@ class AnimityApplication : Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
             .setWorkerFactory(workerFactory)
-            .setMinimumLoggingLevel(Log.DEBUG)
+            .setInitializationExceptionHandler(
+                Consumer { throwable ->
+                    Log.e("WorkManager", "Initialization error: ", throwable)
+                }
+            )
+            .setMinimumLoggingLevel(Log.INFO)
             .build()
 
     companion object {

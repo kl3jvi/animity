@@ -12,7 +12,7 @@
 
         <variable
             name="clickListener"
-            type="android.view.View.OnLongClickListener" />
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackgroundBorderless"
-            android:onLongClick="@{clickListener}"
+            android:onClick="@{clickListener}"
             android:orientation="horizontal"
             app:cardCornerRadius="@dimen/roundedImageRadius">
 

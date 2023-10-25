@@ -8,7 +8,11 @@
     <!--Global action-->
     <action
         android:id="@+id/open_settings_fragment"
-        app:destination="@id/settingsFragment" />
+        app:destination="@id/settingsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 
     <fragment
         android:id="@+id/navigation_home"
@@ -137,8 +141,8 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.kl3jvi.animity.ui.fragments.settings.SettingsFragment"
-        tools:layout="@xml/root_preferences"
-        android:label="Settings">
+        android:label="Settings"
+        tools:layout="@xml/root_preferences">
         <action
             android:id="@+id/placeHolder"
             app:enterAnim="@anim/slide_in_right"
@@ -159,8 +163,8 @@
     <fragment
         android:id="@+id/notificationBottomSheetFragment"
         android:name="com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment"
-        tools:layout="@layout/notifications_bottom_sheet"
-        android:label="NotificationBottomSheetFragment">
+        android:label="NotificationBottomSheetFragment"
+        tools:layout="@layout/notifications_bottom_sheet">
         <action
             android:id="@+id/notificationToDetails"
             app:destination="@id/navigation_details"
@@ -179,7 +183,11 @@
             app:argType="com.kl3jvi.animity.data.model.ui_models.User" />
         <action
             android:id="@+id/theirProfileToDetails"
-            app:destination="@id/navigation_details" />
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/scheduleFragment"
@@ -188,7 +196,11 @@
         tools:layout="@layout/fragment_schedule">
         <action
             android:id="@+id/scheduleToDetails"
-            app:destination="@id/navigation_details" />
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -198,14 +210,39 @@
         tools:layout="@layout/fragment_airing">
         <action
             android:id="@+id/scheduleToDetails"
-            app:destination="@id/navigation_details" />
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_downloads"
         android:name="com.kl3jvi.animity.ui.fragments.downloads.DownloadFragment"
         android:label="@string/title_downloads"
-        tools:layout="@layout/fragment_download" />
+        tools:layout="@layout/fragment_download">
+        <action
+            android:id="@+id/action_navigation_downloads_to_downloadedEpisodesFragment"
+            app:destination="@id/navigation_downloaded_episodes"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_downloaded_episodes"
+        android:name="com.kl3jvi.animity.ui.fragments.downloads.episodes.DownloadedEpisodesFragment"
+        android:label="{title}-Offline"
+        tools:layout="@layout/fragment_downloaded_episodes">
+        <argument
+            android:name="animePassId"
+            app:argType="integer" />
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 
 
 </navigation>

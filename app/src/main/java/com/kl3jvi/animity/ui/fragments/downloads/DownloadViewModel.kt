@@ -8,12 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DownloadViewModel
-    @Inject
-    constructor(
-        persistenceRepository: PersistenceRepository,
-    ) : ViewModel() {
-        val listOfAnimes =
-            persistenceRepository.getAllAnimesThatHasDownloadedEpisodes()
-                .mapToUiState(viewModelScope)
-    }
+class DownloadViewModel @Inject constructor(
+    persistenceRepository: PersistenceRepository,
+) : ViewModel() {
+    val listOfAnimes =
+        persistenceRepository.getAllAnimesThatHasDownloadedEpisodes()
+            .mapToUiState(viewModelScope)
+}

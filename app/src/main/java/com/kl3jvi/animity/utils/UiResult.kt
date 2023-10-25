@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -18,13 +20,18 @@ sealed interface UiResult<out T> {
     data object Loading : UiResult<Nothing>
 }
 
-fun <T> Flow<T>.mapToUiState(scope: CoroutineScope): StateFlow<UiResult<T>> {
-    return map<T, UiResult<T>> {
-        UiResult.Success(it)
-    }.onStart {
-        emit(UiResult.Loading)
-    }.catch {
-        emit(UiResult.Error(it))
+fun <T> Flow<T>.mapToUiState(
+    scope: CoroutineScope,
+    networkFlow: Flow<Boolean> = emptyFlow()
+): StateFlow<UiResult<T>> {
+    return networkFlow.flatMapLatest {
+        map<T, UiResult<T>> {
+            UiResult.Success(it)
+        }.onStart {
+            emit(UiResult.Loading)
+        }.catch {
+            emit(UiResult.Error(it))
+        }
     }.stateIn(
         scope = scope,
         started = SharingStarted.Lazily,

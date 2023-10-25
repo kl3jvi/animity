@@ -19,8 +19,8 @@ import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.show
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint

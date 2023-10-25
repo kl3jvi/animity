@@ -13,9 +13,9 @@ fun ApolloResponse<GetFollowersListQuery.Data>.convert(): List<Pair<List<User>, 
                     id = it.id,
                     name = it.name,
                     avatar =
-                        UserAvatar(
-                            large = it.avatar?.large.orEmpty(),
-                        ),
+                    UserAvatar(
+                        large = it.avatar?.large.orEmpty(),
+                    ),
                 )
             }
         } ?: emptyList()
@@ -27,9 +27,9 @@ fun ApolloResponse<GetFollowersListQuery.Data>.convert(): List<Pair<List<User>, 
                     id = it.id,
                     name = it.name,
                     avatar =
-                        UserAvatar(
-                            large = it.avatar?.large.orEmpty(),
-                        ),
+                    UserAvatar(
+                        large = it.avatar?.large.orEmpty(),
+                    ),
                 )
             }
         } ?: emptyList()

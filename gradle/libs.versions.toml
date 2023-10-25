@@ -6,6 +6,9 @@ apolloRuntimeVersion = "3.8.2"
 appCompatVersion = "1.6.1"
 compilerVersion = "4.16.0"
 coreVersion = "1.5.0"
+detektCli = "1.23.1"
+detektCliVersion = "1.23.1"
+detektGradlePluginVersion = "1.23.1"
 firebasePerfKtxVersion = "20.4.1"
 hiltAndroidCompilerVersion = "2.48.1"
 mockitoKotlinVersion = "5.1.0"
@@ -57,6 +60,8 @@ viewModelVersion = "2.6.2"
 workRuntimeKtxVersion = "2.8.1"
 perfPlugin = "1.4.2"
 firebaseFirestoreKtx = "24.8.1"
+kotlin = "1.9.0"
+fragment-ktx = "1.6.1"
 
 
 [libraries]
@@ -69,6 +74,7 @@ com-google-gms-google-services = { module = "com.google.gms:google-services", ve
 com-google-firebase-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.9" }
 com-google-android-libraries-mapsplatform-secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version = "2.0.1" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compilerVersion" }
+detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detektGradlePluginVersion" }
 epoxy-processor = { module = "com.airbnb.android:epoxy-processor", version.ref = "epoxyVersion" }
 extension-workmanager = { module = "com.google.android.exoplayer:extension-workmanager", version.ref = "exoplayerVersion" }
 firebase-perf-ktx = { module = "com.google.firebase:firebase-perf-ktx", version.ref = "firebasePerfKtxVersion" }
@@ -142,6 +148,8 @@ retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", v
 retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 rhino = { module = "org.mozilla:rhino", version.ref = "rhinoVersion" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
+fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx" }
 
 [plugins]
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

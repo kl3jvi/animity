@@ -46,10 +46,10 @@
             app:navGraph="@navigation/mobile_navigation" />
     </FrameLayout>
 
-    <include
-        android:id="@+id/noInternetStatus"
-        layout="@layout/item_no_internet"
-        tools:visibility="gone" />
+<!--    <include-->
+<!--        android:id="@+id/noInternetStatus"-->
+<!--        layout="@layout/item_no_internet"-->
+<!--        tools:visibility="gone" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

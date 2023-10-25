@@ -8,6 +8,7 @@ import com.kl3jvi.animity.domain.repositories.PlayerRepository
 import com.kl3jvi.animity.utils.Constants.Companion.Empty
 import com.kl3jvi.animity.utils.mapToUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,55 +20,54 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import javax.inject.Inject
 
 @HiltViewModel
 @ExperimentalCoroutinesApi
 class PlayerViewModel
-    @Inject
-    constructor(
-        private val playerRepository: PlayerRepository,
-        private val ioDispatcher: CoroutineDispatcher,
-    ) : ViewModel() {
-        var episodeUrl = MutableStateFlow(String.Empty)
+@Inject
+constructor(
+    private val playerRepository: PlayerRepository,
+    private val ioDispatcher: CoroutineDispatcher,
+) : ViewModel() {
+    var episodeUrl = MutableStateFlow(String.Empty)
 
-        private var _playBackPosition = MutableStateFlow<Long>(0)
-        var playBackPosition = _playBackPosition.asStateFlow()
+    private var _playBackPosition = MutableStateFlow<Long>(0)
+    var playBackPosition = _playBackPosition.asStateFlow()
 
-        /**
-         * It creates a flow that emits the current position of the exoPlayer every second.
-         *
-         * @param exoPlayer ExoPlayer? - The ExoPlayer instance
-         */
-        fun progress(exoPlayer: ExoPlayer?) =
-            flow {
-                exoPlayer?.currentPosition?.let {
-                    while (it < 200000) {
-                        emit(exoPlayer.currentPosition)
-                        delay(1000)
-                    }
+    /**
+     * It creates a flow that emits the current position of the exoPlayer every second.
+     *
+     * @param exoPlayer ExoPlayer? - The ExoPlayer instance
+     */
+    fun progress(exoPlayer: ExoPlayer?) =
+        flow {
+            exoPlayer?.currentPosition?.let {
+                while (it < 200000) {
+                    emit(exoPlayer.currentPosition)
+                    delay(1000)
                 }
-            }.flowOn(Dispatchers.Main)
+            }
+        }.flowOn(Dispatchers.Main)
 
-        val episodeMediaUrl =
-            episodeUrl.flatMapLatest {
-                val mapToUiState =
-                    playerRepository.getMediaUrl(
-                        url = it,
-                        extra = listOf("naruto"),
-                    ).mapToUiState(viewModelScope + ioDispatcher)
-                mapToUiState
-            } // List of episodes which have a list of qualities
+    val episodeMediaUrl =
+        episodeUrl.flatMapLatest {
+            val mapToUiState =
+                playerRepository.getMediaUrl(
+                    url = it,
+                    extra = listOf("naruto"),
+                ).mapToUiState(viewModelScope + ioDispatcher)
+            mapToUiState
+        } // List of episodes which have a list of qualities
 
-        fun upsertEpisode(episodeEntity: EpisodeEntity) {
-            viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(episodeEntity) }
-        }
+    fun upsertEpisode(episodeEntity: EpisodeEntity) {
+        viewModelScope.launch(ioDispatcher) { playerRepository.upsertEpisode(episodeEntity) }
+    }
 
-        fun getPlaybackPosition(episodeUrl: String) {
-            viewModelScope.launch(ioDispatcher) {
-                playerRepository.getPlaybackPosition(episodeUrl).collect { content ->
-                    _playBackPosition.value = content.watchedDuration
-                }
+    fun getPlaybackPosition(episodeUrl: String) {
+        viewModelScope.launch(ioDispatcher) {
+            playerRepository.getPlaybackPosition(episodeUrl).collect { content ->
+                _playBackPosition.value = content.watchedDuration
             }
         }
     }
+}

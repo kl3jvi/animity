@@ -36,4 +36,5 @@ interface PersistenceRepository {
     fun getAllAnimesThatHasDownloadedEpisodes(): Flow<List<LocalAnime>>
 
     suspend fun getLocalAnimeById(aniListId: Int): LocalAnime?
+    fun getDownloadedEpisodesForAnime(animeId: Int): Flow<List<LocalEpisode>>
 }

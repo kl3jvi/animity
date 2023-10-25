@@ -79,15 +79,15 @@ private fun NotificationsQuery.OnThreadCommentReplyNotification.toNotification()
         episode = null,
         createdAt = createdAt,
         user =
-            User(
-                id = this.user?.id ?: 0,
-                name = this.user?.name.orEmpty(),
-                avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
             ),
+        ),
         contexts = listOf(this.context),
         type = NotificationType.Threads,
     )
@@ -99,75 +99,75 @@ private fun NotificationsQuery.OnThreadCommentMentionNotification.toNotification
         episode = null,
         contexts = listOf(this.context),
         user =
-            User(
-                id = this.user?.id ?: 0,
-                name = this.user?.name.orEmpty(),
-                avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
             ),
+        ),
         createdAt = createdAt,
     )
 
 private fun NotificationsQuery.OnActivityMentionNotification.toNotification() =
     Notification(
         type =
-            NotificationType.Activity(
-                User(
-                    id = this.user?.id ?: 0,
-                    name = this.user?.name.orEmpty(),
-                    avatar =
-                        UserAvatar(
-                            this.user?.avatar?.large.orEmpty(),
-                            this.user?.avatar?.medium.orEmpty(),
-                        ),
-                ),
-            ),
-        id = this.id,
-        episode = null,
-        contexts = listOf(this.context),
-        user =
+        NotificationType.Activity(
             User(
                 id = this.user?.id ?: 0,
                 name = this.user?.name.orEmpty(),
                 avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+                UserAvatar(
+                    this.user?.avatar?.large.orEmpty(),
+                    this.user?.avatar?.medium.orEmpty(),
+                ),
             ),
+        ),
+        id = this.id,
+        episode = null,
+        contexts = listOf(this.context),
+        user =
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
+            ),
+        ),
         createdAt = createdAt,
     )
 
 private fun NotificationsQuery.OnActivityReplyNotification.toNotification() =
     Notification(
         type =
-            NotificationType.Activity(
-                User(
-                    id = this.user?.id ?: 0,
-                    name = this.user?.name.orEmpty(),
-                    avatar =
-                        UserAvatar(
-                            this.user?.avatar?.large.orEmpty(),
-                            this.user?.avatar?.medium.orEmpty(),
-                        ),
-                ),
-            ),
-        id = this.id,
-        episode = null,
-        contexts = listOf(this.context),
-        user =
+        NotificationType.Activity(
             User(
                 id = this.user?.id ?: 0,
                 name = this.user?.name.orEmpty(),
                 avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+                UserAvatar(
+                    this.user?.avatar?.large.orEmpty(),
+                    this.user?.avatar?.medium.orEmpty(),
+                ),
             ),
+        ),
+        id = this.id,
+        episode = null,
+        contexts = listOf(this.context),
+        user =
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
+            ),
+        ),
         createdAt = createdAt,
     )
 
@@ -184,90 +184,90 @@ private fun NotificationsQuery.OnAiringNotification.toNotification() =
 private fun NotificationsQuery.OnFollowingNotification.toNotification() =
     Notification(
         type =
-            NotificationType.Following(
-                User(
-                    id = this.user?.id ?: 0,
-                    name = this.user?.name.orEmpty(),
-                    avatar =
-                        UserAvatar(
-                            this.user?.avatar?.large.orEmpty(),
-                            this.user?.avatar?.medium.orEmpty(),
-                        ),
-                ),
-            ),
-        id = this.id,
-        episode = null,
-        contexts = listOf(this.context),
-        user =
+        NotificationType.Following(
             User(
                 id = this.user?.id ?: 0,
                 name = this.user?.name.orEmpty(),
                 avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+                UserAvatar(
+                    this.user?.avatar?.large.orEmpty(),
+                    this.user?.avatar?.medium.orEmpty(),
+                ),
             ),
+        ),
+        id = this.id,
+        episode = null,
+        contexts = listOf(this.context),
+        user =
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
+            ),
+        ),
         createdAt = createdAt,
     )
 
 private fun NotificationsQuery.OnActivityLikeNotification.toNotification() =
     Notification(
         type =
-            NotificationType.Activity(
-                User(
-                    id = this.user?.id ?: 0,
-                    name = this.user?.name.orEmpty(),
-                    avatar =
-                        UserAvatar(
-                            this.user?.avatar?.large.orEmpty(),
-                            this.user?.avatar?.medium.orEmpty(),
-                        ),
-                ),
-            ),
-        id = this.id,
-        episode = null,
-        contexts = listOf(this.context),
-        user =
+        NotificationType.Activity(
             User(
                 id = this.user?.id ?: 0,
                 name = this.user?.name.orEmpty(),
                 avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+                UserAvatar(
+                    this.user?.avatar?.large.orEmpty(),
+                    this.user?.avatar?.medium.orEmpty(),
+                ),
             ),
+        ),
+        id = this.id,
+        episode = null,
+        contexts = listOf(this.context),
+        user =
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
+            ),
+        ),
         createdAt = createdAt,
     )
 
 private fun NotificationsQuery.OnActivityMessageNotification.toNotification() =
     Notification(
         type =
-            NotificationType.Activity(
-                User(
-                    id = this.user?.id ?: 0,
-                    name = this.user?.name.orEmpty(),
-                    avatar =
-                        UserAvatar(
-                            this.user?.avatar?.large.orEmpty(),
-                            this.user?.avatar?.medium.orEmpty(),
-                        ),
-                ),
-            ),
-        id = this.id,
-        episode = null,
-        contexts = listOf(this.context),
-        user =
+        NotificationType.Activity(
             User(
                 id = this.user?.id ?: 0,
                 name = this.user?.name.orEmpty(),
                 avatar =
-                    UserAvatar(
-                        this.user?.avatar?.large.orEmpty(),
-                        this.user?.avatar?.medium.orEmpty(),
-                    ),
+                UserAvatar(
+                    this.user?.avatar?.large.orEmpty(),
+                    this.user?.avatar?.medium.orEmpty(),
+                ),
             ),
+        ),
+        id = this.id,
+        episode = null,
+        contexts = listOf(this.context),
+        user =
+        User(
+            id = this.user?.id ?: 0,
+            name = this.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this.user?.avatar?.large.orEmpty(),
+                this.user?.avatar?.medium.orEmpty(),
+            ),
+        ),
         createdAt = createdAt,
     )
 
@@ -284,21 +284,21 @@ private fun NotificationsQuery.Media?.convert(): AniListMedia {
         status = this?.homeMedia?.status,
         description = this?.homeMedia?.description.orEmpty(),
         startDate =
-            if (this?.homeMedia?.startDate?.year != null) {
-                FuzzyDate(
-                    this.homeMedia.startDate.year,
-                    this.homeMedia.startDate.month,
-                    this.homeMedia.startDate.day,
-                )
-            } else {
-                null
-            },
+        if (this?.homeMedia?.startDate?.year != null) {
+            FuzzyDate(
+                this.homeMedia.startDate.year,
+                this.homeMedia.startDate.month,
+                this.homeMedia.startDate.day,
+            )
+        } else {
+            null
+        },
         coverImage =
-            MediaCoverImage(
-                this?.homeMedia?.coverImage?.extraLarge.orEmpty(),
-                this?.homeMedia?.coverImage?.large.orEmpty(),
-                this?.homeMedia?.coverImage?.medium.orEmpty(),
-            ),
+        MediaCoverImage(
+            this?.homeMedia?.coverImage?.extraLarge.orEmpty(),
+            this?.homeMedia?.coverImage?.large.orEmpty(),
+            this?.homeMedia?.coverImage?.medium.orEmpty(),
+        ),
         bannerImage = this?.homeMedia?.bannerImage.orEmpty(),
         genres = this?.homeMedia?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: emptyList(),
         averageScore = this?.homeMedia?.averageScore ?: 0,

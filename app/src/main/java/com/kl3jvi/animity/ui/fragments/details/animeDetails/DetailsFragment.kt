@@ -37,6 +37,11 @@ import com.kl3jvi.animity.utils.launchActivity
 import com.kl3jvi.animity.utils.parseTime
 import com.kl3jvi.animity.utils.setHtmlText
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import javax.inject.Inject
+import kotlin.properties.Delegates
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -44,11 +49,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
-import kotlin.properties.Delegates
 
 @Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi

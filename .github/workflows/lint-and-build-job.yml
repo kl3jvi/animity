@@ -1,4 +1,4 @@
-name: Build & upload to Firebase App Distribution
+name: Build & upload detekt Firebase App Distribution
 
 on:
   push:
@@ -55,7 +55,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Upload Artifact to Firebase App Distribution
+      - name: Upload Artifact detekt Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}

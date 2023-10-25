@@ -3,13 +3,13 @@ package com.kl3jvi.animity.ui.fragments.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentHomeBinding
-import com.kl3jvi.animity.ui.fragments.StateManager
+import com.kl3jvi.animity.ui.activities.main.MainActivity
+import com.kl3jvi.animity.ui.fragments.base.AnimityFragment
 import com.kl3jvi.animity.ui.fragments.notifications.NotificationBottomSheetFragment
 import com.kl3jvi.animity.ui.fragments.schedule.ScheduleViewModel
 import com.kl3jvi.animity.utils.BottomNavScrollListener
@@ -25,10 +25,12 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
+class HomeFragment : AnimityFragment(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
     private var binding: FragmentHomeBinding? = null
     private val scheduleViewModel by activityViewModels<ScheduleViewModel>()
+    private val stateManager by lazy { create() }
+
 
     private val listener: BottomNavScrollListener by lazy {
         requireActivity() as BottomNavScrollListener
@@ -98,16 +100,18 @@ class HomeFragment : Fragment(R.layout.fragment_home), StateManager {
         }
     }
 
+    override fun showLoading(show: Boolean) = Unit
+    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
+    override fun handleNetworkChanges(isConnected: Boolean) {
+//        val activityBinding = (activity as MainActivity).binding
+//        activityBinding.wrapper.isVisible = isConnected
+//        activityBinding.noInternetStatus.noInternet.isVisible = !isConnected
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
 
-    override fun showLoading(show: Boolean) =
-        with(binding) {
-            this?.mainRv?.isVisible = !show
-            this?.loading?.isVisible = show
-        }
 
-    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
 }

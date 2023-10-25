@@ -208,6 +208,7 @@ dependencies {
 
 
     implementation libs.hilt.android
+    implementation libs.fragment.ktx
     kapt(libs.hilt.android.compiler)
 
     implementation libs.retrofit2.retrofit
@@ -266,6 +267,7 @@ dependencies {
     implementation libs.androidx.startup.runtime
     implementation libs.android.joda
 
+
     testImplementation libs.turbine
     testImplementation libs.junit
     testImplementation libs.androidx.core
@@ -274,4 +276,5 @@ dependencies {
     testImplementation libs.mockk
     testImplementation libs.kotlinx.coroutines.test
     testImplementation(libs.apollo.testing.support)
+
 }

@@ -18,7 +18,7 @@ import com.kl3jvi.animity.utils.collect
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TheirProfile : Fragment(R.layout.fragment_their_profile), StateManager {
+class TheirProfile : Fragment(R.layout.fragment_their_profile) {
     private val viewModel: TheirProfileViewModel by viewModels()
     private var binding: FragmentTheirProfileBinding? = null
 
@@ -71,10 +71,10 @@ class TheirProfile : Fragment(R.layout.fragment_their_profile), StateManager {
         binding = null
     }
 
-    override fun showLoading(show: Boolean) {
+    fun showLoading(show: Boolean) {
         binding?.loading?.isVisible = show
         binding?.theirProfileRv?.isVisible = !show
     }
 
-    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
+    fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
 }

@@ -18,45 +18,45 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class MainViewModel
-    @Inject
-    constructor(
-        private val homeRepository: HomeRepository,
-        private val userRepository: UserRepository,
-        private val localStorage: PersistenceRepository,
-        private val ioDispatcher: CoroutineDispatcher,
-        network: NetworkMonitor,
-    ) : ViewModel() {
-        val isConnectedToNetwork = network.isConnected
+@Inject
+constructor(
+    private val homeRepository: HomeRepository,
+    private val userRepository: UserRepository,
+    private val localStorage: PersistenceRepository,
+    private val ioDispatcher: CoroutineDispatcher,
+    private val network: NetworkMonitor,
+) : ViewModel() {
 
-        init {
-            viewModelScope.launch(ioDispatcher) {
-                launch { getUserSession() }
-                launch { updateEncryptionKeys() }
-            }
-        }
-
-        private fun getUserSession() {
-            userRepository.getSessionForUser()
-                .onEach { data ->
-                    if (!data.hasErrors()) {
-                        userRepository.setAniListUserId(data.data?.viewer?.id.toString())
-                    } else {
-                        Log.e("MainViewModel", "Error getting user session")
-                    }
-                }.launchIn(viewModelScope)
-        }
-
-        /**
-         * > It gets the encryption keys from the server and saves them to the local storage
-         */
-        private fun updateEncryptionKeys() {
-            homeRepository.getEncryptionKeys()
-                .onEach { data ->
-                    with(localStorage) {
-                        iv = data.iv
-                        key = data.key
-                        secondKey = data.secondKey
-                    }
-                }.launchIn(viewModelScope)
+    init {
+        viewModelScope.launch(ioDispatcher)
+        {
+            launch { getUserSession() }
+            launch { updateEncryptionKeys() }
         }
     }
+
+    private fun getUserSession() {
+        userRepository.getSessionForUser()
+            .onEach { data ->
+                if (!data.hasErrors()) {
+                    userRepository.setAniListUserId(data.data?.viewer?.id.toString())
+                } else {
+                    Log.e("MainViewModel", "Error getting user session")
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    /**
+     * > It gets the encryption keys from the server and saves them to the local storage
+     */
+    private fun updateEncryptionKeys() {
+        homeRepository.getEncryptionKeys()
+            .onEach { data ->
+                with(localStorage) {
+                    iv = data.iv
+                    key = data.key
+                    secondKey = data.secondKey
+                }
+            }.launchIn(viewModelScope)
+    }
+}

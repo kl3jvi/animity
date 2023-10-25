@@ -13,7 +13,7 @@
 
         <variable
             name="episodeInfo"
-            type="com.kl3jvi.animity.data.model.ui_models.EpisodeModel" />
+            type="com.kl3jvi.animity.data.model.ui_models.LocalEpisode" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,18 +27,6 @@
         app:cardBackgroundColor="@color/darkBlue"
         app:cardCornerRadius="@dimen/roundedImageRadius"
         app:cardElevation="0dp">
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/episode_progress"
-            style="@android:style/Widget.Material.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-1.5dp"
-            android:progress="@{episodeInfo.percentage}"
-            android:progressBackgroundTint="@color/colorPrimary"
-            android:progressTint="@color/colorProgress"
-            tools:progress="50" />
 
         <LinearLayout
             android:id="@+id/watchEpisode"
@@ -69,7 +57,7 @@
                 android:marqueeRepeatLimit="0"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text="@{String.valueOf(`EP`+episodeInfo.episodeNumber+episodeInfo.episodeName)}"
+                android:text="@{String.valueOf(`Episode `+episodeInfo.episodeNumber)}"
                 android:textColor="@color/textColor"
                 tools:text="Episode 1" />
         </LinearLayout>

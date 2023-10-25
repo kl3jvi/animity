@@ -12,32 +12,32 @@ import com.kl3jvi.animity.data.mapper.convert
 import com.kl3jvi.animity.data.network.anilist_service.AniListGraphQlClient
 import com.kl3jvi.animity.data.paging.NotificationPagingSource
 import com.kl3jvi.animity.domain.repositories.NotificationsRepository
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class NotificationsRepositoryImpl
-    @Inject
-    constructor(
-        private val aniListGraphQlClient: AniListGraphQlClient,
-        private val ioDispatcher: CoroutineDispatcher,
-    ) : NotificationsRepository {
-        override fun getNotifications(): Flow<PagingData<PagingDataItem>> {
-            return Pager(
-                config = PagingConfig(enablePlaceholders = true, pageSize = 20),
-                pagingSourceFactory = { NotificationPagingSource(aniListGraphQlClient) },
-            ).flow.flowOn(ioDispatcher)
-        }
-
-        override fun getScheduled(weekName: WeekName): Flow<List<AiringInfo>> =
-            flow {
-                val (startTime, endTime) = weekName.computeEpochTimesForDay()
-                val result = aniListGraphQlClient.getAiringAnimeForDate(startTime, endTime)
-                emit(result.convert())
-            }.catch { e ->
-                Log.e("Error", e.message.toString())
-            }.flowOn(ioDispatcher)
+@Inject
+constructor(
+    private val aniListGraphQlClient: AniListGraphQlClient,
+    private val ioDispatcher: CoroutineDispatcher,
+) : NotificationsRepository {
+    override fun getNotifications(): Flow<PagingData<PagingDataItem>> {
+        return Pager(
+            config = PagingConfig(enablePlaceholders = true, pageSize = 20),
+            pagingSourceFactory = { NotificationPagingSource(aniListGraphQlClient) },
+        ).flow.flowOn(ioDispatcher)
     }
+
+    override fun getScheduled(weekName: WeekName): Flow<List<AiringInfo>> =
+        flow {
+            val (startTime, endTime) = weekName.computeEpochTimesForDay()
+            val result = aniListGraphQlClient.getAiringAnimeForDate(startTime, endTime)
+            emit(result.convert())
+        }.catch { e ->
+            Log.e("Error", e.message.toString())
+        }.flowOn(ioDispatcher)
+}

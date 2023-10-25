@@ -14,6 +14,7 @@
         <variable
             name="imageUrl"
             type="String" />
+
         <variable
             name="animeDetails"
             type="com.kl3jvi.animity.data.model.ui_models.AniListMedia" />
@@ -24,6 +25,10 @@
 
         <variable
             name="isFiller"
+            type="Boolean" />
+
+        <variable
+            name="isDownloaded"
             type="Boolean" />
 
         <variable
@@ -141,6 +146,7 @@
                     <ImageButton
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:visibility="@{isDownloaded}"
                         android:layout_gravity="center"
                         android:background="@android:color/transparent"
                         android:onClick="@{() -> vm.downloadEpisode(episodeInfo,animeDetails)}"

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.kl3jvi.animity.R
 import com.kl3jvi.animity.analytics.Analytics
 import com.kl3jvi.animity.databinding.FragmentFavoritesBinding
-import com.kl3jvi.animity.ui.fragments.StateManager
 import com.kl3jvi.animity.utils.BottomNavScrollListener
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
 import com.kl3jvi.animity.utils.collect
@@ -25,7 +24,7 @@ import javax.inject.Inject
 @Suppress("SameParameterValue")
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class FavoritesFragment : Fragment(R.layout.fragment_favorites), StateManager {
+class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private val viewModel: FavoritesViewModel by viewModels()
     private var binding: FragmentFavoritesBinding? = null
     private lateinit var pagingController: FavoritesSearchController
@@ -100,7 +99,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites), StateManager {
         binding = null
     }
 
-    override fun showLoading(show: Boolean) = Unit
+    fun showLoading(show: Boolean) = Unit
 
-    override fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
+    fun handleError(e: Throwable) = showSnack(binding?.root, e.message)
 }

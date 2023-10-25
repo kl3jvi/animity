@@ -12,9 +12,9 @@ class DayPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
 ) : FragmentStateAdapter(
-        fragmentManager,
-        lifecycle,
-    ) {
+    fragmentManager,
+    lifecycle,
+) {
     private val weekDays = WeekName.values()
     private var scheduleMap: Map<WeekName, List<AiringInfo>> = emptyMap()
 

@@ -17,29 +17,29 @@ import com.kl3jvi.animity.fragment.HomeMedia
 fun ApolloResponse<HomeDataQuery.Data>.convert(): HomeData {
     return HomeData(
         trendingAnime =
-            this.data
-                ?.trendingAnime
-                ?.media
-                ?.mapNotNull { it?.homeMedia?.convert() }
-                ?: emptyList(),
+        this.data
+            ?.trendingAnime
+            ?.media
+            ?.mapNotNull { it?.homeMedia?.convert() }
+            ?: emptyList(),
         popularAnime =
-            this.data
-                ?.popularAnime
-                ?.media
-                ?.mapNotNull { it?.homeMedia?.convert() }
-                ?: emptyList(),
+        this.data
+            ?.popularAnime
+            ?.media
+            ?.mapNotNull { it?.homeMedia?.convert() }
+            ?: emptyList(),
         movies =
-            this.data
-                ?.movies
-                ?.media
-                ?.mapNotNull { it?.homeMedia?.convert() }
-                ?: emptyList(),
+        this.data
+            ?.movies
+            ?.media
+            ?.mapNotNull { it?.homeMedia?.convert() }
+            ?: emptyList(),
         review =
-            this.data
-                ?.review
-                ?.reviews
-                ?.mapNotNull { it.convert() }
-                ?: emptyList(),
+        this.data
+            ?.review
+            ?.reviews
+            ?.mapNotNull { it.convert() }
+            ?: emptyList(),
     )
 }
 
@@ -55,25 +55,25 @@ fun HomeDataQuery.Review1?.convert(): Review {
         ratingAmount = this?.ratingAmount ?: 0,
         score = this?.score ?: 0,
         user =
-            User(
-                id = this?.user?.id ?: 0,
-                name = this?.user?.name.orEmpty(),
-                avatar =
-                    UserAvatar(
-                        this?.user?.avatar?.large.orEmpty(),
-                        this?.user?.avatar?.medium.orEmpty(),
-                    ),
+        User(
+            id = this?.user?.id ?: 0,
+            name = this?.user?.name.orEmpty(),
+            avatar =
+            UserAvatar(
+                this?.user?.avatar?.large.orEmpty(),
+                this?.user?.avatar?.medium.orEmpty(),
             ),
+        ),
         aniListMedia =
-            AniListMedia(
-                idAniList = this?.media?.homeMedia?.id ?: 0,
-                title = MediaTitle(userPreferred = this?.media?.homeMedia?.title?.userPreferred.orEmpty()),
-                bannerImage = this?.media?.homeMedia?.bannerImage.orEmpty(),
-                coverImage =
-                    MediaCoverImage(
-                        large = this?.media?.homeMedia?.coverImage?.large.orEmpty(),
-                    ),
+        AniListMedia(
+            idAniList = this?.media?.homeMedia?.id ?: 0,
+            title = MediaTitle(userPreferred = this?.media?.homeMedia?.title?.userPreferred.orEmpty()),
+            bannerImage = this?.media?.homeMedia?.bannerImage.orEmpty(),
+            coverImage =
+            MediaCoverImage(
+                large = this?.media?.homeMedia?.coverImage?.large.orEmpty(),
             ),
+        ),
     )
 }
 
@@ -90,23 +90,26 @@ fun HomeMedia?.convert(): AniListMedia {
         status = this?.status,
         description = this?.description.orEmpty(),
         startDate =
-            if (this?.startDate?.year != null) {
-                FuzzyDate(this.startDate.year, this.startDate.month, this.startDate.day)
-            } else {
-                null
-            },
+        if (this?.startDate?.year != null) {
+            FuzzyDate(this.startDate.year, this.startDate.month, this.startDate.day)
+        } else {
+            null
+        },
         coverImage =
-            MediaCoverImage(
-                this?.coverImage?.extraLarge.orEmpty(),
-                this?.coverImage?.large.orEmpty(),
-                this?.coverImage?.medium.orEmpty(),
-            ),
+        MediaCoverImage(
+            this?.coverImage?.extraLarge.orEmpty(),
+            this?.coverImage?.large.orEmpty(),
+            this?.coverImage?.medium.orEmpty(),
+        ),
         bannerImage = this?.bannerImage.orEmpty(),
         genres = this?.genres?.mapNotNull { Genre(name = it.orEmpty()) } ?: emptyList(),
         averageScore = this?.averageScore ?: 0,
         favourites = this?.favourites ?: 0,
         mediaListEntry = MediaStatusAnimity.stringToMediaListStatus(this?.mediaListEntry?.status?.rawValue),
     )
+}
+
+private fun sampleEmptyFuntion() {
 }
 
 fun HomeMedia.StreamingEpisode?.convert() =

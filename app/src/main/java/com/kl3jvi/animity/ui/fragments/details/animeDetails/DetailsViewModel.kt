@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -105,22 +106,20 @@ constructor(
     }
 
     fun downloadEpisode(episodeModel: EpisodeModel, aniListMedia: AniListMedia) {
-        viewModelScope.launch(
-            ioDispatcher + CoroutineExceptionHandler { _, throwable ->
-                Log.e("Error", "Download error: ${throwable.message}", throwable)
-            }
-        ) {
-            playerRepository.getMediaUrl(url = episodeModel.episodeUrl, extra = listOf("naruto"))
-                .asResult()
-                .ifChanged()
-                .collect { result ->
-                    when (result) {
-                        is Result.Error -> handleError(result)
-                        is Result.Success -> handleSuccess(result, episodeModel, aniListMedia)
-                        else -> {}
-                    }
+        playerRepository.getMediaUrl(url = episodeModel.episodeUrl, extra = listOf("naruto"))
+            .asResult()
+            .ifChanged()
+            .onEach { result ->
+                when (result) {
+                    is Result.Error -> handleError(result)
+                    is Result.Success -> handleSuccess(result, episodeModel, aniListMedia)
+                    else -> {}
                 }
-        }
+            }.launchIn(
+                viewModelScope + ioDispatcher + CoroutineExceptionHandler { _, throwable ->
+                    Log.e("Error", "Download error: ${throwable.message}", throwable)
+                }
+            )
     }
 
     private fun handleError(result: Result.Error) {
@@ -135,18 +134,14 @@ constructor(
         val videoUrls = result.data
         if (videoUrls.isNotEmpty()) {
             val videoUrl = videoUrls.first().first()
-
             checkAndInsertAnime(aniListMedia)
-
-            val localEpisode = createLocalEpisode(episodeModel, aniListMedia)
-
+            val localEpisode = createLocalEpisode(videoUrl, episodeModel, aniListMedia)
             downloader.downloadVideoUrl(
                 videoUrl,
                 DownloadListener(localEpisode)
             )
-        } else {
-            Log.e("Error", "No video URLs found.")
-        }
+        } else return
+
     }
 
     private suspend fun checkAndInsertAnime(aniListMedia: AniListMedia) {
@@ -165,11 +160,12 @@ constructor(
     }
 
     private fun createLocalEpisode(
+        videoUrl: String,
         episodeModel: EpisodeModel,
         aniListMedia: AniListMedia
     ): LocalEpisode {
         return LocalEpisode(
-            episodeUrl = episodeModel.episodeUrl,
+            episodeUrl = videoUrl,
             animeId = aniListMedia.idAniList,
             episodeNumber = episodeModel.getEpisodeNumberAsString(),
             downloaded = true
@@ -191,7 +187,6 @@ constructor(
             }
         }
     }
-
 
     fun changeAnimeStatus(status: MediaListStatus) {
         passedAniListMedia.flatMapLatest {

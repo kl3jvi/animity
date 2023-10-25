@@ -4,9 +4,6 @@ package com.kl3jvi.animity.data.downloader
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
@@ -61,11 +58,6 @@ constructor(
     private val appContext: Context,
     private val downloadManager: DownloadManager,
 ) {
-    init {
-        getDownloadedVideos().forEach {
-            Log.e("Downloader", "Downloaded video: ${it.mediaId}")
-        }
-    }
 
     fun downloadVideoUrl(url: String, downloadManagerListener: DownloadManager.Listener) {
         DownloadService.sendAddDownload(
@@ -79,19 +71,5 @@ constructor(
             false,
         )
         downloadManager.addListener(downloadManagerListener)
-    }
-
-    fun getDownloadedVideos(): List<MediaItem> {
-        val downloads = downloadManager.currentDownloads
-        return downloads.mapNotNull { download ->
-            if (download.state == Download.STATE_COMPLETED) {
-                MediaItem.Builder()
-                    .setUri(download.request.uri)
-                    .setMediaId(download.request.id)
-                    .build()
-            } else {
-                null
-            }
-        }
     }
 }

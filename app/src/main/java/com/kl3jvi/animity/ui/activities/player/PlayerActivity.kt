@@ -29,6 +29,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -50,6 +51,7 @@ import com.kl3jvi.animity.utils.Constants
 import com.kl3jvi.animity.utils.Constants.Companion.ANILIST_ID
 import com.kl3jvi.animity.utils.Constants.Companion.ANIME_TITLE
 import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_DETAILS
+import com.kl3jvi.animity.utils.Constants.Companion.EPISODE_URL
 import com.kl3jvi.animity.utils.Constants.Companion.REFERER
 import com.kl3jvi.animity.utils.Constants.Companion.THUMBNAIL
 import com.kl3jvi.animity.utils.Constants.Companion.showSnack
@@ -57,20 +59,24 @@ import com.kl3jvi.animity.utils.UiResult
 import com.kl3jvi.animity.utils.collect
 import com.kl3jvi.animity.utils.logError
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.net.InetAddress
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Cache
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
-import java.io.File
-import java.net.InetAddress
-import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
     @Inject
     lateinit var settings: Settings
+
+    @Inject
+    lateinit var cacheDataSourceFactory: CacheDataSource.Factory
 
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityPlayerBinding.inflate(layoutInflater)
@@ -95,15 +101,17 @@ class PlayerActivity : AppCompatActivity() {
     lateinit var episodeUrlLocal: String
     lateinit var episodeEntity: EpisodeEntity
     private var aniListId: Int = 0
+    private var episodeUrSavedInCache: String = ""
     private var thumbnailUri: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        if (intent.hasExtra(EPISODE_DETAILS)) {
+        if (intent.hasExtra(EPISODE_DETAILS) || intent.hasExtra(EPISODE_URL)) {
             val getIntentData = intent.getParcelableExtra<EpisodeModel>(EPISODE_DETAILS)
 
             aniListId = intent.getIntExtra(ANILIST_ID, 0)
+            episodeUrSavedInCache = intent.getStringExtra(EPISODE_URL).orEmpty()
             animeTitlePassed = intent.getStringExtra(ANIME_TITLE).toString()
             episodeNumberLocal = getIntentData?.episodeNumber.toString()
             episodeUrlLocal = getIntentData?.episodeUrl.toString()
@@ -118,6 +126,15 @@ class PlayerActivity : AppCompatActivity() {
             initialisePlayerLayout()
             viewModel.episodeUrl.value = getIntentData?.episodeUrl.toString()
             hideSystemUi()
+            initializeVideoPlayback()
+        }
+    }
+
+    private fun initializeVideoPlayback() {
+        if (episodeUrSavedInCache.isNotEmpty()) {
+            playLocally(listOf(listOf(episodeUrSavedInCache)))
+        } else {
+            initializePlayer()
         }
     }
 
@@ -178,15 +195,27 @@ class PlayerActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         if (Util.SDK_INT > 23 && player == null) {
-            initializePlayer()
+//            initializePlayer()
             onIsPlayingChanged(isPlaying = true)
         }
+    }
+
+    private fun playLocally(passedUrl: List<List<String>>) {
+        try {
+            setupPlayer(passedUrl)
+            handlePlayerListener()
+            handleSkipIntro()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showSnack(binding.root, e.localizedMessage)
+        }
+        binding.loadingOverlay.visibility = View.GONE
     }
 
     public override fun onResume() {
         super.onResume()
         if (Util.SDK_INT <= 23 && player == null) {
-            initializePlayer()
+//            initializePlayer()
             onIsPlayingChanged(isPlaying = true)
         }
         player?.playWhenReady = true
@@ -212,6 +241,10 @@ class PlayerActivity : AppCompatActivity() {
 
     @ExperimentalCoroutinesApi
     private fun initializePlayer() {
+        if (episodeUrSavedInCache.isNotEmpty()) {
+            playLocally(listOf(listOf(episodeUrSavedInCache)))
+            return
+        }
         collect(viewModel.episodeMediaUrl) { res ->
             when (res) {
                 is UiResult.Error, UiResult.Loading -> {
@@ -262,17 +295,25 @@ class PlayerActivity : AppCompatActivity() {
                 .setSeekForwardIncrementMs(settings.seekForwardTime)
                 .build().apply {
                     binding.videoView.player = this
-                    val mediaItems =
-                        listOfEpisodesWithQualities.map { episodeWithQualities ->
-                            MediaItem.fromUri(episodeWithQualities.last())
-                        }
+                    val mediaItems = listOfEpisodesWithQualities.map { episodeWithQualities ->
+                        MediaItem.fromUri(episodeWithQualities.last())
+                    }
                     val concatenatedSource = ConcatenatingMediaSource()
+
                     mediaItems.forEach { mediaItem ->
                         val videoSource =
-                            buildMediaSource(mediaItem, mediaItem.localConfiguration?.uri.toString())
+                            buildMediaSource(
+                                mediaItem,
+                                mediaItem.localConfiguration?.uri.toString()
+                            )
                         concatenatedSource.addMediaSource(videoSource)
                     }
-                    setMediaSource(concatenatedSource)
+
+                    setMediaSource(
+                        DefaultMediaSourceFactory(this@PlayerActivity)
+                            .setDataSourceFactory(cacheDataSourceFactory)
+                            .createMediaSource(mediaItems.first())
+                    )
                     playWhenReady = true
                     prepare()
                 }
@@ -289,7 +330,7 @@ class PlayerActivity : AppCompatActivity() {
                         val realDurationMillis = player?.duration ?: 0
                         episodeEntity =
                             EpisodeEntity().apply {
-                                aniListId = aniListId
+                                aniListId = this@PlayerActivity.aniListId
                                 episodeUrl = episodeUrlLocal
                                 watchedDuration = 0
                                 duration = realDurationMillis

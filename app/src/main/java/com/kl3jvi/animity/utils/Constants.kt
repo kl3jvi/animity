@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class Constants {
     companion object {
+        val EPISODE_URL: String = "EPISODE_URL"
         const val ANIME_TITLE: String = "ANIME_TITLE"
         const val EPISODE_DETAILS: String = "episodeInfo"
         const val ANILIST_ID = "anilist_id"

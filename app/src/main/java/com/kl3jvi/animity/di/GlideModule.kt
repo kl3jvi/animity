@@ -11,9 +11,9 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.signature.ObjectKey
-import okhttp3.OkHttpClient
 import java.io.InputStream
 import java.util.concurrent.TimeUnit
+import okhttp3.OkHttpClient
 
 @GlideModule
 class GlideModule : AppGlideModule() {
