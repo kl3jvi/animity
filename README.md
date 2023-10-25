@@ -1,4 +1,3 @@
-
 <p align="center"><a href="https://github.com/kl3jvi/animity"><img src="https://cdn.midjourney.com/69275306-9024-484a-8a7d-986f6420ed5f/grid_0.png" width="150"></a></p> 
 <h2 align="center"><b>Animity - Anime Streaming App </b></h2>
 <h4 align="center">An Android app to watch anime on your phone without ads.</h4>
@@ -16,25 +15,33 @@
 </p>
 <hr>
 
-<h3 align="center">**Star :star:  this repo to show your support and it really does matter!** :clap:</h4>
+<h3 align="center">**Star :star:  this repo to show your support and it really does matter!** :
+clap:</h4>
 
-Animity is an anime streaming app that provides high-quality streaming of your favorite anime shows. It's designed to be easy to use, so you can quickly find the anime you want to watch and start streaming. With Animity, you can also sync your account with Anilist, so you can keep track of your favorite shows and manage your anime watchlist. Whether you're a die-hard anime fan or a casual viewer, Animity has something for everyone.
+Animity is an anime streaming app that provides high-quality streaming of your favorite anime shows.
+It's designed to be easy to use, so you can quickly find the anime you want to watch and start
+streaming. With Animity, you can also sync your account with Anilist, so you can keep track of your
+favorite shows and manage your anime watchlist. Whether you're a die-hard anime fan or a casual
+viewer, Animity has something for everyone.
 
 **Disclaimer:***
 
-Any legal issues regarding the content on this application should be taken up with the actual file hosts and providers themselves as we are not affiliated with them.
+Any legal issues regarding the content on this application should be taken up with the actual file
+hosts and providers themselves as we are not affiliated with them.
 
-In case of copyright infringement, please directly contact the responsible parties or the streaming websites.
+In case of copyright infringement, please directly contact the responsible parties or the streaming
+websites.
 
 The app is purely for educational and personal use.
 
-Animity does not host any content on the app, and has no control over what media is put up or taken down. Animity functions like any other search engine, such as Google. Animity does not host, upload or manage any videos, films or content. It simply crawls, aggregates and displayes links in a convenient, user-friendly interface.
+Animity does not host any content on the app, and has no control over what media is put up or taken
+down. Animity functions like any other search engine, such as Google. Animity does not host, upload
+or manage any videos, films or content. It simply crawls, aggregates and displayes links in a
+convenient, user-friendly interface.
 
-It merely scrapes 3rd-party websites that are publicly accessable via any regular web browser. It is the responsibility of user to avoid any actions that might violate the laws governing his/her locality. Use Animity at your own risk.
-
-
-
-
+It merely scrapes 3rd-party websites that are publicly accessable via any regular web browser. It is
+the responsibility of user to avoid any actions that might violate the laws governing his/her
+locality. Use Animity at your own risk.
 
 ## Screenshots
 
@@ -45,10 +52,10 @@ It merely scrapes 3rd-party websites that are publicly accessable via any regula
 [<img src="assets/asset6.png" width=23%>](assets/asset6.png)
 <!-- [<img src="assets/asset7.png" height="400">](assets/asset7.png) -->
 
-
 ## Description
 
-Animity parses website data and filter required info, thus It removes the ads for seamless experience.
+Animity parses website data and filter required info, thus It removes the ads for seamless
+experience.
 
 ### Features
 
@@ -57,7 +64,6 @@ Animity parses website data and filter required info, thus It removes the ads fo
 * Popular Animes
 * Anime Movies
 
-
 ### Coming Features
 
 * Different list of Popular/ Recent / Movies
@@ -65,6 +71,7 @@ Animity parses website data and filter required info, thus It removes the ads fo
 * … and many more
 
 ### Technologies used
+
 * Kotlin
 * MVVM
 * Retrofit & Coroutines
@@ -73,7 +80,9 @@ Animity parses website data and filter required info, thus It removes the ads fo
 * Coil
 
 ## Contribution
-Your ideas, translations, design changes, code cleaning, or real heavy code changes or any help is always welcome. The more is contribution the better it gets
+
+Your ideas, translations, design changes, code cleaning, or real heavy code changes or any help is
+always welcome. The more is contribution the better it gets
 
 [Pull requests](https://github.com/kl3jvi/animity/pulls) will be reviewed
 
