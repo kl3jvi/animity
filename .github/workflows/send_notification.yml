@@ -11,15 +11,19 @@ jobs:
     steps:
     - name: Send Notification
       run: |
-        response=$(curl -X POST "https://onesignal.com/api/v1/notifications" \
-        -H "Authorization: Basic ${{ secrets.ONESIGNAL_API_KEY }}" \
-        -H "Content-Type: application/json" \
-        --data '{
+        echo "Starting the notification process..."
+        response=$(curl --request POST \
+        --url https://onesignal.com/api/v1/notifications \
+        --header 'Authorization: Basic ${{ secrets.ONESIGNAL_API_KEY }}' \
+        --header 'accept: application/json' \
+        --header 'content-type: application/json' \
+        --data '
+        {
           "app_id": "${{ secrets.ONESIGNAL_APP_ID }}",
           "included_segments": ["All"],
           "headings": {"en": "${{ github.event.release.name }}"},
           "contents": {"en": "${{ github.event.release.body }}"},
           "url": "${{ github.event.release.html_url }}"
-        }')
-        
-        echo "Response from OneSignal: $response"
+        }
+        ')
+        echo "Notification sent. Response from OneSignal: $response"
