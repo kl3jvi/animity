@@ -4,6 +4,9 @@ on:
   release:
     types:
       - published
+  push:
+    branches:
+      - main
 
 jobs:
   notify:
@@ -14,12 +17,12 @@ jobs:
         echo "Starting the notification process..."
         response=$(curl --request POST \
         --url https://onesignal.com/api/v1/notifications \
-        --header 'Authorization: Basic ${{ secrets.ONESIGNAL_API_KEY }}' \
+        --header 'Authorization: Basic ZTdjMmQ3MjQtZTMwNC00YjdlLTg5NGItZmUyYzNkY2VjYzIx' \
         --header 'accept: application/json' \
         --header 'content-type: application/json' \
         --data '
         {
-          "app_id": "${{ secrets.ONESIGNAL_APP_ID }}",
+          "app_id": "f8d936f4-2d9f-4c53-9f85-e2d3789d9174",
           "included_segments": ["All"],
           "headings": {"en": "${{ github.event.release.name }}"},
           "contents": {"en": "${{ github.event.release.body }}"},
