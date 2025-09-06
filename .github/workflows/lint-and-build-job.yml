@@ -1,0 +1,65 @@
+name: Build & upload detekt Firebase App Distribution
+
+on:
+  push:
+    branches:
+      - main
+      
+
+jobs:
+  ktlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install ktlint
+        run: |
+          curl -sSLO "https://github.com/pinterest/ktlint/releases/download/0.42.1/ktlint"
+          chmod a+x ktlint
+          sudo mv ktlint /usr/local/bin/
+      - name: Run ktlint
+        run: |
+          ktlint --version
+          ktlint -F --disabled_rules=no-wildcard-imports --reporter=checkstyle,output=build/ktlint-report.xml || true
+        continue-on-error: true
+      - name: Upload ktlint report
+        uses: actions/upload-artifact@v2
+        with:
+          name: ktlint-report
+          path: build/ktlint-report.xml
+
+  build:
+    needs: ktlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Build Release
+        run: ./gradlew assembleRelease -PversionName=$VERSION
+
+      - name: Set Version Environment Variable
+        run: echo "::set-env name=VERSION::$(git describe --tags $(git rev-list --tags --max-count=1))"
+
+      - name: Rename APK file
+        run: mv app/build/outputs/apk/release/Animity-v$VERSION-arm64-v8a-release-unsigned.apk app/build/outputs/apk/release/Animity-$VERSION-arm64-v8a-release-unsigned.apk
+
+      - uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Artifact detekt Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: animity-tester
+          file: app/build/outputs/apk/release/Animity-$VERSION-arm64-v8a-release-unsigned.apk
